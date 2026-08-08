@@ -13,6 +13,21 @@ services:
         value: "3.12.4"
       - key: ALLOWED_ORIGINS
         value: "*"
+      - key: FRONTEND_URL
+        value: https://hr-ai-builder-web.onrender.com
+      - key: WX_OAUTH_CALLBACK
+        value: https://hr-ai-builder-api.onrender.com/api/wx/oauth/callback
+      # 以下为密钥，在 Render 面板手填，不入库不入仓
+      - key: JWT_SECRET
+        sync: false
+      - key: WX_WEB_APPID          # 开放平台「网站应用」AppID（轨道 A·优先）
+        sync: false
+      - key: WX_WEB_APPSECRET
+        sync: false
+      - key: WX_APPID              # 小程序 AppID（轨道 B·兜底）
+        sync: false
+      - key: WX_APPSECRET
+        sync: false
 
   - type: web
     name: hr-ai-builder-web

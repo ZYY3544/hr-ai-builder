@@ -52,11 +52,11 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
   radial-gradient(1000px 460px at 50% -22%, rgba(51,112,255,.075), transparent 68%);}
 .hero::after{content:'';position:absolute;inset:0;z-index:-1;
-  background-image:linear-gradient(rgba(15,23,42,.075) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(15,23,42,.075) 1px,transparent 1px);
-  background-size:52px 52px;
-  mask-image:radial-gradient(1180px 720px at 50% 32%,#000 26%,rgba(0,0,0,.55) 62%,transparent 88%);
-  -webkit-mask-image:radial-gradient(1180px 720px at 50% 32%,#000 26%,rgba(0,0,0,.55) 62%,transparent 88%);}
+  background-image:linear-gradient(rgba(15,23,42,.042) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(15,23,42,.042) 1px,transparent 1px);
+  background-size:54px 54px;
+  mask-image:radial-gradient(620px 400px at 50% 34%,#000 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.22) 64%,transparent 82%);
+  -webkit-mask-image:radial-gradient(620px 400px at 50% 34%,#000 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.22) 64%,transparent 82%);}
 @keyframes hue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
@@ -79,11 +79,8 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 @media(max-width:860px){.entries{grid-template-columns:1fr;max-width:460px}}
 .entry{position:relative;border:1px solid var(--line);border-radius:var(--r-l);padding:19px 21px;
   background:#fff;transition:.2s;overflow:hidden}
-.entry::before{content:'';position:absolute;inset:0 0 auto;height:2.5px;
-  background:var(--grad);transform:scaleX(0);transform-origin:left;transition:.28s}
-.entry:hover::before{transform:scaleX(1)}
-.entry:hover{border-color:rgba(124,58,237,.42);transform:translateY(-3px);
-  box-shadow:0 16px 38px -18px rgba(124,58,237,.55);background:#fff}
+.entry:hover{border-color:rgba(124,58,237,.35);transform:translateY(-3px);
+  box-shadow:0 14px 34px -20px rgba(15,23,42,.28);background:#fff}
 .entry .ic{width:30px;height:30px;border-radius:9px;background:var(--violet-s);color:var(--violet);
   display:grid;place-items:center;font-size:14px;margin-bottom:11px;transition:.2s}
 .entry:hover .ic{background:var(--grad-r);color:#fff}
@@ -151,11 +148,40 @@ section{scroll-margin-top:64px}
 .final .btns{display:flex;gap:10px;justify-content:center;margin-top:26px;flex-wrap:wrap}
 
 .decl{background:var(--bg);border-top:1px solid var(--line);padding:36px 0}
-.decl .box{background:#fff;border:1px solid var(--line);border-left:3px solid transparent;
-  border-image:var(--grad) 1;border-image-slice:1;
+.decl .box{background:#fff;border:1px solid var(--line);
   border-radius:0 var(--r-l) var(--r-l) 0;padding:20px 24px;font-size:12.5px;line-height:1.95;color:var(--body)}
 .decl .box h4{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:9px}
 .decl .box b{color:var(--ink);font-weight:600}
+/* ---------- 登录 ---------- */
+.userchip{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink);
+  border:1px solid var(--line);border-radius:30px;padding:3px 12px 3px 3px;cursor:pointer;transition:.15s}
+.userchip:hover{border-color:var(--violet)}
+.userchip img,.userchip .ph{width:22px;height:22px;border-radius:50%;object-fit:cover;flex:0 0 auto}
+.userchip .ph{background:var(--grad-r);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700}
+.mask{position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.42);backdrop-filter:blur(3px);
+  display:none;place-items:center;padding:24px}
+.mask.on{display:grid}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:392px;padding:30px 32px 26px;
+  text-align:center;box-shadow:0 30px 70px -24px rgba(15,23,42,.45);position:relative}
+.modal .x{position:absolute;top:13px;right:15px;font-size:19px;color:var(--faint);cursor:pointer;
+  line-height:1;padding:4px;background:none;border:0}
+.modal .x:hover{color:var(--ink)}
+.modal h3{font-size:18px;letter-spacing:-.02em}
+.modal .sub{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.7}
+.qrbox{width:212px;height:212px;margin:22px auto 0;border:1px solid var(--line);border-radius:14px;
+  display:grid;place-items:center;overflow:hidden;background:var(--bg);position:relative}
+.qrbox img{width:100%;height:100%;object-fit:contain}
+.qrbox .st{font-size:12px;color:var(--muted);padding:20px;line-height:1.8}
+.spin{width:24px;height:24px;border:2.5px solid var(--line);border-top-color:var(--violet);
+  border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.modal .tip{font-size:12px;color:var(--faint);margin-top:16px;line-height:1.7}
+.modal .wxbtn{margin-top:20px;width:100%;justify-content:center;display:inline-flex;align-items:center;gap:8px;
+  background:#07C160;border-color:#07C160;color:#fff;font-size:13.5px;padding:11px 20px;border-radius:10px;
+  border:1px solid #07C160;cursor:pointer;font-weight:500;transition:.15s}
+.modal .wxbtn:hover{background:#06AD56;border-color:#06AD56}
+.modal .off{margin-top:20px;padding:16px;background:var(--bg);border-radius:12px;
+  font-size:12.5px;color:var(--muted);line-height:1.8}
 footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;text-align:center}
 </style>
 </head>
@@ -171,7 +197,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     </div>
     <div class="right">
       <a class="btn" href="#contact">交流群</a>
-      <a class="btn pri" href="#">登录</a>
+      <a class="btn pri" href="#" id="loginBtn">登录</a>
     </div>
   </div>
 </header>
@@ -313,6 +339,16 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   </div>
 </div>
 
+<div class="mask" id="loginMask">
+  <div class="modal">
+    <button class="x" id="loginClose">×</button>
+    <h3>微信登录</h3>
+    <div class="sub" id="loginSub">扫码后即可解锁全部课程内容与测评记录</div>
+    <div id="loginBody"></div>
+    <div class="tip">我们只获取你的微信昵称与头像，不会读取其他任何信息。</div>
+  </div>
+</div>
+
 <footer>HR AI Builder &nbsp;·&nbsp; 内容免费开放</footer>
 
 <script>
@@ -366,6 +402,87 @@ $('#jobcards').innerHTML=JOBS.map(j=>`
    <div class="d">${j.d}</div>
    <div class="f"><span>${j.kp} 项硬门槛</span><span class="heat">查看拆解 ›</span></div></a>`).join('');
 renderTopics();
+
+/* ================= 微信登录 ================= */
+const API = (location.hostname==='localhost'||location.protocol==='file:')
+  ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
+const TK='hab_token';
+let poll=null;
+
+function setUser(u){
+  const b=$('#loginBtn'); if(!b) return;
+  if(!u){ b.className='btn pri'; b.textContent='登录'; b.onclick=openLogin; return; }
+  b.className='userchip';
+  b.innerHTML=(u.avatar?`<img src="${u.avatar}" alt="">`:`<span class="ph">${(u.nickname||'微')[0]}</span>`)
+    +`<span>${u.nickname||'微信用户'}</span>`;
+  b.onclick=e=>{e.preventDefault(); if(confirm('退出登录？')){localStorage.removeItem(TK); setUser(null);} };
+}
+
+async function loadMe(){
+  const t=localStorage.getItem(TK); if(!t) return setUser(null);
+  try{
+    const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
+    if(!r.ok) throw 0;
+    setUser(await r.json());
+  }catch(e){ localStorage.removeItem(TK); setUser(null); }
+}
+
+function closeLogin(){ $('#loginMask').classList.remove('on'); if(poll){clearInterval(poll);poll=null;} }
+
+async function openLogin(e){
+  if(e) e.preventDefault();
+  const mask=$('#loginMask'), body=$('#loginBody');
+  mask.classList.add('on');
+  body.innerHTML='<div class="qrbox"><div class="spin"></div></div>';
+
+  let d;
+  try{
+    const r=await fetch(API+'/api/wx/login-session',{method:'POST'});
+    if(r.status===503) throw 'not_configured';
+    if(!r.ok) throw 'failed';
+    d=await r.json();
+  }catch(err){
+    $('#loginSub').textContent='微信登录尚未开通';
+    body.innerHTML='<div class="off">微信登录正在配置中（需要在微信开放平台完成网站应用审核 + 开通「微信登录」权限）。<br>暂时不登录也能看：课程大纲、能力词典、岗位库与测评样题全部开放。</div>';
+    return;
+  }
+
+  if(d.mode==='oauth'){
+    $('#loginSub').textContent='点击下方按钮，用微信扫码授权';
+    body.innerHTML=`<button class="wxbtn" id="wxGo">用微信登录</button>`;
+    $('#wxGo').onclick=()=>window.location.href=d.oauth_url;
+  }else{
+    $('#loginSub').textContent='用微信扫描下方小程序码';
+    body.innerHTML=`<div class="qrbox"><img src="${API}/api/wx/qrcode?scene=${encodeURIComponent(d.scene)}" alt="小程序码" onerror="this.parentNode.innerHTML='<div class=&quot;st&quot;>二维码生成失败<br>请稍后重试</div>'"></div>`;
+  }
+
+  poll=setInterval(async()=>{
+    try{
+      const r=await fetch(API+'/api/wx/login-status?scene='+encodeURIComponent(d.scene));
+      const s=await r.json();
+      if(s.status==='authed'){ clearInterval(poll); poll=null;
+        localStorage.setItem(TK,s.token); setUser(s.user); closeLogin(); }
+      else if(s.status==='expired'){ clearInterval(poll); poll=null;
+        $('#loginBody').innerHTML='<div class="qrbox"><div class="st">二维码已过期<br>关闭后重新点登录</div></div>'; }
+    }catch(e){}
+  },2000);
+}
+
+// OAuth 直接回跳：token 在 fragment 里（fragment 不会发到服务器）
+(function(){
+  const h=location.hash||'';
+  if(h.startsWith('#token=')){
+    localStorage.setItem(TK, decodeURIComponent(h.slice(7)));
+    history.replaceState(null,'',location.pathname+location.search);
+  }else if(h.startsWith('#login_error=')){
+    history.replaceState(null,'',location.pathname+location.search);
+    setTimeout(()=>alert('微信登录失败：'+decodeURIComponent(h.slice(13))),100);
+  }
+})();
+
+$('#loginClose').onclick=closeLogin;
+$('#loginMask').onclick=e=>{ if(e.target.id==='loginMask') closeLogin(); };
+loadMe();
 </script>
 </body>
 </html>

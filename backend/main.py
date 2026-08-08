@@ -4,11 +4,16 @@ HR AI Builder — 内容与测评 API
 现阶段所有内容以 Python 常量形式内置，前端为静态站（利于 SEO），
 本服务提供：内容读取接口 + 测评判分接口，供前端渐进接入。
 """
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Response
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Literal
+from typing import List, Literal, Optional
+from urllib.parse import quote
 import os
+
+import wechat as wx
+import auth
 
 app = FastAPI(title="HR AI Builder API", version="0.1.0")
 
@@ -272,3 +277,110 @@ def submit_quiz(sub: QuizSubmission):
                    for k, v in buckets.items()},
         "details": details,
     }
+
+
+# ══════════════════════════════════════════════════════════════════
+#  微信登录（双轨：开放平台网站应用 OAuth 优先，回落小程序扫码）
+# ══════════════════════════════════════════════════════════════════
+def _front_base() -> str:
+    return (os.getenv("FRONTEND_URL") or "https://hr-ai-builder-web.onrender.com").rstrip("/")
+
+
+@app.post("/api/wx/login-session")
+def wx_login_session():
+    """建一个登录会话。两轨都没配 → 503，前端据此隐藏微信入口。
+    开放平台可用时额外返回 oauth_url（扫完直接有真实昵称头像）。"""
+    if not wx.is_any_configured():
+        raise HTTPException(503, "wx_not_configured")
+    scene = wx.new_scene()
+    out = {"scene": scene, "mode": "miniprogram"}
+    if wx.web_is_configured():
+        out["oauth_url"] = wx.web_authorize_url(wx.web_callback_url(), scene)
+        out["mode"] = "oauth"
+    return out
+
+
+@app.get("/api/wx/qrcode")
+def wx_qrcode(scene: str, env: str = "trial"):
+    """按 scene 生成小程序码 PNG（轨道 B）。"""
+    if not scene:
+        raise HTTPException(400, "scene_required")
+    if not wx.is_configured():
+        raise HTTPException(503, "miniprogram_not_configured")
+    try:
+        png = wx.get_qrcode(scene, env_version=("release" if env == "release" else "trial"))
+    except Exception as e:
+        raise HTTPException(502, f"qrcode_failed: {str(e)[:200]}")
+    return Response(png, media_type="image/png", headers={"Cache-Control": "no-store"})
+
+
+class WxBind(BaseModel):
+    code: str
+    scene: str
+    nickname: str = ""
+    avatar: str = ""
+
+
+@app.post("/api/wx/bind")
+def wx_bind(body: WxBind):
+    """壳小程序回传 {code, scene}：code2session 得 openid → 签 token → 挂到 scene 上。"""
+    if not body.code or not body.scene:
+        raise HTTPException(400, "code_and_scene_required")
+    res = wx.code2session(body.code)
+    openid = res.get("openid")
+    if not openid:
+        raise HTTPException(401, f"wx_code2session_failed: {res.get('errmsg', '')}")
+    nickname = (body.nickname or "").strip()[:64] or f"微信用户{openid[-4:]}"
+    avatar = (body.avatar or "").strip()[:512]
+    token = auth.issue(openid, nickname, avatar, source="miniprogram")
+    user = {"nickname": nickname, "avatar": avatar}
+    if not wx.set_scene_authed(body.scene, token, user):
+        raise HTTPException(410, "scene_expired")
+    return {"ok": True}
+
+
+@app.get("/api/wx/oauth/callback")
+def wx_oauth_callback(code: str = "", state: str = ""):
+    """开放平台回调（轨道 A）。签 token 后跳回前端，token 放 URL fragment——
+    fragment 不会随请求发到服务器，比 query 安全。"""
+    front = _front_base()
+    if not code:
+        return RedirectResponse(f"{front}/#login_error=no_code")
+    tok = wx.web_code2token(code)
+    access_token, openid = tok.get("access_token"), tok.get("openid")
+    if not access_token or not openid:
+        return RedirectResponse(f"{front}/#login_error={quote(str(tok.get('errmsg', 'oauth_failed')))}")
+
+    info = wx.web_userinfo(access_token, openid) or {}
+    nickname = (info.get("nickname") or "").strip()[:64] or f"微信用户{openid[-4:]}"
+    avatar = (info.get("headimgurl") or "").strip()[:512]
+    jwt_token = auth.issue(openid, nickname, avatar, source="oauth")
+
+    # 会话仍在（同浏览器轮询中）→ 挂上去让轮询拿到；同时也直接把 token 带回前端。
+    if state:
+        wx.set_scene_authed(state, jwt_token, {"nickname": nickname, "avatar": avatar})
+    return RedirectResponse(f"{front}/#token={quote(jwt_token)}")
+
+
+@app.get("/api/wx/login-status")
+def wx_login_status(scene: str):
+    """网页轮询。authed 后返回 token，并让 scene 一次性失效。"""
+    st = wx.get_scene(scene)
+    if not st:
+        return {"status": "expired"}
+    if st.get("status") == "authed":
+        wx.set_scene_authed(scene, "", None)   # 一次性：取走即作废
+        return {"status": "authed", "token": st["token"], "user": st.get("user")}
+    return {"status": "pending"}
+
+
+@app.get("/api/auth/config")
+def auth_config():
+    """前端据此决定登录入口显示什么。未配置时不报错，返回 enabled:false 让前端优雅降级。"""
+    return {"wechat_enabled": wx.is_any_configured(),
+            "mode": "oauth" if wx.web_is_configured() else ("miniprogram" if wx.is_configured() else None)}
+
+
+@app.get("/api/me")
+def me(user: dict = Depends(auth.current_user)):
+    return user
