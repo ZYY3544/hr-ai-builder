@@ -17,6 +17,5 @@ services:
   - type: web
     name: hr-ai-builder-web
     runtime: static
-    plan: free
     rootDir: frontend
     staticPublishPath: .
