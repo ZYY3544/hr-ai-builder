@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR AI Builder · 读懂 AI 的底层逻辑，做 AI Native 组织的先驱者</title>
+<meta name="description" content="面向 HR 的 AI 系统课程：从大模型底层逻辑到组织落地。课程、能力词典、真实岗位库、脱敏数据集与能力测评，全部免费开放。">
+<style>
+:root{
+  /* 活力蓝主色 · 取自 student 项目 */
+  --blue:#0A66C2; --blue-b:#3B82F6; --blue-d:#004F90; --blue-x:#084e96;
+  --blue-s:#EFF6FF; --blue-t:rgba(10,102,194,.09);
+  --accent:#CA7C5E; --accent-s:#FDF5F0; --amber:#FFC12D;
+  --ink:#0F172A; --body:#475569; --muted:#64748B; --faint:#94A3B8;
+  --line:#E2E8F0; --line-soft:#F1F5F9; --bg:#F8FAFC;
+  --ok:#059669; --danger:#DC2626;
+  --r-s:6px; --r:10px; --r-l:14px; --r-x:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC',sans-serif;
+  color:var(--body);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--blue);text-transform:uppercase}
+
+/* ---------- nav ---------- */
+header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
+  backdrop-filter:saturate(1.8) blur(14px);border-bottom:1px solid rgba(226,232,240,.9)}
+.nav{display:flex;align-items:center;gap:26px;height:56px}
+.brand{display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:600;color:var(--ink);flex:0 0 auto}
+.mark{width:25px;height:25px;border-radius:7px;background:linear-gradient(135deg,var(--blue-d),var(--blue-b));
+  display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700;
+  box-shadow:0 2px 8px -2px rgba(10,102,194,.5)}
+.nav .links{display:flex;gap:3px;flex:1}
+.nav .links a{font-size:13px;color:var(--muted);padding:6px 12px;border-radius:var(--r-s);transition:.15s}
+.nav .links a:hover{color:var(--blue);background:var(--blue-s)}
+.nav .right{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.btn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:var(--r-s);border:1px solid var(--line);
+  color:var(--body);background:#fff;cursor:pointer;transition:.18s;display:inline-block;white-space:nowrap}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.pri{background:linear-gradient(135deg,var(--blue),var(--blue-b));border-color:transparent;color:#fff;
+  box-shadow:0 2px 10px -3px rgba(10,102,194,.6)}
+.btn.pri:hover{color:#fff;box-shadow:0 5px 18px -4px rgba(10,102,194,.7);transform:translateY(-1px)}
+.btn.lg{font-size:13.5px;padding:11px 24px;border-radius:var(--r)}
+@media(max-width:860px){.nav .links{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;text-align:center;padding:92px 0 88px;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(1100px 560px at 50% -18%, rgba(10,102,194,.16), transparent 62%),
+  radial-gradient(680px 420px at 10% 18%, rgba(59,130,246,.13), transparent 62%),
+  radial-gradient(640px 400px at 92% 6%, rgba(202,124,94,.10), transparent 60%),
+  radial-gradient(560px 340px at 78% 72%, rgba(255,193,45,.08), transparent 62%);}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;
+  background-image:linear-gradient(rgba(10,102,194,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(10,102,194,.045) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(760px 420px at 50% 24%,#000,transparent 76%);
+  -webkit-mask-image:radial-gradient(760px 420px at 50% 24%,#000,transparent 76%);}
+.orb{position:absolute;border-radius:50%;filter:blur(58px);z-index:-2;opacity:.55;animation:float 15s ease-in-out infinite}
+.orb.a{width:290px;height:290px;background:rgba(10,102,194,.34);top:-70px;left:8%}
+.orb.b{width:230px;height:230px;background:rgba(202,124,94,.28);top:120px;right:6%;animation-delay:-5s}
+.orb.c{width:200px;height:200px;background:rgba(59,130,246,.30);bottom:-40px;left:38%;animation-delay:-9s}
+@keyframes float{0%,100%{transform:translate(0,0)}33%{transform:translate(24px,-20px)}66%{transform:translate(-18px,16px)}}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}}
+
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--blue-d);
+  background:rgba(255,255,255,.78);border:1px solid rgba(10,102,194,.22);border-radius:30px;
+  padding:5px 15px;margin-bottom:26px;backdrop-filter:blur(8px);
+  box-shadow:0 2px 12px -6px rgba(10,102,194,.35)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);
+  box-shadow:0 0 0 3px rgba(5,150,105,.16)}
+.pill b{font-weight:600}
+
+.hero h1{font-size:clamp(32px,5.2vw,54px);line-height:1.2;letter-spacing:-.035em;
+  max-width:16em;margin:0 auto}
+.hero h1 .g{background:linear-gradient(100deg,var(--blue-d) 0%,var(--blue) 32%,var(--blue-b) 62%,var(--blue) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero .lede{font-size:15px;line-height:1.95;color:var(--muted);max-width:41em;margin:24px auto 0}
+.hero .lede b{color:var(--ink);font-weight:500}
+.hero .lede .hl{color:var(--blue-d);font-weight:600}
+
+.entries{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:44px auto 0;max-width:920px;text-align:left}
+@media(max-width:860px){.entries{grid-template-columns:1fr;max-width:460px}}
+.entry{position:relative;border:1px solid var(--line);border-radius:var(--r-l);padding:19px 21px;
+  background:rgba(255,255,255,.72);backdrop-filter:blur(10px);transition:.2s;overflow:hidden}
+.entry::before{content:'';position:absolute;inset:0 0 auto;height:2.5px;
+  background:linear-gradient(90deg,var(--blue),var(--blue-b));transform:scaleX(0);transform-origin:left;transition:.28s}
+.entry:hover::before{transform:scaleX(1)}
+.entry:hover{border-color:rgba(10,102,194,.45);transform:translateY(-3px);
+  box-shadow:0 14px 34px -18px rgba(10,102,194,.55);background:#fff}
+.entry .ic{width:30px;height:30px;border-radius:9px;background:var(--blue-s);color:var(--blue);
+  display:grid;place-items:center;font-size:14px;margin-bottom:11px;transition:.2s}
+.entry:hover .ic{background:linear-gradient(135deg,var(--blue),var(--blue-b));color:#fff}
+.entry .n{font-size:14.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px}
+.entry .n .ar{color:var(--faint);font-weight:400;transition:.2s}
+.entry:hover .n .ar{color:var(--blue);transform:translateX(3px)}
+.entry .d{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.72}
+
+/* ---------- bands ---------- */
+section{scroll-margin-top:64px}
+.band{padding:66px 0;border-top:1px solid var(--line)}
+.band.alt{background:var(--bg)}
+.band h2{font-size:27px;letter-spacing:-.028em;margin-top:9px}
+.band .desc{font-size:13.5px;color:var(--muted);max-width:50em;margin-top:12px;line-height:1.88}
+.band .desc b{color:var(--ink);font-weight:500}
+
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+@media(max-width:920px){.who{grid-template-columns:1fr}}
+.wcard{background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:22px 23px;
+  display:flex;flex-direction:column;transition:.18s}
+.wcard:hover{border-color:rgba(10,102,194,.4);box-shadow:0 12px 30px -20px rgba(10,102,194,.5)}
+.wcard h3{font-size:15.5px}
+.wcard .p{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.82;flex:1}
+.wcard .tags{display:flex;gap:5px;flex-wrap:wrap;margin:15px 0 13px}
+.tg{font-size:11px;border:1px solid rgba(10,102,194,.2);border-radius:var(--r-s);padding:2px 8px;
+  color:var(--blue-d);background:var(--blue-s)}
+.wcard .go{font-size:12.5px;color:var(--blue);font-weight:500}
+
+.toggle{display:inline-flex;background:var(--line-soft);border-radius:22px;padding:3px;margin-top:24px}
+.toggle button{font:inherit;font-size:12.5px;font-weight:500;padding:5px 16px;border:0;border-radius:20px;
+  background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
+.toggle button.on{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(15,23,42,.12)}
+.sortnote{font-size:11.5px;color:var(--faint);margin-left:12px}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:13px;margin-top:20px}
+.topic{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r-l);
+  padding:17px 19px;transition:.18s;display:flex;flex-direction:column}
+.topic:hover{border-color:rgba(10,102,194,.45);transform:translateY(-2px);
+  box-shadow:0 12px 30px -20px rgba(10,102,194,.6)}
+.topic .no{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em}
+.topic .n{font-size:14.5px;font-weight:600;color:var(--ink);margin:5px 0 6px;line-height:1.42}
+.topic .d{font-size:12px;color:var(--muted);line-height:1.72;flex:1}
+.topic .f{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:11.5px;color:var(--faint)}
+.topic .heat{color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
+.topic .ch{position:absolute;top:15px;right:17px;font-size:10px;font-weight:600;color:var(--muted);
+  background:var(--line-soft);border-radius:4px;padding:1px 6px}
+.topic.free .ch{background:rgba(5,150,105,.1);color:var(--ok)}
+.badge{position:absolute;top:-9px;left:17px;font-size:10.5px;font-weight:600;color:#fff;
+  background:linear-gradient(135deg,var(--accent),#b5694e);border-radius:5px;padding:2px 9px;
+  box-shadow:0 3px 10px -4px rgba(202,124,94,.8)}
+
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+@media(max-width:860px){.contact{grid-template-columns:1fr}}
+.cc{background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:21px;text-align:center;transition:.18s}
+.cc:hover{border-color:rgba(10,102,194,.4);box-shadow:0 12px 30px -20px rgba(10,102,194,.5)}
+.cc .ic{width:38px;height:38px;border-radius:11px;background:var(--blue-s);display:grid;place-items:center;
+  margin:0 auto 12px;font-size:17px}
+.cc .n{font-size:13.5px;font-weight:600;color:var(--ink)}
+.cc .d{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.68}
+
+.final{position:relative;text-align:center;padding:74px 0;border-top:1px solid var(--line);overflow:hidden}
+.final::before{content:'';position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(760px 340px at 50% 100%, rgba(10,102,194,.13), transparent 66%)}
+.final h2{font-size:29px;letter-spacing:-.03em}
+.final p{font-size:13.5px;color:var(--muted);margin-top:12px;line-height:1.8}
+.final .btns{display:flex;gap:10px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+.decl{background:var(--bg);border-top:1px solid var(--line);padding:36px 0}
+.decl .box{background:#fff;border:1px solid var(--line);border-left:3px solid var(--blue);
+  border-radius:0 var(--r-l) var(--r-l) 0;padding:20px 24px;font-size:12.5px;line-height:1.95;color:var(--body)}
+.decl .box h4{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:9px}
+.decl .box b{color:var(--ink);font-weight:600}
+footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand"><span class="mark">HB</span>HR AI Builder</div>
+    <div class="links">
+      <a href="#who">适合谁</a>
+      <a href="#curriculum">课程内容</a>
+      <a href="#jobs">学完能去哪</a>
+    </div>
+    <div class="right">
+      <a class="btn" href="#contact">交流群</a>
+      <a class="btn pri" href="#">登录</a>
+    </div>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <span class="orb a"></span><span class="orb b"></span><span class="orb c"></span>
+  <div class="wrap">
+    <div class="pill"><span class="dot"></span>课程 · 能力词典 · 岗位库 · 数据集 <b>永久免费开放</b></div>
+
+    <h1>读懂 AI 的底层逻辑，<br><span class="g">做 AI Native 组织的先驱者</span></h1>
+
+    <p class="lede">
+      AI 正在重写每一个组织的运行方式——<b>怎么分工、怎么配人、能力怎么迁移</b>。
+      这些本来就是 HR 的命题，所以 HR 本该是最先看懂这件事的人。<br>
+      这里从大模型的底层逻辑讲起，一路到你<b>亲手做出第一个能用的东西</b>。
+      不为速成，<span class="hl">为让你有资格站在那张决定组织未来的桌子旁边。</span>
+    </p>
+
+    <div class="entries">
+      <a class="entry" href="#curriculum">
+        <div class="ic">◈</div>
+        <div class="n">课程大纲 <span class="ar">→</span></div>
+        <div class="d">从 AI 底层逻辑到组织落地，全部从 HR 场景倒着写</div>
+      </a>
+      <a class="entry" href="demo.html">
+        <div class="ic">◎</div>
+        <div class="n">测一测 <span class="ar">→</span></div>
+        <div class="d">知识 / 技能 / 能力三类分开测，看清自己的位置</div>
+      </a>
+      <a class="entry" href="#jobs">
+        <div class="ic">◇</div>
+        <div class="n">学完能去哪 <span class="ar">→</span></div>
+        <div class="d">真实在招岗位逐条对照能力要求与知识点</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 适合谁 ========== -->
+<section class="band alt" id="who">
+  <div class="wrap">
+    <div class="eyebrow">For Who</div>
+    <h2>这门课适合谁</h2>
+    <p class="desc">不同背景有不同的学法。对号入座，从最适合你的地方切入。</p>
+    <div class="who">
+      <div class="wcard">
+        <h3>想补齐 AI 素养的在职 HR</h3>
+        <div class="p">你已经懂业务、懂流程、懂人，缺的是把判断变成可执行系统的手艺。<b>你的优势别人补不上，你的短板你补得上。</b></div>
+        <div class="tags"><span class="tg">能力边界</span><span class="tg">判断萃取</span><span class="tg">Vibe coding</span></div>
+        <div class="go">从第一篇章按序学 →</div>
+      </div>
+      <div class="wcard">
+        <h3>想推动组织变革的 HRD / OD</h3>
+        <div class="p">你要回答的不是「AI 能不能用」，而是<b>组织该怎么重新设计</b>。这需要你真的懂它的边界在哪，而不是听供应商讲。</div>
+        <div class="tags"><span class="tg">场景选择</span><span class="tg">人机分工</span><span class="tg">试点到铺开</span></div>
+        <div class="go">直达组织落地篇 →</div>
+      </div>
+      <div class="wcard">
+        <h3>刚入行或准备入行的人</h3>
+        <div class="p">这个领域还没有前辈，<b>没人有十年经验</b>。这意味着做出一个真能跑的东西，你就已经在前面了。</div>
+        <div class="tags"><span class="tg">作品选题</span><span class="tg">脱敏数据集</span><span class="tg">岗位对照</span></div>
+        <div class="go">从零基础前菜开始 →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 课程内容 ========== -->
+<section class="band" id="curriculum">
+  <div class="wrap">
+    <div class="eyebrow">Curriculum</div>
+    <h2>19 个主题 · 一份前菜 + 五大篇章</h2>
+    <p class="desc">
+      从「AI 到底能不能干 HR 的活」到「把老法师的判断拆成规则」，从「做出第一个作品」到「让它在组织里活下来」。
+      <b>每个主题独立成章，按需学、随时回看。</b><br>
+      正课前有一份前菜：写给第一次接触 AI 的 HR，零基础可看、<b>全章免费</b>。
+    </p>
+    <div style="display:flex;align-items:center;flex-wrap:wrap">
+      <div class="toggle">
+        <button class="on" data-s="hot">本周热门</button>
+        <button data-s="order">课程顺序</button>
+      </div>
+      <span class="sortnote" id="sortnote">按近 7 天浏览热度排序</span>
+    </div>
+    <div class="topics" id="topics"></div>
+  </div>
+</section>
+
+<!-- ========== 学完能去哪 ========== -->
+<section class="band alt" id="jobs">
+  <div class="wrap">
+    <div class="eyebrow">Where To Go</div>
+    <h2>学完能去哪</h2>
+    <p class="desc">
+      HR AI Builder 是一个正在长出来、但<b>还没有统一名字</b>的角色——腾讯叫 AI-HR，OpenAI 叫 People Innovation，
+      ElevenLabs 叫 Internal AI Transformation。每个岗位我们做五层：
+      <b>JD 背后在解决什么问题 · 能力要求分档 · 职级与薪酬带宽 · 该做什么作品 · 面试官会追问什么</b>。
+    </p>
+    <div class="topics" id="jobcards"></div>
+  </div>
+</section>
+
+<!-- ========== 交流 ========== -->
+<section class="band" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Community</div>
+    <h2>欢迎交流与关注</h2>
+    <p class="desc">微信扫一扫入群，或关注公众号获取课程更新、岗位动态与实战技巧。</p>
+    <div class="contact">
+      <div class="cc"><div class="ic">💬</div><div class="n">交流群</div><div class="d">微信扫码入群<br>聊课程、聊作品、互相看方案</div></div>
+      <div class="cc"><div class="ic">📖</div><div class="n">公众号 · 张大仙儿</div><div class="d">课程更新与拆解文章<br>AI Native 组织观察</div></div>
+      <div class="cc"><div class="ic">📦</div><div class="n">脱敏数据集</div><div class="d">花名册 / 绩效 / 薪酬 / 简历样本<br>做作品的第一道墙，免费拆掉</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 底部 CTA ========== -->
+<section class="final">
+  <div class="wrap">
+    <h2>准备好了吗？现在就开始</h2>
+    <p>全部课程免费，每章前两节直接看，登录后即可解锁全部内容。</p>
+    <div class="btns">
+      <a class="btn pri lg" href="#curriculum">进入课程</a>
+      <a class="btn lg" href="demo.html">测测掌握度</a>
+      <a class="btn lg" href="#jobs">看在招岗位</a>
+      <a class="btn lg" href="#contact">加入交流群</a>
+    </div>
+  </div>
+</section>
+
+<div class="decl">
+  <div class="wrap">
+    <div class="box">
+      <h4>关于免费与开源</h4>
+      课程内容、能力词典、岗位库、作品选题、脱敏数据集与测评题库，<b>全部永久免费开放</b>。<br>
+      本站内容为原创，<b>未使用任何第三方课程内容</b>。<br>
+      如果你在任何付费课程或课包里看到本站内容，说明你为免费的东西付了钱——请向对方申请退款。
+    </div>
+  </div>
+</div>
+
+<footer>HR AI Builder &nbsp;·&nbsp; 内容免费开放</footer>
+
+<script>
+const TOPICS=[
+{no:'00',ch:'前菜',free:1,n:'AI 到底是什么，和 HR 有什么关系',d:'不讲原理，先讲它在你手上能变成什么',kp:3,heat:2840},
+{no:'00',ch:'前菜',free:1,n:'你手上哪些活它能干，哪些不能',d:'把 HR 六大模块的活逐条过一遍，标出边界',kp:4,heat:2410},
+{no:'01',ch:'第一篇章',n:'幻觉：它为什么会编，在 HR 场景怎么坑你',d:'筛简历时它会编出候选人没写过的经历——因为它在补全一个「像简历」的文本',kp:4,heat:1960},
+{no:'02',ch:'第一篇章',n:'召回 vs 判定：一道必须设的闸',d:'AI 只能做召回，判定必须回原文。这条要写进流程，不是写进备忘录',kp:2,heat:1520},
+{no:'03',ch:'第一篇章',n:'Agent 还是 Workflow：HR 场景怎么选',d:'大部分 HR 的事该用固定流程，不该给自主权',kp:3,heat:1180},
+{no:'04',ch:'第二篇章',n:'判断萃取：把老法师的经验拆成规则',d:'拆到哪一层为止，以及哪一部分永远拆不出来、必须留给人',kp:5,heat:1640},
+{no:'05',ch:'第二篇章',n:'Prompt 不是调措辞，是设计信息结构',d:'哪些信息进上下文、什么顺序、什么时候切段',kp:4,heat:1090},
+{no:'06',ch:'第二篇章',n:'上下文与记忆：为什么长任务会崩',d:'一场组织盘点跑到一半失忆，是怎么发生的',kp:3,heat:870},
+{no:'07',ch:'第三篇章',n:'选题：什么样的作品站得住',d:'六个选题，各标工期、所需数据与常被追问的地方',kp:3,heat:1780},
+{no:'08',ch:'第三篇章',n:'数据：HR 数据从哪来、怎么脱敏',d:'真数据碰不得，合成数据怎么造得像——附免费数据集',kp:4,heat:1450},
+{no:'09',ch:'第三篇章',n:'Vibe coding：一周做出能点的原型',d:'不是「会用 Cursor」，是能自己收敛需求、调试、上线',kp:5,heat:1620},
+{no:'10',ch:'第三篇章',n:'评估：怎么证明它做对了',d:'建自己的题来验，别靠肉眼判。先做阴性对照，注入已知的错',kp:4,heat:790},
+{no:'11',ch:'第四篇章',n:'第一刀切哪里：场景选择与 ROI',d:'多数人切最容易的，对的答案通常是最痛但还没人碰的',kp:3,heat:930},
+{no:'12',ch:'第四篇章',n:'向上说服：把技术判断翻译成账',d:'不说「准确率 92%」，说「3 个人 2 周变成 1 个人 2 天，风险在这」',kp:3,heat:840},
+{no:'13',ch:'第四篇章',n:'试点到铺开：从 1 个团队到全公司',d:'跑通一个团队之后，最容易死在第二个',kp:2,heat:610},
+{no:'14',ch:'第四篇章',n:'合规、隐私与信任红线',d:'数据不出内网、匿名的真实 n 阈值、AI 参与人事决策必须留痕可申诉',kp:3,heat:720},
+{no:'15',ch:'第五篇章',n:'能力词典：把经历翻译成能力语言',d:'同一段经历，用能力词还是技能词描述，含义完全不同',kp:3,heat:1330},
+{no:'16',ch:'第五篇章',n:'作品怎么讲：别人在追问什么',d:'「有人真的在用吗」——这句问倒了大多数人',kp:4,heat:1510},
+{no:'17',ch:'第五篇章',n:'职级与薪酬带宽：这个角色值多少',d:'对标什么职级、带宽多少。求职网站给不准的那部分',kp:3,heat:1240},
+];
+const JOBS=[
+{no:'腾讯 · S3',n:'AI-HR 培训生（技术&应用方向）',d:'应届实习 · 深圳总部/成都 · 一口气开了四个方向，说明他们还在试',kp:3},
+{no:'腾讯 · S3',n:'AI-HR 培训生（分析方向）',d:'应届实习 · 深圳总部/上海 · 核心不是会跑模型，是能把口径吵清楚',kp:3},
+{no:'OpenAI · People Innovation',n:'Software Engineer, Full Stack',d:'全职 · Remote-US · 注意形态：工程师进 HR 部门，不是 HR 学 AI',kp:4},
+{no:'ElevenLabs · Engineering',n:'Internal AI Transformation',d:'全职 · Amsterdam/Berlin · 岗位名一个 HR 字没有，做的是同一件事',kp:4},
+{no:'Cognition · Applied AI',n:'Applied AI Transformation Manager',d:'全职 · New York/London · 说服是主业，构建是佐证',kp:4},
+];
+const $=s=>document.querySelector(s);
+let sort='hot';
+function renderTopics(){
+  let list=[...TOPICS];
+  if(sort==='hot') list.sort((a,b)=>b.heat-a.heat);
+  $('#sortnote').textContent = sort==='hot' ? '按近 7 天浏览热度排序' : '按学习顺序排列 · 前菜 → 第一至第五篇章';
+  $('#topics').innerHTML=list.map((t,i)=>`
+   <div class="topic ${t.free?'free':''}">
+     ${sort==='hot'&&i<3?`<span class="badge">${['本周最火','热度第 2','热度第 3'][i]}</span>`:''}
+     <span class="ch">${t.free?'免费':t.ch}</span>
+     <div class="no">${t.no}</div><div class="n">${t.n}</div><div class="d">${t.d}</div>
+     <div class="f"><span>${t.kp} 个知识点</span><span class="heat">${t.heat.toLocaleString()} 热度 ›</span></div>
+   </div>`).join('');
+}
+document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); sort=b.dataset.s; renderTopics();});
+$('#jobcards').innerHTML=JOBS.map(j=>`
+ <a class="topic" href="demo.html"><div class="no">${j.no}</div><div class="n">${j.n}</div>
+   <div class="d">${j.d}</div>
+   <div class="f"><span>${j.kp} 项硬门槛</span><span class="heat">查看拆解 ›</span></div></a>`).join('');
+renderTopics();
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR AI Builder · 从「我差多少」到「拿下 offer」</title>
+<style>
+:root{
+  --bg:#fafaf9; --card:#fff; --ink:#18181b; --muted:#71717a; --faint:#a1a1aa;
+  --line:#e4e4e7; --line-soft:#f4f4f5;
+  --accent:#4338ca; --accent-soft:#eef2ff;
+  --l1:#4338ca; --l2:#047857; --l3:#b45309; --l4:#9d174d;
+  --must:#dc2626; --plus:#d97706; --bonus:#a1a1aa;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:13px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+header{border-bottom:1px solid var(--line);background:#fff}
+.hd{display:flex;align-items:baseline;gap:13px;padding:20px 0 0}
+.logo{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.logo em{font-style:normal;color:var(--accent)}
+.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px}
+.sub{font-size:12px;color:var(--muted);padding:6px 0 0}
+nav{display:flex;gap:2px;margin-top:16px;flex-wrap:wrap}
+nav button{font:inherit;font-size:13px;background:none;border:0;cursor:pointer;padding:9px 14px;
+  color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+nav button:hover{color:var(--ink)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+nav button .st{font-size:10px;color:#fff;background:var(--accent);border-radius:3px;padding:0 4px;margin-left:5px;vertical-align:1px}
+
+.databar{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);padding:10px 14px;
+  margin:20px 0 0;font-size:11.5px;color:#78350f;line-height:1.75}
+.databar b{font-weight:600}
+
+main{padding:22px 0 60px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.panel-hd{padding:11px 14px;border-bottom:1px solid var(--line-soft);font-size:11px;color:var(--faint);
+  letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:baseline}
+.panel-hd span{text-transform:none;letter-spacing:0;color:var(--muted)}
+.lead{margin:20px 0 16px;font-size:12.5px;color:var(--muted);max-width:680px;line-height:1.85}
+.lead b{color:var(--ink);font-weight:500}
+.hide{display:none}
+.lyr{font-size:10px;font-weight:600;padding:1px 5px;border-radius:3px;color:#fff;vertical-align:1px;margin-right:6px}
+
+/* ---- 首页：自评 → 匹配 ---- */
+.hero{background:linear-gradient(180deg,#fff,#fafafa);border:1px solid var(--line);border-radius:var(--r);
+  padding:26px 28px;margin:20px 0 0}
+.hero h1{font-size:23px;font-weight:600;letter-spacing:-.02em;line-height:1.4}
+.hero p{font-size:13px;color:var(--muted);margin-top:8px;max-width:600px;line-height:1.8}
+.rev{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;margin-top:20px}
+@media(max-width:900px){.rev{grid-template-columns:1fr}}
+.chk{display:flex;gap:9px;padding:8px 15px;border-bottom:1px solid var(--line-soft);cursor:pointer;align-items:flex-start}
+.chk:last-child{border-bottom:0}
+.chk:hover{background:#fafafa}
+.chk input{margin-top:3px;accent-color:var(--accent);cursor:pointer}
+.chk .nm{font-size:12.5px}
+.score{padding:12px 15px;border-bottom:1px solid var(--line-soft);cursor:pointer}
+.score:hover{background:#fafafa}
+.score .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.score .nm{font-size:12.5px;font-weight:500;line-height:1.4}
+.score .pc{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.bar{height:5px;background:var(--line-soft);border-radius:3px;margin-top:7px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px;transition:width .3s ease}
+.gap{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6}
+.gap b{color:var(--must);font-weight:500}
+
+/* CTA 钉在刺痛点 */
+.cta{margin:0;padding:16px 17px;background:#1c1917;color:#fafaf9}
+.cta .t{font-size:13.5px;font-weight:600}
+.cta .d{font-size:11.5px;color:#a8a29e;margin-top:5px;line-height:1.7}
+.cta .b{display:inline-block;margin-top:11px;background:#fafaf9;color:#1c1917;font-size:12px;font-weight:500;
+  padding:7px 14px;border-radius:6px}
+.cta .free{font-size:11px;color:#78716c;margin-top:9px}
+
+/* ---- 岗位库 ---- */
+.split{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.joblist{max-height:calc(100vh - 250px);overflow-y:auto}
+.job{padding:11px 14px;border-bottom:1px solid var(--line-soft);cursor:pointer}
+.job:last-child{border-bottom:0}
+.job:hover{background:#fafafa}
+.job.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.job .co{font-size:11px;color:var(--muted)}
+.job .ti{font-size:13px;font-weight:500;margin:1px 0 3px;line-height:1.4}
+.job .meta{font-size:11px;color:var(--faint)}
+.d-hd{padding:18px 20px 15px;border-bottom:1px solid var(--line-soft)}
+.d-co{font-size:12px;color:var(--muted)}
+.d-ti{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:3px 0 8px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:11px;border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--muted)}
+.pill.warn{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.pill.ok{border-color:#a7f3d0;background:#ecfdf5;color:#065f46}
+.sec{padding:17px 20px;border-bottom:1px solid var(--line-soft)}
+.sec:last-child{border-bottom:0}
+.sec-h{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:11px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.sec-h .no{background:var(--accent);color:#fff;border-radius:3px;padding:0 5px;margin-right:7px;letter-spacing:0}
+.sec-h em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px;text-align:right}
+.moat{background:#f0fdf4;border-left:3px solid #047857;padding:12px 15px;border-radius:0 7px 7px 0;
+  font-size:12.5px;line-height:1.85}
+.moat .lbl{font-size:10.5px;font-weight:600;color:#047857;letter-spacing:.04em;display:block;margin-bottom:5px}
+.jdbox{background:#fafafa;border:1px dashed var(--line);border-radius:8px;padding:12px 15px;
+  font-size:12px;color:var(--muted);line-height:1.85}
+.cap{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line-soft)}
+.cap:last-child{border-bottom:0}
+.tier{flex:0 0 54px;font-size:10.5px;font-weight:600;text-align:center;border-radius:4px;height:20px;line-height:20px}
+.t-must{color:#fff;background:var(--must)}
+.t-plus{color:#fff;background:var(--plus)}
+.t-bonus{color:#52525b;background:#f4f4f5}
+.cap-b{flex:1;min-width:0}
+.cap-n{font-size:13px;font-weight:500}
+.cap-w{font-size:12px;color:var(--muted);margin-top:2px}
+.own{font-size:10.5px;font-weight:600;border-radius:3px;padding:1px 6px;margin-left:6px}
+.own-y{background:#ecfdf5;color:#047857}
+.own-n{background:#fef2f2;color:#dc2626}
+.pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:7px;overflow:hidden}
+.pay div{background:#fff;padding:11px 13px}
+.pay .k{font-size:10.5px;color:var(--faint);letter-spacing:.04em}
+.pay .v{font-size:15px;font-weight:600;margin-top:3px;font-variant-numeric:tabular-nums}
+.pay .v small{font-size:11px;font-weight:400;color:var(--muted)}
+.qs{list-style:none}
+.qs li{padding:8px 0 8px 20px;border-bottom:1px solid var(--line-soft);font-size:12.5px;position:relative;line-height:1.7}
+.qs li:last-child{border-bottom:0}
+.qs li:before{content:"Q";position:absolute;left:0;top:8px;font-size:10px;font-weight:700;color:var(--must)}
+
+/* ---- 作品库 ---- */
+.works{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px}
+.work{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.work-h{padding:14px 16px 12px;border-bottom:1px solid var(--line-soft)}
+.work-h .n{font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.work-h .d{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.7}
+.work-m{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.work-b{padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+.work-b:last-child{border-bottom:0}
+.work-b .h{font-size:10.5px;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
+.caps-inline{display:flex;gap:5px;flex-wrap:wrap}
+.cchip{font-size:11px;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted)}
+.datawall{background:#fef2f2;border-left:3px solid var(--must);padding:9px 12px;border-radius:0 6px 6px 0;
+  font-size:11.5px;line-height:1.75;color:#7f1d1d}
+.datawall b{font-weight:600}
+
+/* ---- 能力模型 ---- */
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:14px}
+.layer{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.layer-h{padding:12px 15px;color:#fff}
+.layer-h .n{font-size:14px;font-weight:600}
+.layer-h .d{font-size:11.5px;opacity:.85;margin-top:2px;line-height:1.55}
+.layer ul{list-style:none;padding:6px 0}
+.layer li{padding:8px 15px;border-bottom:1px solid var(--line-soft);font-size:12.5px}
+.layer li:last-child{border-bottom:0}
+.layer li .c{font-size:11px;color:var(--faint);margin-top:1px}
+.note{font-size:11.5px;color:var(--muted);line-height:1.75;padding:12px 15px;background:#fafafa;border-top:1px solid var(--line-soft)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hd">
+      <div class="logo">HR <em>AI Builder</em></div>
+      <div class="tag">DEMO v2 · 强求职导向</div>
+    </div>
+    <div class="sub">不是学 AI，是拿下这个岗位 —— 从「我差多少」一路走到「面试怎么答」</div>
+    <nav>
+      <button class="on" data-v="home">我差多少</button>
+      <button data-v="jobs">岗位库</button>
+      <button data-v="works">作品选题库<span class="st">重心</span></button>
+      <button data-v="model">能力模型</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="databar">
+  <b>数据状态（诚实标注）</b> ·
+  <b>岗位真实存在</b>：5 个岗位均为真实在招，2026-08 核实到公司、部门、地点 ·
+  <b>JD 正文待补</b>：未取到，页面占位，未编造一句原文 ·
+  <b>意图解读 / 能力匹配 / 职级薪酬 / 面试追问为示意</b>：由我按岗位名与部门推断，验证机制形态用，<b>不是可信结论</b>，真数据接入后重跑。
+</div>
+
+<!-- ============ 首页 ============ -->
+<section id="v-home">
+  <div class="hero">
+    <h1>想进 HR AI Builder 这类岗位，<br>你现在差多少？</h1>
+    <p>勾出你已经会的，30 秒算出每个真实在招岗位的匹配度，以及<b>还差哪几个硬门槛</b>。<br>
+       硬门槛缺一项扣得比加分项重 —— 因为它是门槛，不是分数。</p>
+  </div>
+  <div class="rev">
+    <div class="panel">
+      <div class="panel-hd">勾选你已具备的能力 <span id="cnt">已选 0 / 17</span></div>
+      <div id="chks"></div>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="panel-hd">岗位匹配度</div>
+        <div id="scores"></div>
+        <div class="cta">
+          <div class="t">缺口清楚了，但真做起来会卡在哪？</div>
+          <div class="d">补硬门槛不是看几节课的事 —— 这类岗位面试要交作品，从选题、拿数据到讲清楚，每一步都能卡死人。</div>
+          <a class="b" href="#">全程定制辅导 · 先聊 30 分钟</a>
+          <div class="free">学习资源、岗位库、能力模型、数据集 —— 永久免费开源。收费的只有一对一辅导。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 岗位库 ============ -->
+<section id="v-jobs" class="hide">
+  <p class="lead">对照组只做到<b>「JD → 高亮关键词 → 关联课程」</b>，求职链路 9 环里的第 3 环，仅此而已。
+  这里做五层，其中<b>第 1 层（JD 背后在解决什么问题）和第 4/5 层（作品 + 面试追问）是懂招聘的人才写得出来的</b>。</p>
+  <div class="split">
+    <div class="panel">
+      <div class="panel-hd">在招岗位 · 5</div>
+      <div class="joblist" id="joblist"></div>
+    </div>
+    <div class="panel" id="detail"></div>
+  </div>
+</section>
+
+<!-- ============ 作品库 ============ -->
+<section id="v-works" class="hide">
+  <p class="lead">这类岗位的面试<b>要交作品</b> —— 这是整个产品的重心，也是对照组零覆盖的地方。<br>
+  每个选题标注：<b>证明哪些能力 · 工期 · 数据从哪来 · 面试官会追问什么</b>。最后一栏是纯 know-how。</p>
+  <div class="works" id="works"></div>
+  <div class="panel" style="margin-top:16px">
+    <div class="panel-hd">🔑 免费资源钩子 · 建议第一批就做</div>
+    <div style="padding:15px 17px;font-size:12.5px;line-height:1.9">
+      做 HR AI 作品最大的墙<b>不是不会写代码，是拿不到数据</b> —— 真 HR 数据敏感，求职者手上什么都没有，
+      于是作品全变成玩具。<br>
+      出一套 <b>脱敏 / 合成的 HR 数据集</b>（花名册 · 绩效分布 · 薪酬带宽 · 简历样本 · 岗位说明书）免费开放，
+      直接拆掉这堵墙。<b>只有 HR 出身的人做得出来，而且它比任何课程内容都更能建立信任。</b>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 能力模型 ============ -->
+<section id="v-model" class="hide">
+  <p class="lead">对照组是 <b>186 个知识点挂 5 个能力簇</b>，粒度倒挂，任何 JD 一命中就是一大片
+  （一个交互设计师因为 JD 里有「产品思维」，被推去学 RAG 优化策略）。<br>
+  我们反过来：<b>岗位窄，能力层就能做细做准 —— 4 层 17 点，每点有独立判定标准。</b>
+  其中 <b style="color:var(--l2)">L2</b> 和 <b style="color:var(--l4)">L4</b> 是工程师拿不走的那 8 点。</p>
+  <div class="layers" id="layers"></div>
+</section>
+</main>
+
+<script>
+/* ================= 能力模型 ================= */
+const LAYERS=[
+ {id:'L1',name:'AI 认知底座',hex:'#4338ca',desc:'不懂它是什么，后面所有判断都是错的',caps:[
+  {id:'A1',n:'能力边界与幻觉',c:'能说清什么任务它稳、什么必翻车'},
+  {id:'A2',n:'Agent vs Workflow 的分界',c:'知道什么时候不该上 Agent'},
+  {id:'A3',n:'上下文与记忆的约束',c:'为什么长任务会崩、怎么切'},
+  {id:'A4',n:'成本、延迟与选型',c:'能算清一次调用多少钱、值不值'}]},
+ {id:'L2',name:'HR 场域纵深',hex:'#047857',desc:'工程师拿不走的那一层 —— 真护城河',caps:[
+  {id:'B1',n:'真实痛点分布',c:'哪些环节的痛是真的、哪些是伪需求'},
+  {id:'B2',n:'HR 数据现状与口径战争',c:'数据在哪、脏在哪、两个部门怎么打架'},
+  {id:'B3',n:'判断类知识的萃取',c:'把老法师的判断写成 agent 能执行的规则'},
+  {id:'B4',n:'合规、隐私与信任红线',c:'什么碰不得、匿名到什么粒度才算数'}]},
+ {id:'L3',name:'构建能力',hex:'#b45309',desc:'能真的做出东西 —— 面试要看作品',caps:[
+  {id:'C1',n:'Vibe coding 与快速原型',c:'一周内把想法变成能点的东西'},
+  {id:'C2',n:'Prompt 与上下文工程',c:'不是调 prompt，是设计信息进入模型的结构'},
+  {id:'C3',n:'数据接入、清洗与结构化',c:'把 HR 系统的脏数据变成可用输入'},
+  {id:'C4',n:'评估：怎么知道它做对了',c:'能建自己的 eval，不靠肉眼判'},
+  {id:'C5',n:'部署与迭代',c:'推上线、拿真实反馈、改'}]},
+ {id:'L4',name:'组织落地',hex:'#9d174d',desc:'做出来 ≠ 被采用 —— 这层决定天花板',caps:[
+  {id:'D1',n:'场景选择与 ROI 判断',c:'第一刀切哪里，说得清为什么不是别处'},
+  {id:'D2',n:'向上说服与拿资源',c:'把技术判断翻译成老板听得懂的生意语言'},
+  {id:'D3',n:'试点设计与推广',c:'从 1 个团队跑通到全公司铺开'},
+  {id:'D4',n:'人机分工的重新设计',c:'AI 接管后，人的岗位该怎么改'}]}];
+const CAPS={},CL={};LAYERS.forEach(l=>l.caps.forEach(c=>{CAPS[c.id]=c;CL[c.id]=l}));
+
+/* ================= 岗位 ================= */
+const JOBS=[
+{id:'tx-tech',co:'腾讯 · S3',ti:'AI-HR 培训生（技术&应用方向）',meta:'应届实习 · 深圳总部/成都',
+ intent:'腾讯一口气开了<b>四个方向</b>（创意 / 分析 / 技术&应用 / 沟通）—— 这不是想清楚了，是<b>还没想清楚这个角色该长什么样，所以撒网试四种</b>。<br>对求职者的含义：面试时该讲的<b>不是「我很懂 AI」，而是「我知道你们在试，我能帮你们试出来」</b>。带一个能立刻跑的小东西，比任何认知类回答都有力。',
+ grade:['腾讯 T4 / 初级',  '培训生起薪带宽', '未公开 · 需实证'],
+ must:[['C1','方向名直指「技术&应用」，作品是入场券'],['A1','培训生也要能判断什么该交给 AI'],['B1','HR 场域是前提，不是加分']],
+ plus:[['C2','决定做出来的东西能不能用'],['A2','分不清就会把简单事做成 Agent'],['C4','校招里极少人会，会就是断层优势']],
+ bonus:[['D1','培训生阶段还轮不到你选场景'],['B4','有意识即可']],
+ works:['w1','w2'],
+ qs:['你这个东西，怎么证明它比人工快 / 准？测过吗？','如果它给了一个错的结果，谁来兜？','为什么用 AI 做这件事，而不是写个规则？']},
+
+{id:'tx-ana',co:'腾讯 · S3',ti:'AI-HR 培训生（分析方向）',meta:'应届实习 · 深圳总部/上海',
+ intent:'分析方向单开，说明他们已经有一批<b>数据在手但用不起来</b>的场景。这类岗真正缺的不是会跑模型的人，是<b>能把口径吵清楚的人</b>。',
+ grade:['腾讯 T4 / 初级','培训生起薪带宽','未公开 · 需实证'],
+ must:[['B2','分析方向的核心就是口径'],['A1','分析结论被幻觉污染是致命的'],['C3','拿不到干净数据就没有分析']],
+ plus:[['C4','怎么证明你的分析是对的'],['C1','能把分析做成可交互的，差距立现'],['B1','知道分析该服务哪个决策']],
+ bonus:[['A4','分析场景成本敏感度低'],['D2','实习期主要是做，不是说服']],
+ works:['w4','w3'],
+ qs:['这两个部门口径不一样，你按谁的？','你这个结论敢直接给 CEO 看吗？为什么？','样本量多少，n<5 的组你怎么处理？']},
+
+{id:'oai-people',co:'OpenAI · People Innovation',ti:'Software Engineer, Full Stack',meta:'全职 · Remote-US · 工程序列',
+ intent:'<b>注意形态：这是工程师进 HR 部门，不是 HR 学 AI。</b>这个角色正在从两头往中间长。<br>对 HR 背景的人：这条路不好走，硬门槛是真代码。<b>但反过来说明——一旦你既懂 HR 又能写，你站的是一个双向稀缺的位置。</b>',
+ grade:['OpenAI L4-L5 / 资深','工程序列带宽（非 HR 序列）','未公开 · 需实证'],
+ must:[['C1','工程岗，代码是硬要求'],['C3','People 数据的接入与治理'],['C5','要真上线给全公司用'],['B4','员工数据隐私红线极硬']],
+ plus:[['A1','内部工具也怕幻觉'],['C2',''],['B2','要跟 HRBP 对齐口径']],
+ bonus:[['D4','工程岗参与但不主导']],
+ works:['w5','w3'],
+ qs:['员工数据你怎么做权限隔离？','这个功能上线后 HRBP 不用怎么办？','你怎么知道哪个 HR 流程值得自动化？']},
+
+{id:'el-transform',co:'ElevenLabs · Engineering',ti:'Internal AI Transformation',meta:'全职 · Amsterdam/Berlin 等',
+ intent:'岗位名一个 HR 字都没有，做的却是同一件事 —— <b>组织内部 AI 转型</b>。这是「命名空缺」最直接的证据：腾讯叫 AI-HR、OpenAI 叫 People Innovation、这里叫 Internal AI Transformation。<br><b>四个词描述同一个角色，谁先把它定义清楚，谁就是这个领域的锚。</b>',
+ grade:['资深个人贡献者','工程 / 转型双序列','未公开 · 需实证'],
+ must:[['D1','转型岗的第一性就是选场景'],['C1','要能自己做出来，不是提需求'],['A2','什么该 Agent 什么该 Workflow'],['D3','从试点到铺开']],
+ plus:[['D2',''],['A4','内部铺开成本敏感'],['C4',''],['D4','']],
+ bonus:[['B3','跨职能，不限 HR']],
+ works:['w6','w1'],
+ qs:['你在公司里推过什么？有人真的在用吗？','第一个场景为什么选它，不选别的？','推不动的时候你做了什么？']},
+
+{id:'cog-tm',co:'Cognition · Applied AI',ti:'Applied AI Transformation Manager',meta:'全职 · New York/London · 客户侧',
+ intent:'客户侧的转型岗 —— <b>说服是主业，构建是佐证</b>。跟内部转型岗的区别：你面对的是一屋子怀疑你的人，而且他们付钱。<br>这类岗对 HR/咨询背景其实友好，因为核心是<b>把技术判断翻译成生意语言</b>。',
+ grade:['Manager 级','咨询 / 客户成功带宽','未公开 · 需实证'],
+ must:[['D1',''],['D2','对外做的是说服工作'],['A1','要能对客户讲清楚边界'],['A2','']],
+ plus:[['D3',''],['C1','能现场做原型的 TM 值钱得多'],['D4','']],
+ bonus:[['B1','行业不限，HR 只是场景之一'],['C4','']],
+ works:['w6','w2'],
+ qs:['客户说「这个 AI 不准」，你第一句话说什么？','怎么判断一个客户是真需求还是凑热闹？','你被客户否过吗？后来怎么办的？']}];
+
+/* ================= 作品选题库 ================= */
+const WORKS={
+ w1:{n:'简历初筛 Agent（带幻觉闸）',d:'不是做一个"AI 筛简历"，是做一个<b>知道自己会错、并且把错拦住</b>的筛选器。',
+  caps:['A1','C1','C2','C4','B1'],eff:'2-3 周',
+  data:'公开简历数据集 + 自己合成。<b>真简历绝对不能用</b> —— 面试官会问，用了就是减分。',
+  qs:['你怎么证明它没漏掉好人？召回率怎么测的？','候选人投诉「我被 AI 刷掉了」，你怎么回应？','为什么不直接用关键词规则？']},
+ w2:{n:'JD 生成 + 能力标准化工具',d:'输入一段业务需求，输出结构化 JD 和能力要求 —— 顺手解决"每个部门写的 JD 都不一样"这个真痛点。',
+  caps:['B1','B3','C1','C2'],eff:'1-2 周',
+  data:'公开招聘网站 JD 即可，<b>数据门槛最低，适合第一个作品</b>。',
+  qs:['你的能力词表从哪来的？凭什么是这些？','两个 HR 用同一段需求，生成的 JD 一样吗？','这跟直接问 ChatGPT 有什么区别？']},
+ w3:{n:'组织盘点 / 人才九宫格自动化',d:'把绩效 + 潜力 + 岗位数据拉到一起，自动生成盘点结论和继任建议。',
+  caps:['B2','C3','C1','B4'],eff:'3-4 周',
+  data:'<b>最难的一个</b> —— 需要多表关联。用合成数据集，并明确说明是合成的。',
+  qs:['潜力这个维度你怎么量化的？','两个系统的花名册对不上，你怎么处理？','这个结论如果错了，对一个人的职业生涯意味着什么？']},
+ w4:{n:'薪酬带宽诊断工具',d:'输入现有薪酬明细，输出分位、离群点、带宽重叠问题 —— 直接对标咨询公司的交付物。',
+  caps:['B2','C3','C4','D1'],eff:'2-3 周',
+  data:'合成薪酬数据 + 公开市场分位数据。<b>口径必须写清楚</b>（月薪还是年薪、含不含奖金）。',
+  qs:['市场分位数据你从哪拿的，可信吗？','固浮比你按哪个口径算的？','发现某个人明显低于带宽，你建议怎么做？']},
+ w5:{n:'员工政策问答 Agent',d:'把公司制度文档变成能问的 agent，重点不是问答，是<b>答错了怎么办</b>。',
+  caps:['A1','A3','B4','C2','C5'],eff:'2 周',
+  data:'公开的员工手册 / 劳动法条文，数据门槛低。',
+  qs:['它答错导致员工损失，责任在谁？','怎么让它在不确定的时候说"我不知道"？','制度改了，你怎么保证它同步？']},
+ w6:{n:'一个部门的 AI 场景 ROI 盘点',d:'不做工具，做<b>判断</b>：把一个部门的活拆开，逐条标 AI 能不能干、干了省多少、第一刀切哪。',
+  caps:['D1','D2','B1','A1','A2'],eff:'1-2 周',
+  data:'不需要数据，需要真实访谈。<b>这是唯一一个不写代码也能做的作品</b>，适合非技术背景起步。',
+  qs:['你为什么认为这条能被 AI 干，凭什么？','省下来的时间，人去干什么？','这个部门的负责人同意你的判断吗？']}};
+
+/* ================= 渲染 ================= */
+const $=s=>document.querySelector(s);
+const owned=new Set();
+let active=JOBS[0].id;
+
+/* 首页自评 */
+$('#chks').innerHTML=LAYERS.map(l=>l.caps.map(c=>
+ `<label class="chk"><input type="checkbox" value="${c.id}">
+  <span class="nm"><span class="lyr" style="background:${l.hex}">${l.id}</span>${c.n}
+  <div style="font-size:11px;color:var(--faint);margin-top:1px">${c.c}</div></span></label>`).join('')).join('');
+$('#chks').querySelectorAll('input').forEach(cb=>cb.onchange=()=>{
+ cb.checked?owned.add(cb.value):owned.delete(cb.value);
+ $('#cnt').textContent=`已选 ${owned.size} / 17`; renderScores(); renderDetail();});
+
+function renderScores(){
+ const rows=JOBS.map(j=>{
+  const hit=a=>a.filter(([id])=>owned.has(id)).length;
+  const m=j.must.length?hit(j.must)/j.must.length:1;
+  const p=j.plus.length?hit(j.plus)/j.plus.length:1;
+  const b=j.bonus.length?hit(j.bonus)/j.bonus.length:1;
+  const pc=Math.round((m*.70+p*.25+b*.05)*100);
+  const miss=j.must.filter(([id])=>!owned.has(id)).map(([id])=>CAPS[id].n);
+  return {j,pc,miss,color:pc>=70?'#047857':pc>=40?'#d97706':'#dc2626'};
+ }).sort((a,b)=>b.pc-a.pc);
+ $('#scores').innerHTML=rows.map(r=>`
+  <div class="score" data-id="${r.j.id}">
+    <div class="top"><div class="nm">${r.j.ti}<div style="font-size:11px;color:var(--muted);font-weight:400">${r.j.co}</div></div>
+    <div class="pc" style="color:${r.color}">${r.pc}%</div></div>
+    <div class="bar"><i style="width:${r.pc}%;background:${r.color}"></i></div>
+    <div class="gap">${r.miss.length?`还差硬门槛：<b>${r.miss.join('、')}</b>`:`<span style="color:#047857">硬门槛已全部具备 → 该做作品了</span>`}</div>
+  </div>`).join('');
+ $('#scores').querySelectorAll('.score').forEach(el=>el.onclick=()=>{
+   active=el.dataset.id; go('jobs'); renderList(); renderDetail();});
+}
+
+/* 岗位库 */
+function renderList(){
+ $('#joblist').innerHTML=JOBS.map(j=>`<div class="job ${j.id===active?'on':''}" data-id="${j.id}">
+  <div class="co">${j.co}</div><div class="ti">${j.ti}</div><div class="meta">${j.meta}</div></div>`).join('');
+ $('#joblist').querySelectorAll('.job').forEach(el=>el.onclick=()=>{active=el.dataset.id;renderList();renderDetail();});
+}
+function row([id,why],tier){
+ const c=CAPS[id],l=CL[id];
+ const lbl={must:'硬门槛',plus:'加分项',bonus:'锦上添花'}[tier];
+ const cls={must:'t-must',plus:'t-plus',bonus:'t-bonus'}[tier];
+ const dep={must:'需要能独立做到',plus:'需要理解并试过',bonus:'知道它存在即可'}[tier];
+ const has=owned.has(id);
+ return `<div class="cap"><div class="tier ${cls}">${lbl}</div><div class="cap-b">
+  <div class="cap-n"><span class="lyr" style="background:${l.hex}">${l.id}</span>${c.n}
+   <span class="own ${has?'own-y':'own-n'}">${has?'已具备':'待补'}</span></div>
+  <div class="cap-w">${why||c.c}</div>
+  <div style="font-size:11px;color:var(--faint);margin-top:3px">要到什么程度：<i style="font-style:normal;color:var(--accent);font-weight:500">${dep}</i></div>
+ </div></div>`;
+}
+function renderDetail(){
+ const j=JOBS.find(x=>x.id===active); if(!j)return;
+ const n=j.must.length+j.plus.length+j.bonus.length;
+ $('#detail').innerHTML=`
+ <div class="d-hd"><div class="d-co">${j.co}</div><div class="d-ti">${j.ti}</div>
+  <div class="pills"><span class="pill">${j.meta}</span>
+  <span class="pill ok">岗位已核实</span><span class="pill warn">JD 正文待补</span></div></div>
+
+ <div class="sec"><div class="sec-h"><div><span class="no">1</span>这个 JD 背后，招聘方真正在解决什么问题</div>
+  <em>懂招聘才写得出<br>对照组永远做不出这层</em></div>
+  <div class="moat"><span class="lbl">意图解读</span>${j.intent}</div></div>
+
+ <div class="sec"><div class="sec-h"><div><span class="no">2</span>能力要求 · ${n} 项</div>
+  <em>按必要性分三档 + 对照你的自评</em></div>
+  ${j.must.map(x=>row(x,'must')).join('')}${j.plus.map(x=>row(x,'plus')).join('')}${j.bonus.map(x=>row(x,'bonus')).join('')}</div>
+
+ <div class="sec"><div class="sec-h"><div><span class="no">3</span>职级与薪酬</div>
+  <em>Hay / IPE / Mercer 口径 —— 求职网站给不准，你给得准</em></div>
+  <div class="pay">
+   <div><div class="k">对标职级</div><div class="v">${j.grade[0]}</div></div>
+   <div><div class="k">薪酬口径</div><div class="v" style="font-size:12.5px;font-weight:500;line-height:1.5">${j.grade[1]}</div></div>
+   <div><div class="k">带宽区间</div><div class="v"><small>${j.grade[2]}</small></div></div>
+  </div>
+  <div style="font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.7">
+   接入 JE 引擎后，此处给真实的职级映射与分位带宽。<b style="color:var(--ink)">这是全站唯一一个"看完立刻想找人问"的模块 —— CTA 该压在这里。</b></div></div>
+
+ <div class="sec"><div class="sec-h"><div><span class="no">4</span>针对这个岗位，做什么作品</div>
+  <em>这类面试要交东西 —— 全站重心</em></div>
+  ${j.works.map(w=>{const W=WORKS[w];return `
+   <div style="padding:9px 0;border-bottom:1px solid var(--line-soft)">
+    <div style="font-size:13px;font-weight:500">${W.n} <span style="font-size:11px;color:var(--faint);font-weight:400">· ${W.eff}</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:2px">${W.d}</div></div>`}).join('')}
+  <div style="font-size:11.5px;color:var(--muted);margin-top:9px">完整清单见「作品选题库」</div></div>
+
+ <div class="sec"><div class="sec-h"><div><span class="no">5</span>面试官会追问什么</div>
+  <em>纯 know-how · 抄不走</em></div>
+  <ul class="qs">${j.qs.map(q=>`<li>${q}</li>`).join('')}</ul></div>`;
+}
+
+/* 作品库 */
+$('#works').innerHTML=Object.values(WORKS).map(w=>`
+ <div class="work">
+  <div class="work-h"><div class="n">${w.n}</div><div class="d">${w.d}</div>
+   <div class="work-m"><span class="pill">${w.eff}</span>
+   ${w.caps.map(c=>`<span class="pill" style="border-color:${CL[c].hex}44;color:${CL[c].hex}">${CL[c].id} ${CAPS[c].n}</span>`).join('')}</div></div>
+  <div class="work-b"><div class="h">数据从哪来（真障碍）</div><div class="datawall">${w.data}</div></div>
+  <div class="work-b"><div class="h">面试官会追问什么</div><ul class="qs">${w.qs.map(q=>`<li>${q}</li>`).join('')}</ul></div>
+ </div>`).join('');
+
+/* 能力模型 */
+$('#layers').innerHTML=LAYERS.map(l=>`<div class="layer">
+ <div class="layer-h" style="background:${l.hex}"><div class="n">${l.id} · ${l.name}</div><div class="d">${l.desc}</div></div>
+ <ul>${l.caps.map(c=>`<li><div>${c.n}</div><div class="c">${c.c}</div></li>`).join('')}</ul></div>`).join('');
+
+/* 切换 */
+function go(v){
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
+ ['home','jobs','works','model'].forEach(k=>$('#v-'+k).classList.toggle('hide',k!==v));
+ window.scrollTo(0,0);
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.v));
+
+renderList(); renderDetail(); renderScores();
+</script>
+</body>
+</html>
