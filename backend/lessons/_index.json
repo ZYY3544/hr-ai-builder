@@ -1,0 +1,412 @@
+{
+ "0-intro.html": {
+  "free": true,
+  "title": "我们在哪里？达克效应",
+  "ready": true
+ },
+ "0-how.html": {
+  "free": true,
+  "title": "怎样学，知识才能过脑子",
+  "ready": true
+ },
+ "0-why.html": {
+  "free": true,
+  "title": "为什么 HR 也要弄懂原理",
+  "ready": true
+ },
+ "zero-0.html": {
+  "free": true,
+  "title": "AI 能干哪些神奇的活",
+  "ready": true
+ },
+ "zero-1.html": {
+  "free": true,
+  "title": "它其实在玩「接话茬」",
+  "ready": true
+ },
+ "zero-2.html": {
+  "free": true,
+  "title": "它不是搜索引擎",
+  "ready": true
+ },
+ "zero-3.html": {
+  "free": true,
+  "title": "它会一本正经地胡说",
+  "ready": true
+ },
+ "zero-4.html": {
+  "free": true,
+  "title": "把它当不了解你的新同事",
+  "ready": true
+ },
+ "zero-5.html": {
+  "free": true,
+  "title": "万能开场白：先问我几个问题",
+  "ready": true
+ },
+ "zero-q-prompt.html": {
+  "free": true,
+  "title": "提示词到底怎么写才好？",
+  "ready": true
+ },
+ "zero-q-prompt-engineering.html": {
+  "free": true,
+  "title": "「提示词工程」有什么意义？",
+  "ready": true
+ },
+ "zero-q-model-agent-app.html": {
+  "free": true,
+  "title": "模型、Agent、应用是什么关系？",
+  "ready": true
+ },
+ "zero-q-agent.html": {
+  "free": true,
+  "title": "Agent 到底强在哪？",
+  "ready": true
+ },
+ "zero-q-skill.html": {
+  "free": true,
+  "title": "最近很火的 Skill 是什么？",
+  "ready": true
+ },
+ "zero-q-china-models.html": {
+  "free": true,
+  "title": "国产大模型有哪些？该怎么选？",
+  "ready": true
+ },
+ "zero-q-companies.html": {
+  "free": true,
+  "title": "还有哪些重要的 AI 公司？",
+  "ready": true
+ },
+ "zero-6.html": {
+  "free": true,
+  "title": "放心用，还是要核实？",
+  "ready": true
+ },
+ "zero-final.html": {
+  "free": true,
+  "title": "你的下一步",
+  "ready": true
+ },
+ "training-data.html": {
+  "free": true,
+  "title": "AI 的食物：训练数据",
+  "ready": true
+ },
+ "train-vs-infer.html": {
+  "free": true,
+  "title": "训练 vs 推理：两个不同的过程",
+  "ready": true
+ },
+ "1-2-fake-chat.html": {
+  "free": false,
+  "title": "它为什么像在聊天：伪造聊天记录",
+  "ready": true
+ },
+ "1-2-hallucination.html": {
+  "free": true,
+  "title": "它会编：筛简历现场",
+  "ready": true
+ },
+ "1-2-mitigation-prompt.html": {
+  "free": true,
+  "title": "应对 1：把约束写进 Prompt",
+  "ready": true
+ },
+ "1-2-mitigation-rag.html": {
+  "free": false,
+  "title": "应对 2：RAG——让它只答制度里有的",
+  "ready": true
+ },
+ "1-2-mitigation-temp.html": {
+  "free": false,
+  "title": "应对 3：Temperature & Top-P",
+  "ready": true
+ },
+ "1-2-mitigation-eval.html": {
+  "free": false,
+  "title": "应对 4：评测 + 人工审核",
+  "ready": true
+ },
+ "hr-recall-vs-judge.html": {
+  "free": true,
+  "title": "召回 vs 判定：一道必须写进流程的闸",
+  "ready": true
+ },
+ "interview-1.html": {
+  "free": true,
+  "title": "它会怎么错 · 30 道灵魂拷问",
+  "ready": true
+ },
+ "5-1.html": {
+  "free": true,
+  "title": "上下文窗口：AI 的工作记忆",
+  "ready": true
+ },
+ "5-2.html": {
+  "free": true,
+  "title": "上下文溢出：三种处理策略",
+  "ready": true
+ },
+ "6-1.html": {
+  "free": true,
+  "title": "你说什么，它就变什么",
+  "ready": true
+ },
+ "6-2.html": {
+  "free": true,
+  "title": "Prompt 进阶技巧",
+  "ready": true
+ },
+ "prompt-attack.html": {
+  "free": true,
+  "title": "Prompt Injection：为什么会被攻击",
+  "ready": true
+ },
+ "hr-resume-injection.html": {
+  "free": true,
+  "title": "简历里的白色字体",
+  "ready": true
+ },
+ "prompt-defense.html": {
+  "free": false,
+  "title": "三层拦截：怎么防",
+  "ready": true
+ },
+ "ai-safety-redlines.html": {
+  "free": false,
+  "title": "AI 红线：HR 版四条底线",
+  "ready": true
+ },
+ "7-1.html": {
+  "free": true,
+  "title": "Agent：能干活的 AI",
+  "ready": true
+ },
+ "10-1.html": {
+  "free": true,
+  "title": "Workflow vs Agent：先搞清楚你要什么",
+  "ready": true
+ },
+ "7-4a.html": {
+  "free": false,
+  "title": "ReAct 循环：思考 → 行动 → 观察",
+  "ready": true
+ },
+ "7-4b.html": {
+  "free": false,
+  "title": "Agent 卡死的 5 种模式",
+  "ready": true
+ },
+ "ai-tips-boundary.html": {
+  "free": true,
+  "title": "人机知识边界：四象限策略",
+  "ready": true
+ },
+ "ai-tips-context.html": {
+  "free": true,
+  "title": "好提问 vs 坏提问",
+  "ready": true
+ },
+ "ai-tips-verify.html": {
+  "free": false,
+  "title": "AI 说的能信吗？找出幻觉",
+  "ready": true
+ },
+ "ai-tips-iterate.html": {
+  "free": false,
+  "title": "迭代的艺术：知道何时收手",
+  "ready": true
+ },
+ "ai-tips-scenarios.html": {
+  "free": false,
+  "title": "场景速查：什么时候放心用",
+  "ready": true
+ },
+ "8-1.html": {
+  "free": true,
+  "title": "多轮对话为什么越来越贵",
+  "ready": true
+ },
+ "cost-eval.html": {
+  "free": true,
+  "title": "模型选型：能力 vs 成本",
+  "ready": true
+ },
+ "interview-2.html": {
+  "free": true,
+  "title": "跟它协作 · 30 道灵魂拷问",
+  "ready": true
+ },
+ "hr-elicitation-1.html": {
+  "free": true,
+  "title": "把「看一眼就知道」拆成规则",
+  "ready": false
+ },
+ "hr-elicitation-2.html": {
+  "free": true,
+  "title": "拆到哪一层为止：哪些永远拆不出来，必须留给人",
+  "ready": false
+ },
+ "hr-elicitation-3.html": {
+  "free": false,
+  "title": "从规则到 Prompt：判断链怎么落地",
+  "ready": false
+ },
+ "hr-caliber-1.html": {
+  "free": true,
+  "title": "三个系统、五种口径、人名还对不上",
+  "ready": false
+ },
+ "hr-caliber-2.html": {
+  "free": true,
+  "title": "口径不确认，后面所有数字都是假的——而且假得很像真的",
+  "ready": false
+ },
+ "10-8.html": {
+  "free": true,
+  "title": "为什么评测比训练更重要",
+  "ready": true
+ },
+ "10-9.html": {
+  "free": true,
+  "title": "三种 Grader：代码、模型、人工",
+  "ready": true
+ },
+ "10-10.html": {
+  "free": false,
+  "title": "评测的坑：噪音、作弊与退化",
+  "ready": true
+ },
+ "vibe-1.html": {
+  "free": true,
+  "title": "为什么要给 AI 立规矩",
+  "ready": true
+ },
+ "vibe-2.html": {
+  "free": true,
+  "title": "四步流程：复述、PRD、确认、编码",
+  "ready": true
+ },
+ "vibe-3.html": {
+  "free": false,
+  "title": "PlayGround：组件的试衣间",
+  "ready": true
+ },
+ "vibe-4.html": {
+  "free": true,
+  "title": "注释三要素与代码保护",
+  "ready": true
+ },
+ "vibe-5.html": {
+  "free": true,
+  "title": "调试铁律：先 Log 再改码",
+  "ready": true
+ },
+ "vibe-6.html": {
+  "free": false,
+  "title": "不接受分期交付",
+  "ready": true
+ },
+ "vibe-7.html": {
+  "free": true,
+  "title": "三份文档与方法论沉淀",
+  "ready": true
+ },
+ "vibe-8.html": {
+  "free": true,
+  "title": "把环境事实写进 Rule",
+  "ready": true
+ },
+ "vibe-9.html": {
+  "free": false,
+  "title": "破坏性操作的三道闸",
+  "ready": true
+ },
+ "vibe-10.html": {
+  "free": false,
+  "title": "长对话锚定与写作规范",
+  "ready": true
+ },
+ "vibe-final.html": {
+  "free": false,
+  "title": "规则的价值：每条解决一个真实问题",
+  "ready": true
+ },
+ "hr-project-pick.html": {
+  "free": true,
+  "title": "选题：什么样的第一个作品站得住",
+  "ready": true
+ },
+ "hr-project-data.html": {
+  "free": true,
+  "title": "数据：真数据碰不得，合成数据怎么造得像",
+  "ready": true
+ },
+ "interview-7.html": {
+  "free": true,
+  "title": "自己做出来 · 30 道灵魂拷问",
+  "ready": true
+ },
+ "9-27.html": {
+  "free": true,
+  "title": "AI 该有多大的自由",
+  "ready": true
+ },
+ "9-28.html": {
+  "free": true,
+  "title": "弹窗太多没人用，不弹又不安全",
+  "ready": true
+ },
+ "9-29.html": {
+  "free": false,
+  "title": "它干了什么你知道吗：留痕与可申诉",
+  "ready": true
+ },
+ "hr-scoping.html": {
+  "free": true,
+  "title": "第一刀切哪里：场景选择与 ROI",
+  "ready": true
+ },
+ "hr-persuade.html": {
+  "free": true,
+  "title": "向上说服：把技术判断翻译成账",
+  "ready": true
+ },
+ "hr-rollout.html": {
+  "free": false,
+  "title": "试点到铺开：最容易死在第二个团队",
+  "ready": true
+ },
+ "hr-compliance.html": {
+  "free": true,
+  "title": "数据不出内网 · 匿名的真实 n 阈值 · 留痕可申诉",
+  "ready": true
+ },
+ "hr-org-1.html": {
+  "free": true,
+  "title": "人机分工：AI 接管之后，这个岗位该怎么改",
+  "ready": false
+ },
+ "hr-org-2.html": {
+  "free": true,
+  "title": "能力迁移：哪些技能在贬值，哪些能力在升值",
+  "ready": false
+ },
+ "hr-org-3.html": {
+  "free": false,
+  "title": "组织形态：为什么 AI Native 组织更扁、更小、更快",
+  "ready": false
+ },
+ "oss-8.html": {
+  "free": true,
+  "title": "你的电脑能跑多大的模型",
+  "ready": true
+ },
+ "oss-9.html": {
+  "free": true,
+  "title": "Ollama 与 LM Studio 怎么上手",
+  "ready": true
+ }
+}

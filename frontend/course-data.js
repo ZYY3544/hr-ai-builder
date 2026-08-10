@@ -1,7 +1,8 @@
 /* HR AI Builder 课程数据 —— 单一真相源。
    衍生自洛小山 learn-ai (AGPL-3.0)，面向 HR 重构。
    action: copy=直接沿用 / adapt=重写成 HR 场景 / new=全新
-   ready:  课件文件是否已存在（false = 待写，前端不出链接） */
+   ready:  课件文件是否已存在（false = 待写，前端不出链接）
+   free:   true=静态直读(SEO 主力) / false=需登录，正文走后端鉴权 */
 window.COURSE = {
  "meta": {
   "title": "HR AI Builder",
@@ -21,6 +22,11 @@ window.COURSE = {
    "new": 16,
    "ready": 74,
    "todo": 8
+  },
+  "access": {
+   "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费，其余需登录。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
+   "free": 61,
+   "locked": 21
   }
  },
  "parts": [
@@ -41,7 +47,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "0-intro.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "0-how.html",
@@ -50,7 +57,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "0-how.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "0-why.html",
@@ -59,11 +67,13 @@ window.COURSE = {
        "ksa": "K",
        "action": "adapt",
        "src": "0-why.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": true
   },
   {
    "id": "p-zero",
@@ -82,7 +92,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-0.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-1.html",
@@ -91,7 +102,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-2.html",
@@ -100,7 +112,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-2.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-3.html",
@@ -109,7 +122,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-3.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -124,7 +138,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-4.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-5.html",
@@ -133,7 +148,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "zero-5.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -148,7 +164,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "zero-q-prompt.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-q-prompt-engineering.html",
@@ -157,7 +174,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-q-prompt-engineering.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-q-model-agent-app.html",
@@ -166,7 +184,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-q-model-agent-app.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-q-agent.html",
@@ -175,7 +194,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-q-agent.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-q-skill.html",
@@ -184,7 +204,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-q-skill.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-q-china-models.html",
@@ -193,7 +214,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-q-china-models.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-q-companies.html",
@@ -202,7 +224,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-q-companies.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -217,7 +240,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "copy",
        "src": "zero-6.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "zero-final.html",
@@ -226,11 +250,13 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "zero-final.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": true
   },
   {
    "id": "p-1",
@@ -249,7 +275,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "adapt",
        "src": "training-data.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "train-vs-infer.html",
@@ -258,7 +285,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "train-vs-infer.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "1-2-fake-chat.html",
@@ -267,7 +295,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "adapt",
        "src": "1-2-fake-chat.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -282,7 +311,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "adapt",
        "src": "1-2-hallucination.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "1-2-mitigation-prompt.html",
@@ -291,7 +321,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "1-2-mitigation-prompt.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "1-2-mitigation-rag.html",
@@ -300,7 +331,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "1-2-mitigation-rag.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "1-2-mitigation-temp.html",
@@ -309,7 +341,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "1-2-mitigation-temp.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "1-2-mitigation-eval.html",
@@ -318,7 +351,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "1-2-mitigation-eval.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -333,7 +367,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -348,11 +383,13 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "interview-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   },
   {
    "id": "p-2",
@@ -371,7 +408,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "5-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "5-2.html",
@@ -380,7 +418,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "5-2.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -395,7 +434,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "6-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "6-2.html",
@@ -404,7 +444,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "6-2.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -419,7 +460,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "adapt",
        "src": "prompt-attack.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "hr-resume-injection.html",
@@ -428,7 +470,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "prompt-defense.html",
@@ -437,7 +480,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "prompt-defense.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "ai-safety-redlines.html",
@@ -446,7 +490,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "ai-safety-redlines.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -461,7 +506,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "7-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "10-1.html",
@@ -470,7 +516,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "10-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "7-4a.html",
@@ -479,7 +526,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "7-4a.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "7-4b.html",
@@ -488,7 +536,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "adapt",
        "src": "7-4b.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -503,7 +552,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "copy",
        "src": "ai-tips-boundary.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "ai-tips-context.html",
@@ -512,7 +562,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "ai-tips-context.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "ai-tips-verify.html",
@@ -521,7 +572,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "ai-tips-verify.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "ai-tips-iterate.html",
@@ -530,7 +582,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "copy",
        "src": "ai-tips-iterate.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "ai-tips-scenarios.html",
@@ -539,7 +592,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "copy",
        "src": "ai-tips-scenarios.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -554,7 +608,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "8-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "cost-eval.html",
@@ -563,7 +618,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "cost-eval.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -578,11 +634,13 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "interview-2.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   },
   {
    "id": "p-3",
@@ -601,7 +659,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": true
       },
       {
        "file": "hr-elicitation-2.html",
@@ -610,7 +669,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": true
       },
       {
        "file": "hr-elicitation-3.html",
@@ -619,7 +679,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": false
       }
      ]
     },
@@ -634,7 +695,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": true
       },
       {
        "file": "hr-caliber-2.html",
@@ -643,7 +705,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": true
       }
      ]
     },
@@ -658,7 +721,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "10-8.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "10-9.html",
@@ -667,7 +731,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "10-9.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "10-10.html",
@@ -676,11 +741,13 @@ window.COURSE = {
        "ksa": "S",
        "action": "adapt",
        "src": "10-10.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   },
   {
    "id": "p-4",
@@ -699,7 +766,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-1.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "vibe-2.html",
@@ -708,7 +776,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-2.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "vibe-3.html",
@@ -717,7 +786,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-3.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -732,7 +802,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-4.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "vibe-5.html",
@@ -741,7 +812,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-5.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "vibe-6.html",
@@ -750,7 +822,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-6.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -765,7 +838,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-7.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "vibe-8.html",
@@ -774,7 +848,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-8.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "vibe-9.html",
@@ -783,7 +858,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-9.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "vibe-10.html",
@@ -792,7 +868,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "vibe-10.html",
-       "ready": true
+       "ready": true,
+       "free": false
       },
       {
        "file": "vibe-final.html",
@@ -801,7 +878,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "copy",
        "src": "vibe-final.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -816,7 +894,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "hr-project-data.html",
@@ -825,7 +904,8 @@ window.COURSE = {
        "ksa": "S",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     },
@@ -840,11 +920,13 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "interview-7.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   },
   {
    "id": "p-5",
@@ -863,7 +945,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "9-27.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "9-28.html",
@@ -872,7 +955,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "9-28.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "9-29.html",
@@ -881,7 +965,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "adapt",
        "src": "9-29.html",
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -896,7 +981,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "hr-persuade.html",
@@ -905,7 +991,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "hr-rollout.html",
@@ -914,7 +1001,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": false
       }
      ]
     },
@@ -929,11 +1017,13 @@ window.COURSE = {
        "ksa": "K",
        "action": "new",
        "src": null,
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   },
   {
    "id": "p-6",
@@ -952,7 +1042,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": true
       },
       {
        "file": "hr-org-2.html",
@@ -961,7 +1052,8 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": true
       },
       {
        "file": "hr-org-3.html",
@@ -970,11 +1062,13 @@ window.COURSE = {
        "ksa": "A",
        "action": "new",
        "src": null,
-       "ready": false
+       "ready": false,
+       "free": false
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   },
   {
    "id": "p-oss",
@@ -993,7 +1087,8 @@ window.COURSE = {
        "ksa": "K",
        "action": "copy",
        "src": "oss-8.html",
-       "ready": true
+       "ready": true,
+       "free": true
       },
       {
        "file": "oss-9.html",
@@ -1002,11 +1097,13 @@ window.COURSE = {
        "ksa": "S",
        "action": "copy",
        "src": "oss-9.html",
-       "ready": true
+       "ready": true,
+       "free": true
       }
      ]
     }
-   ]
+   ],
+   "freeWhole": false
   }
  ]
 };

@@ -112,6 +112,7 @@ a.ls:hover .ln{color:var(--violet)}
 .ac-a{background:var(--blue-s);color:var(--blue-d)}
 .ac-n{background:var(--violet-s);color:var(--violet)}
 .ac-t{background:#FEF3C7;color:#92400E;margin-left:4px}
+.lk{font-size:10px;margin-right:5px;opacity:.6}
 .topic.isnew{border-color:rgba(124,58,237,.32);background:linear-gradient(180deg,#fbf9ff,#fff)}
 .attrib{font-size:11.5px;color:var(--faint);line-height:1.9}
 .attrib a{color:var(--muted);border-bottom:1px solid var(--line)}
@@ -409,15 +410,15 @@ function renderTopics(){
   const st=CO.meta.stats||{};
   $('#sortnote').textContent = onlyNew
     ? `${list.length} 个主题含 HR 原创内容 —— learn-ai 里没有的部分`
-    : `按学习顺序排列 · 点开任一主题可直接进课件 · ${st.ready||0} 节已就绪，${st.todo||0} 节待写`;
+    : `按学习顺序排列 · 点开任一主题可直接进课件 · ${(CO.meta.access||{}).free||0} 节免费直读，${(CO.meta.access||{}).locked||0} 节登录后读 · ${st.todo||0} 节待写`;
   $('#topics').innerHTML=list.map((t,i)=>{
     const ksa=Object.entries(t.ksa).sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
     const rows=t.lessons.map(l=>{
       const [lbl,cls]=AC[l.action];
-      const inner=`<span class="ln">${l.title}</span><span class="ac ${cls}">${lbl}</span>`;
-      return l.ready
-        ? `<a class="ls" href="slides/${l.file}">${inner}</a>`
-        : `<span class="ls off">${inner}<span class="ac ac-t">待写</span></span>`;
+      const lock = l.free? '' : '<span class="lk" title="登录后阅读">🔒</span>';
+      const inner=`<span class="ln">${lock}${l.title}</span><span class="ac ${cls}">${lbl}</span>`;
+      if(!l.ready) return `<span class="ls off">${inner}<span class="ac ac-t">待写</span></span>`;
+      return `<a class="ls" href="${l.free?'slides/'+l.file:'lesson.html?f='+encodeURIComponent(l.file)}">${inner}</a>`;
     }).join('');
     return `<div class="topic ${t.neu?'isnew':''}" data-i="${i}">
       ${t.neu? '<span class="badge">HR 原创 '+t.neu+'</span>' : ''}
@@ -530,6 +531,7 @@ async function openLogin(e){
 // OAuth 直接回跳：token 在 fragment 里（fragment 不会发到服务器）
 (function(){
   const h=location.hash||'';
+  if(h==='#login'){ history.replaceState(null,'',location.pathname); setTimeout(()=>openLogin(),80); }
   if(h.startsWith('#token=')){
     localStorage.setItem(TK, decodeURIComponent(h.slice(7)));
     history.replaceState(null,'',location.pathname+location.search);

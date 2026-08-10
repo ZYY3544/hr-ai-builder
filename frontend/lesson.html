@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课件 · HR AI Builder</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="slides/lesson.css">
+<style>
+.gate{max-width:560px;margin:14vh auto;padding:0 24px;text-align:center}
+.gate .ic{width:56px;height:56px;border-radius:16px;margin:0 auto 20px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#3370FF,#7C3AED);color:#fff;font-size:24px;
+  box-shadow:0 8px 26px -10px rgba(124,58,237,.7)}
+.gate h1{font-size:22px;color:var(--text);margin:0 0 10px;letter-spacing:-.02em}
+.gate p{font-size:14px;color:var(--sub);line-height:1.9;margin:0 0 8px}
+.gate .why{margin-top:22px;padding:16px 20px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);font-size:13px;color:var(--sub);line-height:1.85;text-align:left}
+.gate .why b{color:var(--text)}
+.gate .btns{margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.gbtn{font:inherit;font-size:13.5px;font-weight:500;padding:10px 22px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--border);background:#fff;color:var(--text);text-decoration:none;display:inline-block}
+.gbtn.pri{background:linear-gradient(135deg,#3370FF,#7C3AED);border-color:transparent;color:#fff}
+.gbtn:hover{opacity:.9}
+.spin{width:26px;height:26px;border:3px solid var(--border);border-top-color:#7C3AED;
+  border-radius:50%;animation:sp .8s linear infinite;margin:16vh auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+.viewer{max-width:var(--content-w);margin:0 auto;padding:14px 24px 0;font-size:12px;color:var(--sub)}
+.viewer b{color:var(--text)}
+</style>
+</head>
+<body>
+<div id="app"><div class="spin"></div></div>
+
+<script>
+const API = (location.hostname==='localhost'||location.protocol==='file:')
+  ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
+const TK='hab_token';
+const file=new URLSearchParams(location.search).get('f')||'';
+
+function gate(title, msg, why, showLogin){
+  document.getElementById('app').innerHTML=`
+   <div class="gate">
+     <div class="ic">🔒</div>
+     <h1>${title}</h1>
+     <p>${msg}</p>
+     ${why?`<div class="why">${why}</div>`:''}
+     <div class="btns">
+       ${showLogin?'<a class="gbtn pri" href="index.html#login">去登录</a>':''}
+       <a class="gbtn" href="index.html#curriculum">返回课程目录</a>
+     </div>
+   </div>`;
+}
+
+(async function(){
+  if(!file){ return gate('没有指定课件','请从课程目录进入。','',false); }
+  const t=localStorage.getItem(TK);
+  let r;
+  try{
+    r=await fetch(API+'/api/lessons/'+encodeURIComponent(file),
+      t?{headers:{Authorization:'Bearer '+t}}:{});
+  }catch(e){
+    return gate('内容服务暂时不可用','请稍后重试。免费章节不受影响，可以直接阅读。','',false);
+  }
+
+  if(r.status===401){
+    return gate('这一节需要登录后阅读',
+      '登录只是一道注册门，<b>不是收费墙</b>——本站全部内容永久免费。',
+      '<b>为什么设这道门：</b><br>· 同步你的学习进度与测评记录<br>· 防止课程内容被批量抓走后包装成付费课程贩卖<br><br>开篇与第零篇章、以及每个主题的前两节，<b>不登录也能直接读</b>。',
+      true);
+  }
+  if(r.status===400){ location.replace('slides/'+file); return; }
+  if(!r.ok){ return gate('课件暂时打不开','稍后重试，或从课程目录换一节。','',false); }
+
+  const d=await r.json();
+  document.title=d.title+' · HR AI Builder';
+  document.getElementById('app').innerHTML=
+    (d.viewer?`<div class="viewer">已登录 · <b>${d.viewer}</b></div>`:'')+
+    `<main class="lesson">${d.html}</main>`;
+})();
+</script>
+<script src="slides/lesson.js"></script>
+</body>
+</html>

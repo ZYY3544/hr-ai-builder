@@ -4,7 +4,7 @@ HR AI Builder — 内容与测评 API
 现阶段所有内容以 Python 常量形式内置，前端为静态站（利于 SEO），
 本服务提供：内容读取接口 + 测评判分接口，供前端渐进接入。
 """
-from fastapi import FastAPI, HTTPException, Depends, Response
+from fastapi import FastAPI, HTTPException, Depends, Response, Header
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -384,3 +384,68 @@ def auth_config():
 @app.get("/api/me")
 def me(user: dict = Depends(auth.current_user)):
     return user
+
+
+# ══════════════════════════════════════════════════════════════════
+#  课件内容（分层：免费章节走前端静态利于 SEO；其余走此处鉴权）
+# ══════════════════════════════════════════════════════════════════
+import json as _json
+import re as _re
+from pathlib import Path
+
+_LESSON_DIR = Path(__file__).parent / "lessons"
+_LESSON_IDX = _json.loads((_LESSON_DIR / "_index.json").read_text("utf-8"))
+
+# 登录闸开关。微信登录尚未配通前默认 off——否则受保护章节会变成谁都打不开。
+# 登录跑通后在 Render 面板把 CONTENT_GATE 拨成 on 即可，代码零改动。
+def _gate_on() -> bool:
+    return (os.getenv("CONTENT_GATE", "off") or "").strip().lower() in ("1", "on", "true")
+
+
+def _safe_name(name: str) -> str:
+    """只允许 _index.json 里登记过的文件名，杜绝路径穿越。"""
+    if not _re.fullmatch(r"[A-Za-z0-9._-]+\.html", name or "") or name not in _LESSON_IDX:
+        raise HTTPException(404, "lesson not found")
+    return name
+
+
+@app.get("/api/lessons/manifest")
+def lessons_manifest():
+    """前端据此渲染目录与锁标。不含正文。"""
+    free = sum(1 for v in _LESSON_IDX.values() if v["free"])
+    return {"gate": "on" if _gate_on() else "off",
+            "free": free, "locked": len(_LESSON_IDX) - free,
+            "items": _LESSON_IDX}
+
+
+@app.get("/api/lessons/{name}")
+def get_lesson(name: str, authorization: Optional[str] = Header(None)):
+    """受保护课件的正文。
+
+    免费章节不走这里——它们是前端静态文件，爬虫要能直接读到（SEO 命脉）。
+    """
+    name = _safe_name(name)
+    meta = _LESSON_IDX[name]
+    if meta["free"]:
+        raise HTTPException(400, "free lesson is served statically at /slides/" + name)
+
+    user = None
+    if _gate_on():
+        if not authorization or not authorization.lower().startswith("bearer "):
+            raise HTTPException(401, "login_required")
+        user = auth.decode(authorization.split(" ", 1)[1].strip())
+    elif authorization and authorization.lower().startswith("bearer "):
+        try:
+            user = auth.decode(authorization.split(" ", 1)[1].strip())
+        except HTTPException:
+            user = None
+
+    f = _LESSON_DIR / name
+    if not f.exists():
+        raise HTTPException(404, "lesson file missing")
+    body = f.read_text("utf-8")
+    m = _re.search(r"<main class=\"lesson\">([\s\S]*?)</main>", body)
+    return {"file": name, "title": meta["title"],
+            "gate": "on" if _gate_on() else "off",
+            "viewer": (user or {}).get("name") or None,
+            "html": m.group(1) if m else body}
