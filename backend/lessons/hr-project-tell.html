@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 作品怎么讲才有说服力？别人真正会追问的问题 · HR AI Builder</title>
+<meta name="description" content="AI 作品怎么讲才有说服力？别人真正会追问的问题">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;
+  border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="spine">🧵 主线案例 · 简历初筛</div>
+    <div class="kicker">第四篇章 · 做出你的第一个作品</div>
+    <h1>作品怎么讲：别人在追问什么</h1>
+    <p class="subtitle">做出来只是一半。<b>大多数人做得出来但讲不清楚</b>——而讲清楚的人，才显得是真做过的那个。</p>
+  </header>
+
+  <div class="sec-label">一个能问倒大多数人的问题</div>
+
+  <p>你演示完简历初筛器，对方点点头，然后问：</p>
+
+  <p style="font-size:17px;color:var(--text);font-weight:600;margin:16px 0">「<b>有人真的在用吗？</b>」</p>
+
+  <p>这句话问倒了绝大多数人。因为大多数作品做完就停在那儿了——跑通了、演示过了、然后没有下文。</p>
+
+  <div class="l-callout">
+    <b>它考的不是你的技术，是你有没有把事情做完的习惯。</b>
+    「我自己每周用它筛一次内推简历，用了三周」——<b>这句话的分量超过任何技术细节。</b>
+    哪怕用户只有你一个人，那也是真实使用。
+  </div>
+
+  <div class="sec-label">四类必被追问的问题</div>
+
+  <table class="htab">
+    <tr><th style="width:22%">追问的方向</th><th>典型问法 / 他真正想知道什么</th></tr>
+    <tr>
+      <td><b>① 你怎么知道它对</b></td>
+      <td>「准确率怎么测的？」「漏掉一个好候选人你怎么发现？」<br>
+      <i>真正在问：</i><b>你有没有建过评测，还是只跑了几个 case 看着不错。</b>这是分水岭</td>
+    </tr>
+    <tr>
+      <td><b>② 数据哪来的</b></td>
+      <td>「用的真简历吗？」<br>
+      <i>真正在问：</i><b>你有没有数据边界的意识。</b>说「用了公司真数据」当场减分，
+      说「合成的，注入了三种真实的脏」当场加分</td>
+    </tr>
+    <tr>
+      <td><b>③ 错了怎么办</b></td>
+      <td>「候选人投诉被 AI 刷掉了，怎么回应？」<br>
+      <i>真正在问：</i><b>你想没想过这东西上线之后的事。</b>只想到功能没想到责任的人，不能放到真实场景里</td>
+    </tr>
+    <tr>
+      <td><b>④ 为什么不用简单办法</b></td>
+      <td>「关键词匹配不行吗？」「跟直接问 ChatGPT 有什么区别？」<br>
+      <i>真正在问：</i><b>你是不是为了用 AI 而用 AI。</b>答不上来说明你没想清楚问题</td>
+    </tr>
+  </table>
+
+  <div class="sec-label">讲的顺序：先讲判断，再讲实现</div>
+
+  <div class="bad">
+    <span class="t">✕ 大多数人的讲法</span>
+    「我用了 GPT-4，写了一个 prompt，然后用 Streamlit 做了个界面，可以上传简历，然后……」<br>
+    → 全是实现细节。<b>听的人无法判断你聪明在哪</b>——这些东西任何人照着教程都能做出来。
+  </div>
+
+  <div class="good">
+    <span class="t">✓ 该有的讲法</span>
+    「我发现 AI 筛简历时会<b>编造候选人没写过的经历</b>，而且理由编得很像真的、你验不出来。<br>
+    所以我做了一个决定：<b>让它只做召回、不做判定</b>，每条结论必须附原文出处，搜不到就标『无依据』。<br>
+    为了验证这个约束真的生效，我往测试集里<b>埋了 5 份明显不合格的简历</b>，看它会不会放行。<br>
+    实现上是 GPT-4 + 一个上传界面，两天做完的。」
+  </div>
+
+  <p><b>同一个作品，第二种讲法让人看到的是判断力，第一种只让人看到操作。</b>而这个岗位招的就是判断力——操作 AI 会替你做。</p>
+
+  <div class="sec-label">主动说缺陷</div>
+
+  <p>你的作品一定有做不到的地方。<b>你先说，那是边界感；被问出来，那是没想到。</b></p>
+
+  <p>「它对格式混乱的 PDF 解析得不好，我暂时没处理，因为第一版我想先验证核心逻辑对不对」——
+  这句话里有三层信息：<b>你知道有这个问题、你知道为什么先不做、你有优先级判断。</b>比假装没有强得多。</p>
+
+  <div class="rule">
+    <span class="lbl">讲作品</span>
+    <h3>讲判断，不讲操作</h3>
+    <ol>
+      <li><b>开头讲你发现的问题，不讲你用的工具。</b>「我发现它会编」比「我用了 GPT-4」有力十倍。</li>
+      <li><b>「有人真的在用吗」提前准备好答案。</b>哪怕用户只有你自己，说清楚用了多久、根据反馈改了什么。</li>
+      <li><b>数据来源主动交代。</b>「合成的，注入了三种脏」——这句话本身就是专业度证明。</li>
+      <li><b>缺陷自己先说，并说明为什么先不做。</b>被问出来是失分，主动说是加分。</li>
+    </ol>
+  </div>
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

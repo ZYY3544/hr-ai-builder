@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么让 AI 引用原文而不是自己概括？一个可执行的 Prompt 约束 · HR AI Builder</title>
+<meta name="description" content="怎么让 AI 引用原文而不是自己概括？一个可执行的 Prompt 约束">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;
+  border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="spine">🧵 主线案例 · 简历初筛</div>
+    <div class="kicker">第一篇章 · 召回 vs 判定：HR 必须设的那道闸</div>
+    <h1>怎么让它只引用、不概括</h1>
+    <p class="subtitle">上一节讲了<b>为什么</b>要设这道闸。这一节讲<b>怎么设</b>——一条能直接抄走的 Prompt 约束，外加两个验收动作。</p>
+  </header>
+
+  <div class="sec-label">先看差别有多大</div>
+
+  <div class="bad">
+    <span class="t">✕ 概括式输出</span>
+    「候选人有 3 年大厂 AI 项目经验，曾负责推荐系统建设，与岗位高度匹配。」<br>
+    → 读起来很专业。<b>但这三句话你一句都验不了</b>——「3 年」是算出来的还是编的？「负责」还是「参与」？「高度匹配」是谁的标准？
+  </div>
+
+  <div class="good">
+    <span class="t">✓ 引用式输出</span>
+    命中依据（原文第 2 段）：<br>
+    <span class="l-mono">「2023.03–2026.01　参与集团级智能推荐系统建设，负责特征工程模块」</span><br>
+    → 同样的信息，<b>但你 5 秒钟就能判断它对不对</b>。而且你会立刻发现：原文写的是「参与」不是「负责」项目，「负责」的只是一个模块。
+  </div>
+
+  <p>差别不在准确率，在<b>可验证性</b>。概括式的错误你看不见，引用式的错误一眼就露。</p>
+
+  <div class="sec-label">为什么加一句约束就能管用</div>
+
+  <p>因为你给它加了一个<b>物理限制</b>：原文里没有的句子，它引不出来。</p>
+
+  <p>它当然还是会引错句子——引了一段不相关的、或者断章取义的。<b>但引错的句子你能看出来，编出来的理由你看不出来。</b>这就把「无法验证的错误」变成了「可以验证的错误」。</p>
+
+  <div class="l-callout">
+    <b>注意它仍然会耍一种花招：</b>引用是真的，但<b>结论和引用对不上</b>。
+    比如引了「参与推荐系统建设」，却下结论「有 AI 项目负责经验」。
+    所以验收的时候，<b>要同时看引用和结论，不是只看有没有引用。</b>
+  </div>
+
+  <div class="sec-label">可以直接抄走的约束</div>
+
+  <div class="l-mono" style="white-space:pre-wrap;line-height:1.9">【输出要求】
+1. 每一条判断都必须附带原文中的一句话作为依据，用「原文：……」标出。
+2. 原文中找不到直接依据的，输出「无依据」，不要推断、不要补全。
+3. 只引用，不改写。不要把「参与」写成「负责」，不要把「熟悉」写成「精通」。
+4. 依据必须能在原文中被字面找到（可被 Ctrl+F 搜到）。</div>
+
+  <p>第 3 条和第 4 条是关键。第 3 条挡住<b>语义抬升</b>（它很喜欢把动词往上抬一档）；
+  第 4 条给了你一个<b>机械的验收方法</b>——搜不到就是编的，不用你judge。</p>
+
+  <div class="sec-label">两个验收动作，别省</div>
+
+  <table class="htab">
+    <tr><th style="width:26%">动作</th><th>怎么做</th></tr>
+    <tr>
+      <td><b>① Ctrl+F 抽查</b></td>
+      <td>随机抽 10 条，把「原文：」后面那句直接搜一遍。<b>搜不到的比例就是它的编造率。</b>这个数你得心里有底，而且要定期重测——换个模型、改个 prompt，它就会变</td>
+    </tr>
+    <tr>
+      <td><b>② 结论-依据一致性抽查</b></td>
+      <td>同样这 10 条，看结论有没有超出引用的范围。<b>「参与」被读成「负责」这类语义抬升，是最常见也最难发现的一种</b></td>
+    </tr>
+  </table>
+
+  <div class="rule">
+    <span class="lbl">可执行</span>
+    <h3>让它引用，然后真的去搜一遍</h3>
+    <ol>
+      <li><b>把那四条约束抄进 System Prompt。</b>尤其第 4 条「能被 Ctrl+F 搜到」——它把验收变成了机械动作，不依赖你的判断力。</li>
+      <li><b>接受「无依据」这个输出。</b>很多人看到一堆「无依据」会觉得模型不好用，于是把这条约束去掉——<b>那你就回到了它编给你听的状态</b>。「无依据」是好结果，不是坏结果。</li>
+      <li><b>每次改 prompt 或换模型，重测一次编造率。</b>这个数会漂，而且漂的时候没人通知你。</li>
+      <li><b>结论和依据要一起看。</b>只检查「有没有引用」会漏掉语义抬升——那是它最擅长的那种错。</li>
+    </ol>
+  </div>
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

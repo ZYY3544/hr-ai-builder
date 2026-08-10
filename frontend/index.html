@@ -297,7 +297,9 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       本课程衍生自 <a href="https://xueai.app" target="_blank" rel="noopener" style="color:var(--violet)">洛小山《AI 产品从入门到精通》</a>，
       依 AGPL-3.0 开源并保留原作者署名。原课程 231 节面向 AI 产品经理，<b>我们保留约三成、删去对 HR 无用的部分，再补进 16 节 HR 独有内容</b>。<br>
       每一节都是「<b>HR 场景 → 原理 → 一条能执行的规则</b>」三段式——通用原理一个字不少讲，但它被夹在两个 HR 场景中间。
-      第零篇章是纯通用总览，零基础可看、<b>全章免费</b>。
+      第零篇章是纯通用总览，零基础可看、<b>全章免费</b>。<br>
+      🧵 标记的节属于<b>主线案例「简历初筛」</b>——它从第一篇章一路贯穿到第五篇章，
+      你会看着同一个东西从「会翻车」→「被设闸」→「被喂进判断」→「被亲手做出来」→「被推上线、被追责」。
     </p>
     <div style="display:flex;align-items:center;flex-wrap:wrap">
       <div class="toggle">
@@ -393,6 +395,7 @@ CO.parts.forEach(p=>p.topics.forEach(t=>FLAT.push({
   neu:t.lessons.filter(l=>l.action==='new').length,
   ada:t.lessons.filter(l=>l.action==='adapt').length,
   ksa:t.lessons.reduce((a,l)=>(a[l.ksa]=(a[l.ksa]||0)+1,a),{}),
+  spine:t.lessons.filter(l=>l.spine).length,
   lessons:t.lessons,
 })));
 
@@ -413,7 +416,7 @@ function renderTopics(){
       <div class="no">${t.partTitle}</div>
       <div class="n">${t.title}</div>
       <div class="d">${t.desc}</div>
-      <div class="f"><span>${t.n} 个知识点${lock?' · '+lock+' 节需登录':''}</span>
+      <div class="f"><span>${t.n} 个知识点${t.spine?' · 🧵'+t.spine:''}${lock?' · '+lock+' 节需登录':''}</span>
         <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
     return first
       ? `<a class="topic ${t.neu?'isnew':''}" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`

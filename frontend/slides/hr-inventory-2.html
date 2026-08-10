@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 场景盘点怎么打标？三类任务的判断标准 · HR AI Builder</title>
+<meta name="description" content="AI 场景盘点怎么打标？三类任务的判断标准">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;
+  border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    
+    <div class="kicker">第五篇章 · 场景盘点：哪些活能交给它</div>
+    <h1>每条标：它能干 / 干不了 / 干了得有人兜</h1>
+    <p class="subtitle">清单有了，现在给每一条打标。<b>只分三类，不要分五类</b>——分得越细，越容易把「不确定」伪装成「中等」。</p>
+  </header>
+
+  <div class="sec-label">三类，不是五类</div>
+
+  <table class="htab">
+    <tr><th style="width:18%">标</th><th style="width:34%">什么样的活属于这一类</th><th>判据</th></tr>
+    <tr>
+      <td><b style="color:var(--success)">🟢 它能干</b></td>
+      <td>输出<b>可以被机械验证</b>，错了立刻看得见，而且错的代价可承受</td>
+      <td>格式转换、信息提取、初稿生成、按明确规则归类</td>
+    </tr>
+    <tr>
+      <td><b style="color:var(--danger)">🔴 它干不了</b></td>
+      <td>需要<b>它拿不到的上下文</b>，或者错误<b>不可逆</b></td>
+      <td>解雇决定、薪酬定档、员工冲突判断、涉及个人前途的最终结论</td>
+    </tr>
+    <tr>
+      <td><b style="color:var(--accent)">🟡 干了得有人兜</b></td>
+      <td>它能大幅提效，<b>但错误不会自己暴露</b></td>
+      <td>简历初筛、绩效摘要、调研归纳、政策问答</td>
+    </tr>
+  </table>
+
+  <div class="l-callout">
+    <b>🟡 这一类是全表最重要的，而且最容易被误标成 🟢。</b>
+    因为它跑起来「看着挺对」——问题恰恰在这：<b>看着挺对但你没验过</b>，而它的错误是沉默的。
+    上一章那句「AI 只做召回、判定必须回原文」，管的就是这一类。
+  </div>
+
+  <div class="sec-label">三个判断问题，按顺序问</div>
+
+  <table class="htab">
+    <tr><th style="width:8%"></th><th style="width:34%">问题</th><th>答案指向</th></tr>
+    <tr><td><b>1</b></td><td><b>它做错了，你多久会发现？</b></td>
+      <td>立刻 → 🟢 ｜ 几天后 → 🟡 ｜ <b>永远不会 → 🟡，而且必须设闸</b></td></tr>
+    <tr><td><b>2</b></td><td><b>做这件事需要的信息，全在文字里吗？</b></td>
+      <td>全在 → 可考虑 ｜ <b>有一部分在你脑子里 / 在会议室里 / 在人际关系里 → 🔴</b></td></tr>
+    <tr><td><b>3</b></td><td><b>错了以后能撤回吗？</b></td>
+      <td>能撤 → 🟢/🟡 ｜ <b>撤不回（人已经走了、话已经说了）→ 🔴</b></td></tr>
+  </table>
+
+  <p>顺序不能换。第 1 题先问，是因为<b>「错误可见性」比「准确率」重要得多</b>——
+  一个 80% 准确但错了你马上知道的东西，比一个 95% 准确但错了没人发现的东西安全。</p>
+
+  <div class="sec-label">给主线案例打个标</div>
+
+  <div class="good">
+    <span class="t">简历初筛 → 🟡 干了得有人兜</span>
+    <b>Q1 多久发现？</b>漏掉一个好候选人——<b>永远不会发现</b>，对方不会来问，你也不会知道 → 指向 🟡<br>
+    <b>Q2 信息全在文字里吗？</b>硬性条件在，但「这个人适不适合我们团队」不在 → 部分在<br>
+    <b>Q3 能撤回吗？</b>候选人被刷掉后基本不会回来了 → 偏 🔴<br><br>
+    <b>结论：🟡，而且是 🟡 里最危险的那种</b>——所以必须设闸（只召回不判定 + 人看原文复核）。
+  </div>
+
+  <div class="sec-label">一个常见的误标</div>
+
+  <div class="bad">
+    <span class="t">✕ 把「员工政策问答」标成 🟢</span>
+    理由通常是「它答错了员工会来问啊，所以错误可见」。<br>
+    <b>但不会。</b>员工得到一个听起来很确定的错误答案，多半就照着做了——比如把年假规则理解错，
+    到年底才发现。<b>那时候责任在谁？</b><br>
+    → 正确标法是 🟡，而且要加一条硬约束：<b>不确定时必须说「我不知道，请咨询 HRBP」。</b>
+  </div>
+
+  <div class="rule">
+    <span class="lbl">第二步</span>
+    <h3>先问「错了多久能发现」，再问「准不准」</h3>
+    <ol>
+      <li><b>只分三类。</b>分五类会让你把「不确定」藏进「中等」里，那等于没判断。</li>
+      <li><b>错误可见性优先于准确率。</b>沉默的错误比明显的错误危险得多。</li>
+      <li><b>🟡 是最大的一类，也是这个岗位的主战场。</b>🟢 不用你、🔴 不该碰，<b>你的价值全在怎么给 🟡 设闸上。</b></li>
+      <li><b>标完让业务方过一遍。</b>你判断「错了会怎样」的依据是经验，业务方的经验和你不一样——<b>他们会推翻你几条，那几条通常最值钱。</b></li>
+    </ol>
+  </div>
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

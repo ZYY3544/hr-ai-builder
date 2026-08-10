@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么盘点一个部门有哪些活能交给 AI？先拆任务清单 · HR AI Builder</title>
+<meta name="description" content="怎么盘点一个部门有哪些活能交给 AI？先拆任务清单">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;
+  border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    
+    <div class="kicker">第五篇章 · 场景盘点：哪些活能交给它</div>
+    <h1>把一个部门的活拆成任务清单</h1>
+    <p class="subtitle">老板说「你看看 AI 能帮我们做点什么」。<b>这个问题没法直接回答</b>——因为「招聘」不是一件事，是三十几件事。这一节讲怎么拆。</p>
+  </header>
+
+  <div class="sec-label">为什么不能直接回答</div>
+
+  <p>「招聘能不能用 AI」——这个问题的颗粒度太粗，粗到无法判断。</p>
+
+  <p>把它拆开：发布 JD、筛简历、约面试、面试提问、评价记录、offer 审批、背调、入职跟进……
+  <b>每一件的答案都不一样</b>，有的现在就能全自动，有的十年内都不该交给 AI。</p>
+
+  <div class="l-callout">
+    <b>所以第一个动作不是「想 AI 能干什么」，是「先把活列出来」。</b>
+    这一步不需要懂 AI，<b>只需要懂业务——而这恰好是 HR 的主场，工程师做不了。</b>
+  </div>
+
+  <div class="sec-label">怎么拆：三条切法</div>
+
+  <table class="htab">
+    <tr><th style="width:22%">切法</th><th>怎么做</th></tr>
+    <tr>
+      <td><b>① 按流程切</b></td>
+      <td>沿着一个完整流程走一遍，每个交接点断一刀。招聘：需求确认 → 发布 → 获取简历 → 初筛 → 约面 → 面试 → 评价 → 决策 → offer → 入职</td>
+    </tr>
+    <tr>
+      <td><b>② 按日历切</b></td>
+      <td>翻这个岗位上的人过去两周的日程和产出。<b>这一步能捞出流程图上没有的活</b>——救火、答疑、催办、做表，这些占的时间往往比流程活还多</td>
+    </tr>
+    <tr>
+      <td><b>③ 按抱怨切</b></td>
+      <td>问一句：「这周哪件事让你最烦？」<b>抱怨是痛感最诚实的信号</b>，而痛感是后面排优先级的第一权重</td>
+    </tr>
+  </table>
+
+  <p>三条都走一遍，一个部门通常能拆出 <b>30–50 条</b>。少于 20 条说明拆得不够细，多于 80 条说明拆得太碎了。</p>
+
+  <div class="sec-label">每条要记四个字段</div>
+
+  <table class="htab">
+    <tr><th style="width:20%">字段</th><th>为什么要记</th></tr>
+    <tr><td><b>做什么</b></td><td>一句话，动词开头。「筛简历」不够，要写「从 200 份简历里挑出符合硬性条件的」</td></tr>
+    <tr><td><b>谁做 / 多久一次</b></td><td>频次决定值不值得自动化。<b>一年一次的活，做得再痛也不该是第一刀</b></td></tr>
+    <tr><td><b>一次多久</b></td><td>×频次 = 年度总耗时。这是后面算账的原料</td></tr>
+    <tr><td><b>做错了会怎样</b></td><td><b>这一列最重要，也最容易被漏掉</b>。它决定了这件事能不能交给一个会犯错的东西</td></tr>
+  </table>
+
+  <div class="good">
+    <span class="t">✓ 一行示例</span>
+    <b>做什么：</b>从内推简历里挑出符合硬性条件的<br>
+    <b>谁做/频次：</b>HRBP，每周约 3 次<br>
+    <b>一次多久：</b>1.5 小时　→　年度约 230 小时<br>
+    <b>做错了会怎样：</b><b>漏掉一个合适的人，对方不会知道，我们也不会知道</b>——错误不可见，这是最危险的一类
+  </div>
+
+  <div class="l-callout">
+    <b>「做错了会怎样」这一列，是整张表里唯一需要判断力的部分。</b>
+    前三列谁都能填，这一列填得准不准，取决于你在这个岗位上待过多久。<b>这也是这张表不能外包给顾问的原因。</b>
+  </div>
+
+  <div class="sec-label">先别急着标 AI</div>
+
+  <p>拆完就先停。<b>这一步的产物只是一张清单，不是方案。</b></p>
+
+  <p>常见的错误是边拆边标「这个能用 AI」——那样你会不自觉地只拆出那些「看起来能用 AI」的活，
+  <b>把真正痛但不像 AI 场景的活漏掉。</b>而后者往往才是第一刀该切的地方。</p>
+
+  <div class="rule">
+    <span class="lbl">第一步</span>
+    <h3>先把活列全，再谈 AI</h3>
+    <ol>
+      <li><b>三条切法都走一遍</b>：流程、日历、抱怨。只走流程会漏掉一半的真实工作量。</li>
+      <li><b>颗粒度到「一个动作」</b>：写清楚输入什么、输出什么。「筛简历」不算，「从 200 份里挑出符合硬性条件的」才算。</li>
+      <li><b>「做错了会怎样」必须填</b>，而且要写具体后果，不写「影响不大」。<b>下一节全靠这一列。</b></li>
+      <li><b>拆的时候不许想 AI。</b>一想就会偏，只拆出看起来能自动化的活。</li>
+    </ol>
+  </div>
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>
