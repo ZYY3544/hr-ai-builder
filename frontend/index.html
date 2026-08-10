@@ -429,6 +429,13 @@ function renderTopics(){
 }
 renderTopics();
 
+const JOBS=[
+{no:'腾讯 · S3',n:'AI-HR 培训生（技术&应用方向）',d:'应届实习 · 深圳总部/成都 · 一口气开了四个方向，说明他们还在试',kp:3},
+{no:'腾讯 · S3',n:'AI-HR 培训生（分析方向）',d:'应届实习 · 深圳总部/上海 · 核心不是会跑模型，是能把口径吵清楚',kp:3},
+{no:'OpenAI · People Innovation',n:'Software Engineer, Full Stack',d:'全职 · Remote-US · 注意形态：工程师进 HR 部门，不是 HR 学 AI',kp:4},
+{no:'ElevenLabs · Engineering',n:'Internal AI Transformation',d:'全职 · Amsterdam/Berlin · 岗位名一个 HR 字没有，做的是同一件事',kp:4},
+{no:'Cognition · Applied AI',n:'Applied AI Transformation Manager',d:'全职 · New York/London · 说服是主业，构建是佐证',kp:4},
+];
 $('#jobcards').innerHTML=JOBS.map(j=>`
  <a class="topic" href="demo.html"><div class="no">${j.no}</div><div class="n">${j.n}</div>
    <div class="d">${j.d}</div>
