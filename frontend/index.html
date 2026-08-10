@@ -96,7 +96,22 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .kb.k-K{background:var(--blue-s);color:var(--blue-d)}
 .kb.k-S{background:var(--green-s);color:var(--green-d)}
 .kb.k-A{background:var(--violet-s);color:var(--violet)}
-.ksarow{display:flex;gap:2px}
+.ksarow{display:flex;gap:2px;align-items:center}
+.topic{cursor:pointer}
+.exp{margin-left:8px;color:var(--violet);font-weight:500;font-size:11px;white-space:nowrap}
+.lessons{display:none;margin-top:12px;padding-top:11px;border-top:1px solid var(--line-soft)}
+.topic.open .lessons{display:block}
+.ls{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:12.5px;
+  color:var(--body);line-height:1.55;border-bottom:1px solid var(--line-soft)}
+.ls:last-child{border-bottom:0}
+a.ls:hover .ln{color:var(--violet)}
+.ls .ln{flex:1}
+.ls.off{color:var(--faint)}
+.ac{font-size:10px;font-weight:600;padding:1px 5px;border-radius:3px;flex:0 0 auto;margin-top:1px}
+.ac-c{background:var(--line-soft);color:var(--muted)}
+.ac-a{background:var(--blue-s);color:var(--blue-d)}
+.ac-n{background:var(--violet-s);color:var(--violet)}
+.ac-t{background:#FEF3C7;color:#92400E;margin-left:4px}
 .topic.isnew{border-color:rgba(124,58,237,.32);background:linear-gradient(180deg,#fbf9ff,#fff)}
 .attrib{font-size:11.5px;color:var(--faint);line-height:1.9}
 .attrib a{color:var(--muted);border-bottom:1px solid var(--line)}
@@ -384,25 +399,42 @@ CO.parts.forEach(p=>p.topics.forEach(t=>FLAT.push({
   neu:t.lessons.filter(l=>l.action==='new').length,
   ada:t.lessons.filter(l=>l.action==='adapt').length,
   ksa:t.lessons.reduce((a,l)=>(a[l.ksa]=(a[l.ksa]||0)+1,a),{}),
+  lessons:t.lessons,
 })));
 
 let onlyNew=false;
+const AC={copy:['沿用','ac-c'],adapt:['改写','ac-a'],new:['原创','ac-n']};
 function renderTopics(){
   const list = onlyNew ? FLAT.filter(t=>t.neu>0) : FLAT;
+  const st=CO.meta.stats||{};
   $('#sortnote').textContent = onlyNew
     ? `${list.length} 个主题含 HR 原创内容 —— learn-ai 里没有的部分`
-    : '按学习顺序排列 · 开篇 → 第零至第六篇章 → 专题';
-  $('#topics').innerHTML=list.map(t=>{
-    const ksa=Object.entries(t.ksa).sort().map(([k,v])=>
-      `<span class="kb k-${k}">${k} ${v}</span>`).join('');
-    return `<div class="topic ${t.neu?'isnew':''}">
+    : `按学习顺序排列 · 点开任一主题可直接进课件 · ${st.ready||0} 节已就绪，${st.todo||0} 节待写`;
+  $('#topics').innerHTML=list.map((t,i)=>{
+    const ksa=Object.entries(t.ksa).sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
+    const rows=t.lessons.map(l=>{
+      const [lbl,cls]=AC[l.action];
+      const inner=`<span class="ln">${l.title}</span><span class="ac ${cls}">${lbl}</span>`;
+      return l.ready
+        ? `<a class="ls" href="slides/${l.file}">${inner}</a>`
+        : `<span class="ls off">${inner}<span class="ac ac-t">待写</span></span>`;
+    }).join('');
+    return `<div class="topic ${t.neu?'isnew':''}" data-i="${i}">
       ${t.neu? '<span class="badge">HR 原创 '+t.neu+'</span>' : ''}
       <span class="ch">${t.part}</span>
       <div class="no">${t.partTitle}</div>
       <div class="n">${t.title}</div>
       <div class="d">${t.desc}</div>
-      <div class="f"><span>${t.n} 个知识点</span><span class="ksarow">${ksa}</span></div>
+      <div class="f"><span>${t.n} 个知识点</span><span class="ksarow">${ksa}<span class="exp">展开 ›</span></span></div>
+      <div class="lessons">${rows}</div>
     </div>`}).join('');
+  $('#topics').querySelectorAll('.topic').forEach(el=>{
+    el.addEventListener('click',e=>{
+      if(e.target.closest('a')) return;
+      el.classList.toggle('open');
+      const x=el.querySelector('.exp'); if(x) x.textContent=el.classList.contains('open')?'收起 ‹':'展开 ›';
+    });
+  });
 }
 document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));

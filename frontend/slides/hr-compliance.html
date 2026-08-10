@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据不出内网 · 匿名的 n 阈值 · 留痕可申诉 · HR AI Builder</title>
+<meta name="description" content="前面几节讲的都是「怎么做成」。这一节讲哪几件事做了就不是技术问题了——踩了这四条，做得多好都没用。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);
+  padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#7C3AED;
+  background:rgba(124,58,237,.16);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;
+  text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)}
+.good .t{color:var(--success)}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第五篇章 · 合规红线</div>
+    <h1>数据不出内网 · 匿名的 n 阈值 · 留痕可申诉</h1>
+    <p class="subtitle">前面几节讲的都是「怎么做成」。这一节讲<b>哪几件事做了就不是技术问题了</b>——踩了这四条，做得多好都没用。</p>
+  </header>
+
+
+  <div class="sec-label">场景 · 法务的一个问题</div>
+
+  <p>你做了个员工画像工具，HRD 看完说很好，准备推。法务在群里问了一句：</p>
+
+  <p style="font-size:16px;color:var(--text);font-weight:600;margin:14px 0">「这个数据从哪来的，员工知道吗？」</p>
+
+  <p>群里安静了。<b>这个问题没有技术答案。</b></p>
+
+  <div class="sec-label">四条红线</div>
+
+  <table class="htab">
+    <tr><th style="width:24%">红线</th><th>为什么</th></tr>
+    <tr>
+      <td><b>① 数据不出内网</b></td>
+      <td>薪酬、绩效、健康、背调、家庭情况——这几类<b>一条都不能调外部 API</b>。
+      「我用的是企业版、承诺不训练」不构成理由：<b>数据离开你的可控边界这个事实本身就是风险</b>，
+      而承担后果的是员工，不是你。这也是为什么<b>本地部署对 HR 是真需求，不是极客爱好</b></td>
+    </tr>
+    <tr>
+      <td><b>② 匿名要有 n 阈值</b></td>
+      <td>见下，这条最常被误解</td>
+    </tr>
+    <tr>
+      <td><b>③ 人事决策必须留痕且可申诉</b></td>
+      <td>AI 参与了筛选、评价、晋升建议，就必须能回答：<b>这个结论是怎么来的、当时用了什么数据、当事人能不能要求复核</b>。
+      答不出来，这个系统就不该上线</td>
+    </tr>
+    <tr>
+      <td><b>④ 不用敏感属性做预测</b></td>
+      <td>性别、年龄、婚育、户籍、健康——<b>不作为特征，也不作为间接特征</b>。
+      注意「间接」：用「预计通勤时长」间接推居住区域，用「最近一次调薪间隔」间接推婚育状态，同样越线</td>
+    </tr>
+  </table>
+
+  <div class="sec-label">为什么 n&lt;5 的匿名是假匿名</div>
+
+  <p>这条最常被当成形式主义，其实是最容易出事的。举个具体的：</p>
+
+  <div class="bad">
+    <span class="t">✕ 一份「匿名」的调研报告</span>
+    某小组 <b>4 人</b>，敬业度均分 <b>2.1</b>（满分 5）。报告里没有姓名，看起来很匿名。<br><br>
+    但组长知道：那 4 个人是谁；他自己心里清楚谁最近有情绪；<b>2.1 分意味着至少两个人打了低分</b>。
+    再结合平时观察，他基本能锁定是谁。<br>
+    → <b>这份「匿名」调研，对那 4 个人来说是实名的。</b>而他们是相信了「匿名」才敢说真话的。
+  </div>
+
+  <p>所以阈值不是走过场：<b>任何切片下真实样本数低于阈值，就不能出这个切片的结果</b>。
+  行业常见做法是 n≥5，敏感议题（举报、心理健康、上级评价）建议提到 n≥10。</p>
+
+  <div class="l-callout">
+    <b>还有一个更隐蔽的：交叉切片。</b>「技术部」有 200 人，安全；「技术部 + 女性 + P7」可能只有 3 人。
+    <b>单看每个维度都安全，交叉之后就露了。</b>所以阈值要在<b>最终输出的每一个切片上</b>校验，不是在原始数据上。
+  </div>
+
+  <div class="rule">
+    <span class="lbl">上线前四问</span>
+    <h3>答不出任何一条，就先别上</h3>
+    <ol>
+      <li><b>数据出没出内网？</b>逐个 API 调用点检查。有一个算一个。</li>
+      <li><b>最小切片的 n 是多少？</b>在<b>最终输出</b>上校验，含所有交叉切片。低于阈值直接不出结果，不是「模糊处理」。</li>
+      <li><b>当事人能不能要求解释和复核？</b>路径是什么、找谁、多久回复。<b>写下来，不是「原则上可以」。</b></li>
+      <li><b>员工知情吗？</b>这是法务真正在问的那个问题。<b>知情同意不是法务的事，是你的设计前提。</b></li>
+    </ol>
+  </div>
+
+  <div class="l-callout" style="margin-top:22px">
+    <b>最后一句，也是这一章的落点：</b>
+    合规不是拖后腿的部门给你设的障碍。<b>HR 手里的数据是全公司最敏感的，没有之一</b>——
+    你比任何人都更该是那个踩刹车的人。这不是限制，<b>这恰恰是 HR 在这场变革里最不可替代的位置。</b>
+  </div>
+
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>内容，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+</body>
+</html>

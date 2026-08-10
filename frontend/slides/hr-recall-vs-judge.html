@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>召回 vs 判定：一道必须写进流程的闸 · HR AI Builder</title>
+<meta name="description" content="上一节我们看到它会编。这一节讲怎么办——不是让它别编（做不到），而是把它放在编了也伤不到人的位置上。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);
+  padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#7C3AED;
+  background:rgba(124,58,237,.16);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;
+  text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)}
+.good .t{color:var(--success)}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第一篇章 · HR 的那道闸</div>
+    <h1>召回 vs 判定：一道必须写进流程的闸</h1>
+    <p class="subtitle">上一节我们看到它会编。这一节讲怎么办——不是让它别编（做不到），而是<b>把它放在编了也伤不到人的位置上</b>。</p>
+  </header>
+
+
+  <div class="sec-label">场景 · 一个你抽查才会发现的问题</div>
+
+  <p>HRD 转给你一份名单：「AI 筛完了，这 30 份是符合『有大厂 AI 项目经验』的。」</p>
+
+  <p>你随手抽了一份。AI 给的理由是「曾任阿里 AI 中台项目负责人，3 年经验」。你打开原简历搜「阿里」——<b>一个字都没有</b>。这个人写的是「参与集团级智能推荐系统建设」。</p>
+
+  <div class="l-callout">
+    <b>注意这个错误的性质。</b>它不是「筛错了」——那个人可能真的合适。它是<b>给了一个原文里没有的理由</b>。
+    也就是说：<b>你没法通过看它的理由来判断它对不对</b>，因为理由本身就是编的。这才是真正危险的地方。
+  </div>
+
+  <div class="sec-label">原理 · 这是两件事，被混成了一件</div>
+
+  <table class="htab">
+    <tr><th style="width:22%"></th><th style="width:39%">召回 Recall</th><th style="width:39%">判定 Judge</th></tr>
+    <tr>
+      <td><b>在问什么</b></td>
+      <td>这份材料<b>有没有可能</b>相关？</td>
+      <td>这个人<b>到底行不行</b>？</td>
+    </tr>
+    <tr>
+      <td><b>错了会怎样</b></td>
+      <td>多捞几份，人多看几分钟</td>
+      <td><b>一个人的机会没了，而且没人知道</b></td>
+    </tr>
+    <tr>
+      <td><b>模型擅长吗</b></td>
+      <td><b>非常擅长。</b>「智能推荐系统」和「AI 项目」的语义关联，关键词方案抓不到，它抓得到</td>
+      <td><b>不可靠。</b>它会为了让结论「看起来站得住」而补全细节——这正是幻觉的机制</td>
+    </tr>
+  </table>
+
+  <p>问题不在于模型差，在于<b>我们把一个它擅长的任务和一个它不擅长的任务，用一句 prompt 合并了</b>。
+  「筛出符合条件的候选人」这句话里，藏着两个动作。它把两个都做了，而你只验收了一个结果。</p>
+
+  <div class="bad">
+    <span class="t">✕ 常见做法</span>
+    「帮我从这 200 份简历里选出最符合岗位要求的 30 份，并说明理由。」<br>
+    → 你拿到 30 份 + 30 条理由。<b>理由是生成的，不是引用的。</b>
+  </div>
+
+  <div class="good">
+    <span class="t">✓ 拆开之后</span>
+    第一步（AI 做）：「把提到过<i>机器学习 / 推荐系统 / 大模型 / 数据智能</i>相关工作的简历标出来，
+    <b>并给出原文中对应的那句话</b>。找不到原句就不要标。」<br>
+    第二步（人做）：看着<b>原句</b>决定这个人行不行。
+  </div>
+
+  <div class="sec-label">为什么「必须带原文」是关键</div>
+
+  <p>要求它<b>引用而不是概括</b>，等于给它加了一道物理约束：原文里没有的话，它引不出来。
+  它当然还是可能引错句子——但<b>引错的句子你一眼能看出来，编出来的理由你看不出来</b>。</p>
+
+  <p>这就把「无法验证的错误」变成了「可以验证的错误」。在 HR 场景里，这个转换比准确率提高十个点重要得多。</p>
+
+  <div class="rule">
+    <span class="lbl">写进流程</span>
+    <h3>AI 只做召回，判定必须回原文</h3>
+    <ol>
+      <li><b>输出必须带出处。</b>任何结论都要附上原文中对应的句子。没有出处的结论一律不采信——不是「打个折扣」，是不采信。</li>
+      <li><b>宁可多捞，不要少捞。</b>召回阶段的目标是不漏，不是准。200 份筛到 50 份比筛到 30 份好，人多看 20 份的成本远低于漏掉一个人。</li>
+      <li><b>不让它输出「推荐 / 不推荐」。</b>一旦你接受这种二元结论，判定权就交出去了，而且它的错误从此对你不可见。</li>
+      <li><b>这条写进 SOP，不是写进备忘录。</b>因为它会被「这次时间紧，先让 AI 直接给结论吧」冲掉——每次都会。</li>
+    </ol>
+  </div>
+
+  <div class="l-callout" style="margin-top:22px">
+    <b>这条规则的适用范围远不止简历。</b>绩效自评归纳、员工调研开放题分析、司龄异常排查、组织盘点结论——
+    凡是 AI 读了一堆材料后给你一个说法的场景，<b>都要问同一句话：这句话在原文哪里？</b>
+  </div>
+
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>内容，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据：真数据碰不得，合成数据怎么造得像 · HR AI Builder</title>
+<meta name="description" content="做 HR AI 作品最大的墙不是不会写代码，是拿不到数据。真数据碰不得，于是作品全变成玩具——这一节讲怎么翻过去。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);
+  padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#7C3AED;
+  background:rgba(124,58,237,.16);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;
+  text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)}
+.good .t{color:var(--success)}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · HR 作品实操</div>
+    <h1>数据：真数据碰不得，合成数据怎么造得像</h1>
+    <p class="subtitle">做 HR AI 作品最大的墙不是不会写代码，是<b>拿不到数据</b>。真数据碰不得，于是作品全变成玩具——这一节讲怎么翻过去。</p>
+  </header>
+
+
+  <div class="sec-label">场景 · 唯一能用的数据恰恰不能用</div>
+
+  <p>你想做薪酬带宽诊断。手上正好有公司的真实薪酬明细——<b>这份数据你一列都不能用</b>。</p>
+
+  <p>不是「最好别用」，是不能用。带出公司是数据泄露；脱敏不彻底可以反推；而且一旦你把它放进作品里，
+  <b>这件事本身就成了你的减分项</b>——任何一个懂行的人看到都会想：这个人对数据边界没有概念。</p>
+
+  <div class="bad">
+    <span class="t">✕ 想当然的做法</span>
+    「我把姓名换成 A、B、C 就行了吧？」<br>
+    → 一份 200 人的薪酬表，就算隐去姓名，<b>只要保留部门 + 职级 + 入职年份，很多人是唯一可识别的</b>。
+    这不叫脱敏，叫换了个马甲。
+  </div>
+
+  <div class="sec-label">原理 · 三条路，只有一条走得通</div>
+
+  <table class="htab">
+    <tr><th style="width:20%">路径</th><th style="width:14%">可行性</th><th>说明</th></tr>
+    <tr><td><b>公开数据集</b></td><td>部分可行</td>
+      <td>招聘 JD、劳动法条文、公开薪酬报告能拿到。但花名册、绩效、组织架构这类<b>公开数据集基本没有</b></td></tr>
+    <tr><td><b>真数据脱敏</b></td><td><b>不建议</b></td>
+      <td>要做到真的不可反推，技术门槛比造合成数据高得多，而且你没有权限做这个决定</td></tr>
+    <tr><td><b>合成数据</b></td><td><b>推荐</b></td>
+      <td>零合规风险，而且<b>你能精确控制里面有什么坑</b>——这反而是优势</td></tr>
+  </table>
+
+  <div class="sec-label">造得像的关键：保留分布，不保留个体</div>
+
+  <p>合成数据的目标不是「假装是真的」，而是<b>保留真实数据的统计结构</b>，这样在它上面做出来的方法才迁移得过去。四步：</p>
+
+  <table class="htab">
+    <tr><th style="width:8%"></th><th style="width:24%">做什么</th><th>怎么做</th></tr>
+    <tr><td><b>1</b></td><td>定 schema</td>
+      <td>照着真实 HR 系统的字段来：工号 / 部门 / 岗位 / 职级 / 入职日期 / 月薪 / 年终奖 / 绩效等级 / 直属上级</td></tr>
+    <tr><td><b>2</b></td><td>定分布</td>
+      <td>薪酬用<b>对数正态</b>（不是正态——高薪长尾是真实的）；职级用金字塔分布；绩效按公司常见的强制分布（如 2/7/1）</td></tr>
+    <tr><td><b>3</b></td><td><b>注入相关性</b></td>
+      <td>这一步最关键。职级↔薪酬要强相关，司龄↔职级要中等相关，绩效↔调薪要弱相关。<b>没有相关性的数据，一跑分析就露馅</b>——所有维度互相独立在现实中不存在</td></tr>
+    <tr><td><b>4</b></td><td><b>注入脏</b></td>
+      <td>见下，这一步决定作品的说服力</td></tr>
+  </table>
+
+  <div class="l-callout">
+    <b>反直觉但极其重要：作品的说服力恰恰来自「脏」。</b><br>
+    干干净净的合成数据做出来的东西，<b>一眼就看得出是玩具</b>——因为真实的 HR 数据从来不长那样。
+    而一个能处理脏数据的作品，证明的是你<b>知道现实长什么样</b>，这比代码写得好重要得多。
+  </div>
+
+  <div class="sec-label">至少注入这三种脏</div>
+
+  <table class="htab">
+    <tr><th style="width:26%">脏法</th><th>怎么造 / 为什么真实</th></tr>
+    <tr><td><b>口径不一致</b></td>
+      <td>一部分记录的薪酬是月薪、一部分是年薪；有的含奖金有的不含。<b>这是 HR 数据最真实的痛，也是最常见的翻车点</b></td></tr>
+    <tr><td><b>主数据对不上</b></td>
+      <td>花名册里有的人在绩效表里没有；部门名称有「技术部」和「技术中心」两种写法；同名不同人</td></tr>
+    <tr><td><b>缺失与异常</b></td>
+      <td>5% 左右的字段空值；几条明显异常的记录（月薪填成了年薪、入职日期在未来）</td></tr>
+  </table>
+
+  <div class="rule">
+    <span class="lbl">数据纪律</span>
+    <h3>合成数据要显式标注，参数要有来源</h3>
+    <ol>
+      <li><b>永远不用真数据做作品。</b>没有例外。这不是保守，这是这个岗位的基本职业素养——第一个考察点。</li>
+      <li><b>显式标注是合成的。</b>在 README 和作品界面里都写清楚。<b>被追问时主动说，比被发现后解释强一百倍。</b></li>
+      <li><b>分布参数要有出处。</b>薪酬分位引用公开报告、绩效分布引用常见强制分布。有出处 = 你知道真实世界什么样。</li>
+      <li><b>至少三种脏。</b>口径不一致、主数据对不上、缺失异常——<b>把清洗这一步做出来，作品的分量就完全不同了。</b></li>
+    </ol>
+  </div>
+
+  <div class="l-callout" style="margin-top:22px">
+    <b>本站正在准备一套开箱即用的脱敏数据集</b>——花名册、绩效分布、薪酬带宽、简历样本、岗位说明书，
+    按上面的方法生成、已注入三类脏、免费开放。<b>这堵墙不该每个人都自己翻一遍。</b>
+  </div>
+
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>内容，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+</body>
+</html>

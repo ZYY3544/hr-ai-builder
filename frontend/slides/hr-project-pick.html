@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>选题：什么样的第一个作品站得住 · HR AI Builder</title>
+<meta name="description" content="第一个作品最常见的死法不是技术不行，是选题太大——三周之后什么都没做完，只剩一堆半成品。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);
+  padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#7C3AED;
+  background:rgba(124,58,237,.16);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule p{color:#94A3B8;font-size:14px;line-height:1.85;margin:0}
+.rule b{color:#fff}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;
+  text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)}
+.good .t{color:var(--success)}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · HR 作品实操</div>
+    <h1>选题：什么样的第一个作品站得住</h1>
+    <p class="subtitle">第一个作品最常见的死法不是技术不行，是<b>选题太大</b>——三周之后什么都没做完，只剩一堆半成品。</p>
+  </header>
+
+
+  <div class="sec-label">场景 · 三周之后什么都没有</div>
+
+  <p>常见开局：「我要做一个 HR 全流程 AI 助手，招聘、培训、绩效、薪酬都能问。」</p>
+
+  <p>第一周搭框架，第二周发现数据对不上，第三周还在调 prompt。三周后你有一个能跑但哪里都不完整的东西，
+  <b>而且你说不清它到底做对了没有</b>——因为「HR 全流程助手」这件事没有对错标准。</p>
+
+  <div class="sec-label">原理 · 好选题的三个硬条件</div>
+
+  <table class="htab">
+    <tr><th style="width:26%">条件</th><th>怎么自查</th></tr>
+    <tr>
+      <td><b>① 数据拿得到</b></td>
+      <td>哪怕是合成的、公开的。<b>拿不到数据的选题，再好也是零</b>。下一节专门讲怎么造数据</td>
+    </tr>
+    <tr>
+      <td><b>② 对错说得清</b></td>
+      <td><b>你能不能用一句话说清「它做对了」是什么意思？</b>说不清，就没法验证；没法验证，就没法迭代，也没法向别人证明</td>
+    </tr>
+    <tr>
+      <td><b>③ 两周做得完</b></td>
+      <td>一个人、业余时间、两周。超了就砍范围，不是延期——延期的项目 90% 死在第四周</td>
+    </tr>
+  </table>
+
+  <div class="l-callout">
+    <b>三条里第 ② 条最容易被跳过，也最致命。</b>
+    「AI 助手」说不清对错；「从 500 行薪酬明细里找出低于带宽下限的人」说得清——<b>答案是一个确定的名单，可以逐条核对</b>。
+    两者的工作量差不多，但后者做完你有证据，前者做完你只有一个 demo。
+  </div>
+
+  <div class="sec-label">六个能站住的选题</div>
+
+  <table class="htab">
+    <tr><th style="width:27%">选题</th><th style="width:11%">工期</th><th>为什么站得住 / 常被追问什么</th></tr>
+    <tr>
+      <td><b>JD 生成 + 能力标准化</b></td><td>1–2 周</td>
+      <td><b>数据门槛最低</b>（公开招聘网站 JD 就够），适合第一个作品。<br><i>会被问：</i>你的能力词表从哪来的？两个人用同一段需求，生成的 JD 一样吗？</td>
+    </tr>
+    <tr>
+      <td><b>简历初筛 + 幻觉闸</b></td><td>2–3 周</td>
+      <td>亮点不是「能筛」，是<b>你设了一道闸</b>——这体现判断力而不只是手艺。<br><i>会被问：</i>你怎么证明它没漏掉好人？召回率怎么测的？</td>
+    </tr>
+    <tr>
+      <td><b>薪酬带宽诊断</b></td><td>2–3 周</td>
+      <td>直接对标咨询公司的交付物，<b>结论可逐条核对</b>。<br><i>会被问：</i>口径按月薪还是年薪？市场分位数据哪来的、可信吗？</td>
+    </tr>
+    <tr>
+      <td><b>员工政策问答（RAG）</b></td><td>2 周</td>
+      <td>数据门槛低（公开员工手册 / 劳动法条文），<b>重点不是问答，是答错了怎么办</b>。<br><i>会被问：</i>怎么让它在不确定时说「我不知道」？制度改了怎么同步？</td>
+    </tr>
+    <tr>
+      <td><b>组织盘点自动化</b></td><td>3–4 周</td>
+      <td><b>最难的一个</b>，需要多表关联。做成了含金量最高。<br><i>会被问：</i>潜力这个维度你怎么量化的？两个系统花名册对不上怎么处理？</td>
+    </tr>
+    <tr>
+      <td><b>一个部门的 AI 场景 ROI 盘点</b></td><td>1–2 周</td>
+      <td><b>唯一一个不写代码也能做的</b>，适合非技术背景起步。交付的是判断不是工具。<br><i>会被问：</i>你凭什么认为这条能被 AI 干？省下的时间人去干什么？</td>
+    </tr>
+  </table>
+
+  <div class="rule">
+    <span class="lbl">选题铁律</span>
+    <h3>窄且能验证，压过大而全</h3>
+    <ol>
+      <li><b>先写验收标准，再动手。</b>一句话：「做对了 = ______」。写不出来就换选题，别指望做着做着就清楚了。</li>
+      <li><b>范围只减不增。</b>两周做不完就砍功能，不延期。<b>一个完整的小东西，价值远高于一个残缺的大东西。</b></li>
+      <li><b>选你真的痛过的那件事。</b>你亲手做过的那些活，你知道坑在哪——这是别人看不出来但一追问就露馅的差距。</li>
+      <li><b>提前想好被追问怎么答。</b>上表右栏那些问题，做的过程中就记录答案。<b>大多数人做得出来但讲不清楚，讲清楚的人才显得真做过。</b></li>
+    </ol>
+  </div>
+
+
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>内容，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+</body>
+</html>
