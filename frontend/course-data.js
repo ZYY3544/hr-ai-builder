@@ -256,7 +256,7 @@ window.COURSE = {
     },
     {
      "title": "日常用它的手感",
-     "desc": "一份用 AI 的日常指南 —— 从原第二篇章挪来，免费模块就完整了",
+     "desc": "一份用 AI 的日常指南，读完就能上手",
      "lessons": [
       {
        "file": "ai-tips-boundary.html",
@@ -349,7 +349,7 @@ window.COURSE = {
    "id": "p-1",
    "num": "第一篇章",
    "title": "幻觉与边界：它靠不靠得住",
-   "desc": "HR 犯错的代价是人的职业生涯。所以先学它会怎么错，再学它能干什么。本章起进入主线案例 —— 简历初筛，它会一路贯穿到第五篇章。",
+   "desc": "HR 犯错的代价是人的职业生涯。所以先学它会怎么错，再学它能干什么。本章起进入主线案例「简历初筛」，它会一路贯穿到第五篇章。",
    "freeWhole": false,
    "topics": [
     {
@@ -401,7 +401,7 @@ window.COURSE = {
        "ksa": "K",
        "title": "它会编：筛简历现场",
        "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场",
-       "desc": "★主线起点",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -423,7 +423,7 @@ window.COURSE = {
        "ksa": "S",
        "title": "应对 2：RAG——让它只答制度里有的",
        "seo": "RAG 是什么？让 AI 只回答公司制度里写过的内容",
-       "desc": "换员工政策问答场景（副线）",
+       "desc": "换员工政策问答场景",
        "spine": false,
        "free": false,
        "ready": true
@@ -454,7 +454,7 @@ window.COURSE = {
     },
     {
      "title": "上下文窗口：它为什么会忘",
-     "desc": "从原第二篇章挪来 —— 会忘也是不靠谱的一种",
+     "desc": "会忘也是不靠谱的一种",
      "lessons": [
       {
        "file": "5-1.html",
@@ -473,7 +473,7 @@ window.COURSE = {
        "ksa": "K",
        "title": "上下文溢出：三种处理策略",
        "seo": "对话太长 AI 就失忆？上下文溢出的三种处理办法",
-       "desc": "一场组织盘点跑到一半失忆（副线）",
+       "desc": "一场组织盘点跑到一半失忆",
        "spine": false,
        "free": true,
        "ready": true
@@ -490,7 +490,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "召回 vs 判定：它编的理由你验不出来",
        "seo": "AI 筛简历给的理由是编的怎么办？召回与判定必须拆开",
-       "desc": "★主线",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -501,7 +501,7 @@ window.COURSE = {
        "ksa": "S",
        "title": "怎么让它只引用、不概括",
        "seo": "怎么让 AI 引用原文而不是自己概括？一个可执行的 Prompt 约束",
-       "desc": "★主线·从原节拆出",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -583,7 +583,7 @@ window.COURSE = {
        "ksa": "K",
        "title": "简历里的白色字体：HR 场景的注入攻击",
        "seo": "候选人在简历里藏白色字体骗过 AI 筛选，怎么防？",
-       "desc": "★主线",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -664,7 +664,7 @@ window.COURSE = {
     },
     {
      "title": "Token 与成本：它花你多少钱",
-     "desc": "决定什么值得做 —— 归位，原提纲漏了这个主题",
+     "desc": "知道它花你多少钱，才知道什么值得做",
      "lessons": [
       {
        "file": "8-1.html",
@@ -713,7 +713,7 @@ window.COURSE = {
    "id": "p-3",
    "num": "第三篇章",
    "title": "RAG 与 Eval：怎么让它干你这家公司的活",
-   "desc": "通用 AI 谁都能用。想让它干你这家公司的活，得把你的判断和你的数据喂进去，再验证它有没有学对。★ learn-ai 完全没有这一章 —— 这是这个角色真正的护城河。",
+   "desc": "通用 AI 谁都能用。想让它干你这家公司的活，得把你的判断和你的数据喂进去，再验证它有没有学对。这是这个角色真正的护城河。",
    "freeWhole": false,
    "topics": [
     {
@@ -726,7 +726,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "你已经会用了，接下来的问题不一样了",
        "seo": "会用 AI 之后呢？从「它靠不靠谱」到「你担什么责」",
-       "desc": "★过渡节·归位",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -743,7 +743,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "隐性知识显性化：老法师那一眼在看什么",
        "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？",
-       "desc": "★主线·需素材",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -754,7 +754,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "拆到哪一层为止：哪些永远进不了 Prompt",
        "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI",
-       "desc": "需素材",
+       "desc": "",
        "spine": false,
        "free": true,
        "ready": true
@@ -765,7 +765,7 @@ window.COURSE = {
        "ksa": "S",
        "title": "从规则到 Prompt：判断链怎么落地",
        "seo": "把萃取出来的判断规则写成 Prompt 的具体做法",
-       "desc": "需素材",
+       "desc": "",
        "spine": true,
        "free": false,
        "ready": true
@@ -782,7 +782,7 @@ window.COURSE = {
        "ksa": "K",
        "title": "知识库的原料：三个系统、五种口径、人名对不上",
        "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场",
-       "desc": "薪酬/花名册（副线）·需素材",
+       "desc": "薪酬/花名册",
        "spine": false,
        "free": true,
        "ready": true
@@ -793,7 +793,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "Garbage in：口径不确认，它算出来的全是假的",
        "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的",
-       "desc": "需素材",
+       "desc": "",
        "spine": false,
        "free": true,
        "ready": true
@@ -804,7 +804,7 @@ window.COURSE = {
        "ksa": "S",
        "title": "切片与清洗：喂进 RAG 之前要做什么",
        "seo": "文档怎么切片、数据怎么清洗，才能喂进 RAG",
-       "desc": "需素材",
+       "desc": "",
        "spine": false,
        "free": false,
        "ready": true
@@ -854,7 +854,7 @@ window.COURSE = {
        "ksa": "S",
        "title": "阴性对照：先注入已知的错，看它抓不抓得住",
        "seo": "怎么验证你的 AI 评测本身是有效的？先做阴性对照",
-       "desc": "★主线·往简历堆里埋假简历",
+       "desc": "往简历堆里埋假简历",
        "spine": true,
        "free": false,
        "ready": true
@@ -984,7 +984,7 @@ window.COURSE = {
     },
     {
      "title": "做出你的第一个作品",
-     "desc": "★ 把方法用在 HR 场景上，交出一个真能跑的东西",
+     "desc": "把方法用在 HR 场景上，交出一个真能跑的东西",
      "lessons": [
       {
        "file": "hr-project-pick.html",
@@ -992,7 +992,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "选题：什么样的第一个作品站得住",
        "seo": "HR 做 AI 作品选什么题？六个能站住的选题",
-       "desc": "★主线·简历初筛是第一选题",
+       "desc": "简历初筛是第一选题",
        "spine": true,
        "free": true,
        "ready": true
@@ -1014,7 +1014,7 @@ window.COURSE = {
        "ksa": "S",
        "title": "一周做出能点的原型：从想法到 demo",
        "seo": "一周内把一个 HR 场景做成能演示的原型",
-       "desc": "★主线",
+       "desc": "",
        "spine": true,
        "free": false,
        "ready": true
@@ -1025,7 +1025,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "作品怎么讲：别人在追问什么",
        "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题",
-       "desc": "★主线",
+       "desc": "",
        "spine": true,
        "free": false,
        "ready": true
@@ -1060,7 +1060,7 @@ window.COURSE = {
    "topics": [
     {
      "title": "场景盘点：哪些活能交给它",
-     "desc": "★ 全新 —— 不是讲观点，是给可执行的动作",
+     "desc": "不是讲观点，是给可执行的动作",
      "lessons": [
       {
        "file": "hr-inventory-1.html",
@@ -1090,7 +1090,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "算账：省多少、风险多大、第一刀切哪",
        "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里",
-       "desc": "★主线·简历初筛为什么是好的第一刀",
+       "desc": "简历初筛为什么是好的第一刀",
        "spine": true,
        "free": false,
        "ready": true
@@ -1107,7 +1107,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "AI 该有多大的自由",
        "seo": "AI Agent 该有多大权限？它能不能自己发拒信",
-       "desc": "★主线",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -1146,7 +1146,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "怎么跟老板讲清楚「它有 8% 会错」",
        "seo": "AI 有 8% 会出错，怎么跟老板汇报才通得过",
-       "desc": "★主线",
+       "desc": "",
        "spine": true,
        "free": true,
        "ready": true
@@ -1177,7 +1177,7 @@ window.COURSE = {
     },
     {
      "title": "人机分工：组织会变成什么样",
-     "desc": "★ 全新 —— 必须挂真实案例，否则就是 PPT 废话",
+     "desc": "AI 接管之后，岗位和能力会怎么变",
      "lessons": [
       {
        "file": "hr-org-1.html",
@@ -1185,7 +1185,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "把岗位拆开重组：它接管之后这个岗位还剩什么",
        "seo": "AI 接管之后，HR 岗位该怎么重新设计？",
-       "desc": "需素材",
+       "desc": "",
        "spine": false,
        "free": true,
        "ready": true
@@ -1196,7 +1196,7 @@ window.COURSE = {
        "ksa": "A",
        "title": "你会的哪些东西正在被模型吃掉",
        "seo": "HR 的哪些技能正在被 AI 取代？哪些反而更值钱",
-       "desc": "需素材",
+       "desc": "",
        "spine": false,
        "free": true,
        "ready": true

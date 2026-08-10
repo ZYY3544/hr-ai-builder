@@ -106,7 +106,6 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .ac-n{background:var(--violet-s);color:var(--violet)}
 .ac-t{background:#FEF3C7;color:#92400E;margin-left:4px}
 .lk{font-size:10px;margin-right:5px;opacity:.6}
-.topic.isnew{border-color:rgba(124,58,237,.32);background:linear-gradient(180deg,#fbf9ff,#fff)}
 .attrib{font-size:11.5px;color:var(--faint);line-height:1.9}
 .attrib a{color:var(--muted);border-bottom:1px solid var(--line)}
 .attrib a:hover{color:var(--violet)}
@@ -130,11 +129,7 @@ section{scroll-margin-top:64px}
   color:var(--blue-d);background:var(--blue-s)}
 .wcard .go{font-size:12.5px;font-weight:500;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.toggle{display:inline-flex;background:var(--line-soft);border-radius:22px;padding:3px;margin-top:24px}
-.toggle button{font:inherit;font-size:12.5px;font-weight:500;padding:5px 16px;border:0;border-radius:20px;
-  background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
-.toggle button.on{background:#fff;color:var(--violet);box-shadow:0 1px 4px rgba(15,23,42,.12)}
-.sortnote{font-size:11.5px;color:var(--faint);margin-left:12px}
+.curmeta{font-size:12px;color:var(--faint);margin-top:22px}
 .topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:14px;margin-top:20px}
 .topic{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r-l);
   padding:17px 19px;transition:.18s;display:flex;flex-direction:column}
@@ -148,9 +143,6 @@ section{scroll-margin-top:64px}
 .topic .ch{position:absolute;top:15px;right:17px;font-size:10px;font-weight:600;color:var(--muted);
   background:var(--line-soft);border-radius:4px;padding:1px 6px}
 .topic.free .ch{background:var(--green-s);color:var(--green-d)}
-.badge{position:absolute;top:-9px;left:17px;font-size:10.5px;font-weight:600;color:#fff;
-  background:var(--grad-r);border-radius:5px;padding:2px 9px;
-  box-shadow:0 4px 12px -4px rgba(124,58,237,.8)}
 
 .contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
 @media(max-width:860px){.contact{grid-template-columns:1fr}}
@@ -292,22 +284,14 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 <section class="band" id="curriculum">
   <div class="wrap">
     <div class="eyebrow">Curriculum</div>
-    <h2 id="curTitle">9 篇章 · 82 节</h2>
+    <h2 id="curTitle">9 篇章 · 87 节</h2>
     <p class="desc">
-      本课程衍生自 <a href="https://xueai.app" target="_blank" rel="noopener" style="color:var(--violet)">洛小山《AI 产品从入门到精通》</a>，
-      依 AGPL-3.0 开源并保留原作者署名。原课程 231 节面向 AI 产品经理，<b>我们保留约三成、删去对 HR 无用的部分，再补进 16 节 HR 独有内容</b>。<br>
-      每一节都是「<b>HR 场景 → 原理 → 一条能执行的规则</b>」三段式——通用原理一个字不少讲，但它被夹在两个 HR 场景中间。
-      第零篇章是纯通用总览，零基础可看、<b>全章免费</b>。<br>
-      🧵 标记的节属于<b>主线案例「简历初筛」</b>——它从第一篇章一路贯穿到第五篇章，
-      你会看着同一个东西从「会翻车」→「被设闸」→「被喂进判断」→「被亲手做出来」→「被推上线、被追责」。
+      从「它靠不靠得住」到「让它在组织里活下来」，<b>每一节都是「HR 场景 → 原理 → 一条能执行的规则」三段式</b>——
+      通用原理一个字不少讲，但它被夹在两个 HR 场景中间，你从第一句就知道这跟自己什么关系。<br>
+      <b>「简历初筛」是贯穿全课的主线案例</b>：你会看着同一件事从「会翻车」→「被设闸」→「被喂进判断」→「被亲手做出来」→「被推上线、被追责」。<br>
+      第零篇章是纯通用总览，零基础可看、<b>全章免费</b>。
     </p>
-    <div style="display:flex;align-items:center;flex-wrap:wrap">
-      <div class="toggle">
-        <button class="on" data-s="order">全部课程</button>
-        <button data-s="new">只看 HR 原创</button>
-      </div>
-      <span class="sortnote" id="sortnote">按近 7 天浏览热度排序</span>
-    </div>
+    <div class="curmeta" id="sortnote"></div>
     <div class="topics" id="topics"></div>
   </div>
 </section>
@@ -399,33 +383,27 @@ CO.parts.forEach(p=>p.topics.forEach(t=>FLAT.push({
   lessons:t.lessons,
 })));
 
-let onlyNew=false;
 const AC={copy:['沿用','ac-c'],adapt:['改写','ac-a'],new:['原创','ac-n']};
 function renderTopics(){
-  const list = onlyNew ? FLAT.filter(t=>t.neu>0) : FLAT;
+  const list = FLAT;
   const st=CO.meta.stats||{};
-  $('#sortnote').textContent = onlyNew
-    ? `${list.length} 个主题含 HR 原创内容 —— learn-ai 里没有的部分`
-    : `按学习顺序排列 · 点任一卡片进入课程阅读器 · ${(CO.meta.access||{}).free||0} 节免费直读，${(CO.meta.access||{}).locked||0} 节登录后读`;
+  const a=CO.meta.access||{};
+  $('#sortnote').textContent = `按学习顺序排列 · 点任一卡片进入课程阅读器 · ${a.free||0} 节免费直读，${a.locked||0} 节登录后读`;
   $('#topics').innerHTML=list.map(t=>{
     const ksa=Object.entries(t.ksa).sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
     const first=(t.lessons.find(l=>l.ready)||{}).file;
     const lock=t.lessons.filter(l=>!l.free).length;
-    const inner=`${t.neu? '<span class="badge">HR 原创 '+t.neu+'</span>' : ''}
-      <span class="ch">${t.part}</span>
+    const inner=`<span class="ch">${t.part}</span>
       <div class="no">${t.partTitle}</div>
       <div class="n">${t.title}</div>
       <div class="d">${t.desc}</div>
       <div class="f"><span>${t.n} 个知识点${t.spine?' · 🧵'+t.spine:''}${lock?' · '+lock+' 节登录后读':''}</span>
         <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
     return first
-      ? `<a class="topic ${t.neu?'isnew':''}" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
+      ? `<a class="topic" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
       : `<div class="topic dim">${inner}</div>`;
   }).join('');
 }
-document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on'); onlyNew=(b.dataset.s==='new'); renderTopics();});
 
 const JOBS=[
 {no:'腾讯 · S3',n:'AI-HR 培训生（技术&应用方向）',d:'应届实习 · 深圳总部/成都 · 一口气开了四个方向，说明他们还在试',kp:3},
@@ -444,7 +422,7 @@ $('#jobcards').innerHTML=JOBS.map(j=>`
   const st=CO.meta&&CO.meta.stats||{};
   const el=document.getElementById('statline');
   if(el&&st.lessons) el.innerHTML=
-    `${st.parts} 篇章 · <b>${st.lessons}</b> 节 —— 沿用 ${st.copy} · 改写 ${st.adapt} · <b>HR 原创 ${st.new}</b>`;
+    `${st.parts} 篇章 · <b>${st.lessons}</b> 节 · 全部从 HR 场景倒着写`;
 })();
 
 renderTopics();
