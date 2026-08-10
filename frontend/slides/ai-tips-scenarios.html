@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>场景速查：什么时候放心用、什么时候要小心 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+:root{--green:var(--success);--red:var(--danger);--muted:var(--sub)}
+
+/* 筛选按钮 */
+.filter-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.filter-label{font-size:13px;color:var(--muted);font-weight:600}
+.filter-btn{padding:8px 16px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--sub);font-family:inherit;min-height:36px}
+.filter-btn.active{color:white}
+.filter-btn.f-all.active{background:var(--accent);border-color:var(--accent)}
+.filter-btn.f-green.active{background:var(--green);border-color:var(--green)}
+.filter-btn.f-amber.active{background:var(--amber);border-color:var(--amber)}
+.filter-btn.f-red.active{background:var(--red);border-color:var(--red)}
+
+/* 双栏：左列表 + 右详情 */
+.sc-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;align-items:start}
+
+.card-list{display:flex;flex-direction:column;gap:10px}
+.scene-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius-sm);padding:13px 15px;cursor:pointer;transition:all .2s;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow-card)}
+.scene-card:hover{transform:translateX(3px);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.scene-card.active{border-color:var(--accent);background:rgba(0,102,255,.03)}
+.scene-card.hidden{display:none}
+.sc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.sc-body{flex:1;min-width:0}
+.sc-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:2px}
+.sc-desc{font-size:12px;color:var(--sub);line-height:1.4}
+.sc-risk{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:800;margin-top:4px}
+
+/* 右侧详情（桌面 sticky） */
+.detail-panel{display:flex;flex-direction:column;gap:12px;position:sticky;top:20px}
+
+.detail-hd{display:flex;align-items:center;gap:12px}
+.detail-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.detail-title{font-size:18px;font-weight:800;color:var(--text)}
+.detail-risk{font-size:12px;font-weight:700;margin-top:2px}
+
+.info-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow-card)}
+.ic-label{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.ic-body{font-size:14px;color:var(--sub);line-height:1.7}
+.ic-body strong{color:var(--text)}
+.ic-list{display:flex;flex-direction:column;gap:6px}
+.ic-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.55}
+.ic-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dd-col{border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;line-height:1.7}
+.dd-col strong{display:block;font-size:11px;letter-spacing:.3px;margin-bottom:5px}
+.dd-do{background:rgba(22,163,74,.06);border:1.5px solid rgba(22,163,74,.15);color:#14532d}
+.dd-do strong{color:var(--green)}
+.dd-dont{background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.15);color:#7c2d12}
+.dd-dont strong{color:var(--red)}
+
+@media (max-width:768px){
+  .sc-layout{grid-template-columns:1fr;gap:16px}
+  .detail-panel{position:static}
+  .do-dont{grid-template-columns:1fr}
+  .filter-btn{padding:9px 15px}
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="AI 使用场景速查表：9 个常见场景按风险分为放心用、要小心、高危三类。写邮件、头脑风暴、翻译可放心用；数据分析、写代码要验证；法律、医疗、投资是幻觉高危区。">
+<meta name="keywords" content="AI使用场景,AI风险分级,AI幻觉,什么时候用AI,AI实用技巧">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/ai-tips-scenarios.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/ai-tips-scenarios.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/ai-tips-scenarios.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/ai-tips-scenarios.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/ai-tips-scenarios.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="场景速查：什么时候放心用、什么时候要小心">
+<meta property="og:description" content="9 个常见 AI 使用场景按风险分为放心用、要小心、高危三类，每个场景附使用技巧和 Do/Don't 清单。">
+<meta property="og:url" content="https://xueai.app/slides/ai-tips-scenarios.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="场景速查：什么时候放心用、什么时候要小心">
+<meta name="twitter:description" content="9 个常见 AI 使用场景按风险分为放心用、要小心、高危三类，每个场景附使用技巧和 Do/Don't 清单。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"场景速查：什么时候放心用","name":"场景速查：什么时候放心用","url":"https://xueai.app/slides/ai-tips-scenarios.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 实用技巧","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"AI 使用场景速查表：9 个常见场景按风险分为放心用、要小心、高危三类。写邮件、头脑风暴、翻译可放心用；数据分析、写代码要验证；法律、医疗、投资是幻觉高危区。"}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+  <header class="lesson-header">
+    <div class="kicker">实用技巧</div>
+    <h1>场景速查：什么时候放心用</h1>
+    <p class="subtitle">9 个常见场景，按风险分成三档。点击左侧场景卡片查看详细指南，也可以按风险等级筛选。</p>
+  </header>
+
+  <div class="filter-row">
+    <span class="filter-label">筛选：</span>
+    <button class="filter-btn f-all active" onclick="filterBy('all',this)">全部</button>
+    <button class="filter-btn f-green" onclick="filterBy('green',this)">放心用</button>
+    <button class="filter-btn f-amber" onclick="filterBy('amber',this)">要小心</button>
+    <button class="filter-btn f-red" onclick="filterBy('red',this)">高危</button>
+  </div>
+
+  <div class="sc-layout">
+    <div class="card-list" id="cardList"></div>
+    <div class="detail-panel" id="detailPanel"></div>
+  </div>
+</article>
+
+<script>
+const SCENES = [
+  {
+    icon:'📧', risk:'green', riskText:'放心用', title:'写邮件 / 周报',
+    desc:'日常文字工作的高效助手',
+    iconBg:'rgba(22,163,74,.1)',
+    detail:'AI 擅长格式化写作，给定背景后能快速出稿。你对内容熟悉，容易检查。',
+    tips:['给出具体事实和数据，AI 才能写出有料的内容','指定语气和长度，避免 AI 自由发挥','快速过一遍确认没有编造的数据'],
+    doList:['提供本周具体工作内容','指定风格：务实 / 正式 / 轻松','让 AI 先出框架，你再补细节'],
+    dontList:['只说「帮我写周报」没有任何背景','不检查就直接发出去','让 AI 编你没做过的事情']
+  },
+  {
+    icon:'💡', risk:'green', riskText:'放心用', title:'头脑风暴 / 创意发散',
+    desc:'快速生成大量想法和方向',
+    iconBg:'rgba(22,163,74,.1)',
+    detail:'头脑风暴阶段不需要 100% 准确，AI 的发散能力在这里正是优势。幻觉反而可能带来意外的创意。',
+    tips:['告诉 AI 你要多少个方案（如「给 10 个方向」）','设定约束条件反而能激发更好的创意','让 AI 从不同角色/视角来思考同一问题'],
+    doList:['明确目标和约束条件','让 AI 列 10-20 个方向供筛选','用「如果…会怎样」引导发散'],
+    dontList:['把 AI 的创意直接当方案用','不做可行性评估','只让 AI 列一两个选项']
+  },
+  {
+    icon:'🌐', risk:'green', riskText:'放心用', title:'翻译 / 润色 / 改写',
+    desc:'语言处理是 AI 的强项',
+    iconBg:'rgba(22,163,74,.1)',
+    detail:'翻译和文字润色是大模型训练最充分的领域。你提供原文，AI 做语言转换，结果可控且易验证。',
+    tips:['指定目标风格：正式/口语/学术','提供领域术语表提升专业度','中英互译质量已经非常高'],
+    doList:['提供完整原文和目标风格','专业领域给出术语参考','分段翻译长文，保持一致性'],
+    dontList:['翻译后不做通读检查','依赖 AI 翻译法律合同等重要文件','忽略文化差异和语境']
+  },
+  {
+    icon:'📊', risk:'amber', riskText:'要小心', title:'数据分析 / 报告解读',
+    desc:'能帮忙分析，但数据要你提供',
+    iconBg:'rgba(217,119,6,.1)',
+    detail:'AI 擅长找规律、写分析，但它不能访问你的数据库。你必须把数据贴给它，并且验证它的计算是否正确。',
+    tips:['直接把数据粘贴到对话中','让 AI 先说分析思路，确认后再出结论','关键数字自己用 Excel 复核一遍'],
+    doList:['提供完整数据和分析目标','让 AI 解释分析逻辑','交叉验证关键结论'],
+    dontList:['让 AI 猜你的数据','直接引用 AI 算出的数字做决策','不核实就放到汇报 PPT 里']
+  },
+  {
+    icon:'📝', risk:'amber', riskText:'要小心', title:'学习新概念 / 技术调研',
+    desc:'可以快速入门，但要交叉验证',
+    iconBg:'rgba(217,119,6,.1)',
+    detail:'AI 适合快速建立初步认知框架，但细节可能有误。尤其是最新技术、小众领域，训练数据可能覆盖不足。',
+    tips:['让 AI 用类比解释概念，建立直觉','追问「这个说法的来源是什么」','拿 AI 给的关键词去搜索验证'],
+    doList:['说明你的知识水平（小白/有基础）','要求 AI 用类比和例子解释','把 AI 当起点，再去查权威资料'],
+    dontList:['把 AI 说的当教科书','不验证就写进文档/报告','问最新 24 小时的技术动态']
+  },
+  {
+    icon:'💻', risk:'amber', riskText:'要小心', title:'写代码 / 调 Bug',
+    desc:'效率提升巨大，但要运行验证',
+    iconBg:'rgba(217,119,6,.1)',
+    detail:'AI 写代码能力很强，但会编造不存在的 API、混用不同版本的语法。代码看起来对、运行却报错是常见情况。',
+    tips:['给出具体技术栈和版本号','让 AI 解释代码逻辑，不只是复制粘贴','每段代码都实际运行测试'],
+    doList:['明确语言、框架和版本','贴上报错信息让 AI 帮排查','让 AI 写单元测试验证自己的代码'],
+    dontList:['不运行就把代码上线','假设 AI 的 API 调用方式是正确的','忽略安全问题（SQL注入等）']
+  },
+  {
+    icon:'⚖️', risk:'red', riskText:'高危', title:'法律法规 / 合同条款',
+    desc:'AI 会编造法条，绝不能直接采信',
+    iconBg:'rgba(220,38,38,.1)',
+    detail:'法律是幻觉重灾区。AI 会编造逼真的法条号、司法解释、判例。格式完美但内容虚假，非专业人士完全无法分辨。',
+    tips:['只用 AI 做初步框架或思路参考','每一条法规都去官方数据库核实','最终版本必须经过法务审核'],
+    doList:['让 AI 列出可能相关的法律方向','用 AI 整理合同结构框架','明确标注「仅供参考，需法务确认」'],
+    dontList:['直接引用 AI 给的法条号','用 AI 生成的合同直接签署','相信 AI 说的「根据第X条」']
+  },
+  {
+    icon:'🏥', risk:'red', riskText:'高危', title:'医疗健康建议',
+    desc:'关乎生命安全，AI 不能替代医生',
+    iconBg:'rgba(220,38,38,.1)',
+    detail:'AI 可能给出错误的药物剂量、混淆疾病症状、推荐不恰当的治疗方案。医疗领域的错误可能危及生命。',
+    tips:['可以用 AI 了解常识性知识','任何涉及诊断、用药的问题必须看医生','AI 给的参考文献也要验证真伪'],
+    doList:['了解基本的医学常识概念','整理症状描述，方便就医时沟通','用 AI 帮忙理解检查报告的术语'],
+    dontList:['按 AI 建议自行用药','用 AI 替代就医诊断','在紧急情况下先问 AI']
+  },
+  {
+    icon:'📈', risk:'red', riskText:'高危', title:'财务决策 / 投资建议',
+    desc:'AI 不能预测市场，数据经常编造',
+    iconBg:'rgba(220,38,38,.1)',
+    detail:'AI 无法获取实时市场数据，会编造公司财报数字、市场走势。投资决策需要真实数据和专业判断，AI 两者都不具备。',
+    tips:['绝不根据 AI 的分析做投资决定','具体数据去金融终端或公开财报核实','AI 可以帮你整理分析框架，但不能替代分析师'],
+    doList:['让 AI 帮你整理分析模板','贴入真实数据让 AI 做格式化处理','用 AI 了解金融概念和术语'],
+    dontList:['问 AI「某股票会涨还是跌」','相信 AI 给出的具体财务数字','用 AI 输出直接做投资报告']
+  }
+];
+
+const RISK_META = {
+  green:{color:'var(--green)',bg:'rgba(22,163,74,.1)',label:'低风险 · 放心用'},
+  amber:{color:'var(--amber)',bg:'rgba(217,119,6,.1)',label:'中风险 · 要小心'},
+  red:{color:'var(--red)',bg:'rgba(220,38,38,.1)',label:'高风险 · 必须核查'}
+};
+
+function renderCards() {
+  const list = document.getElementById('cardList');
+  list.innerHTML = '';
+  SCENES.forEach((s,i) => {
+    const m = RISK_META[s.risk];
+    const card = document.createElement('div');
+    card.className = 'scene-card' + (i===0?' active':'');
+    card.dataset.risk = s.risk;
+    card.innerHTML = `
+      <div class="sc-icon" style="background:${s.iconBg}">${s.icon}</div>
+      <div class="sc-body">
+        <div class="sc-title">${s.title}</div>
+        <div class="sc-desc">${s.desc}</div>
+        <span class="sc-risk" style="background:${m.bg};color:${m.color}">${s.riskText}</span>
+      </div>
+    `;
+    card.onclick = () => {
+      document.querySelectorAll('.scene-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      showDetail(i);
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      }
+    };
+    list.appendChild(card);
+  });
+}
+
+function showDetail(idx) {
+  const s = SCENES[idx];
+  const m = RISK_META[s.risk];
+  const panel = document.getElementById('detailPanel');
+  panel.innerHTML = `
+    <div class="detail-hd">
+      <div class="detail-icon" style="background:${s.iconBg}">${s.icon}</div>
+      <div>
+        <div class="detail-title">${s.title}</div>
+        <div class="detail-risk" style="color:${m.color}">${m.label}</div>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label" style="color:${m.color}">场景说明</div>
+      <div class="ic-body">${s.detail}</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label" style="color:var(--accent)">使用技巧</div>
+      <div class="ic-list">${s.tips.map(t => `<div class="ic-item"><div class="ic-dot" style="background:var(--accent)"></div><span>${t}</span></div>`).join('')}</div>
+    </div>
+    <div class="do-dont">
+      <div class="dd-col dd-do">
+        <strong>✅ 应该这样做</strong>
+        ${s.doList.map(d => '· ' + d).join('<br>')}
+      </div>
+      <div class="dd-col dd-dont">
+        <strong>❌ 不要这样做</strong>
+        ${s.dontList.map(d => '· ' + d).join('<br>')}
+      </div>
+    </div>
+  `;
+}
+
+function filterBy(risk, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.scene-card').forEach(card => {
+    if (risk === 'all' || card.dataset.risk === risk) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  const firstVisible = document.querySelector('.scene-card:not(.hidden)');
+  if (firstVisible) firstVisible.click();
+}
+
+renderCards();
+showDetail(0);
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

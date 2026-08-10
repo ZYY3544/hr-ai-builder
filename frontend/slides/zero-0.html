@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 能干哪些神奇的活？先看能力，再学原理 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* ── 软件 vs AI 对比 ── */
+.era-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.era-card {
+  border-radius: var(--radius); padding: 22px 24px;
+  border: 1.5px solid var(--border); background: var(--card); box-shadow: var(--shadow-card);
+}
+.era-card.old { border-color: rgba(100,116,139,0.3); }
+.era-card.new { border-color: rgba(0,102,255,0.35); background: rgba(0,102,255,0.02); }
+.era-tag {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+  padding: 3px 12px; border-radius: 999px; margin-bottom: 10px;
+}
+.era-card.old .era-tag { background: rgba(100,116,139,0.12); color: #475569; }
+.era-card.new .era-tag { background: rgba(0,102,255,0.1); color: var(--accent); }
+.era-card h4 { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.era-card p { font-size: 13.5px; color: var(--sub); line-height: 1.85; }
+.era-card p b { color: var(--text); }
+.era-flow {
+  margin-top: 12px; padding: 10px 14px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 700; line-height: 1.8;
+}
+.era-card.old .era-flow { background: rgba(100,116,139,0.07); color: #475569; }
+.era-card.new .era-flow { background: rgba(0,102,255,0.06); color: var(--accent); }
+
+/* ── 神奇现场 ── */
+.magic-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.magic-tab {
+  border: 1.5px solid var(--border); background: var(--card);
+  border-radius: var(--radius-sm); padding: 13px 14px;
+  cursor: pointer; transition: all 0.15s; font-family: inherit; text-align: left;
+  display: flex; align-items: center; gap: 10px;
+}
+.magic-tab:hover { border-color: rgba(0,102,255,0.4); transform: translateY(-1px); }
+.magic-tab.active { border-color: var(--accent); border-width: 2px; background: rgba(0,102,255,0.03); }
+.magic-tab .m-ico { font-size: 22px; flex-shrink: 0; }
+.magic-tab .m-name { font-size: 13px; font-weight: 800; color: var(--text); line-height: 1.4; }
+.magic-tab .m-seen {
+  margin-left: auto; font-size: 11px; color: var(--success); font-weight: 800;
+  opacity: 0; transition: opacity 0.3s; flex-shrink: 0;
+}
+.magic-tab.seen .m-seen { opacity: 1; }
+
+.magic-stage {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.ms-head {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.015);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.ms-title { font-size: 14.5px; font-weight: 800; color: var(--text); }
+.ms-note { font-size: 12px; color: var(--sub); font-weight: 600; margin-left: auto; }
+.ms-body { padding: 18px 20px; }
+
+/* 前后对比布局 */
+.ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ba-col { border-radius: var(--radius-sm); padding: 13px 16px; font-size: 13px; line-height: 1.85; }
+.ba-col .ba-label { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 8px; }
+.ba-col.before { background: rgba(100,116,139,0.06); color: var(--sub); }
+.ba-col.before .ba-label { color: #64748b; }
+.ba-col.after { background: rgba(0,102,255,0.05); color: var(--text); }
+.ba-col.after .ba-label { color: var(--accent); }
+.ba-col.after b { color: var(--accent); }
+
+/* 迷你对话 */
+.mini-chat { display: flex; flex-direction: column; gap: 10px; }
+.mc-row { display: flex; gap: 9px; align-items: flex-start; }
+.mc-row.user { flex-direction: row-reverse; }
+.mc-ava {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: #fff;
+}
+.mc-row.user .mc-ava { background: #64748b; }
+.mc-row.ai .mc-ava { background: var(--accent); }
+.mc-bub {
+  max-width: 84%; padding: 10px 15px; border-radius: 13px;
+  font-size: 13px; line-height: 1.8; color: var(--text);
+}
+.mc-row.user .mc-bub { background: rgba(100,116,139,0.1); border-top-right-radius: 4px; }
+.mc-row.ai .mc-bub { background: rgba(0,102,255,0.06); border-top-left-radius: 4px; }
+.mc-bub b { color: var(--accent); }
+
+/* 难度切换器 */
+.tone-switch { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.tone-btn {
+  border: 1.5px solid var(--border); background: var(--card); color: var(--text);
+  border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.tone-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tone-out {
+  background: rgba(0,102,255,0.05); border-radius: var(--radius-sm);
+  padding: 14px 18px; font-size: 13.5px; line-height: 1.9; color: var(--text);
+  transition: opacity 0.2s;
+}
+.tone-out.fading { opacity: 0.25; }
+
+/* ── 一个对话框 ── */
+.one-box {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 24px 26px; box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.one-apps { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.one-app {
+  font-size: 12px; font-weight: 700; color: var(--sub);
+  background: rgba(0,0,0,0.04); border-radius: 8px; padding: 5px 12px;
+}
+.one-arrow { font-size: 22px; color: var(--accent); margin: 4px 0 12px; }
+.one-chat {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 2px solid var(--accent); border-radius: 999px;
+  padding: 12px 28px; font-size: 15px; font-weight: 800; color: var(--accent);
+  background: rgba(0,102,255,0.04);
+}
+.one-note { font-size: 13px; color: var(--sub); line-height: 1.85; margin-top: 14px; }
+.one-note b { color: var(--text); }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .era-grid, .ba-grid { grid-template-columns: 1fr; }
+  .magic-tabs { grid-template-columns: 1fr 1fr; }
+  .ms-note { margin-left: 0; }
+  .mc-bub { max-width: 88%; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="AI 到底能干什么？整理会议纪要、看懂体检报告、给 6 岁孩子讲飞机原理、陪你练面试、不会编程也能做网页……6 个交互演示告诉你：AI 和你用过的所有软件都不一样——以前是人学软件，现在是软件听人话。">
+<meta name="keywords" content="AI能做什么,AI用途,ChatGPT能干什么,AI神奇用法,人工智能应用,AI入门">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-0.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-0.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-0.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-0.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-0.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="AI 能干哪些神奇的活？先看能力，再学原理">
+<meta property="og:description" content="整理纪要、看懂报告、陪练面试、不会编程也能做网页……6 个交互演示：以前是人学软件，现在是软件听人话。">
+<meta property="og:url" content="https://xueai.app/slides/zero-0.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 能干哪些神奇的活？先看能力，再学原理">
+<meta name="twitter:description" content="6 个交互演示：以前是人学软件，现在是软件听人话。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"AI 能干哪些神奇的活","name":"AI 能干哪些神奇的活","url":"https://xueai.app/slides/zero-0.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · AI 是个什么东西","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"AI 到底能干什么？整理会议纪要、看懂体检报告、给 6 岁孩子讲飞机原理、陪你练面试、不会编程也能做网页……6 个交互演示告诉你：AI 和你用过的所有软件都不一样——以前是人学软件，现在是软件听人话。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · AI 是个什么东西</div>
+    <h1>先别学原理，看看它能干哪些神奇的活</h1>
+    <p class="subtitle">如果你还没怎么用过 AI，或者只把它当「问答机」用过几次——这一课先看六个真实的使用现场。看完你会明白一件事：<b>这不是又一个新软件，这是软件历史上第一次「反过来」</b>。</p>
+  </header>
+
+  <div class="sec-label">它和你用过的所有软件，都不一样</div>
+
+  <div class="era-grid">
+    <div class="era-card old">
+      <span class="era-tag">过去 40 年 · 所有软件</span>
+      <h4>人学软件</h4>
+      <p>计算器、Word、美图秀秀、Excel……每个软件是一堆<b>固定的按钮</b>：功能是提前设计好的，你想干什么，得先学会它的规矩——找按钮在哪、背操作步骤、看说明书、报培训班。</p>
+      <div class="era-flow">你的需求 → 学软件的规矩 → 换成它的操作 → 干活</div>
+    </div>
+    <div class="era-card new">
+      <span class="era-tag">现在 · AI</span>
+      <h4>软件听人话</h4>
+      <p>历史上第一次，工具反过来迁就人：<b>你说人话，它来干活</b>。没有按钮要找，没有步骤要背，没有说明书。你怎么跟同事交代工作，就怎么跟它交代。</p>
+      <div class="era-flow">你的需求 → 说出来 → 干活</div>
+    </div>
+  </div>
+
+  <div class="sec-label">六个神奇现场 · 挨个点开看</div>
+
+  <div class="magic-tabs" id="magicTabs"></div>
+
+  <div class="magic-stage">
+    <div class="ms-head">
+      <span class="ms-title" id="msTitle"></span>
+      <span class="ms-note" id="msNote"></span>
+    </div>
+    <div class="ms-body" id="msBody"></div>
+  </div>
+
+  <div class="sec-label">最神奇的还不是单个功能</div>
+
+  <div class="one-box">
+    <div class="one-apps">
+      <span class="one-app">录音转写 App</span>
+      <span class="one-app">翻译软件</span>
+      <span class="one-app">修图工具</span>
+      <span class="one-app">简历模板网站</span>
+      <span class="one-app">家教</span>
+      <span class="one-app">代码外包</span>
+      <span class="one-app">文案公司</span>
+      <span class="one-app">咨询顾问</span>
+    </div>
+    <div class="one-arrow">↓ 全部装进 ↓</div>
+    <div class="one-chat">💬 一个对话框</div>
+    <p class="one-note">刚才那六个现场，是<b>同一个东西</b>干的。以前是「一个需求，下载一个 App」；现在是「一个需求，说一句话」。<br>它不是某个功能的升级版——它是第一个<b>通用</b>工具：你能用「说话」布置的活，它都能接。</p>
+  </div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    <b>那么问题来了：</b>这么神的东西，为什么有时候会一本正经地胡说八道？为什么同一个问题有人问出来是宝藏、有人问出来是垃圾？想用好它，你需要看穿它的底牌——<b>下一课，三分钟看懂它的工作原理（保证没有数学）</b>。
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一课想和你分享的</h3>
+    <ul>
+      <li><b>AI 是软件历史的分水岭</b>：过去 40 年是人学软件，现在是软件听人话</li>
+      <li><b>它是通用的</b>：整理、解释、改写、陪练、做工具……一个对话框全包</li>
+      <li><b>不用背功能列表</b>：判断标准只有一条——这活能用「说话」布置吗？能，就丢给它试试</li>
+      <li><b>神奇但有坑</b>：它会自信地犯错，后面几课我们一起把坑绕开</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+/* ── 六个神奇现场 ── */
+const MAGIC = [
+  {
+    ico: '🗣️', name: '一小时录音，变成会议纪要',
+    note: '你要做的：把转写文字丢给它，说一句话',
+    render: function (el) {
+      el.innerHTML = `
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <div class="ba-label">丢给它之前 · 录音转的流水账（节选）</div>
+            那个……咱们先说下周活动的事哈，小王你上次说的场地，哦对了老李你先说物料，物料上次说要三百份是吧，不对五百，场地的事小王你联系了吗，联系了但人家周三不行只能周五，那就周五吧，物料五百份周四前要到……
+          </div>
+          <div class="ba-col after">
+            <div class="ba-label">它整理之后</div>
+            <b>会议纪要 · 下周活动筹备</b><br>
+            ① 活动时间：定为<b>周五</b>（场地方周三不可用）<br>
+            ② 物料：确认为 <b>500 份</b>（非 300），<b>周四前到货</b> — 负责人：老李<br>
+            ③ 场地对接 — 负责人：小王<br>
+            <b>待确认：</b>周五具体时段尚未敲定
+          </div>
+        </div>
+        <div class="mini-chat" style="margin-top:12px;">
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">帮我把这段会议录音的转写整理成纪要，列清楚每件事的结论和负责人，没定下来的单独标出来。</div></div>
+        </div>`;
+    },
+  },
+  {
+    ico: '📷', name: '拍张照，把报告翻译成人话',
+    note: '化验单、合同条款、说明书……都一样',
+    render: function (el) {
+      el.innerHTML = `
+        <div class="mini-chat">
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">📎（拍了一张体检报告的照片）<br>这上面「低密度脂蛋白 4.2 ↑」是什么意思？严重吗？</div></div>
+          <div class="mc-row ai"><div class="mc-ava">AI</div><div class="mc-bub">低密度脂蛋白俗称<b>「坏胆固醇」</b>，它会在血管壁上沉积。你的数值 4.2，比参考上限（3.4）高了一些——属于<b>轻度偏高，不用恐慌</b>，但值得重视。<br><br>通常医生会先建议 3 个月的生活方式调整：少吃动物内脏和油炸食品、每周 3 次快走、戒酒。3 个月后复查，如果还降不下来再考虑用药。<br><br>⚠️ 我的解释供你参考，<b>具体诊疗请以医生意见为准</b>。要不要我帮你列一份「复查前问医生的问题清单」？</div></div>
+        </div>
+        <div class="ba-col before" style="margin-top:12px;">
+          <div class="ba-label">以前你会怎么做？</div>
+          拿着报告搜「低密度脂蛋白偏高」→ 前三条是广告 → 第四条是耸人听闻的养生号 → 越看越慌。现在它<b>看着你的具体数值</b>，用人话讲给你听，还提醒你去问医生。
+        </div>`;
+    },
+  },
+  {
+    ico: '🎚️', name: '同一件事，讲给任何人听',
+    note: '点下面的按钮，亲手试试 👇',
+    render: function (el) {
+      el.innerHTML = `
+        <div class="mini-chat" style="margin-bottom:12px;">
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">给我解释一下「为什么飞机能飞起来」，讲给<b id="toneWho">6 岁的孩子</b>听。</div></div>
+        </div>
+        <div class="tone-switch">
+          <button class="tone-btn active" data-t="0">👶 讲给 6 岁孩子</button>
+          <button class="tone-btn" data-t="1">🧑 讲给成年人</button>
+          <button class="tone-btn" data-t="2">👵 讲给不识字的奶奶</button>
+        </div>
+        <div class="tone-out" id="toneOut"></div>
+        <div class="ba-col before" style="margin-top:12px;">
+          <div class="ba-label">这意味着什么</div>
+          同一个知识，它能<b>为任何一个听众现场重新组织语言</b>。教科书做不到，百科做不到，视频也做不到——它们对谁都只有一个版本。这是人类第一次拥有「无限适配的讲解员」。
+        </div>`;
+      const TONES = [
+        { who: '6 岁的孩子', text: '你把手伸出车窗外，斜着摆，风是不是会把你的手往上推？飞机的翅膀就是一只特别大的「斜着的手」！飞机跑得超级快，风就把大翅膀往上推呀推，整架飞机就被推到天上去啦。✈️' },
+        { who: '成年人', text: '机翼的形状和倾角经过特殊设计：气流经过时，机翼上方的气压比下方低，这个压力差产生向上的升力。速度越快，升力越大——当升力超过飞机重量，飞机就离地了。所以起飞前需要在跑道上全力加速。' },
+        { who: '不识字的奶奶', text: '奶奶，您使劲儿扇过扇子吧？扇子往下压风，胳膊能感觉到风把扇子往上顶。飞机的大铁翅膀就跟扇子一个理儿——它跑得飞快，风在翅膀底下使劲儿往上托，托着托着，铁鸟就上天了。' },
+      ];
+      const out = el.querySelector('#toneOut');
+      const who = el.querySelector('#toneWho');
+      function setTone(i) {
+        out.classList.add('fading');
+        setTimeout(() => { out.textContent = TONES[i].text; who.textContent = TONES[i].who; out.classList.remove('fading'); }, 180);
+      }
+      el.querySelectorAll('.tone-btn').forEach(b => b.addEventListener('click', () => {
+        el.querySelectorAll('.tone-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        setTone(+b.dataset.t);
+      }));
+      setTone(0);
+    },
+  },
+  {
+    ico: '🎭', name: '扮演任何角色，陪你练',
+    note: '面试、谈判、吵架复盘……随便点单',
+    render: function (el) {
+      el.innerHTML = `
+        <div class="mini-chat">
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">你扮演一个<b>严格的面试官</b>，面试我「行政专员」岗位。一次只问一个问题，我答完你先点评我的回答，再问下一个。现在开始。</div></div>
+          <div class="mc-row ai"><div class="mc-ava">AI</div><div class="mc-bub">好的，面试开始。第一个问题：<b>请用一分钟做个自我介绍，重点说说你为什么适合行政岗位。</b></div></div>
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">我叫小张，之前做过两年前台，性格比较细心，会用 Excel……</div></div>
+          <div class="mc-row ai"><div class="mc-ava">AI</div><div class="mc-bub">📋 <b>点评：</b>内容太「平」了——细心、会 Excel 是每个候选人都会说的。建议换成一个具体事例：比如「前台两年我把访客登记从纸质表改成了共享表格，前台交接时间从 20 分钟缩短到 5 分钟」。<b>用事实代替形容词</b>，这是面试的黄金法则。<br><br>下一个问题：如果两位领导同时给你派了急活，你怎么办？</div></div>
+        </div>
+        <div class="ba-col before" style="margin-top:12px;">
+          <div class="ba-label">为什么这很神奇</div>
+          一个<b>随叫随到、永远有耐心、不会笑话你</b>的陪练。练十遍也不会不好意思——在它出现之前，这种待遇只有请得起私教的人才有。
+        </div>`;
+    },
+  },
+  {
+    ico: '🧑‍💻', name: '不会编程，也能做出小工具',
+    note: '这个网站的作者，大部分代码就是 AI 写的',
+    render: function (el) {
+      el.innerHTML = `
+        <div class="mini-chat">
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">我是开小餐馆的，帮我做一个网页：顾客扫码打开后能看到今日菜单，点「加一份」自动算总价，最后生成一条「桌号 + 菜品 + 总价」的文字让顾客发给我微信。我完全不懂编程。</div></div>
+          <div class="mc-row ai"><div class="mc-ava">AI</div><div class="mc-bub">没问题，这是完整的网页文件 📄 <b>menu.html</b>（代码已生成）。<br><br>你只需要三步：① 把这个文件保存到手机或电脑；② 我教你免费传到网上（有现成的免费服务，跟着点三下就行）；③ 把网址做成二维码贴在桌上。<br><br>菜单内容想改的话，回来告诉我「把红烧肉改成 32 元」就行，我改好再给你一份新的。</div></div>
+        </div>
+        <div class="ba-col before" style="margin-top:12px;">
+          <div class="ba-label">在它出现之前</div>
+          这件事的市场价：找外包 <b>3000 元起</b>，或者自己学三个月编程。现在：<b>一段话，一分钟</b>。「会说清楚需求」正在变得跟「会写代码」一样值钱——这也是这门课后面要教的核心能力。
+        </div>`;
+    },
+  },
+  {
+    ico: '🎨', name: '一句话，生成图片和方案',
+    note: '想法和成品之间，只隔一句话',
+    render: function (el) {
+      el.innerHTML = `
+        <div class="mini-chat">
+          <div class="mc-row user"><div class="mc-ava">你</div><div class="mc-bub">给我们小区的中秋游园会画一张海报：暖色调，有灯笼和月亮，写上「中秋游园会 · 9月28日晚6点 · 中心花园」，风格温馨一点。</div></div>
+          <div class="mc-row ai"><div class="mc-ava">AI</div><div class="mc-bub">🖼️ 已生成海报（几十秒后你会得到一张可以直接打印的图）。<br><br>另外，需要的话我还能顺手给你：游园会的<b>活动流程方案</b>、给业主群的<b>通知文案</b>、物料<b>采购清单和预算表</b>。要哪个？</div></div>
+        </div>
+        <div class="ba-col before" style="margin-top:12px;">
+          <div class="ba-label">注意最后那句话</div>
+          它不只完成你说的事，还知道这件事<b>周围还有哪些事</b>——因为它「读过」无数个别人办活动的完整过程。会用的人，会顺着这句话把整个活动的杂事全部打包给它。
+        </div>`;
+    },
+  },
+];
+
+const tabsEl = document.getElementById('magicTabs');
+const msTitle = document.getElementById('msTitle');
+const msNote = document.getElementById('msNote');
+const msBody = document.getElementById('msBody');
+
+MAGIC.forEach((m, i) => {
+  const t = document.createElement('button');
+  t.className = 'magic-tab' + (i === 0 ? ' active' : '');
+  t.innerHTML = `<span class="m-ico">${m.ico}</span><span class="m-name">${m.name}</span><span class="m-seen">✓</span>`;
+  t.addEventListener('click', () => {
+    tabsEl.querySelectorAll('.magic-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    t.classList.add('seen');
+    showMagic(i);
+  });
+  tabsEl.appendChild(t);
+});
+
+function showMagic(i) {
+  const m = MAGIC[i];
+  msTitle.textContent = m.ico + ' ' + m.name;
+  msNote.textContent = m.note;
+  m.render(msBody);
+}
+tabsEl.querySelector('.magic-tab').classList.add('seen');
+showMagic(0);
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

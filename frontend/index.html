@@ -90,6 +90,17 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .entry:hover .n .ar{color:var(--violet);transform:translateX(3px)}
 .entry .d{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.72}
 
+.statline{margin-top:26px;font-size:12.5px;color:var(--muted);letter-spacing:.01em}
+.statline b{color:var(--ink);font-weight:600}
+.kb{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px}
+.kb.k-K{background:var(--blue-s);color:var(--blue-d)}
+.kb.k-S{background:var(--green-s);color:var(--green-d)}
+.kb.k-A{background:var(--violet-s);color:var(--violet)}
+.ksarow{display:flex;gap:2px}
+.topic.isnew{border-color:rgba(124,58,237,.32);background:linear-gradient(180deg,#fbf9ff,#fff)}
+.attrib{font-size:11.5px;color:var(--faint);line-height:1.9}
+.attrib a{color:var(--muted);border-bottom:1px solid var(--line)}
+.attrib a:hover{color:var(--violet)}
 /* ---------- bands ---------- */
 section{scroll-margin-top:64px}
 .band{padding:66px 0;border-top:1px solid var(--line)}
@@ -217,6 +228,8 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       不为速成，<span class="hl">为让你有资格站在那张决定组织未来的桌子旁边。</span>
     </p>
 
+    <div class="statline" id="statline"></div>
+
     <div class="entries">
       <a class="entry" href="#curriculum">
         <div class="ic">◈</div>
@@ -270,16 +283,17 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 <section class="band" id="curriculum">
   <div class="wrap">
     <div class="eyebrow">Curriculum</div>
-    <h2>19 个主题 · 一份前菜 + 五大篇章</h2>
+    <h2 id="curTitle">9 篇章 · 82 节</h2>
     <p class="desc">
-      从「AI 到底能不能干 HR 的活」到「把老法师的判断拆成规则」，从「做出第一个作品」到「让它在组织里活下来」。
-      <b>每个主题独立成章，按需学、随时回看。</b><br>
-      正课前有一份前菜：写给第一次接触 AI 的 HR，零基础可看、<b>全章免费</b>。
+      本课程衍生自 <a href="https://xueai.app" target="_blank" rel="noopener" style="color:var(--violet)">洛小山《AI 产品从入门到精通》</a>，
+      依 AGPL-3.0 开源并保留原作者署名。原课程 231 节面向 AI 产品经理，<b>我们保留约三成、删去对 HR 无用的部分，再补进 16 节 HR 独有内容</b>。<br>
+      每一节都是「<b>HR 场景 → 原理 → 一条能执行的规则</b>」三段式——通用原理一个字不少讲，但它被夹在两个 HR 场景中间。
+      第零篇章是纯通用总览，零基础可看、<b>全章免费</b>。
     </p>
     <div style="display:flex;align-items:center;flex-wrap:wrap">
       <div class="toggle">
-        <button class="on" data-s="hot">本周热门</button>
-        <button data-s="order">课程顺序</button>
+        <button class="on" data-s="order">全部课程</button>
+        <button data-s="new">只看 HR 原创</button>
       </div>
       <span class="sortnote" id="sortnote">按近 7 天浏览热度排序</span>
     </div>
@@ -334,7 +348,8 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="box">
       <h4>关于免费与开源</h4>
       课程内容、能力词典、岗位库、作品选题、脱敏数据集与测评题库，<b>全部永久免费开放</b>。<br>
-      本站内容为原创，<b>未使用任何第三方课程内容</b>。<br>
+      本课程衍生自 <b>洛小山《AI 产品从入门到精通》</b>（<a href="https://github.com/itshen/learn-ai" target="_blank" rel="noopener" style="color:var(--violet)">learn-ai</a> · <a href="https://xueai.app" target="_blank" rel="noopener" style="color:var(--violet)">xueai.app</a>），
+      依 <b>AGPL-3.0</b> 开源并保留原作者署名。<b>本项目及任何衍生版本必须同样开源，不得用于闭源商业产品。</b><br>
       如果你在任何付费课程或课包里看到本站内容，说明你为免费的东西付了钱——请向对方申请退款。
     </div>
   </div>
@@ -350,30 +365,49 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   </div>
 </div>
 
-<footer>HR AI Builder &nbsp;·&nbsp; 内容免费开放</footer>
+<footer><div class="wrap attrib">
+  HR AI Builder &nbsp;·&nbsp; 内容永久免费开放 &nbsp;·&nbsp; <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; AGPL-3.0<br>
+  衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，感谢原作者把 AI 原理讲得如此通俗。
+</div></footer>
 
+<script src="course-data.js"></script>
 <script>
-const TOPICS=[
-{no:'00',ch:'前菜',free:1,n:'AI 到底是什么，和 HR 有什么关系',d:'不讲原理，先讲它在你手上能变成什么',kp:3,heat:2840},
-{no:'00',ch:'前菜',free:1,n:'你手上哪些活它能干，哪些不能',d:'把 HR 六大模块的活逐条过一遍，标出边界',kp:4,heat:2410},
-{no:'01',ch:'第一篇章',n:'幻觉：它为什么会编，在 HR 场景怎么坑你',d:'筛简历时它会编出候选人没写过的经历——因为它在补全一个「像简历」的文本',kp:4,heat:1960},
-{no:'02',ch:'第一篇章',n:'召回 vs 判定：一道必须设的闸',d:'AI 只能做召回，判定必须回原文。这条要写进流程，不是写进备忘录',kp:2,heat:1520},
-{no:'03',ch:'第一篇章',n:'Agent 还是 Workflow：HR 场景怎么选',d:'大部分 HR 的事该用固定流程，不该给自主权',kp:3,heat:1180},
-{no:'04',ch:'第二篇章',n:'判断萃取：把老法师的经验拆成规则',d:'拆到哪一层为止，以及哪一部分永远拆不出来、必须留给人',kp:5,heat:1640},
-{no:'05',ch:'第二篇章',n:'Prompt 不是调措辞，是设计信息结构',d:'哪些信息进上下文、什么顺序、什么时候切段',kp:4,heat:1090},
-{no:'06',ch:'第二篇章',n:'上下文与记忆：为什么长任务会崩',d:'一场组织盘点跑到一半失忆，是怎么发生的',kp:3,heat:870},
-{no:'07',ch:'第三篇章',n:'选题：什么样的作品站得住',d:'六个选题，各标工期、所需数据与常被追问的地方',kp:3,heat:1780},
-{no:'08',ch:'第三篇章',n:'数据：HR 数据从哪来、怎么脱敏',d:'真数据碰不得，合成数据怎么造得像——附免费数据集',kp:4,heat:1450},
-{no:'09',ch:'第三篇章',n:'Vibe coding：一周做出能点的原型',d:'不是「会用 Cursor」，是能自己收敛需求、调试、上线',kp:5,heat:1620},
-{no:'10',ch:'第三篇章',n:'评估：怎么证明它做对了',d:'建自己的题来验，别靠肉眼判。先做阴性对照，注入已知的错',kp:4,heat:790},
-{no:'11',ch:'第四篇章',n:'第一刀切哪里：场景选择与 ROI',d:'多数人切最容易的，对的答案通常是最痛但还没人碰的',kp:3,heat:930},
-{no:'12',ch:'第四篇章',n:'向上说服：把技术判断翻译成账',d:'不说「准确率 92%」，说「3 个人 2 周变成 1 个人 2 天，风险在这」',kp:3,heat:840},
-{no:'13',ch:'第四篇章',n:'试点到铺开：从 1 个团队到全公司',d:'跑通一个团队之后，最容易死在第二个',kp:2,heat:610},
-{no:'14',ch:'第四篇章',n:'合规、隐私与信任红线',d:'数据不出内网、匿名的真实 n 阈值、AI 参与人事决策必须留痕可申诉',kp:3,heat:720},
-{no:'15',ch:'第五篇章',n:'能力词典：把经历翻译成能力语言',d:'同一段经历，用能力词还是技能词描述，含义完全不同',kp:3,heat:1330},
-{no:'16',ch:'第五篇章',n:'作品怎么讲：别人在追问什么',d:'「有人真的在用吗」——这句问倒了大多数人',kp:4,heat:1510},
-{no:'17',ch:'第五篇章',n:'职级与薪酬带宽：这个角色值多少',d:'对标什么职级、带宽多少。求职网站给不准的那部分',kp:3,heat:1240},
-];
+
+const $=s=>document.querySelector(s);
+
+/* ---- 课程：来自 course-data.js（单一真相源）---- */
+const CO = window.COURSE || {parts:[],meta:{stats:{}}};
+const FLAT = [];
+CO.parts.forEach(p=>p.topics.forEach(t=>FLAT.push({
+  part:p.num, partTitle:p.title, title:t.title, desc:t.desc||'',
+  n:t.lessons.length,
+  neu:t.lessons.filter(l=>l.action==='new').length,
+  ada:t.lessons.filter(l=>l.action==='adapt').length,
+  ksa:t.lessons.reduce((a,l)=>(a[l.ksa]=(a[l.ksa]||0)+1,a),{}),
+})));
+
+let onlyNew=false;
+function renderTopics(){
+  const list = onlyNew ? FLAT.filter(t=>t.neu>0) : FLAT;
+  $('#sortnote').textContent = onlyNew
+    ? `${list.length} 个主题含 HR 原创内容 —— learn-ai 里没有的部分`
+    : '按学习顺序排列 · 开篇 → 第零至第六篇章 → 专题';
+  $('#topics').innerHTML=list.map(t=>{
+    const ksa=Object.entries(t.ksa).sort().map(([k,v])=>
+      `<span class="kb k-${k}">${k} ${v}</span>`).join('');
+    return `<div class="topic ${t.neu?'isnew':''}">
+      ${t.neu? '<span class="badge">HR 原创 '+t.neu+'</span>' : ''}
+      <span class="ch">${t.part}</span>
+      <div class="no">${t.partTitle}</div>
+      <div class="n">${t.title}</div>
+      <div class="d">${t.desc}</div>
+      <div class="f"><span>${t.n} 个知识点</span><span class="ksarow">${ksa}</span></div>
+    </div>`}).join('');
+}
+document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); onlyNew=(b.dataset.s==='new'); renderTopics();});
+
 const JOBS=[
 {no:'腾讯 · S3',n:'AI-HR 培训生（技术&应用方向）',d:'应届实习 · 深圳总部/成都 · 一口气开了四个方向，说明他们还在试',kp:3},
 {no:'腾讯 · S3',n:'AI-HR 培训生（分析方向）',d:'应届实习 · 深圳总部/上海 · 核心不是会跑模型，是能把口径吵清楚',kp:3},
@@ -381,27 +415,19 @@ const JOBS=[
 {no:'ElevenLabs · Engineering',n:'Internal AI Transformation',d:'全职 · Amsterdam/Berlin · 岗位名一个 HR 字没有，做的是同一件事',kp:4},
 {no:'Cognition · Applied AI',n:'Applied AI Transformation Manager',d:'全职 · New York/London · 说服是主业，构建是佐证',kp:4},
 ];
-const $=s=>document.querySelector(s);
-let sort='hot';
-function renderTopics(){
-  let list=[...TOPICS];
-  if(sort==='hot') list.sort((a,b)=>b.heat-a.heat);
-  $('#sortnote').textContent = sort==='hot' ? '按近 7 天浏览热度排序' : '按学习顺序排列 · 前菜 → 第一至第五篇章';
-  $('#topics').innerHTML=list.map((t,i)=>`
-   <div class="topic ${t.free?'free':''}">
-     ${sort==='hot'&&i<3?`<span class="badge">${['本周最火','热度第 2','热度第 3'][i]}</span>`:''}
-     <span class="ch">${t.free?'免费':t.ch}</span>
-     <div class="no">${t.no}</div><div class="n">${t.n}</div><div class="d">${t.d}</div>
-     <div class="f"><span>${t.kp} 个知识点</span><span class="heat">${t.heat.toLocaleString()} 热度 ›</span></div>
-   </div>`).join('');
-}
-document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on'); sort=b.dataset.s; renderTopics();});
 $('#jobcards').innerHTML=JOBS.map(j=>`
  <a class="topic" href="demo.html"><div class="no">${j.no}</div><div class="n">${j.n}</div>
    <div class="d">${j.d}</div>
    <div class="f"><span>${j.kp} 项硬门槛</span><span class="heat">查看拆解 ›</span></div></a>`).join('');
+
+/* 首屏统计数字改用真实课程数据 */
+(function(){
+  const st=CO.meta&&CO.meta.stats||{};
+  const el=document.getElementById('statline');
+  if(el&&st.lessons) el.innerHTML=
+    `${st.parts} 篇章 · <b>${st.lessons}</b> 节 —— 沿用 ${st.copy} · 改写 ${st.adapt} · <b>HR 原创 ${st.new}</b>`;
+})();
+
 renderTopics();
 
 /* ================= 微信登录 ================= */

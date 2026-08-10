@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 安全红线：四条底线 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+:root { --blue: #2563eb; --gray: #6b7280; --red: var(--danger); --amber: #d97706; --muted: var(--sub); }
+
+/* ── 红线卡片网格 ── */
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.card {
+  border-radius: var(--radius); padding: 16px 18px; border: 2px solid;
+  cursor: pointer; transition: all 0.25s; display: flex; flex-direction: column; gap: 6px;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.card.active { box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+.card-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 7px; font-size: 11px; font-weight: 800; width: fit-content;
+}
+.card-title { font-size: 15px; font-weight: 800; line-height: 1.3; }
+.card-hint { font-size: 12px; opacity: 0.75; line-height: 1.4; }
+
+.c-data { background: rgba(220,38,38,0.06); border-color: rgba(220,38,38,0.25); color: #991b1b; }
+.c-data.active { border-color: #dc2626; background: rgba(220,38,38,0.12); }
+.c-data .card-badge { background: rgba(220,38,38,0.18); color: #991b1b; }
+.c-key { background: rgba(217,119,6,0.06); border-color: rgba(217,119,6,0.25); color: #92400e; }
+.c-key.active { border-color: #d97706; background: rgba(217,119,6,0.12); }
+.c-key .card-badge { background: rgba(217,119,6,0.18); color: #92400e; }
+.c-ctrl { background: rgba(37,99,235,0.06); border-color: rgba(37,99,235,0.25); color: #1e40af; }
+.c-ctrl.active { border-color: #2563eb; background: rgba(37,99,235,0.12); }
+.c-ctrl .card-badge { background: rgba(37,99,235,0.18); color: #1e40af; }
+.c-rule { background: rgba(107,114,128,0.06); border-color: rgba(107,114,128,0.25); color: #4b5563; }
+.c-rule.active { border-color: #6b7280; background: rgba(107,114,128,0.12); }
+.c-rule .card-badge { background: rgba(107,114,128,0.18); color: #4b5563; }
+
+/* ── 详情面板 ── */
+.detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.detail-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.detail-title { font-size: 20px; font-weight: 800; color: var(--text); }
+.detail-sub { font-size: 13px; margin-top: 2px; }
+.detail-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-card);
+}
+.dc-label { font-size: 11px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px; }
+.dc-body { font-size: 14px; color: var(--sub); line-height: 1.75; }
+.dc-body strong { color: var(--text); }
+.example-list { display: flex; flex-direction: column; gap: 8px; }
+.example-item { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--sub); line-height: 1.55; }
+.example-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+.strategy-box { border-radius: var(--radius); padding: 16px 18px; font-size: 14px; line-height: 1.75; }
+.strategy-box strong { font-weight: 800; }
+.tip-box { display: flex; gap: 8px; padding: 14px 16px; border-radius: var(--radius); font-size: 14px; line-height: 1.55; }
+.tip-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+.detail-panel { display: flex; flex-direction: column; gap: 12px; }
+</style>
+<!-- SEO Start -->
+<meta name="description" content="企业使用 AI 的四条安全红线：敏感数据不出墙、凭证永不进对话、高危操作必确认、用前审批用后标注。记住这四条，避开 90% 的 AI 安全事故。">
+<meta name="keywords" content="AI安全红线,AI合规,数据安全,凭证保护,AI治理,企业AI">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/ai-safety-redlines.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/ai-safety-redlines.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/ai-safety-redlines.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/ai-safety-redlines.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/ai-safety-redlines.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="AI 安全红线：四条底线">
+<meta property="og:description" content="企业使用 AI 的四条安全红线：敏感数据不出墙、凭证永不进对话、高危操作必确认、用前审批用后标注。记住这四条，避开 90% 的 AI 安全事故。">
+<meta property="og:url" content="https://xueai.app/slides/ai-safety-redlines.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 安全红线：四条底线">
+<meta name="twitter:description" content="企业使用 AI 的四条安全红线：敏感数据不出墙、凭证永不进对话、高危操作必确认、用前审批用后标注。记住这四条，避开 90% 的 AI 安全事故。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"AI 安全红线：四条底线","name":"AI 安全红线：四条底线","url":"https://xueai.app/slides/ai-safety-redlines.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · Prompt 安全","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"企业使用 AI 的四条安全红线：敏感数据不出墙、凭证永不进对话、高危操作必确认、用前审批用后标注。记住这四条，避开 90% 的 AI 安全事故。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">Prompt 安全</div>
+    <h1>AI 安全红线：四条底线</h1>
+    <p class="subtitle">企业使用 AI 的四条不可触碰的底线。<strong>记住这四条，就能避开 90% 的安全事故。</strong>点击任意红线卡片查看详情。踩到任何一条 = 安全事故。</p>
+  </header>
+
+  <div class="sec-label">四条红线</div>
+
+  <div class="card-grid">
+    <div class="card c-data active" onclick="showDetail(0)">
+      <div class="card-badge">一级红线</div>
+      <div class="card-title">敏感数据不出墙</div>
+      <div class="card-hint">客户数据、内部文件不输入外部 AI</div>
+    </div>
+    <div class="card c-key" onclick="showDetail(1)">
+      <div class="card-badge">一级红线</div>
+      <div class="card-title">凭证永不进对话</div>
+      <div class="card-hint">密码、Key、Token 绝不粘贴给 AI</div>
+    </div>
+    <div class="card c-ctrl" onclick="showDetail(2)">
+      <div class="card-badge">一级红线</div>
+      <div class="card-title">高危操作必确认</div>
+      <div class="card-hint">删库、转账、改权限，AI 不能自己做主</div>
+    </div>
+    <div class="card c-rule" onclick="showDetail(3)">
+      <div class="card-badge">合规底线</div>
+      <div class="card-title">用前审批 · 用后标注</div>
+      <div class="card-hint">新工具要审批，发布要标 AI，资源不滥用</div>
+    </div>
+  </div>
+
+  <div class="sec-label">红线详情</div>
+
+  <div class="detail-panel paywall-locked xa-peek" id="detailPanel"></div>
+
+</article>
+
+<script>
+const DETAILS = [
+  {
+    icon:'🔒', iconBg:'rgba(220,38,38,.1)', color:'#991b1b', accent:'var(--red)',
+    title:'敏感数据不出墙', sub:'一级红线 · 数据泄露零容忍',
+    desc:'客户个人信息、内部业务文件、财务数据等敏感信息，<strong>不得输入未经审批的外部 AI 工具</strong>。即使服务商承诺「不保存」，数据传输过程本身已构成泄露。',
+    examples:[
+      {text:'<strong>客户信息</strong> — 姓名、手机号、身份证、交易记录', color:'#dc2626'},
+      {text:'<strong>商业秘密</strong> — 产品规划、定价策略、合同条款', color:'#dc2626'},
+      {text:'<strong>财务数据</strong> — 营收、利润、未公开报表', color:'#dc2626'},
+      {text:'<strong>内部文件</strong> — 组织架构、薪酬体系、会议纪要', color:'#dc2626'},
+    ],
+    strategy:{bg:'rgba(220,38,38,.06)',border:'rgba(220,38,38,.2)',color:'#991b1b',
+      text:'<strong>正确做法：</strong>使用企业内部部署的 AI 平台处理敏感数据；外部 AI 只能输入公开信息和已脱敏数据。记住<strong>「默认脱敏」</strong>原则：不确定能不能输入？那就脱敏后再输入。'},
+    tip:{bg:'rgba(220,38,38,.06)',icon:'🧪',text:'<strong>自测方法：</strong>如果这段对话被截图发到网上，会不会出事？ 会 → 不要输入。'}
+  },
+  {
+    icon:'🔑', iconBg:'rgba(217,119,6,.1)', color:'#92400e', accent:'var(--amber)',
+    title:'凭证永不进对话', sub:'一级红线 · 泄露即轮换',
+    desc:'API Key、Access Key / Secret Key、数据库密码、Token 等一切访问凭证，<strong>绝对不能粘贴到 AI 对话中</strong>。AI 服务商的日志系统可能记录全部输入内容。',
+    examples:[
+      {text:'<strong>API Key</strong> — 各类云服务的 Key（如 sk-xxxx、AKID-xxxx）', color:'#d97706'},
+      {text:'<strong>账号密码</strong> — 数据库、服务器、管理后台的密码', color:'#d97706'},
+      {text:'<strong>Token / Cookie</strong> — 登录态令牌、会话 Token', color:'#d97706'},
+      {text:'<strong>证书私钥</strong> — SSL 证书、SSH 私钥文件', color:'#d97706'},
+    ],
+    strategy:{bg:'rgba(217,119,6,.06)',border:'rgba(217,119,6,.2)',color:'#92400e',
+      text:'<strong>正确做法：</strong>用占位符替代真实凭证（如 YOUR_API_KEY），让 AI 只处理代码逻辑。已经不小心粘贴了？<strong>立即轮换该凭证</strong>，不要心存侥幸。'},
+    tip:{bg:'rgba(217,119,6,.06)',icon:'💡',text:'<strong>常见场景：</strong>调试代码时最容易犯：「帮我看看这段代码为什么报错」，然后把带密钥的代码整段粘贴。先 review 一遍再贴。'}
+  },
+  {
+    icon:'🛑', iconBg:'rgba(37,99,235,.1)', color:'#1e40af', accent:'var(--blue)',
+    title:'高危操作必确认', sub:'一级红线 · Human-in-the-loop',
+    desc:'AI（尤其是 Agent）<strong>不得在无人确认下执行不可逆操作</strong>：数据库写入/删除、资金划转、系统权限变更。一旦 AI 判断失误，后果不可逆。',
+    examples:[
+      {text:'<strong>生产数据库</strong> — 写入、修改、删除操作', color:'#2563eb'},
+      {text:'<strong>资金操作</strong> — 转账、退款、付款审批', color:'#2563eb'},
+      {text:'<strong>权限变更</strong> — 账号开通、角色提权、权限回收', color:'#2563eb'},
+      {text:'<strong>对外发布</strong> — 公告、通知、合同签发', color:'#2563eb'},
+    ],
+    strategy:{bg:'rgba(37,99,235,.06)',border:'rgba(37,99,235,.2)',color:'#1e40af',
+      text:'<strong>正确做法：</strong>所有高危操作强制插入<strong>人工确认环节</strong>。Agent 执行步数设上限，超限触发人工确认。系统必须具备一键终止（kill switch）能力。'},
+    tip:{bg:'rgba(37,99,235,.06)',icon:'⚙️',text:'<strong>设计原则：</strong>AI 可以建议，但不能执行高危动作。让 AI 准备好操作，由人类按下「确认」按钮。'}
+  },
+  {
+    icon:'📋', iconBg:'rgba(107,114,128,.1)', color:'#4b5563', accent:'var(--gray)',
+    title:'用前审批 · 用后标注', sub:'合规底线 · 可审计可追溯',
+    desc:'使用新的 AI 工具须经审批；AI 生成内容对外发布须标注；企业 AI 资源不得用于个人商业目的。这些是<strong>最基本的合规要求</strong>。',
+    examples:[
+      {text:'<strong>工具审批</strong> — 新 AI 工具须经安全评估后方可使用', color:'#6b7280'},
+      {text:'<strong>内容标注</strong> — 对外发布须标注"AI 辅助生成"（也是国家法规要求）', color:'#6b7280'},
+      {text:'<strong>资源使用</strong> — 企业 AI 账号和额度仅限工作使用', color:'#6b7280'},
+      {text:'<strong>审计留痕</strong> — 运行链路日志保留不少于 180 天', color:'#6b7280'},
+    ],
+    strategy:{bg:'rgba(107,114,128,.06)',border:'rgba(107,114,128,.2)',color:'#4b5563',
+      text:'<strong>速记口诀：</strong>用新工具 → 先审批。发内容 → 标 AI。用资源 → 只为工作。有日志 → 留半年。'},
+    tip:{bg:'rgba(107,114,128,.06)',icon:'📝',text:'<strong>提醒：</strong>《生成式人工智能服务管理暂行办法》（2023.8 施行）要求 AI 生成内容须有标识，这不是可选项。'}
+  }
+];
+
+function showDetail(idx) {
+  document.querySelectorAll('.card').forEach((q,i) => q.classList.toggle('active', i===idx));
+  const d = DETAILS[idx];
+  const panel = document.getElementById('detailPanel');
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-icon" style="background:${d.iconBg}">${d.icon}</div>
+      <div>
+        <div class="detail-title">${d.title}</div>
+        <div class="detail-sub" style="color:${d.color}">${d.sub}</div>
+      </div>
+    </div>
+    <div class="detail-card">
+      <div class="dc-label" style="color:${d.color}">规则说明</div>
+      <div class="dc-body">${d.desc}</div>
+    </div>
+    <div class="detail-card">
+      <div class="dc-label" style="color:${d.color}">常见触雷场景</div>
+      <div class="example-list">${d.examples.map(e=>`<div class="example-item"><div class="example-dot" style="background:${e.color}"></div><span>${e.text}</span></div>`).join('')}</div>
+    </div>
+    <div class="strategy-box" style="background:${d.strategy.bg};border:1.5px solid ${d.strategy.border};color:${d.strategy.color}">
+      ${d.strategy.text}
+    </div>
+    <div class="tip-box" style="background:${d.tip.bg}">
+      <div class="tip-icon">${d.tip.icon}</div>
+      <div style="color:${d.color};line-height:1.6">${d.tip.text}</div>
+    </div>
+  `;
+}
+showDetail(0);
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

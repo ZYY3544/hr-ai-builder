@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>「提示词工程」是工程师才需要学的吗？它到底有什么意义 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.qa-answer {
+  background: linear-gradient(135deg, rgba(8,145,178,0.06), rgba(0,102,255,0.05));
+  border: 1.5px solid rgba(8,145,178,0.3);
+  border-radius: var(--radius); padding: 22px 26px; margin: 4px 0 8px;
+}
+.qa-answer .qa-tag { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #0891b2; margin-bottom: 8px; }
+.qa-answer p { font-size: 16.5px; font-weight: 700; color: var(--text); line-height: 1.85; }
+.qa-answer p b { color: #0891b2; }
+
+/* 对比两栏 */
+.duo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.duo-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-card);
+}
+.duo-card .duo-tag {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+  padding: 3px 12px; border-radius: 999px; margin-bottom: 10px;
+}
+.duo-card.you .duo-tag { background: rgba(22,163,74,0.1); color: var(--success); }
+.duo-card.pro .duo-tag { background: rgba(0,102,255,0.08); color: var(--accent); }
+.duo-card h4 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.duo-card p { font-size: 13.5px; color: var(--sub); line-height: 1.9; }
+.duo-card p b { color: var(--text); }
+
+/* 意义列表 */
+.why-list { display: flex; flex-direction: column; gap: 12px; }
+.why-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px; box-shadow: var(--shadow-card);
+}
+.why-item .why-no {
+  width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: var(--accent);
+  background: rgba(0,102,255,0.08);
+}
+.why-item h4 { font-size: 15.5px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.why-item p { font-size: 13.5px; color: var(--sub); line-height: 1.85; }
+.why-item p b { color: var(--text); }
+
+/* ── 放大器：滑块计算 ── */
+.amp-box {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card);
+  padding: 22px 26px;
+}
+.amp-row { margin-bottom: 18px; }
+.amp-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.amp-label span { font-size: 13px; font-weight: 700; color: var(--sub); }
+.amp-label b { font-size: 15px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.amp-box input[type="range"] {
+  width: 100%; accent-color: var(--accent); cursor: pointer;
+}
+.amp-result {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  border-top: 1.5px dashed var(--border); padding-top: 18px;
+}
+.amp-cell {
+  background: rgba(0,102,255,0.04); border: 1px solid rgba(0,102,255,0.12);
+  border-radius: var(--radius-sm); padding: 14px 18px; text-align: center;
+}
+.amp-cell .amp-num {
+  font-size: 26px; font-weight: 900; color: var(--accent);
+  font-variant-numeric: tabular-nums; line-height: 1.3;
+  transition: color 0.3s;
+}
+.amp-cell .amp-num.hot { color: var(--danger); }
+.amp-cell .amp-desc { font-size: 12px; color: var(--sub); margin-top: 4px; line-height: 1.6; }
+.amp-note { margin-top: 12px; font-size: 12.5px; color: var(--sub); line-height: 1.8; }
+.amp-note b { color: var(--text); }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .duo-grid { grid-template-columns: 1fr; }
+  .qa-answer p { font-size: 15px; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="提示词工程（Prompt Engineering）是工程师才要学的吗？对普通人，它是「把话说清楚」的功夫；对做产品的人，它是写进系统里、被调用几百万次的说明书。理解这个区别，就明白它为什么是一门真手艺。">
+<meta name="keywords" content="提示词工程,Prompt Engineering,提示词工程有用吗,提示词工程师,AI入门问答">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-q-prompt-engineering.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-q-prompt-engineering.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-q-prompt-engineering.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-q-prompt-engineering.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-q-prompt-engineering.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="「提示词工程」是工程师才需要学的吗？">
+<meta property="og:description" content="对普通人，它是「把话说清楚」的功夫；对做产品的人，它是被调用几百万次的说明书。">
+<meta property="og:url" content="https://xueai.app/slides/zero-q-prompt-engineering.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="「提示词工程」是工程师才需要学的吗？">
+<meta name="twitter:description" content="对普通人是说清楚的功夫，对产品人是被调用百万次的说明书。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"「提示词工程」有什么意义？","name":"「提示词工程」有什么意义？","url":"https://xueai.app/slides/zero-q-prompt-engineering.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 小白三千问","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"提示词工程（Prompt Engineering）是工程师才要学的吗？对普通人，它是「把话说清楚」的功夫；对做产品的人，它是写进系统里、被调用几百万次的说明书。理解这个区别，就明白它为什么是一门真手艺。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · 小白三千问</div>
+    <h1>「提示词工程」是工程师才需要学的吗？</h1>
+    <p class="subtitle">你可能听过「提示词工程师」这个职业，甚至听说过很高的薪水。一个「说话技巧」，凭什么配得上「工程」两个字？</p>
+  </header>
+
+  <div class="qa-answer">
+    <div class="qa-tag">一句话回答</div>
+    <p>同一个词，两种用法：对普通人，它是<b>把话说清楚的功夫</b>，上一页十分钟就能学会；对做 AI 产品的人，它是<b>写进系统、被调用几百万次的「岗位说明书」</b>——一个字的措辞差异都会被放大百万倍，所以配得上「工程」二字。</p>
+  </div>
+
+  <div class="sec-label">同一个词 · 两种分量</div>
+
+  <div class="duo-grid">
+    <div class="duo-card you">
+      <div class="duo-tag">你在聊天框里写的</div>
+      <h4>一次性的「交代」</h4>
+      <p>你写「帮我把这段话改客气点」，用一次就扔。写得好省几分钟，写得差重问一次就行，<b>试错成本几乎为零</b>。这个层面的提示词，掌握「背景 + 要求 + 限制」就够用了。</p>
+    </div>
+    <div class="duo-card pro">
+      <div class="duo-tag">产品团队写的</div>
+      <h4>系统级的「岗位说明书」</h4>
+      <p>你用的每个 AI 应用（客服、助手、写作工具），背后都藏着一份几千字的提示词，规定 AI 的身份、边界、语气和禁区。<b>它每天被执行几十万到几百万次</b>——差一个字，几十万用户同时受影响，还直接影响每次调用花多少钱。</p>
+    </div>
+  </div>
+
+  <div class="sec-label">对做产品的人 · 它为什么是真手艺</div>
+
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-no">1</div>
+      <div>
+        <h4>效果是「调」出来的，不是「写」出来的</h4>
+        <p>专业团队会准备几百个测试问题，改一版提示词就全量跑一遍看效果——像做实验一样反复对比。<b>这套「写→测→改」的循环</b>，和调试代码没有本质区别。</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-no">2</div>
+      <div>
+        <h4>每个字都在花钱</h4>
+        <p>AI 按「词元」（token）计费，系统提示词的每个词元都会在<b>每一次调用里重复计费</b>。把 3000 字的提示词精简到 2000 字而效果不降，对一个日活百万的产品来说就是真金白银。</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-no">3</div>
+      <div>
+        <h4>还要防「坏人」</h4>
+        <p>有用户会故意诱导 AI 说不该说的话（业内叫「提示词注入」）。怎么在说明书里筑好防线，让 AI 面对诱导不越界，也是提示词工程的一部分。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">亲手拖一拖 · 感受「被放大百万倍」是什么概念</div>
+
+  <p class="l-p">假设你是一个 AI 产品的负责人，系统提示词里<b>多写了一段可有可无的废话</b>。拖动下面两个滑块，看看这段废话一年要花掉多少钱。</p>
+
+  <div class="amp-box">
+    <div class="amp-row">
+      <div class="amp-label"><span>提示词里多出的废话</span><b id="ampWords">500 字</b></div>
+      <input type="range" id="ampWordsRange" min="100" max="2000" step="100" value="500">
+    </div>
+    <div class="amp-row">
+      <div class="amp-label"><span>产品每天被使用的次数</span><b id="ampCalls">10 万次</b></div>
+      <input type="range" id="ampCallsRange" min="1" max="100" step="1" value="10">
+    </div>
+    <div class="amp-result">
+      <div class="amp-cell">
+        <div class="amp-num" id="ampDaily">—</div>
+        <div class="amp-desc">这段废话每天白白发送的字数</div>
+      </div>
+      <div class="amp-cell">
+        <div class="amp-num" id="ampYearly">—</div>
+        <div class="amp-desc">按主流模型价格估算的一年浪费（元）</div>
+      </div>
+    </div>
+    <div class="amp-note">估算口径：按 2026 年 8 月主流模型 API 定价的量级（约每百万 token 输入 1～3 元）取中间值粗算，只为感受数量级。<b>反过来也成立：精简掉这段废话，这些钱就省下来了——这就是「工程」的价值。</b></div>
+  </div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    所以下次看到「提示词工程师」，可以这样理解：他们不是「会聊天的人」，而是<b>给 AI 写岗位说明书、并用几百个测试用例反复验收的人</b>。想深入的话，本站第二篇章有完整的 Prompt Engineering 专题。
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一页想和你分享的</h3>
+    <ul>
+      <li><b>日常用</b>：提示词 = 说清楚的交代，掌握骨架就够</li>
+      <li><b>做产品</b>：提示词 = 系统的岗位说明书，被调用百万次</li>
+      <li><b>「工程」体现在</b>：反复测试调优、控制成本、防注入攻击</li>
+      <li><b>对你的意义</b>：理解了这一层，就明白为什么同一个 AI，不同产品用起来差别那么大</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+/* ── 「放大百万倍」计算器 ── */
+(function () {
+  var wordsRange = document.getElementById('ampWordsRange');
+  var callsRange = document.getElementById('ampCallsRange');
+  var wordsLabel = document.getElementById('ampWords');
+  var callsLabel = document.getElementById('ampCalls');
+  var dailyEl = document.getElementById('ampDaily');
+  var yearlyEl = document.getElementById('ampYearly');
+
+  function fmt(n) {
+    if (n >= 1e8) return (n / 1e8).toFixed(1) + ' 亿';
+    if (n >= 1e4) return (n / 1e4).toFixed(n >= 1e6 ? 0 : 1) + ' 万';
+    return String(Math.round(n));
+  }
+
+  function render() {
+    var words = parseInt(wordsRange.value, 10);            /* 多出的字数 */
+    var callsWan = parseInt(callsRange.value, 10);         /* 日调用量（万次） */
+    wordsLabel.textContent = words + ' 字';
+    callsLabel.textContent = callsWan + ' 万次';
+
+    var dailyChars = words * callsWan * 10000;             /* 每天多发的字数 */
+    /* 中文约 1 字 ≈ 1 token；按 ¥2 / 百万 token 的中间值粗算 */
+    var yearlyCost = dailyChars / 1e6 * 2 * 365;
+
+    dailyEl.textContent = fmt(dailyChars) + ' 字';
+    yearlyEl.textContent = '¥ ' + fmt(yearlyCost);
+    yearlyEl.classList.toggle('hot', yearlyCost >= 100000);
+  }
+
+  wordsRange.addEventListener('input', render);
+  callsRange.addEventListener('input', render);
+  render();
+})();
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

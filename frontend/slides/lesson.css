@@ -1,0 +1,175 @@
+/* ═══════════════════════════════════════════════════════════
+   lesson.css —— 课程子页统一设计系统
+   所有课程页面（文章式布局）共享此文件。
+   页面特有样式写在各自页面的 <style> 中，但骨架统一用这里的类。
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* 色板 */
+  --bg: #f7f5f0;            /* 页面米白底 */
+  --card: #ffffff;          /* 卡片白底 */
+  --text: #1c1c1e;          /* 主文字 */
+  --sub: #6b7280;           /* 次要文字 */
+  --accent: #0066ff;        /* 主题蓝 */
+  --danger: #dc2626;
+  --amber: #d97706;
+  --success: #16a34a;
+  --cyan: #0891b2;
+  --purple: #7c3aed;
+  --border: rgba(0,0,0,0.07);
+
+  /* 布局 */
+  --content-w: 880px;       /* 常规文章宽度 */
+  --content-w-wide: 1100px; /* 宽内容（大图表/分栏）宽度 */
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-pop: 0 8px 30px rgba(0,0,0,0.10);
+}
+
+/* ── 顶部公众号关注条 ── */
+.qr-bar{
+  background:linear-gradient(135deg,#fff8f0 0%,#fff3e6 100%);
+  border-bottom:1px solid rgba(217,119,6,.12);
+  padding:10px 20px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  font-size:13px;color:#92400e;
+  position:relative;z-index:100;
+}
+.qr-bar img{
+  width:36px;height:36px;border-radius:6px;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+  flex-shrink:0;
+}
+.qr-bar .qr-text{font-weight:600;}
+.qr-bar .qr-text b{color:#d97706;}
+.qr-bar .qr-close{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;border:none;background:none;cursor:pointer;
+  color:#92400e;opacity:.5;font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;transition:opacity .2s,background .2s;
+}
+.qr-bar .qr-close:hover{opacity:1;background:rgba(0,0,0,.05);}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+  padding-bottom: 110px; /* 给底部悬浮按钮留空间 */
+}
+
+/* ── 文章容器 ── */
+.lesson {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 56px 28px 40px;
+}
+.lesson.wide { max-width: var(--content-w-wide); }
+
+/* ── 页头 ── */
+.lesson-header { margin-bottom: 36px; }
+.lesson-header .kicker {
+  font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+.lesson-header h1 {
+  font-size: 32px; font-weight: 800; line-height: 1.35; color: var(--text);
+}
+.lesson-header .subtitle {
+  font-size: 15px; color: var(--sub); margin-top: 10px; line-height: 1.7;
+}
+
+/* ── 章节小标题（贯穿全文的分节） ── */
+.sec-label {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--sub);
+  margin: 36px 0 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── 通用卡片 ── */
+.l-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ── 强调框（引言/结论） ── */
+.l-callout {
+  background: rgba(0,102,255,0.04);
+  border: 1.5px solid rgba(0,102,255,0.2);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+}
+.l-callout b { color: var(--accent); }
+
+/* ── 渐入动画（逐步展示的元素统一用 .reveal + .show） ── */
+.reveal {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.reveal.show { opacity: 1; transform: translateY(0); }
+
+/* ── 底部悬浮"下一步"按钮 ── */
+.fab-wrap {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: center;
+  padding: 14px 20px calc(18px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 55%, rgba(247,245,240,0));
+  pointer-events: none; z-index: 50;
+}
+.fab-wrap .btn-next {
+  pointer-events: auto;
+  background: var(--accent); color: #fff; border: none;
+  padding: 13px 34px; border-radius: 999px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,102,255,0.35);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  font-family: inherit;
+}
+.fab-wrap .btn-next:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 10px 26px rgba(0,102,255,0.42); }
+.fab-wrap .btn-next:active { transform: translateY(0); }
+.fab-wrap .btn-next:disabled { background: #c4c8cf; cursor: not-allowed; box-shadow: none; transform: none; filter: none; }
+.fab-wrap.hidden { display: none; }
+
+/* ── 双列网格（桌面双列 / 移动单列） ── */
+.l-cols {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+/* ── 代码 / mono 文本 ── */
+.l-mono, code, pre {
+  font-family: "SF Mono", "Fira Code", Menlo, monospace;
+}
+code {
+  font-size: 0.88em;
+  background: rgba(0,0,0,0.05);
+  padding: 1px 6px; border-radius: 5px;
+  color: var(--accent);
+}
+
+/* ── 滚动条 ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+
+/* ── 移动端 ── */
+@media (max-width: 768px) {
+  .lesson { padding: 36px 18px 30px; }
+  .lesson-header h1 { font-size: 24px; }
+  .lesson-header .subtitle { font-size: 14px; }
+  .l-cols { grid-template-columns: 1fr; }
+  .l-card { padding: 15px 16px; }
+  .fab-wrap .btn-next { width: 100%; max-width: 440px; padding: 14px 0; }
+}

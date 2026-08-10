@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>开篇：达克鲁宁效应与 AI 学习曲线 · 你现在在哪里 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* ── 达克曲线图 + 气泡 ── */
+.chart-wrap {
+  position: relative; width: 100%;
+  margin: 8px 0 4px;
+}
+.dk-img {
+  width: 100%; height: auto; display: block;
+  border-radius: var(--radius);
+  opacity: 0; transform: scale(0.97);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.dk-img.show { opacity: 1; transform: scale(1); }
+
+/* 气泡 — 百分比定位在图上 */
+.bubble {
+  position: absolute;
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 800;
+  white-space: nowrap; pointer-events: none;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+  opacity: 0; transition: opacity 0.4s;
+}
+.bubble.show { opacity: 1; }
+.bubble::after {
+  content: '';
+  position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+}
+.bubble-peak {
+  background: var(--danger); color: white;
+  left: 25%; top: 12%;
+}
+.bubble-peak::after { border-top: 7px solid var(--danger); }
+.bubble-valley {
+  background: var(--amber); color: white;
+  left: 38%; bottom: 42%;
+}
+.bubble-valley::after { border-top: 7px solid var(--amber); }
+.bubble-goal {
+  background: var(--success); color: white;
+  right: 6%; top: 22%;
+}
+.bubble-goal::after { border-top: 7px solid var(--success); }
+
+@media (max-width: 768px) {
+  .bubble { font-size: 11px; padding: 4px 10px; }
+}
+
+/* ── 三阶段列表 ── */
+.step-list { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+
+.step-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; border-radius: var(--radius);
+  background: var(--card); border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+.step-item.is-danger  { border-color: rgba(220,38,38,0.25); }
+.step-item.is-amber   { border-color: rgba(217,119,6,0.25); }
+.step-item.is-success { border-color: rgba(22,163,74,0.28); background: rgba(22,163,74,0.03); }
+
+.step-dot {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 900; flex-shrink: 0;
+}
+.is-danger  .step-dot { background: rgba(220,38,38,0.1);  color: var(--danger); }
+.is-amber   .step-dot { background: rgba(217,119,6,0.1);  color: var(--amber); }
+.is-success .step-dot { background: rgba(22,163,74,0.12); color: var(--success); }
+
+.step-body { flex: 1; }
+.step-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.step-title { font-size: 17px; font-weight: 800; color: var(--text); }
+.step-tag {
+  font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px;
+  white-space: nowrap;
+}
+.is-danger  .step-tag { background: var(--danger);  color: white; }
+.is-amber   .step-tag { background: var(--amber);   color: white; }
+.is-success .step-tag { background: var(--success); color: white; }
+.step-desc { font-size: 14px; color: var(--sub); margin-top: 4px; line-height: 1.6; }
+
+/* ── 金句 ── */
+.quote-box {
+  background: rgba(220,38,38,0.04); border: 1.5px solid rgba(220,38,38,0.18);
+  border-radius: var(--radius); padding: 18px 22px;
+  margin-top: 24px;
+}
+.quote-main {
+  font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.65;
+}
+.quote-main em { font-style: normal; color: var(--danger); }
+.quote-sub {
+  font-size: 14px; color: var(--sub); margin-top: 8px; line-height: 1.7;
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="用达克鲁宁效应解析 AI 学习的三个阶段：愚昧之巅、绝望之谷、平稳高原。课程目标是帮你真正理解 AI 在做什么，而不只是会用。">
+<meta name="keywords" content="达克鲁宁效应,AI学习曲线,AI产品经理入门,大模型学习">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/0-intro.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/0-intro.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/0-intro.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/0-intro.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/0-intro.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="开篇：你现在在哪里？达克鲁宁效应与 AI 学习曲线">
+<meta property="og:description" content="用达克鲁宁效应解析 AI 学习的三个阶段：愚昧之巅、绝望之谷、平稳高原。课程目标是帮你真正理解 AI 在做什么，而不只是会用。">
+<meta property="og:url" content="https://xueai.app/slides/0-intro.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="开篇：你现在在哪里？达克鲁宁效应与 AI 学习曲线">
+<meta name="twitter:description" content="用达克鲁宁效应解析 AI 学习的三个阶段：愚昧之巅、绝望之谷、平稳高原。课程目标是帮你真正理解 AI 在做什么，而不只是会用。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"我们在哪里？达克效应","name":"我们在哪里？达克效应","url":"https://xueai.app/slides/0-intro.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 入门与定位","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"用达克鲁宁效应解析 AI 学习的三个阶段：愚昧之巅、绝望之谷、平稳高原。课程目标是帮你真正理解 AI 在做什么，而不只是会用。"}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">入门与定位</div>
+    <h1>我们在哪里？达克效应</h1>
+    <p class="subtitle">达克鲁宁效应 · Dunning-Kruger Effect：AI 产品经理训练营，正式开始之前先定位自己。</p>
+  </header>
+
+  <div class="sec-label">学习曲线</div>
+
+  <div class="chart-wrap">
+    <img class="dk-img" id="dkImg" src="dunning-kruger.png" alt="达克鲁宁效应曲线">
+    <div class="bubble bubble-peak"   id="bubblePeak">📍 一些人可能在这里</div>
+    <div class="bubble bubble-valley" id="bubbleValley">😰 动手后必经</div>
+    <div class="bubble bubble-goal"   id="bubbleGoal">🎯 课程目标</div>
+  </div>
+
+  <div class="sec-label">三个阶段</div>
+
+  <div class="step-list">
+
+    <div class="step-item reveal is-danger" id="s0">
+      <div class="step-dot">1</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">愚昧之巅</div>
+          <div class="step-tag">📍 一些人可能在这里</div>
+        </div>
+        <div class="step-desc">刚接触 AI，觉得「我懂了」：ChatGPT 是对话，RAG 就是搜索，Prompt 就是说话。</div>
+      </div>
+    </div>
+
+    <div class="step-item reveal is-amber" id="s1">
+      <div class="step-dot">2</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">绝望之谷</div>
+          <div class="step-tag">动手后必经</div>
+        </div>
+        <div class="step-desc">开始动手，发现模型乱答、Prompt 无效、RAG 效果差，忍不住感叹「AI 怎么这么难用？」</div>
+      </div>
+    </div>
+
+    <div class="step-item reveal is-success" id="s2">
+      <div class="step-dot">→</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">平稳高原</div>
+          <div class="step-tag">🎯 课程目标</div>
+        </div>
+        <div class="step-desc">真正理解 AI 在做什么，能判断问题出在哪、该用什么方案解决。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 金句 -->
+  <div class="quote-box reveal" id="quoteBox">
+    <div class="quote-main">
+      弱小和无知从来不是生存的障碍，<em>傲慢才是。</em>
+    </div>
+    <div class="quote-sub">
+      傲慢是成长最大的敌人。到达平稳高原<strong>不需要会写代码</strong>，但需要放下「我已经懂了」的念头，认真理解底层逻辑。
+    </div>
+  </div>
+
+</article>
+
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script>
+// 曲线图进入视野：图片渐现，三个气泡依次浮出
+lessonOnView(document.getElementById('dkImg'), function () {
+  document.getElementById('dkImg').classList.add('show');
+  setTimeout(() => document.getElementById('bubblePeak').classList.add('show'), 400);
+  setTimeout(() => document.getElementById('bubbleValley').classList.add('show'), 800);
+  setTimeout(() => document.getElementById('bubbleGoal').classList.add('show'), 1200);
+});
+</script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>怎么问 AI 才能得到好答案？把它当一个不了解你的新同事 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* ── 新同事卡 ── */
+.colleague-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px 26px; box-shadow: var(--shadow-card);
+  display: flex; gap: 18px; align-items: flex-start;
+}
+.colleague-emoji { font-size: 40px; flex-shrink: 0; }
+.colleague-card p { font-size: 14.5px; color: var(--sub); line-height: 1.9; }
+.colleague-card p b { color: var(--text); }
+
+/* ── 三档提问 ── */
+.level-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.level-tab {
+  flex: 1; min-width: 130px;
+  border: 1.5px solid var(--border); background: var(--card);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  cursor: pointer; transition: all 0.15s; font-family: inherit; text-align: left;
+}
+.level-tab .lt-label { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 2px; }
+.level-tab .lt-name { font-size: 13.5px; font-weight: 800; color: var(--text); }
+.level-tab[data-l="0"] .lt-label { color: var(--danger); }
+.level-tab[data-l="1"] .lt-label { color: var(--amber); }
+.level-tab[data-l="2"] .lt-label { color: var(--success); }
+.level-tab.active { border-width: 2px; }
+.level-tab[data-l="0"].active { border-color: var(--danger); background: rgba(220,38,38,0.03); }
+.level-tab[data-l="1"].active { border-color: var(--amber); background: rgba(217,119,6,0.03); }
+.level-tab[data-l="2"].active { border-color: var(--success); background: rgba(22,163,74,0.03); }
+
+.level-panel {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.lp-ask {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.015);
+}
+.lp-ask-label { font-size: 11px; font-weight: 800; color: var(--sub); letter-spacing: 0.5px; margin-bottom: 6px; }
+.lp-ask-text { font-size: 14.5px; font-weight: 700; color: var(--text); line-height: 1.7; }
+.lp-out { padding: 16px 20px; }
+.lp-out-text { font-size: 13.5px; color: var(--text); line-height: 1.9; background: rgba(0,102,255,0.04); border-radius: var(--radius-sm); padding: 14px 18px; }
+.lp-verdict { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 13px; line-height: 1.75; }
+.lp-verdict .v-ico { flex-shrink: 0; font-size: 16px; }
+.lp-verdict p { color: var(--sub); }
+.lp-verdict p b { color: var(--text); }
+
+/* ── 积木组装器 ── */
+.builder {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.builder-steps {
+  display: flex; gap: 8px; padding: 16px 18px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.015);
+}
+.b-step {
+  border: 1.5px dashed rgba(0,102,255,0.4); background: var(--card);
+  color: var(--accent); border-radius: 999px; padding: 7px 16px;
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+  transition: all 0.2s;
+}
+.b-step:disabled { opacity: 0.35; cursor: not-allowed; }
+.b-step.added {
+  border-style: solid; background: var(--accent); color: #fff; cursor: default;
+}
+.builder-prompt { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.bp-label { font-size: 11px; font-weight: 800; color: var(--sub); letter-spacing: 0.5px; margin-bottom: 8px; }
+.bp-text { font-size: 14px; line-height: 1.9; color: var(--text); }
+.bp-text .bp-seg { border-radius: 5px; padding: 1px 3px; background: rgba(0,102,255,0.08); color: var(--accent); font-weight: 700; animation: segIn 0.4s ease; }
+@keyframes segIn { from { background: rgba(0,102,255,0.3); } }
+.builder-out { padding: 16px 20px; }
+.bo-text {
+  font-size: 13.5px; color: var(--text); line-height: 1.9;
+  background: rgba(22,163,74,0.04); border: 1px solid rgba(22,163,74,0.15);
+  border-radius: var(--radius-sm); padding: 14px 18px;
+  transition: opacity 0.25s;
+}
+.bo-text.fading { opacity: 0.25; }
+.bo-score { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.bo-score-label { font-size: 12px; font-weight: 800; color: var(--sub); flex-shrink: 0; }
+.bo-track { flex: 1; height: 10px; background: rgba(0,0,0,0.06); border-radius: 6px; overflow: hidden; }
+.bo-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #dc2626, #d97706, #16a34a); width: 15%; transition: width 0.6s cubic-bezier(0.25,1,0.5,1); }
+.bo-pct { font-size: 13px; font-weight: 900; color: var(--success); min-width: 42px; text-align: right; }
+
+/* ── 公式卡 ── */
+.formula-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.formula-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-card);
+}
+.formula-card .f-num { font-size: 12px; font-weight: 800; color: var(--accent); margin-bottom: 6px; letter-spacing: 0.5px; }
+.formula-card h4 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.formula-card p { font-size: 13px; color: var(--sub); line-height: 1.75; }
+.formula-card .f-eg { font-size: 12.5px; color: var(--accent); margin-top: 8px; background: rgba(0,102,255,0.05); border-radius: 8px; padding: 8px 12px; line-height: 1.7; }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .formula-row { grid-template-columns: 1fr; }
+  .level-tab { min-width: 100px; }
+  .colleague-card { flex-direction: column; gap: 10px; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="为什么别人用 AI 效果那么好，你问它却答得平平？因为 AI 是一个聪明但完全不了解你的「新同事」。三档提问对比 + 提示词积木组装器，学会「背景 + 要求 + 限制」的提问公式。">
+<meta name="keywords" content="怎么问AI,提示词入门,prompt怎么写,ChatGPT提问技巧,AI提问,AI使用技巧">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-4.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-4.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-4.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-4.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-4.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="怎么问 AI 才能得到好答案？">
+<meta property="og:description" content="AI 是一个聪明但完全不了解你的「新同事」。三档提问对比 + 提示词积木组装器，学会「背景 + 要求 + 限制」公式。">
+<meta property="og:url" content="https://xueai.app/slides/zero-4.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="怎么问 AI 才能得到好答案？">
+<meta name="twitter:description" content="AI 是一个聪明但完全不了解你的「新同事」。三档提问对比 + 提示词积木组装器。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"把它当不了解你的新同事","name":"把它当不了解你的新同事","url":"https://xueai.app/slides/zero-4.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 怎么和它说话","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"为什么别人用 AI 效果那么好，你问它却答得平平？因为 AI 是一个聪明但完全不了解你的「新同事」。三档提问对比 + 提示词积木组装器，学会「背景 + 要求 + 限制」的提问公式。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · 怎么和它说话</div>
+    <h1>把它当一个聪明、但完全不了解你的新同事</h1>
+    <p class="subtitle">为什么别人用 AI 效果惊人，你问它却答得平平？九成的差距不在 AI，在<b>问法</b>。这一课给你一个思维模型和一个公式，立刻就能用。</p>
+  </header>
+
+  <div class="sec-label">先做一个思维实验</div>
+
+  <div class="colleague-card">
+    <div class="colleague-emoji">🧑‍💼</div>
+    <p>想象公司来了个新同事：名校毕业、什么领域都懂、执行力极强。但今天是他<b>入职第一天</b>——不认识你，不知道你负责什么，不知道你要这个东西给谁看、拿去干什么。<br><br>你走过去丢下一句「<b>帮我写个请假条</b>」就走了。他能写出什么？只能凭想象瞎写一个。<b>这不是他不聪明，是你什么都没告诉他。</b><br><br>AI 就是这个新同事。而且更极端：<b>每次新开对话，都是他的入职第一天</b>。</p>
+  </div>
+
+  <div class="sec-label">同一件事 · 三种问法 · 三种结果</div>
+
+  <div class="level-tabs">
+    <button class="level-tab active" data-l="0">
+      <div class="lt-label">第一档 · 甩一句话</div>
+      <div class="lt-name">「帮我写个请假条」</div>
+    </button>
+    <button class="level-tab" data-l="1">
+      <div class="lt-label">第二档 · 给点信息</div>
+      <div class="lt-name">说了请多久、干什么</div>
+    </button>
+    <button class="level-tab" data-l="2">
+      <div class="lt-label">第三档 · 交代清楚</div>
+      <div class="lt-name">背景 + 要求 + 限制</div>
+    </button>
+  </div>
+
+  <div class="level-panel">
+    <div class="lp-ask">
+      <div class="lp-ask-label">你对 AI 说</div>
+      <div class="lp-ask-text" id="lpAsk"></div>
+    </div>
+    <div class="lp-out">
+      <div class="lp-ask-label" style="margin-bottom:8px;">AI 的回答</div>
+      <div class="lp-out-text" id="lpOut"></div>
+      <div class="lp-verdict"><span class="v-ico" id="lpIco"></span><p id="lpVerdict"></p></div>
+    </div>
+  </div>
+
+  <div class="sec-label">动手拼一次 · 每加一块信息，答案就升一级</div>
+
+  <p style="font-size:15px;color:var(--sub);margin-bottom:14px;">场景：你想在<b style="color:var(--text)">小区业主群</b>里卖掉一辆二手自行车。从最偷懒的问法开始，<b style="color:var(--text)">依次点亮下面四块信息</b>，看 AI 的输出怎么一步步变好。</p>
+
+  <div class="builder">
+    <div class="builder-steps">
+      <button class="b-step" id="bs0">+ 物品的真实细节</button>
+      <button class="b-step" id="bs1" disabled>+ 发在哪、给谁看</button>
+      <button class="b-step" id="bs2" disabled>+ 想要的语气</button>
+      <button class="b-step" id="bs3" disabled>+ 长度限制</button>
+    </div>
+    <div class="builder-prompt">
+      <div class="bp-label">你的提问（实时组装）</div>
+      <div class="bp-text" id="bpText"></div>
+    </div>
+    <div class="builder-out">
+      <div class="bp-label">AI 的输出</div>
+      <div class="bo-text" id="boText"></div>
+      <div class="bo-score">
+        <span class="bo-score-label">可用程度</span>
+        <div class="bo-track"><div class="bo-fill" id="boFill"></div></div>
+        <span class="bo-pct" id="boPct">15%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    <b>别怕啰嗦。</b>对人啰嗦要看情商，对 AI 啰嗦是免费的——你多交代的每一句话，都在帮它划定范围、排除歧义。<b>你打字的这三十秒，能省掉来回返工的十分钟。</b>
+  </div>
+
+  <div class="sec-label">一个好用的公式 · 背景 + 要求 + 限制</div>
+
+  <div class="formula-row">
+    <div class="formula-card">
+      <div class="f-num">① 背景</div>
+      <h4>我是谁，在什么场景</h4>
+      <p>身份、场合、给谁看、拿去干什么。这是新同事最缺的信息。</p>
+      <div class="f-eg">「我是小学老师」「发在业主群」「写给我领导」</div>
+    </div>
+    <div class="formula-card">
+      <div class="f-num">② 要求</div>
+      <h4>我到底要什么</h4>
+      <p>要做的事 + 关键细节。细节给得越实，它编造的空间越小。</p>
+      <div class="f-eg">「写转让信息：捷安特，去年买的，九成新，300 元」</div>
+    </div>
+    <div class="formula-card">
+      <div class="f-num">③ 限制</div>
+      <h4>什么样算合格</h4>
+      <p>语气、长度、格式、不要什么。给验收标准，一次到位。</p>
+      <div class="f-eg">「口语化，别像广告」「100 字以内」「分三点说」</div>
+    </div>
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一课想和你分享的</h3>
+    <ul>
+      <li><b>AI = 聪明但不了解你的新同事</b>，而且每次新对话都是他入职第一天</li>
+      <li><b>它答得平庸，多半是信息还没给够</b>：信息给一分，它答一分</li>
+      <li><b>公式：背景 + 要求 + 限制</b>——我是谁、我要什么、什么样算合格</li>
+      <li><b>对 AI 啰嗦是免费的</b>：多打三十秒字，省十分钟返工</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+/* ── 三档提问 ── */
+const LEVELS = [
+  {
+    ask: '帮我写个请假条',
+    out: '请假条<br>尊敬的领导：<br>您好！本人因个人事务，需请假一天，望批准。<br>此致 敬礼<br>申请人：XXX　X年X月X日',
+    ico: '❌',
+    verdict: '<b>只能瞎写。</b>请多久？为什么请？写给谁？它一概不知道，只好用「个人事务」「XXX」糊弄——你拿到手还得自己改一遍，等于没帮上忙。',
+  },
+  {
+    ask: '帮我写个请假条，明天请一天，带孩子去打疫苗',
+    out: '尊敬的领导：<br>您好！因需陪同孩子接种疫苗，我想申请明天（X月X日）请假一天，工作已做好交接安排。恳请批准，谢谢！<br>申请人：XXX',
+    ico: '⚠️',
+    verdict: '<b>能用，但还差口气。</b>理由和时长有了，可是收件人是谁、你是什么身份、语气要多正式，它还在猜。「工作已做好交接安排」就是它替你脑补的。',
+  },
+  {
+    ask: '我是小学班主任，帮我写一份请假条给王校长：明天请假一天，带孩子去打疫苗，班里的课已请李老师代。语气正式一点，100 字以内。',
+    out: '王校长：<br>您好！我因明日需陪同孩子接种疫苗，特申请请假一天。班级课程已与李老师做好交接，请您放心。不便之处，敬请谅解。<br>此致 敬礼<br>X老师　X月X日',
+    ico: '✅',
+    verdict: '<b>拿来即用。</b>身份、对象、事由、交接、语气、长度全部交代清楚，它没有任何需要「猜」的地方——输出直接可以发出去。<b>注意：你只多打了两行字。</b>',
+  },
+];
+
+const lpAsk = document.getElementById('lpAsk');
+const lpOut = document.getElementById('lpOut');
+const lpIco = document.getElementById('lpIco');
+const lpVerdict = document.getElementById('lpVerdict');
+
+function renderLevel(i) {
+  const L = LEVELS[i];
+  lpAsk.textContent = '「' + L.ask + '」';
+  lpOut.innerHTML = L.out;
+  lpIco.textContent = L.ico;
+  lpVerdict.innerHTML = L.verdict;
+}
+document.querySelectorAll('.level-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderLevel(+tab.dataset.l);
+  });
+});
+renderLevel(0);
+
+/* ── 积木组装器：固定顺序逐块点亮，5 个状态 ── */
+const BUILD_STATES = [
+  {
+    prompt: '帮我写个卖自行车的文案',
+    out: '【出售】二手自行车一辆，九成新，性能良好，价格美丽，有意者私聊！',
+    pct: 15,
+  },
+  {
+    prompt: '帮我写个卖自行车的文案。<span class="bp-seg">车是捷安特的，去年买的，骑了不到 500 公里，车把有点掉漆，想卖 300 元。</span>',
+    out: '【出售】捷安特自行车一辆，去年购入，仅骑行约 500 公里，车况良好，车把处有轻微掉漆，不影响使用。转让价 300 元，有意者联系！',
+    pct: 45,
+  },
+  {
+    prompt: '帮我写个卖自行车的文案。车是捷安特的，去年买的，骑了不到 500 公里，车把有点掉漆，想卖 300 元。<span class="bp-seg">发在小区业主群里。</span>',
+    out: '各位邻居好！出一辆捷安特自行车：去年买的，总共骑了不到 500 公里，车把有一点掉漆，其他都好。300 元转给有需要的邻居，可以随时来看车，就在本小区，自提即可～',
+    pct: 70,
+  },
+  {
+    prompt: '帮我写个卖自行车的文案。车是捷安特的，去年买的，骑了不到 500 公里，车把有点掉漆，想卖 300 元。发在小区业主群里。<span class="bp-seg">语气实在一点，别写得像广告。</span>',
+    out: '邻居们好，出一辆捷安特自行车。去年买来上下班骑的，后来换了电动车就闲置了，总共骑了不到 500 公里。车把有点掉漆，其他没毛病。300 块，先到先得，楼下随时看车。',
+    pct: 88,
+  },
+  {
+    prompt: '帮我写个卖自行车的文案。车是捷安特的，去年买的，骑了不到 500 公里，车把有点掉漆，想卖 300 元。发在小区业主群里。语气实在一点，别写得像广告。<span class="bp-seg">60 字以内。</span>',
+    out: '出捷安特单车：去年买的，骑了不到 500 公里，车把略掉漆，其他没毛病。300 元，本小区自提，随时看车。',
+    pct: 100,
+  },
+];
+
+let buildStep = 0;
+const bpText = document.getElementById('bpText');
+const boText = document.getElementById('boText');
+const boFill = document.getElementById('boFill');
+const boPct = document.getElementById('boPct');
+
+function renderBuild() {
+  const s = BUILD_STATES[buildStep];
+  bpText.innerHTML = '「' + s.prompt + '」';
+  boText.classList.add('fading');
+  setTimeout(() => {
+    boText.textContent = s.out;
+    boText.classList.remove('fading');
+  }, 220);
+  boFill.style.width = s.pct + '%';
+  boPct.textContent = s.pct + '%';
+}
+
+[0, 1, 2, 3].forEach(i => {
+  document.getElementById('bs' + i).addEventListener('click', function () {
+    if (this.disabled || this.classList.contains('added')) return;
+    this.classList.add('added');
+    buildStep = i + 1;
+    renderBuild();
+    const nxt = document.getElementById('bs' + (i + 1));
+    if (nxt) nxt.disabled = false;
+  });
+});
+renderBuild();
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>怎样学这门课才有效？| xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.warn-card {
+  background: linear-gradient(135deg, #fef2f2, #fff1f2);
+  border: 1.5px solid #fecaca;
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+}
+.warn-card h3 { font-size: 18px; font-weight: 800; color: #dc2626; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.warn-card p { font-size: 15px; color: #7f1d1d; line-height: 1.75; }
+.warn-card b { color: #dc2626; }
+
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin: 28px 0;
+}
+.method-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.method-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 20px rgba(79,123,255,0.08);
+}
+.method-num {
+  position: absolute; top: 16px; right: 20px;
+  font-size: 48px; font-weight: 900; color: rgba(79,123,255,0.06);
+  line-height: 1; pointer-events: none;
+}
+.method-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+.method-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.method-head h4 { font-size: 17px; font-weight: 800; color: var(--text); }
+.method-card p { font-size: 14.5px; color: var(--sub); line-height: 1.7; margin-bottom: 8px; }
+.method-card .example {
+  background: var(--bg-dim, #f8f9fa);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--sub);
+  border-left: none;
+}
+.method-card .example b { color: var(--text); }
+.method-card .example .q { color: var(--accent); font-weight: 700; }
+
+.vs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  margin: 24px 0;
+  font-size: 14.5px;
+}
+.vs-table th {
+  padding: 12px 18px;
+  font-weight: 700;
+  text-align: left;
+}
+.vs-table td {
+  padding: 11px 18px;
+  border-top: 1px solid var(--border);
+  line-height: 1.6;
+}
+.vs-table .col-bad { background: #fef2f2; color: #991b1b; }
+.vs-table .col-good { background: #f0fdf4; color: #166534; }
+.vs-table .col-label { background: var(--bg-dim, #f8f9fa); color: var(--sub); font-weight: 600; width: 25%; }
+
+.loop-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+.loop-step {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 12px;
+  min-width: 100px;
+}
+.loop-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: white;
+  margin-bottom: 8px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+.loop-label { font-size: 12px; color: var(--sub); font-weight: 600; text-align: center; }
+.loop-arrow {
+  font-size: 22px; color: var(--accent); font-weight: 700;
+  margin: 0 2px; padding-top: 0;
+  opacity: 0.4;
+}
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-top: 32px;
+}
+.takeaway-box h3 {
+  font-size: 17px; font-weight: 800; color: #1e40af;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+}
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.75;
+  padding: 4px 0; padding-left: 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 11px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #3b82f6;
+}
+
+@media (max-width: 600px) {
+  .method-card { padding: 18px 16px; }
+  .method-num { font-size: 36px; }
+  .loop-step { min-width: 70px; padding: 10px 6px; }
+  .loop-circle { width: 50px; height: 50px; font-size: 11px; }
+}
+</style>
+<meta name="description" content="看完 ≠ 学到。正确的学习姿势是：看到案例后停下来反思，迁移到自己的业务场景，再输出验证。三步循环，知识才能真正过脑。">
+<meta name="author" content="洛小山">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/0-how.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/0-how.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/0-how.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/0-how.html">
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"怎样学，知识才能过脑子","name":"怎样学，知识才能过脑子","url":"https://xueai.app/slides/0-how.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 入门与定位","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"看完 ≠ 学到。正确的学习姿势是：看到案例后停下来反思，迁移到自己的业务场景，再输出验证。三步循环，知识才能真正过脑。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">开篇</div>
+    <h1>怎样学，知识才能<em>过脑子</em>？</h1>
+    <p class="subtitle">这门课不缺内容，缺的是你停下来想一想的 30 秒。</p>
+  </header>
+
+  <div class="warn-card">
+    <h3>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      先说一个残酷的事实
+    </h3>
+    <p>如果你只是从头刷到尾，看完觉得「嗯，都懂了」，那大概率<b>三天后什么都不记得</b>。<br>
+    这不是你的问题，是人脑的默认模式：<b>输入 ≠ 理解，理解 ≠ 记住，记住 ≠ 会用</b>。</p>
+  </div>
+
+  <h2 class="sec-title">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    看完 vs 学到：差在哪？
+  </h2>
+
+  <table class="vs-table">
+    <tr>
+      <th class="col-label"></th>
+      <th class="col-bad">只是看完</th>
+      <th class="col-good">真正学到</th>
+    </tr>
+    <tr>
+      <td class="col-label">看到一个案例</td>
+      <td class="col-bad">「哦，原来可以这样」</td>
+      <td class="col-good">「这个思路，我的场景能不能用？」</td>
+    </tr>
+    <tr>
+      <td class="col-label">看到一个概念</td>
+      <td class="col-bad">「记住了这个名词」</td>
+      <td class="col-good">「它解决的根本问题是什么？」</td>
+    </tr>
+    <tr>
+      <td class="col-label">看到一个踩坑</td>
+      <td class="col-bad">「别人踩了，我知道了」</td>
+      <td class="col-good">「我的项目里有没有类似的坑？」</td>
+    </tr>
+    <tr>
+      <td class="col-label">看完一节课</td>
+      <td class="col-bad">「下一节」</td>
+      <td class="col-good">「等等，让我用自己的话复述一遍」</td>
+    </tr>
+  </table>
+
+  <h2 class="sec-title">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    三步循环：让知识真正长在脑子里
+  </h2>
+
+  <div class="loop-visual">
+    <div class="loop-step">
+      <div class="loop-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);">看到</div>
+      <div class="loop-label">接收信息</div>
+    </div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-step">
+      <div class="loop-circle" style="background:linear-gradient(135deg,#f59e0b,#d97706);">反思</div>
+      <div class="loop-label">停下来想</div>
+    </div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-step">
+      <div class="loop-circle" style="background:linear-gradient(135deg,#10b981,#059669);">迁移</div>
+      <div class="loop-label">带入场景</div>
+    </div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-step">
+      <div class="loop-circle" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);">输出</div>
+      <div class="loop-label">讲给别人</div>
+    </div>
+  </div>
+
+  <div class="method-grid">
+
+    <div class="method-card">
+      <div class="method-num">1</div>
+      <div class="method-head">
+        <div class="method-icon" style="background:rgba(59,130,246,0.1);color:#2563eb;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h4>看到：带着问题看，不要无脑刷</h4>
+      </div>
+      <p>每打开一页之前，先问自己：<b>这个主题跟我现在做的事有什么关系？</b>哪怕暂时想不出来，这个问题本身就会让你的注意力聚焦。</p>
+      <div class="example">
+        <div class="q">示例：打开「上下文窗口」这一页之前</div>
+        <b>先想：</b>我们产品的对话经常超长，是不是跟上下文窗口有关？用户说「你忘了我刚才说的」，是不是上下文被截断了？
+      </div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-num">2</div>
+      <div class="method-head">
+        <div class="method-icon" style="background:rgba(245,158,11,0.1);color:#d97706;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+        </div>
+        <h4>反思：每看完一个知识点，停 30 秒</h4>
+      </div>
+      <p>不要急着翻下一页。问自己三个问题：</p>
+      <p style="padding-left:8px;"><b>1.</b> 这个概念解决的<b>根本问题</b>是什么？<br>
+      <b>2.</b> 如果不知道这个，我之前会怎么做？<br>
+      <b>3.</b> 知道了之后，我的做法会有什么不同？</p>
+      <div class="example">
+        <div class="q">示例：看完「幻觉」这一节后</div>
+        <b>反思：</b>原来幻觉不是 bug，是概率采样的必然结果。那我之前让 AI 直接输出准确答案的做法就有问题。我应该设计验证环节，期望模型不出错并不现实。
+      </div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-num">3</div>
+      <div class="method-head">
+        <div class="method-icon" style="background:rgba(16,185,129,0.1);color:#059669;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h4>迁移：代入你自己的业务场景</h4>
+      </div>
+      <p>这是最关键的一步。课程里的每一个案例、每一个设计决策，都要<b>翻译成你的业务语言</b>。</p>
+      <p>不同行业、不同产品形态、不同用户群体，同一个技术方案的适用性完全不同。课程教的是<b>思考框架</b>，不是可以照搬的答案。</p>
+      <div class="example">
+        <div class="q">示例：看完「RAG 检索增强生成」后</div>
+        <b>迁移：</b>我们的客服系统有 2000 篇知识库文档。RAG 的召回率和精确度问题，在我们这里会变成什么？用户问一个跨多篇文档的问题时，我应该怎么设计检索策略？我们的文档格式（PDF 扫描件 vs 结构化文本）会影响哪些环节？
+      </div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-num">4</div>
+      <div class="method-head">
+        <div class="method-icon" style="background:rgba(139,92,246,0.1);color:#7c3aed;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>输出：讲给别人听，或者写下来</h4>
+      </div>
+      <p>费曼学习法的核心：<b>如果你不能用简单的话讲给外行听，说明你自己也没真懂</b>。</p>
+      <p>不需要写长文，哪怕在微信群里说一句「今天学到一个点：xxx，以前以为 yyy，其实是 zzz」，这个动作就能把知识从短期记忆推入长期记忆。</p>
+      <div class="example">
+        <div class="q">示例：尝试输出</div>
+        <b>跟同事说：</b>「你知道吗，大模型的 Token 不是按字算的，一个中文字可能是 1~3 个 Token。我们那个 Prompt 模板看着只有 500 字，实际可能吃掉 1500 Token，难怪经常超限。」
+      </div>
+    </div>
+
+  </div>
+
+  <div class="takeaway-box">
+    <h3>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      本页 Takeaway
+    </h3>
+    <ul>
+      <li><b>看完 ≠ 学到</b>：不停下来想，知识不过脑子</li>
+      <li><b>每看完一个知识点，停 30 秒</b>：问自己「根本问题是什么」「我的做法会改变吗」</li>
+      <li><b>一定要代入自己的业务场景</b>：课程教的是框架，不是答案</li>
+      <li><b>输出是最好的学习</b>：讲给别人听、写下来、在群里说一句都算</li>
+      <li><b>慢就是快</b>：认真学 10 页，比划水刷完 100 页有用 10 倍</li>
+    </ul>
+  </div>
+
+</main>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模型选型：能力 vs 成本的权衡与决策框架 | xueai.app</title>
+<link rel="stylesheet" href="lesson.css">
+<style>
+@keyframes _si{to{opacity:1}}
+body{opacity:0;animation:_si .15s ease .08s forwards}
+
+:root{
+  --red:var(--danger);
+  --green:var(--success);
+  --orange:var(--amber);
+  --purple:#5b4fcf;
+  --surface:var(--card);
+  --surface2:#f0ede6;
+  --muted:var(--sub);
+}
+
+.lesson-header h1 em{font-style:normal;color:var(--amber)}
+
+/* ── 选型问题导航 ── */
+.nav-col{display:flex;flex-direction:column;gap:6px}
+.nav-group{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;padding:4px 2px 2px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid transparent;background:var(--surface);cursor:pointer;transition:all .2s;font-family:inherit;width:100%;text-align:left}
+.nav-item:hover{border-color:rgba(0,0,0,0.1);background:#fafaf8}
+.nav-item.active{border-color:var(--accent);background:rgba(0,102,255,.04);box-shadow:0 2px 10px rgba(0,102,255,.1)}
+.nav-badge{padding:3px 9px;border-radius:6px;font-size:12px;font-weight:800;flex-shrink:0}
+.badge-q{background:rgba(217,119,6,.12);color:var(--amber)}
+.badge-c{background:rgba(0,102,255,.12);color:var(--accent)}
+.badge-t{background:rgba(91,79,207,.12);color:var(--purple)}
+.nav-text h5{font-size:15px;font-weight:700;color:var(--text);line-height:1.3}
+.nav-text p{font-size:13px;color:var(--sub);margin-top:1px}
+
+/* ── 演示区 ── */
+.demo-col{display:flex;flex-direction:column;gap:14px}
+.demo-heading h3{font-size:20px;font-weight:800;color:var(--text)}
+.demo-heading p{font-size:15px;color:var(--sub);margin-top:5px;line-height:1.7}
+.demo-body{display:flex;flex-direction:column;gap:12px}
+
+/* 通用卡片 */
+.card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:16px 18px}
+.card-title{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+
+/* 对比两列 */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmp-col{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.cmp-col.bad{background:rgba(220,38,38,.04);border:1.5px solid rgba(220,38,38,.18)}
+.cmp-col.good{background:rgba(22,163,74,.04);border:1.5px solid rgba(22,163,74,.18)}
+.cmp-col.neutral{background:rgba(0,102,255,.04);border:1.5px solid rgba(0,102,255,.15)}
+.cmp-head{font-size:14px;font-weight:800}
+.cmp-col.bad .cmp-head{color:var(--red)}
+.cmp-col.good .cmp-head{color:var(--green)}
+.cmp-col.neutral .cmp-head{color:var(--accent)}
+.cmp-body{font-size:14px;color:var(--sub);line-height:1.7}
+.cmp-body b{color:var(--text)}
+
+/* 统计 */
+.stats{display:flex;gap:10px;flex-shrink:0}
+.stat{flex:1;border-radius:10px;padding:11px 14px;text-align:center}
+.stat .sv{font-size:24px;font-weight:900}
+.stat .sl{font-size:12px;font-weight:700;margin-top:2px;color:var(--muted)}
+.stat.red-s{background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.15)}.stat.red-s .sv{color:var(--red)}
+.stat.green-s{background:rgba(22,163,74,.07);border:1px solid rgba(22,163,74,.15)}.stat.green-s .sv{color:var(--green)}
+.stat.blue-s{background:rgba(0,102,255,.07);border:1px solid rgba(0,102,255,.15)}.stat.blue-s .sv{color:var(--accent)}
+.stat.amber-s{background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.2)}.stat.amber-s .sv{color:var(--amber)}
+.stat.gray-s{background:var(--surface);border:1px solid var(--border)}.stat.gray-s .sv{color:var(--text)}
+
+/* 提示 */
+.tip{border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.65;flex-shrink:0}
+.tip.green{background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.2);color:var(--green)}
+.tip.amber{background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.22);color:var(--amber)}
+.tip.blue{background:rgba(0,102,255,.06);border:1px solid rgba(0,102,255,.2);color:var(--accent)}
+.tip.red{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.2);color:var(--red)}
+.tip b{font-weight:800}
+
+/* 按钮 */
+.btn-row{display:flex;gap:8px;flex-shrink:0;align-items:center}
+.btn{padding:9px 20px;border-radius:9px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-p{background:var(--accent);color:white}
+.btn-p:hover{filter:brightness(1.1)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed;filter:none}
+.btn-r{background:var(--surface2);color:var(--sub);border:1px solid var(--border)}
+.btn-hint{font-size:13px;color:var(--muted)}
+
+/* 散点图 */
+.scatter-wrap{position:relative;border-radius:12px;border:1px solid var(--border);background:var(--surface);overflow:hidden}
+.scatter-canvas{display:block;width:100%;height:100%}
+.scatter-label-x{position:absolute;bottom:6px;right:12px;font-size:11px;font-weight:700;color:var(--muted)}
+.scatter-label-y{position:absolute;top:8px;left:8px;font-size:11px;font-weight:700;color:var(--muted);writing-mode:horizontal-tb}
+.axis-label-x{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:800;color:var(--muted)}
+.axis-label-y{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:var(--muted)}
+.scatter-tooltip{position:absolute;background:var(--text);color:white;padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;pointer-events:none;white-space:nowrap;display:none;z-index:10;line-height:1.6}
+
+/* 成本条形图 */
+.bar-chart{display:flex;flex-direction:column;gap:7px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-name{font-size:13px;font-weight:700;color:var(--text);width:140px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;height:22px;background:rgba(0,0,0,.06);border-radius:5px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding:0 8px;font-size:12px;font-weight:800;color:white;transition:width .5s ease;white-space:nowrap;min-width:0}
+.bar-val{font-size:12px;font-weight:700;color:var(--sub);width:56px;text-align:right;flex-shrink:0}
+
+/* 月费计算器 */
+.calc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.calc-field{display:flex;flex-direction:column;gap:5px}
+.calc-field label{font-size:11px;font-weight:700;color:var(--sub)}
+.calc-input{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:14px;font-weight:700;color:var(--text);background:var(--bg);font-family:inherit;outline:none;transition:border-color .2s;width:100%}
+.calc-input:focus{border-color:var(--accent)}
+.calc-result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+.cres{background:var(--bg);border-radius:10px;padding:10px 12px;text-align:center}
+.cres .cr-name{font-size:11px;color:var(--sub);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cres .cr-val{font-size:17px;font-weight:900;color:var(--text)}
+.cres.best .cr-val{color:var(--green)}
+.cres .cr-score{font-size:11px;color:var(--muted);margin-top:2px}
+
+@keyframes row-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.row-in{animation:row-in .3s ease}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+.pop{animation:pop .3s ease}
+
+/* 文章流中散点图需要固定高度 */
+.scatter-wrap{height:380px}
+
+@media (max-width:768px){
+  .cmp{grid-template-columns:1fr}
+  .scatter-wrap{height:280px}
+  .calc-row{grid-template-columns:1fr}
+  .calc-result-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{flex-wrap:wrap}
+  .bar-name{width:90px;font-size:12px}
+  .demo-heading h3{font-size:18px}
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="如何在 AI 产品上线前预估成本？讲解 Token 用量估算方法、并发模型下的成本计算、不同模型价格对比，以及制定合理成本预算的实用框架。">
+<meta name="keywords" content="AI成本评估,大模型成本计算,Token用量,API成本预估,AI产品预算">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/cost-eval.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/cost-eval.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/cost-eval.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/cost-eval.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/cost-eval.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="AI 成本评估：如何量化与预测大模型的使用成本">
+<meta property="og:description" content="如何在 AI 产品上线前预估成本？讲解 Token 用量估算方法、并发模型下的成本计算、不同模型价格对比，以及制定合理成本预算的实用框架。">
+<meta property="og:url" content="https://xueai.app/slides/cost-eval.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 成本评估：如何量化与预测大模型的使用成本">
+<meta name="twitter:description" content="如何在 AI 产品上线前预估成本？讲解 Token 用量估算方法、并发模型下的成本计算、不同模型价格对比，以及制定合理成本预算的实用框架。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"模型选型：能力 vs 成本","name":"模型选型：能力 vs 成本","url":"https://xueai.app/slides/cost-eval.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 成本优化与选型","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"如何在 AI 产品上线前预估成本？讲解 Token 用量估算方法、并发模型下的成本计算、不同模型价格对比，以及制定合理成本预算的实用框架。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+  <header class="lesson-header">
+    <div class="kicker">成本优化</div>
+    <h1>模型选型：<em>能力 vs 成本</em>的权衡</h1>
+    <p class="subtitle">优化做完了，还需要选对模型。点击下方问题切换视角，看散点图、月费对比和场景决策框架。</p>
+  </header>
+
+  <div class="sec-label">三个选型问题</div>
+  <div class="nav-col">
+
+      <button class="nav-item active" onclick="pick(this,0)">
+        <span class="nav-badge badge-q">问题1</span>
+        <div class="nav-text">
+          <h5>更贵的模型，一定更好？</h5>
+          <p>能力与价格不是线性关系</p>
+        </div>
+      </button>
+
+      <button class="nav-item" onclick="pick(this,1)">
+        <span class="nav-badge badge-c">问题2</span>
+        <div class="nav-text">
+          <h5>同一任务，成本差多少？</h5>
+          <p>相同 Token 用不同模型</p>
+        </div>
+      </button>
+
+      <button class="nav-item" onclick="pick(this,2)">
+        <span class="nav-badge badge-t">问题3</span>
+        <div class="nav-text">
+          <h5>我的业务，应该选哪个？</h5>
+          <p>按场景匹配：日常 / 专业 / 极限</p>
+        </div>
+      </button>
+
+      <div class="nav-group" style="margin-top:6px">结论</div>
+      <div style="background:var(--surface);border-radius:12px;border:1px solid var(--border);padding:14px 14px;font-size:13px;color:var(--sub);line-height:1.8">
+        选型 = <b style="color:var(--text)">任务难度</b> × <b style="color:var(--text)">调用量</b> × <b style="color:var(--text)">容错空间</b><br>
+        <span style="font-size:12px">数据来源：<a href="https://xsct.ai" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">xsct.ai 场景化评测</a></span>
+      </div>
+      <a href="https://xsct.ai" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:white;border-radius:12px;padding:13px 16px;text-decoration:none;font-weight:800;font-size:14px;transition:all .2s;margin-top:2px" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        立即查看 xsct.ai →
+      </a>
+  </div>
+
+  <div class="sec-label">互动演示</div>
+  <div class="demo-col paywall-locked xa-peek" id="demoCol"></div>
+</article>
+<script>
+
+/* ─────── 数据 ─────── */
+// 按 xsct.ai 实际数据（文本能力 xsct-l，输出价格 $/1M）
+const MODELS = [
+  {name:'qwen3.5-flash',    short:'Qwen Flash',  output:0.29,  overall:84.3, daily:86.2, pro:83.9, extreme:82.8, color:'#0066ff'},
+  {name:'qwen3.5-plus',     short:'Qwen Plus',   output:0.70,  overall:86.3, daily:88.3, pro:86.1, extreme:84.5, color:'#0066ff'},
+  {name:'GLM-5v-turbo',     short:'GLM-5v',      output:2.63,  overall:87.8, daily:89.2, pro:87.5, extreme:86.6, color:'#0891b2'},
+  {name:'kimi-k2.5',        short:'Kimi K2',     output:3.03,  overall:87.8, daily:89.3, pro:87.6, extreme:86.6, color:'#ea580c'},
+  {name:'Claude Sonnet 4.6',short:'Sonnet 4.6',  output:15.00, overall:90.3, daily:90.8, pro:90.3, extreme:89.8, color:'#7c3aed'},
+  {name:'GPT-5.4',          short:'GPT-5.4',     output:15.00, overall:87.1, daily:87.5, pro:87.1, extreme:86.6, color:'#16a34a'},
+  {name:'Gemini 3.1 Pro',   short:'Gemini Pro',  output:12.00, overall:85.8, daily:87.3, pro:85.6, extreme:84.7, color:'#dc2626'},
+  {name:'GPT-5.2',          short:'GPT-5.2',     output:14.00, overall:86.3, daily:86.8, pro:86.3, extreme:85.7, color:'#16a34a'},
+  {name:'glm-5-turbo',      short:'GLM-5T',      output:2.61,  overall:85.5, daily:87.3, pro:85.3, extreme:83.8, color:'#0891b2'},
+  {name:'qwen3.6-plus',     short:'Qwen3.6+',    output:1.75,  overall:88.3, daily:89.8, pro:88.1, extreme:87.2, color:'#0066ff'},
+];
+
+/* ─────── Demo 0：能力 vs 价格散点图 ─────── */
+function demo0() {
+  return `
+  <div class="demo-heading">
+    <h3>更贵的模型，一定更好？</h3>
+    <p>横轴是<b>输出价格（$/1M Token）</b>，纵轴是<b>xsct.ai 综合评分</b>。<br>
+       看清楚：<b style="color:var(--orange)">价格翻 50 倍，能力只差 6 分</b>。</p>
+  </div>
+  <div class="demo-body">
+    <div class="scatter-wrap" style="flex:1;min-height:0">
+      <canvas id="scatterCanvas" style="width:100%;height:100%"></canvas>
+      <div class="scatter-tooltip" id="tooltip"></div>
+      <div class="axis-label-x">← 输出价格（越左越便宜）</div>
+    </div>
+    <div class="tip amber">
+      <b>结论：</b>日常对话任务，选 qwen3.5-flash（¢0.29/1M）和选 Claude Sonnet（$15/1M）的<b>效果差距不到 6 分</b>，但成本相差 <b>50 倍</b>。
+      贵不等于好，<b>适合场景的才是最好的</b>。
+    </div>
+  </div>`;
+}
+
+/* ─────── Demo 1：成本条形图 ─────── */
+function demo1() {
+  const toks = {input: 2000, output: 500};
+  const calls = 10000;
+  const days = 30;
+  // 计算月费（$）
+  const costs = MODELS.map(m => {
+    const inputP = m.output / 4; // 粗估输入价格约为输出 1/4
+    const monthly = ((inputP * toks.input + m.output * toks.output) / 1e6) * calls * days;
+    return {...m, monthly};
+  }).sort((a, b) => a.monthly - b.monthly);
+  const maxCost = costs[costs.length - 1].monthly;
+
+  const bars = costs.map(m => {
+    const pct = Math.round(m.monthly / maxCost * 100);
+    const color = m.monthly < 5 ? '#16a34a' : m.monthly < 50 ? '#ea580c' : '#dc2626';
+    return `<div class="bar-row row-in">
+      <div class="bar-name" title="${m.name}">${m.short}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%;background:${color}">
+          ${pct > 20 ? `评分 ${m.overall}` : ''}
+        </div>
+      </div>
+      <div class="bar-val">$${m.monthly < 1 ? m.monthly.toFixed(2) : m.monthly.toFixed(0)}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="demo-heading">
+    <h3>同一任务，各模型月费对比</h3>
+    <p>假设：单次输入 <b>2000T</b> + 输出 <b>500T</b>，日调用 <b>10,000 次</b>，跑满 30 天。</p>
+  </div>
+  <div class="demo-body">
+    <div class="card" style="flex:1;overflow-y:auto">
+      <div class="card-title">30 天月费估算（从低到高）</div>
+      <div class="bar-chart">${bars}</div>
+    </div>
+    <div class="tip blue">
+      <b>核心思路：</b>先用便宜模型跑 A/B 测试，只有在效果差异显著时才升级。<b>能力不是越高越好，刚好够用才是最优解。</b>
+    </div>
+  </div>`;
+}
+
+/* ─────── Demo 2：月费计算器 ─────── */
+function demo2() {
+  return `
+  <div class="demo-heading">
+    <h3>按业务场景匹配模型</h3>
+    <p>不同任务对模型的要求不同：<b style="color:var(--green)">日常问答</b>不需要顶尖模型，<b style="color:var(--red)">极限推理</b>才需要旗舰。</p>
+  </div>
+  <div class="demo-body">
+    <div class="card">
+      <div class="card-title">场景 vs 推荐模型</div>
+      <div class="cmp" style="gap:8px">
+        <div class="cmp-col good">
+          <div class="cmp-head">日常场景（客服/问答）</div>
+          <div class="cmp-body">
+            <b>xsct-l daily 维度</b> 排名靠前：<br>
+            qwen3.5-flash <b style="color:var(--green)">86.2 分</b>，输出仅 $0.29/1M<br>
+            qwen3.6-plus <b style="color:var(--green)">89.8 分</b>，输出仅 $1.75/1M<br>
+            <span style="font-size:12px;color:var(--muted)">→ 日常难题，便宜模型足够胜任</span>
+          </div>
+        </div>
+        <div class="cmp-col bad">
+          <div class="cmp-head">极限场景（复杂推理/代码）</div>
+          <div class="cmp-body">
+            <b>xsct-l extreme 维度</b> 差距拉大：<br>
+            Claude Sonnet 4.6 <b style="color:var(--red)">89.8 分</b>，$15/1M<br>
+            qwen3.5-flash <b style="color:var(--red)">82.8 分</b>（差 7 分）<br>
+            <span style="font-size:12px;color:var(--muted)">→ 极限任务，7 分差距代表真实失败率</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">估算我的月费</div>
+      <div class="calc-row">
+        <div class="calc-field">
+          <label>单次输入 Token</label>
+          <input class="calc-input" id="ci" type="number" value="2000" oninput="calcAll()">
+        </div>
+        <div class="calc-field">
+          <label>单次输出 Token</label>
+          <input class="calc-input" id="co" type="number" value="500" oninput="calcAll()">
+        </div>
+        <div class="calc-field">
+          <label>日调用次数</label>
+          <input class="calc-input" id="cc" type="number" value="1000" oninput="calcAll()">
+        </div>
+      </div>
+      <div class="calc-result-grid" id="calcGrid"></div>
+    </div>
+
+    <div class="tip green">
+      <b>决策框架：</b>① 先定场景难度 → ② 看对应维度评分 → ③ 用月费估算工具确认预算 → ④ 小流量 A/B 验证后全量。
+    </div>
+    <a href="https://xsct.ai" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:white;border-radius:11px;padding:11px 18px;text-decoration:none;font-weight:800;font-size:14px;transition:all .2s;flex-shrink:0" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      在 xsct.ai 查看完整模型排行榜 →
+    </a>
+  </div>`;
+}
+
+/* 计算器 */
+function calcAll() {
+  const inTok  = parseFloat(document.getElementById('ci')?.value) || 0;
+  const outTok = parseFloat(document.getElementById('co')?.value) || 0;
+  const calls  = parseFloat(document.getElementById('cc')?.value) || 1;
+  const grid   = document.getElementById('calcGrid');
+  if (!grid) return;
+
+  // 选4个有代表性的模型
+  const picks = [
+    MODELS.find(m => m.short === 'Qwen Flash'),
+    MODELS.find(m => m.short === 'Qwen3.6+'),
+    MODELS.find(m => m.short === 'GLM-5v'),
+    MODELS.find(m => m.short === 'Sonnet 4.6'),
+  ];
+
+  const costs = picks.map(m => {
+    const inputP = m.output / 4;
+    return ((inputP * inTok + m.output * outTok) / 1e6) * calls * 30;
+  });
+  const minCost = Math.min(...costs);
+
+  grid.innerHTML = picks.map((m, i) => {
+    const isBest = costs[i] === minCost;
+    const val = costs[i] < 1 ? '$' + costs[i].toFixed(2) : '$' + costs[i].toFixed(0);
+    return `<div class="cres ${isBest ? 'best' : ''}">
+      <div class="cr-name" title="${m.name}">${m.short}</div>
+      <div class="cr-val">${val}<span style="font-size:11px;font-weight:600;color:var(--muted)">/月</span></div>
+      <div class="cr-score">评分 ${m.overall}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ─────── 散点图绘制 ─────── */
+function drawScatter() {
+  const canvas = document.getElementById('scatterCanvas');
+  if (!canvas) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width  = rect.width  + 'px';
+  canvas.style.height = rect.height + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  const PAD = {top: 20, right: 20, bottom: 36, left: 40};
+
+  const maxPrice = 16, minPrice = 0;
+  const maxScore = 92, minScore = 82;
+
+  function px(price) {
+    return PAD.left + Math.log1p(price) / Math.log1p(maxPrice) * (W - PAD.left - PAD.right);
+  }
+  function py(score) {
+    return H - PAD.bottom - (score - minScore) / (maxScore - minScore) * (H - PAD.top - PAD.bottom);
+  }
+
+  // 网格线
+  ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+  ctx.lineWidth = 1;
+  [83,85,87,89,91].forEach(s => {
+    ctx.beginPath(); ctx.moveTo(PAD.left, py(s)); ctx.lineTo(W - PAD.right, py(s)); ctx.stroke();
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.font = '10px -apple-system,sans-serif';
+    ctx.fillText(s, PAD.left - 26, py(s) + 3);
+  });
+
+  // 轴
+  ctx.strokeStyle = 'rgba(0,0,0,0.12)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, H - PAD.bottom); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(PAD.left, H - PAD.bottom); ctx.lineTo(W - PAD.right, H - PAD.bottom); ctx.stroke();
+
+  // 价格刻度
+  [0, 1, 3, 5, 10, 15].forEach(p => {
+    const x = px(p);
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.font = '10px -apple-system,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(p === 0 ? '$0' : '$' + p, x, H - PAD.bottom + 14);
+    ctx.strokeStyle = 'rgba(0,0,0,0.05)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, H - PAD.bottom); ctx.stroke();
+  });
+
+  // 画点
+  const tooltip = document.getElementById('tooltip');
+  const points = [];
+  MODELS.forEach(m => {
+    const x = px(m.output), y = py(m.overall);
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = m.color + 'cc';
+    ctx.fill();
+    ctx.strokeStyle = m.color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    points.push({x, y, m});
+
+    // 标签
+    ctx.fillStyle = m.color;
+    ctx.font = 'bold 11px -apple-system,sans-serif';
+    ctx.textAlign = 'center';
+    const labelY = y > H / 2 ? y - 14 : y + 20;
+    ctx.fillText(m.short, x, labelY);
+  });
+
+  // hover 交互
+  canvas.onmousemove = (e) => {
+    const br = canvas.getBoundingClientRect();
+    const mx = e.clientX - br.left, my = e.clientY - br.top;
+    const hit = points.find(p => Math.hypot(p.x - mx, p.y - my) < 14);
+    if (hit) {
+      tooltip.style.display = 'block';
+      tooltip.style.left = (hit.x + 12) + 'px';
+      tooltip.style.top  = (hit.y - 12) + 'px';
+      tooltip.innerHTML  = `${hit.m.name}<br>评分 ${hit.m.overall} · 输出 $${hit.m.output}/1M`;
+      canvas.style.cursor = 'pointer';
+    } else {
+      tooltip.style.display = 'none';
+      canvas.style.cursor = 'default';
+    }
+  };
+  canvas.onmouseleave = () => { tooltip.style.display = 'none'; };
+}
+
+/* ─────── 主控 ─────── */
+const DEMOS = [demo0, demo1, demo2];
+
+function pick(btn, idx) {
+  document.querySelectorAll('.nav-item').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.getElementById('demoCol').innerHTML = DEMOS[idx]();
+  if (idx === 0) requestAnimationFrame(() => requestAnimationFrame(drawScatter));
+  if (idx === 2) requestAnimationFrame(calcAll);
+}
+
+pick(document.querySelector('.nav-item'), 0);
+window.addEventListener('resize', () => { if (document.getElementById('scatterCanvas')) drawScatter(); });
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

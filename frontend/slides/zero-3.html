@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 为什么会一本正经地胡说八道？亲手抓一次它的幻觉 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* ── 找茬游戏 ── */
+.hunt-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card);
+  overflow: hidden; margin-bottom: 16px;
+}
+.hunt-head {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.015);
+}
+.hunt-q { font-size: 14px; font-weight: 800; color: var(--text); }
+.hunt-badge {
+  margin-left: auto; font-size: 11px; font-weight: 800; padding: 3px 12px;
+  border-radius: 999px; background: rgba(217,119,6,0.1); color: var(--amber);
+  white-space: nowrap;
+}
+.hunt-badge.solved { background: rgba(22,163,74,0.1); color: var(--success); }
+.hunt-body { padding: 18px 22px; }
+.hunt-hint { font-size: 12.5px; color: var(--sub); font-weight: 600; margin-bottom: 12px; }
+.hunt-text { font-size: 15px; line-height: 2.1; color: var(--text); }
+.hunt-sent {
+  cursor: pointer; border-radius: 6px; padding: 2px 3px;
+  transition: background 0.15s;
+  border-bottom: 2px dashed rgba(0,102,255,0.25);
+}
+.hunt-sent:hover { background: rgba(0,102,255,0.07); }
+.hunt-card.done .hunt-sent { cursor: default; border-bottom-color: transparent; }
+.hunt-sent.wrong-guess { background: rgba(100,116,139,0.12); border-bottom-color: transparent; }
+.hunt-sent.fake-revealed {
+  background: rgba(220,38,38,0.1); border-bottom-color: transparent;
+  color: var(--danger); font-weight: 700;
+  text-decoration: line-through; text-decoration-thickness: 1.5px;
+}
+.hunt-feedback {
+  margin-top: 12px; padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 13.5px; line-height: 1.8; display: none;
+}
+.hunt-feedback.show { display: block; }
+.hunt-feedback.tease { background: rgba(100,116,139,0.07); color: var(--sub); }
+.hunt-feedback.reveal { background: rgba(220,38,38,0.05); border: 1.5px solid rgba(220,38,38,0.2); color: var(--text); }
+.hunt-feedback.reveal b { color: var(--danger); }
+
+/* ── 像 vs 对 可视化 ── */
+.likely-box {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow-card);
+}
+.likely-prompt { font-size: 15px; font-weight: 700; color: var(--sub); margin-bottom: 14px; }
+.likely-prompt b { color: var(--text); }
+.likely-opts { display: flex; flex-direction: column; gap: 10px; }
+.likely-opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); font-size: 14px; line-height: 1.6;
+}
+.likely-opt .opt-tag {
+  font-size: 11px; font-weight: 800; padding: 2px 10px; border-radius: 999px;
+  flex-shrink: 0; white-space: nowrap;
+}
+.likely-opt.smooth { border-color: rgba(220,38,38,0.35); background: rgba(220,38,38,0.03); }
+.likely-opt.smooth .opt-tag { background: rgba(220,38,38,0.1); color: var(--danger); }
+.likely-opt.honest .opt-tag { background: rgba(100,116,139,0.12); color: #475569; }
+.likely-note { font-size: 13px; color: var(--sub); line-height: 1.8; margin-top: 14px; }
+.likely-note b { color: var(--danger); }
+
+/* ── 三个小习惯 ── */
+.habit-list { display: flex; flex-direction: column; gap: 12px; }
+.habit-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px; box-shadow: var(--shadow-card);
+}
+.habit-icon {
+  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 19px;
+  background: rgba(22,163,74,0.08);
+}
+.habit-item h4 { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.habit-item p { font-size: 13.5px; color: var(--sub); line-height: 1.8; }
+.habit-item p b { color: var(--text); }
+.habit-item .warn { color: var(--danger); font-weight: 700; }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .hunt-text { font-size: 14px; }
+  .hunt-badge { margin-left: 0; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="AI 会编造不存在的书、说错健康常识、捏造名人名言，而且语气和说真话时一模一样。这就是「AI 幻觉」。3 个找茬小游戏让你亲手抓一次 AI 的胡说，再带走三个实用的小习惯。">
+<meta name="keywords" content="AI幻觉,ChatGPT胡说,AI说的能信吗,AI编造,人工智能骗人,AI靠谱吗">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-3.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-3.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-3.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-3.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-3.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="AI 为什么会一本正经地胡说八道？">
+<meta property="og:description" content="AI 编造时的语气和说真话时一模一样。3 个找茬小游戏让你亲手抓一次 AI 的胡说，再带走三个实用的小习惯。">
+<meta property="og:url" content="https://xueai.app/slides/zero-3.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 为什么会一本正经地胡说八道？">
+<meta name="twitter:description" content="AI 编造时的语气和说真话时一模一样。3 个找茬小游戏让你亲手抓一次 AI 的胡说。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"它会一本正经地胡说","name":"它会一本正经地胡说","url":"https://xueai.app/slides/zero-3.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · AI 是个什么东西","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"AI 会编造不存在的书、说错健康常识、捏造名人名言，而且语气和说真话时一模一样。这就是「AI 幻觉」。3 个找茬小游戏让你亲手抓一次 AI 的胡说，再带走三个实用的小习惯。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · AI 是个什么东西</div>
+    <h1>它会一本正经地胡说八道</h1>
+    <p class="subtitle">前两课你知道了：它在接话茬，而且凭的是「消化后的记忆」。现在到了最关键的一课——<b>接得像，不等于接得对</b>。下面三段 AI 的回答里，每段都藏着一句编造的话。来，亲手抓一次。</p>
+  </header>
+
+  <div class="sec-label">找茬游戏 · 每段回答里有一句是编的，点出来</div>
+
+  <div id="huntArea"></div>
+
+  <div class="l-callout" id="huntSummary" style="margin-top:4px;display:none;">
+    <b>三段全部找完。</b>注意到了吗——编造的那句话，<b>读起来和真话一样顺、一样自信</b>。如果不是提前告诉你「里面有假的」，你多半就直接信了。这就是 AI 最大的坑：它胡说的时候，<b>不会脸红，不会结巴，不会心虚</b>。
+  </div>
+
+  <div class="sec-label">为什么会这样？回到「接话茬」</div>
+
+  <div class="likely-box">
+    <div class="likely-prompt">假设它在接这句话：<b>「余华的代表作还包括……」</b>，而它其实记不清了。此刻它面前的候选是：</div>
+    <div class="likely-opts">
+      <div class="likely-opt smooth">
+        <span class="opt-tag">很顺 · 容易被选中</span>
+        <span>「长篇小说《在细雨中呼喊》。」——书名是真的。但如果它记忆里没有这本，它也可能顺出一个<b>不存在但听起来极像的书名</b>，比如《河边的错误年代》。</span>
+      </div>
+      <div class="likely-opt honest">
+        <span class="opt-tag">很别扭 · 很难被选中</span>
+        <span>「呃，这个我记不太清，不敢乱说。」——在它读过的几亿本书里，作者们<b>很少这样写</b>，所以这种接法天生就「不像人话」，很难被选中。</span>
+      </div>
+    </div>
+    <div class="likely-note">看明白了吗？它挑的是「<b>哪句更像会出现在这里的话</b>」，不是「哪句是真的」。人类的书面语里，流畅自信的陈述远多于「我不知道」，于是<b>顺口的编造，天然赢过诚实的犹豫</b>。这不是它学坏了，是接话茬这个机制的副作用——行话叫「幻觉」。</div>
+  </div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    最关键的一点：<b>它不知道自己不知道</b>。人说谎时心里有数，它没有——在它那里，说对和说错是同一个动作：挑一个像的接上去。所以它也没办法主动提醒你「这句我是编的」。
+  </div>
+
+  <div class="sec-label">三个小习惯 · 今天就能用上</div>
+
+  <div class="habit-list">
+    <div class="habit-item">
+      <div class="habit-icon">🔍</div>
+      <div>
+        <h4>习惯一：具体的事实，核实了再用</h4>
+        <p>看到<b>数字、日期、人名、书名、法条、药量</b>这些「有标准答案」的东西，用之前搜一下原始出处。AI 帮你省的是理解时间，<b>不能帮你省核实时间</b>。</p>
+      </div>
+    </div>
+    <div class="habit-item">
+      <div class="habit-icon">💬</div>
+      <div>
+        <h4>习惯二：多问一句「你确定吗？出处是什么？」</h4>
+        <p>这句追问经常能让它自己改口（「抱歉，刚才的说法不准确……」）。但注意：<span class="warn">它给的出处本身也可能是编的</span>——编一个像模像样的论文标题，对接话机器来说毫不费力。出处要自己点开验证。</p>
+      </div>
+    </div>
+    <div class="habit-item">
+      <div class="habit-icon">⚖️</div>
+      <div>
+        <h4>习惯三：越重要的决定，越值得多一个信息源</h4>
+        <p>健康、金钱、法律相关的事，把 AI 的回答当成<b>「一个消息灵通的朋友的参考意见」</b>——朋友的话有价值，但你不会因为朋友一句话就吃药、签合同、打官司。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一课想和你分享的</h3>
+    <ul>
+      <li><b>接得像 ≠ 接得对</b>：顺口的编造，天然赢过诚实的犹豫</li>
+      <li><b>它胡说时不心虚</b>：语气、流畅度和说真话完全一样，凭感觉分不出来</li>
+      <li><b>它不知道自己不知道</b>：它也没法主动告诉你「这句是编的」</li>
+      <li><b>三个小习惯</b>：事实顺手核实、请它给出处、重要的事多找一个信息源</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+/* 每个案例：sentences 数组，fake 标记编造句索引，reveal 为揭晓解释 */
+const HUNTS = [
+  {
+    q: '「推荐几本适合入门的经济学书」',
+    sents: [
+      { t: '推荐三本：第一本是《小岛经济学》，用一个小岛上捕鱼的故事把经济学原理讲得非常通俗，适合完全零基础的读者。', fake: false },
+      { t: '第二本是《牛奶可乐经济学》，作者用日常生活里的小问题解释经济学思维，比如为什么牛奶装方盒、可乐装圆瓶。', fake: false },
+      { t: '第三本是曼昆的《生活中的经济学：从菜市场到央行》，这是他专门为中国读者写的入门读物，案例全部来自中国市场。', fake: true },
+    ],
+    reveal: '<b>第三句是编的。</b>曼昆确实写过著名的经济学入门教材（《经济学原理》），但<b>《生活中的经济学：从菜市场到央行》这本书不存在</b>，「专门为中国读者写」更是无中生有。注意它编得多么合理：真实的作者 + 像样的书名 + 贴心的理由。这种「七分真三分假」是 AI 幻觉最典型的形态——全假的话它反而编不出来。',
+  },
+  {
+    q: '「每天该喝多少水？」',
+    sents: [
+      { t: '一般建议成年人每天喝 1500 到 1700 毫升水，大约七八杯，运动量大或天热时要适当增加。', fake: false },
+      { t: '不必强求「每天 8 杯水」这个说法，因为食物里本身也含有相当多的水分。', fake: false },
+      { t: '世界卫生组织的研究表明，饭后立刻喝水会稀释胃酸，导致消化不良，所以最好饭后两小时再喝水。', fake: true },
+    ],
+    reveal: '<b>第三句是编的。</b>「饭后喝水稀释胃酸导致消化不良」是流传很广的说法，但并没有可靠医学证据，更<b>不存在所谓「世界卫生组织的研究」</b>。注意这个套路：给一个民间说法<b>安上一个权威机构</b>，可信度立刻翻倍。AI 读过太多这样的养生文，把「像真的」的话接了出来。',
+  },
+  {
+    q: '「鲁迅说过哪些关于读书的名言？」',
+    sents: [
+      { t: '鲁迅在《而已集》中写过：「读书应自己思索，自己做主。」', fake: false },
+      { t: '他还说过一句流传很广的话：「哪里有天才，我是把别人喝咖啡的工夫都用在工作上的。」', fake: false },
+      { t: '在 1927 年的一次演讲中，鲁迅提出了著名的「读书三到」：眼到、口到、心到，强调读书贵在专注。', fake: true },
+    ],
+    reveal: '<b>第三句是编的。</b>「读书三到」出自<b>朱熹</b>（《训学斋规》），不是鲁迅，「1927 年的一次演讲」也是凭空安排的。这就是上一课说的「记忆糊在一起」：两个都谈过读书的名人，在它的记忆里串了台。年份、场合编得越具体，越容易让人信。',
+  },
+];
+
+const area = document.getElementById('huntArea');
+let solvedCount = 0;
+
+HUNTS.forEach((h, hi) => {
+  const card = document.createElement('div');
+  card.className = 'hunt-card';
+  card.innerHTML = `
+    <div class="hunt-head">
+      <span class="hunt-q">你问 AI：${h.q}</span>
+      <span class="hunt-badge" id="badge${hi}">其中一句是编的</span>
+    </div>
+    <div class="hunt-body">
+      <div class="hunt-hint">👇 点击你认为「是编造的」那句话</div>
+      <div class="hunt-text">${h.sents.map((s, si) => `<span class="hunt-sent" data-h="${hi}" data-s="${si}">${s.t}</span>`).join(' ')}</div>
+      <div class="hunt-feedback" id="fb${hi}"></div>
+    </div>`;
+  area.appendChild(card);
+});
+
+area.addEventListener('click', e => {
+  const el = e.target.closest('.hunt-sent');
+  if (!el) return;
+  const hi = +el.dataset.h, si = +el.dataset.s;
+  const card = el.closest('.hunt-card');
+  if (card.classList.contains('done')) return;
+  const fb = document.getElementById('fb' + hi);
+  const h = HUNTS[hi];
+
+  if (h.sents[si].fake) {
+    card.classList.add('done');
+    el.classList.add('fake-revealed');
+    fb.className = 'hunt-feedback reveal show';
+    fb.innerHTML = '🎯 抓到了！' + h.reveal;
+    const badge = document.getElementById('badge' + hi);
+    badge.textContent = '✓ 已识破';
+    badge.classList.add('solved');
+    solvedCount++;
+    if (solvedCount === HUNTS.length) {
+      document.getElementById('huntSummary').style.display = 'block';
+    }
+  } else {
+    el.classList.add('wrong-guess');
+    fb.className = 'hunt-feedback tease show';
+    fb.textContent = '这句其实是真的。编造的那句伪装得更好——再找找。';
+  }
+});
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

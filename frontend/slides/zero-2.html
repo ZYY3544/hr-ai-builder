@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 不是搜索引擎：它没有在网上帮你查答案 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* ── 问题切换 ── */
+.q-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.q-chip {
+  border: 1.5px solid var(--border); background: var(--card);
+  border-radius: 999px; padding: 8px 18px;
+  font-size: 13.5px; font-weight: 700; color: var(--text);
+  cursor: pointer; transition: all 0.15s; font-family: inherit;
+}
+.q-chip:hover { border-color: rgba(0,102,255,0.4); }
+.q-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── 对比面板 ── */
+.vs-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vs-panel {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-card);
+  display: flex; flex-direction: column;
+}
+.vs-panel-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; font-size: 13px; font-weight: 800;
+  border-bottom: 1px solid var(--border);
+}
+.vs-panel.search .vs-panel-head { background: rgba(100,116,139,0.06); color: #475569; }
+.vs-panel.ai .vs-panel-head { background: rgba(0,102,255,0.05); color: var(--accent); }
+.vs-panel-body { padding: 14px 16px; flex: 1; min-height: 240px; }
+
+/* 搜索结果模拟 */
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border); border-radius: 999px;
+  padding: 7px 14px; font-size: 13px; color: var(--text);
+  margin-bottom: 12px; background: #fff;
+}
+.search-bar svg { flex-shrink: 0; color: #94a3b8; }
+.sr-item { padding: 9px 4px; border-bottom: 1px solid rgba(0,0,0,0.04); }
+.sr-item.ad .sr-title::before {
+  content: '广告'; font-size: 10px; font-weight: 800; color: #b45309;
+  background: rgba(217,119,6,0.12); border-radius: 4px;
+  padding: 1px 5px; margin-right: 6px; vertical-align: 1px;
+}
+.sr-title { font-size: 14px; font-weight: 700; color: #1d4ed8; margin-bottom: 2px; }
+.sr-url { font-size: 11px; color: #16a34a; margin-bottom: 2px; }
+.sr-snip { font-size: 12px; color: var(--sub); line-height: 1.6; }
+.sr-note {
+  margin-top: 10px; font-size: 12px; color: var(--sub); font-weight: 600;
+  padding: 8px 12px; background: rgba(100,116,139,0.06); border-radius: 8px; line-height: 1.7;
+}
+.search-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 190px; gap: 8px; color: var(--sub); text-align: center;
+}
+.search-empty .big { font-size: 30px; }
+.search-empty p { font-size: 13px; line-height: 1.7; max-width: 260px; }
+
+/* AI 回答模拟 */
+.ai-answer { font-size: 13.5px; line-height: 1.85; color: var(--text); }
+.ai-answer p { margin-bottom: 8px; }
+.ai-answer b { color: var(--accent); }
+.ai-note {
+  margin-top: 10px; font-size: 12px; color: var(--accent); font-weight: 600;
+  padding: 8px 12px; background: rgba(0,102,255,0.05); border-radius: 8px; line-height: 1.7;
+}
+
+/* ── 图书馆比喻 ── */
+.lib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lib-card {
+  border-radius: var(--radius); padding: 22px 24px;
+  border: 1.5px solid var(--border); background: var(--card); box-shadow: var(--shadow-card);
+}
+.lib-card.search-side { border-color: rgba(100,116,139,0.3); }
+.lib-card.ai-side { border-color: rgba(0,102,255,0.3); background: rgba(0,102,255,0.02); }
+.lib-emoji { font-size: 34px; margin-bottom: 10px; }
+.lib-card h4 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+.lib-card.search-side h4 { color: #475569; }
+.lib-card.ai-side h4 { color: var(--accent); }
+.lib-card p { font-size: 13.5px; color: var(--sub); line-height: 1.85; }
+.lib-card p b { color: var(--text); }
+
+/* ── 三个后果 ── */
+.conseq-list { display: flex; flex-direction: column; gap: 12px; }
+.conseq-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px; box-shadow: var(--shadow-card);
+}
+.conseq-num {
+  width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 900; color: var(--amber);
+  background: rgba(217,119,6,0.1);
+}
+.conseq-item h4 { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.conseq-item p { font-size: 13.5px; color: var(--sub); line-height: 1.8; }
+.conseq-item p b { color: var(--text); }
+
+/* ── 何时用哪个表 ── */
+.when-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+.when-table th, .when-table td { padding: 12px 16px; text-align: left; }
+.when-table th {
+  font-size: 12.5px; font-weight: 800; color: var(--sub);
+  border-bottom: 2px solid var(--border); letter-spacing: 0.4px;
+}
+.when-table td { border-bottom: 1px solid rgba(0,0,0,0.05); line-height: 1.7; }
+.when-table tr:last-child td { border-bottom: none; }
+.pill {
+  display: inline-block; font-size: 12px; font-weight: 800;
+  padding: 3px 12px; border-radius: 999px; white-space: nowrap;
+}
+.pill.search-p { background: rgba(100,116,139,0.12); color: #475569; }
+.pill.ai-p { background: rgba(0,102,255,0.1); color: var(--accent); }
+.pill.both-p { background: rgba(22,163,74,0.1); color: var(--success); }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .vs-panels, .lib-grid { grid-template-columns: 1fr; }
+  .vs-panel-body { min-height: 0; }
+  .when-table { font-size: 13px; }
+  .when-table th, .when-table td { padding: 10px 8px; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="很多人以为 AI 是更聪明的搜索引擎，其实完全不是一回事。搜索引擎帮你找别人写的网页，AI 凭「读过的记忆」直接回答。理解这个区别，你就知道什么时候适合搜索、什么时候适合问 AI、什么话值得核实一下。">
+<meta name="keywords" content="AI和搜索引擎的区别,ChatGPT联网吗,AI知识截止,AI怎么用,人工智能入门">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-2.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-2.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-2.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-2.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-2.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="AI 不是搜索引擎：它没有在网上帮你查答案">
+<meta property="og:description" content="搜索引擎帮你找别人写的网页，AI 凭「读过的记忆」直接回答。理解这个区别，你就知道什么时候用哪个。">
+<meta property="og:url" content="https://xueai.app/slides/zero-2.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 不是搜索引擎：它没有在网上帮你查答案">
+<meta name="twitter:description" content="搜索引擎帮你找别人写的网页，AI 凭「读过的记忆」直接回答。理解这个区别，你就知道什么时候用哪个。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"它不是搜索引擎","name":"它不是搜索引擎","url":"https://xueai.app/slides/zero-2.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · AI 是个什么东西","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"很多人以为 AI 是更聪明的搜索引擎，其实完全不是一回事。搜索引擎帮你找别人写的网页，AI 凭「读过的记忆」直接回答。理解这个区别，你就知道什么时候适合搜索、什么时候适合问 AI、什么话值得核实一下。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · AI 是个什么东西</div>
+    <h1>它不是在网上帮你搜答案</h1>
+    <p class="subtitle">关于 AI，新手最常见的误解是：「不就是个更聪明的搜索框吗？」——完全不是一回事。上一课你已经知道它在「接话茬」，这一课看清它和搜索引擎的本质区别，你就知道<b>什么时候该用哪个</b>。</p>
+  </header>
+
+  <div class="sec-label">同一个问题 · 两种完全不同的反应</div>
+
+  <div class="q-chips" id="qChips"></div>
+
+  <div class="vs-panels">
+    <div class="vs-panel search">
+      <div class="vs-panel-head">🔍 搜索引擎</div>
+      <div class="vs-panel-body" id="searchBody"></div>
+    </div>
+    <div class="vs-panel ai">
+      <div class="vs-panel-head">🤖 AI 助手</div>
+      <div class="vs-panel-body" id="aiBody"></div>
+    </div>
+  </div>
+
+  <div class="sec-label">为什么差别这么大？一个比喻</div>
+
+  <div class="lib-grid">
+    <div class="lib-card search-side">
+      <div class="lib-emoji">🗂️</div>
+      <h4>搜索引擎 = 图书管理员</h4>
+      <p>你说要找什么，它<b>把你带到书架前</b>，指给你十本可能相关的书（还顺手塞两本广告）。书是别人写的，它自己<b>一个字都没读过</b>，读不读、信不信，是你的事。</p>
+    </div>
+    <div class="lib-card ai-side">
+      <div class="lib-emoji">🧠</div>
+      <h4>AI = 读完了整个图书馆的人</h4>
+      <p>它<b>提前读完了图书馆里几乎所有的书</b>，然后把书全部还了回去。你问它问题时，它手边一本书都没有——全凭<b>消化后的记忆</b>，现场把答案「接」出来。</p>
+    </div>
+  </div>
+
+  <div class="sec-label">「凭记忆回答」这件事，带来三个后果</div>
+
+  <div class="conseq-list">
+    <div class="conseq-item">
+      <div class="conseq-num">1</div>
+      <div>
+        <h4>它可能记串</h4>
+        <p>读过的书太多，两本书的内容在记忆里<b>糊在一起</b>是常有的事：把 A 作者的书安到 B 头上、把两个相似案件的细节混着说。它记错的时候<b>语气和记对的时候一样自信</b>——下一课专门讲这个。</p>
+      </div>
+    </div>
+    <div class="conseq-item">
+      <div class="conseq-num">2</div>
+      <div>
+        <h4>它的知识有「截止日期」</h4>
+        <p>它读书是在<b>过去某个时间点</b>完成的，之后世界上发生的事它一概不知道。问它昨天的新闻、今天的天气、现在的股价，它要么坦白说不知道，要么<b>凭旧记忆瞎接一个</b>——后者更危险。</p>
+      </div>
+    </div>
+    <div class="conseq-item">
+      <div class="conseq-num">3</div>
+      <div>
+        <h4>它给结论，不给书架</h4>
+        <p>搜索结果里每条都有网址，你能点进去核对；AI 给你的是<b>一段现成的话</b>，没有天然的「出处」可查。它说得越流畅，你越容易忘了问一句：<b>这是真的吗？</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    <b>那为什么有的 AI 也能查今天的新闻？</b>现在很多 AI 产品带「联网搜索」：先当一回搜索引擎把资料查回来，再当接话机器把资料<b>总结成人话</b>。这不矛盾——查资料的是外挂功能，组织语言的还是那台接话机器。看到 AI 回答里带「引用来源」，通常就是这个模式在工作。
+  </div>
+
+  <div class="sec-label">实用速查 · 什么事找谁办</div>
+
+  <div class="l-card" style="padding:8px 16px;">
+    <table class="when-table">
+      <tr><th>你想干什么</th><th>找谁</th><th>为什么</th></tr>
+      <tr>
+        <td>查今天的天气、新闻、股价、营业时间</td>
+        <td><span class="pill search-p">搜索 / AI 联网</span></td>
+        <td>要的是「此刻的事实」，纯凭记忆的 AI 不可能知道</td>
+      </tr>
+      <tr>
+        <td>解释一个看不懂的概念、名词、体检报告</td>
+        <td><span class="pill ai-p">问 AI</span></td>
+        <td>它读过的解释比任何一个网页都多，还能顺着你的追问讲</td>
+      </tr>
+      <tr>
+        <td>改写、润色、翻译、起名字、出主意</td>
+        <td><span class="pill ai-p">问 AI</span></td>
+        <td>这类活儿没有「标准答案网页」可搜，是 AI 的独门强项</td>
+      </tr>
+      <tr>
+        <td>查一个重要的事实（法条、药量、数据）</td>
+        <td><span class="pill both-p">AI 先答 + 搜索核对</span></td>
+        <td>AI 帮你快速搞懂大概，但拍板前要找到原始出处</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一课想和你分享的</h3>
+    <ul>
+      <li><b>搜索引擎给书架，AI 给结论</b>：一个帮你找别人写的网页，一个凭消化后的记忆直接回答</li>
+      <li><b>凭记忆 = 可能记串</b>：AI 记错时和记对时一样自信</li>
+      <li><b>它的知识有截止日期</b>：「此刻的事实」要靠搜索或 AI 的联网功能</li>
+      <li><b>重要事实值得核对出处</b>：它答得越流畅，越值得顺手确认一次</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+const QA = [
+  {
+    chip: '猫不吃饭怎么办？',
+    query: '猫不吃饭怎么办',
+    search: `
+      <div class="sr-item ad">
+        <div class="sr-title">XX 宠物医院 24 小时在线问诊</div>
+        <div class="sr-url">www.example-petad.com</div>
+        <div class="sr-snip">猫咪厌食？专业兽医在线解答，点击立即咨询…</div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-title">猫咪不吃东西的 8 个原因 - 宠物百科</div>
+        <div class="sr-url">baike.example.com › 猫咪健康</div>
+        <div class="sr-snip">猫咪食欲下降可能由应激、口腔问题、肠胃不适等引起，本文详细介绍…</div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-title">急！猫三天不吃饭了怎么办 - 某论坛</div>
+        <div class="sr-url">bbs.example.com › 求助</div>
+        <div class="sr-snip">楼主家猫三天没吃东西，各位铲屎官有遇到过吗？在线等…</div>
+      </div>
+      <div class="sr-note">给你 10 个链接自己挑、自己读、自己综合——哪条靠谱你说了算。</div>`,
+    ai: `
+      <div class="ai-answer">
+        <p>猫不吃饭先看两件事：<b>精神状态</b>和<b>持续时间</b>。</p>
+        <p>如果精神还好、只是一两顿不吃，可能是换粮、天热或轻微应激，可以先换回原来的粮、给点温水观察一天。</p>
+        <p>但如果<b>超过 24 小时完全不吃</b>，或者伴随呕吐、蔫着不动，别等了，尽快去宠物医院——猫长时间空腹有脂肪肝风险。</p>
+        <p>需要的话，告诉我猫的年龄和最近有什么变化，我帮你进一步判断。</p>
+      </div>
+      <div class="ai-note">直接把「读过的所有养猫知识」综合成一段针对你的回答，还能继续追问。</div>`,
+  },
+  {
+    chip: '昨晚比赛谁赢了？',
+    query: '昨晚比赛谁赢了',
+    search: `
+      <div class="sr-item">
+        <div class="sr-title">昨晚比赛战报：比分、集锦、赛后采访 - 体育新闻</div>
+        <div class="sr-url">sports.example.com › 昨天 23:47</div>
+        <div class="sr-snip">刚刚结束的比赛中……（几分钟前更新的页面，结果准确）</div>
+      </div>
+      <div class="sr-item">
+        <div class="sr-title">全场回放与技术统计</div>
+        <div class="sr-url">video.example.com</div>
+        <div class="sr-snip">完整比赛录像及数据统计…</div>
+      </div>
+      <div class="sr-note">搜索引擎的强项：网页是<b>刚刚</b>更新的，「此刻的事实」它最靠谱。</div>`,
+    ai: `
+      <div class="ai-answer">
+        <p>抱歉，我没法知道<b>昨晚</b>的比赛结果——我的知识停留在训练完成的那一天，之后发生的事我并不知道。</p>
+        <p>你可以搜索一下，或者打开我的「联网搜索」功能，我可以帮你查到结果之后再给你总结分析。</p>
+      </div>
+      <div class="ai-note">诚实的 AI 会承认知识有截止日期。危险的是有些时候它会<b>凭旧记忆编一个比分</b>——语气还特别肯定。</div>`,
+  },
+  {
+    chip: '把这段话改得客气一点',
+    query: '把这段话改得客气一点：「这个方案不行，重做」',
+    search: `
+      <div class="search-empty">
+        <div class="big">🤷</div>
+        <p><b>搜索引擎做不了这件事。</b><br>没有任何一个现成的网页，写着「你这段话」的客气版本。它只能找到别人写好的东西，<b>不能为你创造新东西</b>。</p>
+      </div>`,
+    ai: `
+      <div class="ai-answer">
+        <p>可以这样改：</p>
+        <p style="background:rgba(0,102,255,0.05);border-radius:8px;padding:10px 14px;">「这个方案目前和我们的预期还有一些差距，辛苦再调整一版。有几个具体问题我们可以先对一下，避免返工。」</p>
+        <p>要更委婉一些、还是保留一点严肃？我可以再给你两个不同语气的版本。</p>
+      </div>
+      <div class="ai-note">改写、润色、翻译、起名、出主意——这类「没有标准答案网页」的活儿，是 AI 的独门强项。</div>`,
+  },
+];
+
+const chipsEl = document.getElementById('qChips');
+const searchBody = document.getElementById('searchBody');
+const aiBody = document.getElementById('aiBody');
+
+function renderQA(i) {
+  const q = QA[i];
+  searchBody.innerHTML = `
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      ${q.query}
+    </div>${q.search}`;
+  aiBody.innerHTML = q.ai;
+}
+
+QA.forEach((q, i) => {
+  const b = document.createElement('button');
+  b.className = 'q-chip' + (i === 0 ? ' active' : '');
+  b.textContent = q.chip;
+  b.addEventListener('click', () => {
+    chipsEl.querySelectorAll('.q-chip').forEach(c => c.classList.remove('active'));
+    b.classList.add('active');
+    renderQA(i);
+  });
+  chipsEl.appendChild(b);
+});
+renderQA(0);
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

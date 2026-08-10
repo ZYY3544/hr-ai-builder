@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vibe Coding 方法论收官：14 章规则全景图（可交互）、适配四步自查向导（删换调补）、11 节课回顾。规则的价值在于每条都解决一个真实问题。">
+<meta name="author" content="洛小山">
+<title>第11节：规则的价值：每条解决一个真实问题 | AI 系统课</title>
+<link rel="canonical" href="https://xueai.app/slides/vibe-final.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/vibe-final.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/vibe-final.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/vibe-final.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/vibe-final.html">
+<link rel="stylesheet" href="lesson.css">
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<style>
+:root{--vibe:#0d9488;--vibe-deep:#0f766e}
+.lesson-header .kicker{color:var(--vibe)}
+code{color:var(--vibe-deep)}
+.l-callout{background:rgba(13,148,136,.05);border-color:rgba(13,148,136,.25)}
+.l-callout b{color:var(--vibe-deep)}
+.desc{font-size:16px;color:var(--sub);line-height:1.8}
+
+/* ── 交互一：五大板块矩阵 ── */
+.board-list{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+.board-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-family:inherit;min-height:44px;box-shadow:var(--shadow-card)}
+.board-btn:hover{border-color:rgba(0,0,0,.15)}
+.board-btn.active{border-color:var(--vibe);background:rgba(13,148,136,.05);box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.board-icon{font-size:26px;line-height:1}
+.board-btn h4{font-size:14.5px;font-weight:800;color:var(--text)}
+.board-btn.active h4{color:var(--vibe-deep)}
+.board-btn small{font-size:12px;color:var(--sub)}
+.board-detail{margin-top:14px;background:var(--card);border:1.5px solid rgba(13,148,136,.3);border-radius:14px;padding:18px 20px}
+.bd-title{font-size:16px;font-weight:800;color:var(--vibe-deep);margin-bottom:4px}
+.bd-sub{font-size:13.5px;color:var(--sub);margin-bottom:12px}
+.chap-item{display:flex;gap:12px;align-items:flex-start;padding:11px 0}
+.chap-item + .chap-item{box-shadow:inset 0 1px 0 var(--border)}
+.chap-num{flex-shrink:0;font-size:12px;font-weight:800;color:var(--vibe-deep);background:rgba(13,148,136,.1);border-radius:7px;padding:4px 10px;white-space:nowrap;margin-top:2px}
+.chap-body{flex:1;min-width:0}
+.chap-body b{font-size:15px;color:var(--text)}
+.chap-body p{font-size:13.5px;color:var(--sub);margin-top:2px;line-height:1.65}
+.chap-lesson{flex-shrink:0;font-size:12px;font-weight:700;color:var(--sub);background:rgba(0,0,0,.05);border-radius:999px;padding:4px 11px;white-space:nowrap;margin-top:2px}
+.board-base{margin-top:14px;text-align:center;font-size:14px;color:var(--sub);background:rgba(13,148,136,.05);border:1.5px solid rgba(13,148,136,.2);border-radius:12px;padding:13px 16px}
+.board-base b{color:var(--vibe-deep)}
+
+/* ── 使用方法三步 ── */
+.step3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.step3 .l-card h3{font-size:15.5px;font-weight:800;margin-bottom:6px}
+.step3 .l-card h3 span{color:var(--vibe-deep);margin-right:6px}
+.step3 .l-card p{font-size:14px;color:var(--sub)}
+
+/* ── 交互二：适配向导 ── */
+.wiz-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-top:12px}
+.wiz-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.wiz-bar b{font-size:14px;color:var(--sub)}
+.wiz-step-badge{font-size:13px;font-weight:800;color:var(--vibe-deep)}
+.wiz-body{padding:20px}
+.wiz-q{font-size:17px;font-weight:800;color:var(--text);margin-bottom:4px}
+.wiz-q .wq-tag{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:var(--vibe);border-radius:6px;padding:2px 9px;margin-right:8px;vertical-align:2px}
+.wiz-note{font-size:13.5px;color:var(--sub);margin-bottom:14px}
+.opt-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt-btn{padding:13px 16px;border-radius:11px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-family:inherit;text-align:left;font-size:15px;font-weight:700;color:var(--text);min-height:44px}
+.opt-btn:hover{border-color:var(--vibe);background:rgba(13,148,136,.04)}
+.wiz-slider-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.wiz-slider-row input[type=range]{flex:1;min-width:180px;accent-color:var(--vibe);height:44px;cursor:pointer}
+.wiz-val{font-size:16px;font-weight:800;color:var(--vibe-deep);background:rgba(13,148,136,.1);padding:7px 16px;border-radius:9px;min-width:80px;text-align:center}
+.wiz-progress{display:flex;gap:6px;margin-bottom:16px}
+.wiz-dot{flex:1;height:5px;border-radius:99px;background:rgba(0,0,0,.07);transition:background .3s}
+.wiz-dot.done{background:var(--vibe)}
+
+/* 向导结果清单 */
+.result-item{display:flex;gap:12px;align-items:flex-start;padding:13px 0}
+.result-item + .result-item{box-shadow:inset 0 1px 0 var(--border)}
+.res-badge{flex-shrink:0;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
+.res-badge.del{background:var(--danger)}
+.res-badge.swap{background:var(--amber)}
+.res-badge.tune{background:var(--cyan)}
+.res-badge.add{background:var(--vibe)}
+.res-body b{font-size:15px;color:var(--text)}
+.res-body p{font-size:14px;color:var(--sub);margin-top:2px;line-height:1.7}
+
+.ctrl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.btn{padding:11px 22px;border-radius:9px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-p{background:var(--vibe);color:#fff}
+.btn-p:hover{filter:brightness(1.08)}
+.btn-r{background:rgba(0,0,0,0.05);color:var(--sub);border:1px solid var(--border)}
+.hint{font-size:13px;color:var(--sub)}
+
+/* ── 交互三：11 节课回顾 ── */
+.review-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.rv-card{padding:14px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-family:inherit;text-align:left;min-height:44px;box-shadow:var(--shadow-card)}
+.rv-card:hover{border-color:rgba(0,0,0,.15)}
+.rv-card.open{border-color:var(--vibe);background:rgba(13,148,136,.04)}
+.rv-num{font-size:12px;font-weight:800;color:var(--vibe-deep);letter-spacing:.5px}
+.rv-title{font-size:15px;font-weight:800;color:var(--text);margin-top:2px}
+.rv-back{font-size:13.5px;color:var(--sub);line-height:1.65;margin-top:8px;display:none}
+.rv-card.open .rv-back{display:block}
+.rv-flip-hint{font-size:12px;color:var(--sub);margin-top:8px}
+.rv-card.open .rv-flip-hint{display:none}
+
+.src-note{margin-top:24px;font-size:13px;color:var(--sub)}
+.src-note a{color:var(--vibe-deep)}
+/* ── GitHub 仓库引导卡 ── */
+.repo-cta{display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,rgba(13,148,136,.06),var(--card));border:1.5px solid rgba(13,148,136,.35);border-radius:14px;padding:20px 22px;flex-wrap:wrap}
+.repo-cta .repo-ic{width:42px;height:42px;flex-shrink:0;color:var(--text)}
+.repo-cta .repo-txt{flex:1;min-width:220px}
+.repo-cta h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.repo-cta h3 span{color:var(--vibe-deep)}
+.repo-cta .repo-txt p{font-size:13.5px;color:var(--sub);line-height:1.7}
+.repo-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--vibe);color:#fff;font-size:15px;font-weight:700;padding:12px 24px;border-radius:9px;text-decoration:none;min-height:44px;transition:filter .2s,transform .15s;flex-shrink:0}
+.repo-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+@media(max-width:768px){.repo-cta{flex-direction:column;align-items:flex-start}.repo-btn{width:100%}}
+
+@media (max-width:768px){
+  .board-list{grid-template-columns:1fr 1fr}
+  .step3{grid-template-columns:1fr}
+  .opt-list{grid-template-columns:1fr}
+  .review-grid{grid-template-columns:1fr}
+  .chap-lesson{display:none}
+}
+</style>
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"规则的价值：每条解决一个真实问题","name":"规则的价值：每条解决一个真实问题","url":"https://xueai.app/slides/vibe-final.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 专题收官","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"Vibe Coding 方法论收官：14 章规则全景图（可交互）、适配四步自查向导（删换调补）、11 节课回顾。规则的价值在于每条都解决一个真实问题。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">VIBE CODING 方法论 · 第 11 节 · 收官</div>
+    <h1>规则的价值：每条解决一个真实问题</h1>
+    <p class="subtitle">14 个章节走完了。这套规则的来源只有一个：每发现一次 AI 反复犯的错误，就加一条规则。收官这节把全景图摊开，再用一个自查向导帮你把它改造成你自己的。</p>
+  </header>
+
+  <section class="reveal">
+    <div class="sec-label">交互一 · 14 章规则全景图</div>
+    <p class="desc">14 章规则归入五大板块。点击任意板块，展开对应章节明细、一句话说明，以及它在本专题第几节课里讲过。</p>
+
+    <div class="board-list" id="boardList"></div>
+    <div class="board-detail" id="boardDetail"></div>
+    <div class="board-base"><b>共同底层：把模糊期望变成可执行的具体动作。</b>「注意质量」执行不了，「删除代码前必须显式声明」才执行得了。</div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">使用方法 · 三步装进项目</div>
+    <div class="step3">
+      <div class="l-card"><h3><span>STEP 1</span>放入 rules 目录</h3><p>把 <code>.mdc</code> 文件放进项目的 <code>.cursor/rules/</code> 目录，Cursor 会自动识别。</p></div>
+      <div class="l-card"><h3><span>STEP 2</span>配置生效方式</h3><p>frontmatter 里的 <code>alwaysApply</code> 设 <code>true</code> 全局生效，设 <code>false</code> 则需手动 @ 引用，写作规范适合后者。</p></div>
+      <div class="l-card"><h3><span>STEP 3</span>替换环境事实</h3><p>把模型配置、技术栈、端口规则换成你自己的选型，secrets 文件填占位符并排除出 git。</p></div>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked xa-peek">
+    <div class="sec-label">交互二 · 适配四步自查向导</div>
+    <p class="desc">这套规则并非拿来即用的模板。回答下面 4 个问题，对应「删、换、调、补」四个动作，走完生成一份你的定制建议清单。</p>
+
+    <div class="wiz-wrap">
+      <div class="wiz-bar">
+        <b>适配自查向导</b>
+        <span class="wiz-step-badge" id="wizBadge">第 1 步 / 4</span>
+      </div>
+      <div class="wiz-body">
+        <div class="wiz-progress" id="wizProg"></div>
+        <div id="wizBody"></div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn-r" onclick="wizRestart()">↺ 重新开始</button>
+      <span class="hint" id="wizHint"></span>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">交互三 · 11 节课回顾</div>
+    <p class="desc">专题一共 11 节课。点击卡片翻开，看每节课的一句话版本。</p>
+    <div class="review-grid" id="reviewGrid"></div>
+    <div class="ctrl-row">
+      <button class="btn btn-p" onclick="flipAll(true)">全部翻开</button>
+      <button class="btn btn-r" onclick="flipAll(false)">全部合上</button>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">结课作业 · 发布你的第一版 Rules</div>
+    <div class="l-card">
+      <p style="font-size:14.5px;line-height:1.9;color:var(--sub)"><b style="color:var(--vibe-deep)">60 分钟 · 提交物：你自己的 rules 仓库。</b>从 <code>xs_vibe_rules</code> 出发，按删、换、调、补四个动作产出你的第一版规则文件；在一个真实项目里用满一周，记录哪些规则被触发、哪些从没生效；删掉从没生效的，把新踩的坑写成新规则，然后开源你的版本。</p>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">拿走这套规则</div>
+    <div class="repo-cta">
+      <svg class="repo-ic" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <div class="repo-txt">
+        <h3><span>itshen/xs_vibe_rules</span> · 本专题的开源仓库</h3>
+        <p>结课作业的起点就在这里。Fork 一份（MIT License），按删、换、调、补四个动作改成你自己的版本，用满一周后开源出来。</p>
+      </div>
+      <a class="repo-btn" href="https://github.com/itshen/xs_vibe_rules" target="_blank" rel="noopener">去 GitHub Fork</a>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">Takeaway</div>
+    <div class="l-callout">
+      <p style="font-size:15px;line-height:1.9"><b>AI 负责快，规则负责稳。</b>规则的价值不在于多，每条都解决一个真实问题。照搬 14 章不如精选 5 章，规则和代码一样，没人维护就会腐烂。</p>
+    </div>
+    <p class="src-note">素材来源：本专题完整素材见开源仓库 <a href="https://github.com/itshen/xs_vibe_rules">itshen/xs_vibe_rules</a>（MIT License），含 <code>rule-opensource.mdc</code> 全文与逐章设计思考。</p>
+  </section>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<script>
+/* ═══════════ 交互一：五大板块全景图 ═══════════ */
+var BOARDS = [
+  {
+    icon: '🧭', name: '流程控制', brief: '断点设在编码前',
+    desc: '在 AI 动手之前设置人工断点，控制爆炸半径。',
+    chaps: [
+      { num: '第二章', title: '需求处理与开发流程', line: '复述、PRD、等确认，再编码；修改超过 3 个文件先列计划', lesson: '本专题第 2 节' },
+      { num: '第三章', title: 'PlayGround 组件页', line: '组件先进「试衣间」单独调好，再集成进正式页面', lesson: '本专题第 3 节' }
+    ]
+  },
+  {
+    icon: '🧱', name: '质量底线', brief: '完整实现，不接受将就',
+    desc: '拦住 AI 最常见的三种偷懒：烂注释、猜测性修复、分期交付。',
+    chaps: [
+      { num: '第七章', title: '代码组织与规范', line: '注释写背景、设计意图、关键约束三要素；删除代码必须显式声明', lesson: '本专题第 4 节' },
+      { num: '第八章', title: '调试与日志规范', line: '先加 Log 定位根因再改代码，禁止猜测性修复', lesson: '本专题第 5 节' },
+      { num: '第十一章', title: '实现质量要求', line: '完整实现或说清代价，禁止「先做简版」的分期方案', lesson: '本专题第 6 节' }
+    ]
+  },
+  {
+    icon: '📚', name: '文档沉淀', brief: '决策跨对话留存',
+    desc: '把散落在聊天记录里的决策固化成文档，新对话自动继承。',
+    chaps: [
+      { num: '第九章', title: '版本记录与文档维护', line: 'FEATURES、CHANGELOG、RELEASE_NOTES 三份文档各管一个维度', lesson: '本专题第 7 节' },
+      { num: '第十二章', title: '产品方法论沉淀', line: '设计决策提炼进 METHODOLOGY.md，项目逐渐积累决策手册', lesson: '本专题第 7 节' }
+    ]
+  },
+  {
+    icon: '🔐', name: '环境与安全', brief: '环境事实一次写死',
+    desc: '模型、技术栈、端口一次写死，发版前设三道闸。',
+    chaps: [
+      { num: '第一章', title: '模型配置', line: '模型选型、超时、代理写进 Rule，AI 每轮对话自动带入', lesson: '本专题第 8 节' },
+      { num: '第五章', title: '数据格式规范', line: '工具调用用 XML，存储用 YAML，REST API 用 JSON，各管一域', lesson: '本专题第 8 节' },
+      { num: '第六章', title: '技术栈与框架', line: '锁定选型不再讨论替代方案；避开 5000 端口，8000-9000 随机分配', lesson: '本专题第 8 节' },
+      { num: '第十章', title: '部署与环境', line: '备份、回退方案、发版前 diff 审查，三道闸拦住不可逆操作', lesson: '本专题第 9 节' }
+    ]
+  },
+  {
+    icon: '✍️', name: '沟通与写作', brief: '锚定与自查',
+    desc: '管住 AI 的表达：视觉品味、长对话记忆、中文文风。',
+    chaps: [
+      { num: '第四章', title: '文档与设计规范', line: '图标选型、输入法 isComposing 等品味决策固化成规则', lesson: '本专题第 3 节' },
+      { num: '第十三章', title: '沟通规范', line: '超过 10 轮复述目标与约束，并行编辑前先重读文件', lesson: '本专题第 10 节' },
+      { num: '第十四章', title: '写作规范', line: '违禁词与违禁句式清单，替代「请写自然流畅的中文」', lesson: '本专题第 10 节' }
+    ]
+  }
+];
+
+var curBoard = 0;
+
+function renderBoards() {
+  var list = document.getElementById('boardList');
+  list.innerHTML = BOARDS.map(function (b, i) {
+    return '<button class="board-btn' + (i === curBoard ? ' active' : '') + '" onclick="pickBoard(' + i + ')">'
+      + '<span class="board-icon">' + b.icon + '</span>'
+      + '<h4>' + b.name + '</h4>'
+      + '<small>' + b.chaps.length + ' 章 · ' + b.brief + '</small>'
+      + '</button>';
+  }).join('');
+
+  var b = BOARDS[curBoard];
+  document.getElementById('boardDetail').innerHTML =
+    '<div class="bd-title">' + b.icon + ' ' + b.name + '</div>'
+    + '<div class="bd-sub">' + b.desc + '</div>'
+    + b.chaps.map(function (c) {
+        return '<div class="chap-item">'
+          + '<span class="chap-num">' + c.num + '</span>'
+          + '<div class="chap-body"><b>' + c.title + '</b><p>' + c.line + '</p></div>'
+          + '<span class="chap-lesson">' + c.lesson + '</span>'
+          + '</div>';
+      }).join('');
+}
+
+function pickBoard(i) {
+  curBoard = i;
+  renderBoards();
+}
+
+/* ═══════════ 交互二：适配四步自查向导 ═══════════ */
+var wizStep = 0;
+var wizAns = { creates: null, backend: null, files: 3, mistake: null };
+
+var MISTAKES = [
+  { key: '报错就猜一个原因乱改', tip: '强化第八章「禁止猜测性修复」：无法确认根因时，必须先通过 Log 或测试脚本验证假设' },
+  { key: '重构时顺手删了有用代码', tip: '强化第七章「删除代码规范」：删除前显式声明理由，重构只增改不删除' },
+  { key: '写出来的中文一股 AI 腔', tip: '启用第十四章写作规范：把违禁句式清单设为按需引用，交付前强制自查' },
+  { key: '聊久了忘记早期约定', tip: '强化第十三章「长对话锚定」：超过 10 轮后关键操作前复述目标与约束' },
+  { key: '自作主张换框架换库', tip: '强化第六章「锁定技术栈」：明确写下选型决策由人做，AI 只在既定栈内干活' }
+];
+
+function wizProgHtml() {
+  var h = '';
+  for (var i = 0; i < 4; i++) {
+    h += '<div class="wiz-dot' + (i < wizStep ? ' done' : '') + '"></div>';
+  }
+  return h;
+}
+
+function renderWiz() {
+  document.getElementById('wizProg').innerHTML = wizProgHtml();
+  document.getElementById('wizBadge').textContent = wizStep < 4 ? ('第 ' + (wizStep + 1) + ' 步 / 4') : '完成';
+  var body = document.getElementById('wizBody');
+
+  if (wizStep === 0) {
+    body.innerHTML = '<div class="wiz-q"><span class="wq-tag">删</span>你做中文内容创作吗？</div>'
+      + '<div class="wiz-note">公众号、产品文案、Prompt 编写都算。这决定第十四章写作规范的去留。</div>'
+      + '<div class="opt-list">'
+      + '<button class="opt-btn" onclick="wizPick(\'creates\',\'yes\')">做，经常写文案或 Prompt</button>'
+      + '<button class="opt-btn" onclick="wizPick(\'creates\',\'no\')">不做，纯写代码</button>'
+      + '</div>';
+  } else if (wizStep === 1) {
+    body.innerHTML = '<div class="wiz-q"><span class="wq-tag">换</span>你的后端框架是？</div>'
+      + '<div class="wiz-note">原版规则的技术栈声明是 FastAPI + React + SQLite，选别的就要替换。</div>'
+      + '<div class="opt-list">'
+      + '<button class="opt-btn" onclick="wizPick(\'backend\',\'FastAPI\')">FastAPI（和原版一致）</button>'
+      + '<button class="opt-btn" onclick="wizPick(\'backend\',\'Node.js（Express / Nest）\')">Node.js（Express / Nest）</button>'
+      + '<button class="opt-btn" onclick="wizPick(\'backend\',\'Java（Spring）\')">Java（Spring）</button>'
+      + '<button class="opt-btn" onclick="wizPick(\'backend\',\'Go / 其他\')">Go / 其他</button>'
+      + '</div>';
+  } else if (wizStep === 2) {
+    body.innerHTML = '<div class="wiz-q"><span class="wq-tag">调</span>你希望多少个文件触发确认？</div>'
+      + '<div class="wiz-note">原版规则是「修改超过 3 个文件先列计划等确认」。拖动滑块调整你的阈值。</div>'
+      + '<div class="wiz-slider-row">'
+      + '<input type="range" min="1" max="8" value="' + wizAns.files + '" oninput="wizSlide(this.value)">'
+      + '<span class="wiz-val" id="wizFileVal">' + wizAns.files + ' 个</span>'
+      + '</div>'
+      + '<div class="ctrl-row"><button class="btn btn-p" onclick="wizNext()">确认，下一步</button></div>';
+  } else if (wizStep === 3) {
+    body.innerHTML = '<div class="wiz-q"><span class="wq-tag">补</span>最近 AI 反复犯的一个错是什么？</div>'
+      + '<div class="wiz-note">每发现一次 AI 反复犯的错误，就加一条规则。选一个你最有共鸣的。</div>'
+      + '<div class="opt-list">'
+      + MISTAKES.map(function (m, i) {
+          return '<button class="opt-btn" onclick="wizPick(\'mistake\',' + i + ')">' + m.key + '</button>';
+        }).join('')
+      + '</div>';
+  } else {
+    renderWizResult(body);
+  }
+}
+
+function renderWizResult(body) {
+  var delText = wizAns.creates === 'no'
+    ? '删掉第十四章写作规范，把 writing-style.mdc 移出 .cursor/rules/，减少无关上下文。'
+    : '保留第十四章写作规范，frontmatter 设 alwaysApply: false，写文案或 Prompt 时手动 @ 引用。';
+  var swapText = wizAns.backend === 'FastAPI'
+    ? '技术栈声明可直接沿用，核对一下端口分配和数据库选型即可。'
+    : '把第六章技术栈声明里的 FastAPI 换成 ' + wizAns.backend + '，端口规则和数据库选型一并核对。';
+  var tuneText = '把第二章「修改超过 3 个文件先确认」改成「超过 ' + wizAns.files + ' 个」。'
+    + (wizAns.files <= 2 ? '阈值很低，节奏最谨慎，适合关键业务代码。' : (wizAns.files >= 6 ? '阈值较高，适合你已经很信任 AI 的成熟项目。' : '和原版接近，适合大多数项目起步。'));
+  var addText = MISTAKES[wizAns.mistake].tip + '。';
+
+  body.innerHTML = '<div class="wiz-q">你的定制建议清单</div>'
+    + '<div class="wiz-note">四个动作各对应一条建议，改完就是你的第一版规则。</div>'
+    + '<div class="result-item"><span class="res-badge del">删</span><div class="res-body"><b>写作规范去留</b><p>' + delText + '</p></div></div>'
+    + '<div class="result-item"><span class="res-badge swap">换</span><div class="res-body"><b>技术栈声明</b><p>' + swapText + '</p></div></div>'
+    + '<div class="result-item"><span class="res-badge tune">调</span><div class="res-body"><b>确认阈值</b><p>' + tuneText + '</p></div></div>'
+    + '<div class="result-item"><span class="res-badge add">补</span><div class="res-body"><b>针对你的踩坑补规则</b><p>' + addText + '</p></div></div>';
+  document.getElementById('wizProg').innerHTML = '<div class="wiz-dot done"></div><div class="wiz-dot done"></div><div class="wiz-dot done"></div><div class="wiz-dot done"></div>';
+  document.getElementById('wizHint').textContent = '想换个答案？点「重新开始」再走一遍。';
+}
+
+function wizPick(key, val) {
+  wizAns[key] = val;
+  wizNext();
+}
+
+function wizSlide(v) {
+  wizAns.files = parseInt(v, 10);
+  document.getElementById('wizFileVal').textContent = v + ' 个';
+}
+
+function wizNext() {
+  wizStep += 1;
+  renderWiz();
+}
+
+function wizRestart() {
+  wizStep = 0;
+  wizAns = { creates: null, backend: null, files: 3, mistake: null };
+  document.getElementById('wizHint').textContent = '';
+  renderWiz();
+}
+
+/* ═══════════ 交互三：11 节课回顾翻卡 ═══════════ */
+var REVIEWS = [
+  { n: 1,  t: 'Rule 注入',       s: 'Rule 在每轮对话开始前自动加载，是最稳的上下文注入方式' },
+  { n: 2,  t: '需求四步',        s: '复述、PRD、等确认再编码，断点设在编码前' },
+  { n: 3,  t: 'PlayGround',      s: '组件先进「试衣间」调好，再集成进正式页面' },
+  { n: 4,  t: '注释与删除',      s: '注释写 why，删除代码要显式声明理由' },
+  { n: 5,  t: '先 Log 再改码',   s: '先加 Log 定位根因，禁止猜测性修复' },
+  { n: 6,  t: '完整实现',        s: '完整实现或说清代价，不接受分期交付' },
+  { n: 7,  t: '文档沉淀',        s: '三份文档加方法论，决策跨对话留存' },
+  { n: 8,  t: '环境事实',        s: '模型、技术栈一次写死，选型权在人' },
+  { n: 9,  t: '三道闸',          s: '备份、回退方案、发版前 diff 审查，拦住不可逆操作' },
+  { n: 10, t: '锚定与写作',      s: '长对话要周期性锚定，中文交付要过自查' },
+  { n: 11, t: '收官',            s: '删、换、调、补，把这套规则改造成你自己的' }
+];
+
+function renderReview() {
+  document.getElementById('reviewGrid').innerHTML = REVIEWS.map(function (r, i) {
+    return '<button class="rv-card" id="rv' + i + '" onclick="flipCard(' + i + ')">'
+      + '<div class="rv-num">第 ' + r.n + ' 节</div>'
+      + '<div class="rv-title">' + r.t + '</div>'
+      + '<div class="rv-back">' + r.s + '</div>'
+      + '<div class="rv-flip-hint">点击翻开</div>'
+      + '</button>';
+  }).join('');
+}
+
+function flipCard(i) {
+  document.getElementById('rv' + i).classList.toggle('open');
+}
+
+function flipAll(open) {
+  REVIEWS.forEach(function (_, i) {
+    document.getElementById('rv' + i).classList.toggle('open', open);
+  });
+}
+
+/* 初始化 */
+renderBoards();
+renderWiz();
+renderReview();
+</script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

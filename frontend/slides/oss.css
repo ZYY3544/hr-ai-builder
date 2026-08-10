@@ -1,0 +1,624 @@
+/* ═══════════════════════════════════════════════════════════
+   oss.css —— 开源专题（oss-1 … oss-9）共享组件
+
+   背景：这一章有大量跨页复用的结构（来源标注、许可证卡、显存计算器、
+   命令行块），写在各页 <style> 里会出现九份互相漂移的副本。
+   设计意图：抽成独立文件，与 lesson.css 分层，lesson.css 管全站骨架，
+   本文件只管本章特有组件，不覆盖 lesson.css 的任何选择器。
+   约束：颜色一律走 lesson.css 的 CSS 变量，本章强调色 --oss 为中性靛蓝，
+   刻意不采用合作方品牌色，避免整章视觉被单一品牌占据。
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --oss: #4f46e5;
+  --oss-soft: rgba(79, 70, 229, 0.07);
+  --oss-line: rgba(79, 70, 229, 0.22);
+}
+
+/* ── 数据来源标注 ───────────────────────────────
+   本章每一处外部数据下方都要跟一条，读者可自行核对。 */
+.oss-src {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 12.5px; color: var(--sub); line-height: 1.6;
+  margin-top: 8px;
+}
+.oss-src svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; opacity: .6; }
+.oss-src a { color: var(--sub); text-decoration: underline; text-underline-offset: 2px; }
+.oss-src a:hover { color: var(--oss); }
+
+/* ── 事实卡 ─────────────────────────────────── */
+.oss-facts {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin: 16px 0;
+}
+.oss-fact {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-card);
+}
+.oss-fact .of-num {
+  font-size: 30px; font-weight: 800; color: var(--oss);
+  line-height: 1.15; letter-spacing: -0.5px;
+}
+.oss-fact .of-label { font-size: 14px; font-weight: 700; margin-top: 6px; }
+.oss-fact .of-desc { font-size: 13px; color: var(--sub); margin-top: 4px; line-height: 1.6; }
+
+/* ── 许可证判定卡 ───────────────────────────────
+   三态共用同一套评判维度，避免不同厂商用不同尺子。 */
+.oss-lic-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin: 16px 0;
+}
+.oss-lic {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-card);
+}
+.oss-lic .ol-head { margin-bottom: 10px; }
+.oss-lic .ol-name { font-size: 17px; font-weight: 800; }
+.oss-lic .ol-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 700; margin-top: 7px;
+  padding: 3px 10px; border-radius: 999px;
+}
+.oss-lic .ol-badge svg { width: 13px; height: 13px; }
+.oss-lic .ol-lic {
+  font-family: "SF Mono", "Fira Code", Menlo, monospace;
+  font-size: 12.5px; color: var(--sub);
+  padding-bottom: 10px; margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.oss-lic .ol-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.oss-lic .ol-list li { font-size: 13.5px; line-height: 1.5; display: flex; gap: 8px; align-items: flex-start; }
+.oss-lic .ol-list span {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800;
+}
+.ol-y { background: rgba(22,163,74,.12); color: var(--success); }
+.ol-w { background: rgba(217,119,6,.14); color: var(--amber); }
+.ol-n { background: rgba(0,0,0,.06); color: var(--sub); }
+
+.oss-lic.is-full .ol-badge { background: rgba(22,163,74,.12); color: var(--success); }
+.oss-lic.is-partial .ol-badge { background: rgba(217,119,6,.14); color: var(--amber); }
+.oss-lic.is-closed .ol-badge { background: rgba(0,0,0,.06); color: var(--sub); }
+
+/* ── 显存计算器 ─────────────────────────────── */
+.oss-calc {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px;
+  box-shadow: var(--shadow-card); margin: 16px 0;
+}
+.oc-controls {
+  display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.oc-group { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.oc-label {
+  font-size: 11.5px; font-weight: 800; letter-spacing: .6px;
+  text-transform: uppercase; color: var(--sub);
+}
+.oc-seg {
+  display: flex; gap: 4px; background: rgba(0,0,0,.04);
+  padding: 3px; border-radius: 10px;
+}
+.oc-seg-btn {
+  flex: 1; border: none; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700; color: var(--sub);
+  padding: 7px 6px; border-radius: 8px; transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.oc-seg-btn:hover { color: var(--text); }
+.oc-seg-btn.is-on { background: var(--card); color: var(--oss); box-shadow: var(--shadow-card); }
+.oc-select {
+  font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--text);
+  padding: 9px 11px; border-radius: 10px; cursor: pointer;
+  border: 1.5px solid var(--border); background: var(--card);
+  width: 100%; min-width: 0;
+}
+.oc-select:focus { outline: none; border-color: var(--oss-line); }
+
+.oc-readout {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px;
+  padding: 14px 0 4px; font-size: 14px; color: var(--sub);
+}
+.oc-readout b { font-size: 22px; font-weight: 800; color: var(--oss); }
+.oc-readout .ocr-formula {
+  font-family: "SF Mono", "Fira Code", Menlo, monospace;
+  font-size: 12.5px; color: var(--sub);
+}
+
+.oc-results { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.oc-row {
+  display: grid; grid-template-columns: 1.5fr 0.8fr 1.4fr 1fr;
+  align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--card);
+  font-size: 13.5px;
+}
+.ocr-name { font-weight: 700; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.ocr-tag {
+  font-size: 10.5px; font-weight: 700; color: var(--sub);
+  background: rgba(0,0,0,.05); padding: 2px 7px; border-radius: 999px;
+}
+.ocr-need { font-family: "SF Mono", "Fira Code", Menlo, monospace; font-size: 12.5px; color: var(--sub); }
+.ocr-bar { height: 8px; background: rgba(0,0,0,.06); border-radius: 4px; overflow: hidden; }
+.ocr-bar i { display: block; height: 100%; border-radius: 4px; transition: width .5s ease; }
+.ocr-state { font-weight: 700; font-size: 13px; text-align: right; }
+
+.oc-row.is-ok { border-color: rgba(22,163,74,.3); background: rgba(22,163,74,.04); }
+.oc-row.is-ok .ocr-bar i { background: var(--success); }
+.oc-row.is-ok .ocr-state { color: var(--success); }
+.oc-row.is-tight { border-color: rgba(217,119,6,.32); background: rgba(217,119,6,.05); }
+.oc-row.is-tight .ocr-bar i { background: var(--amber); }
+.oc-row.is-tight .ocr-state { color: var(--amber); }
+.oc-row.is-no { opacity: .58; }
+.oc-row.is-no .ocr-bar i { background: rgba(0,0,0,.22); }
+.oc-row.is-no .ocr-state { color: var(--sub); }
+
+/* ── 命令行块 ─────────────────────────────── */
+.oss-cmd {
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin: 14px 0; background: #1c1c1e;
+}
+.ocmd-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; background: rgba(255,255,255,.06);
+}
+.ocmd-tip {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase; color: rgba(255,255,255,.5);
+}
+.ocmd-copy {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: none; background: rgba(255,255,255,.1); cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  color: rgba(255,255,255,.8); padding: 5px 11px; border-radius: 7px;
+  transition: background .15s, color .15s;
+}
+.ocmd-copy:hover { background: rgba(255,255,255,.18); color: #fff; }
+.ocmd-copy svg { width: 13px; height: 13px; }
+.ocmd-copy.is-done { background: rgba(22,163,74,.3); color: #86efac; }
+.oss-cmd pre { padding: 14px 16px; overflow-x: auto; }
+.oss-cmd code {
+  background: none; padding: 0; color: #e5e7eb;
+  font-size: 13px; line-height: 1.75;
+}
+.oss-cmd .c { color: #6b7280; }
+
+/* ── 流程步骤 ─────────────────────────────── */
+.oss-steps { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+.oss-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px;
+  box-shadow: var(--shadow-card);
+}
+.ostep-n {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 9px;
+  background: var(--oss-soft); color: var(--oss);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800;
+}
+.ostep-body h4 { font-size: 15.5px; font-weight: 700; margin-bottom: 4px; }
+.ostep-body p { font-size: 14px; color: var(--sub); line-height: 1.7; }
+
+/* ── 体积对比条 ───────────────────────────── */
+.oss-bars { display: flex; flex-direction: column; gap: 13px; margin: 16px 0; }
+.oss-bar { display: flex; flex-direction: column; gap: 5px; }
+.ob-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.ob-meta strong { font-size: 14.5px; }
+.ob-meta span { font-size: 13px; color: var(--sub); font-weight: 600; }
+.ob-track { height: 12px; background: rgba(0,0,0,.06); border-radius: 6px; overflow: hidden; }
+.ob-track i {
+  display: block; height: 100%; width: 0; border-radius: 6px;
+  background: var(--oss); transition: width .9s ease;
+}
+.ob-track i.is-big { background: var(--amber); }
+
+/* ═══════════════════════════════════════════════════════
+   动手实验区（oss-1 … oss-7 的交互 demo 共用外壳）
+
+   背景：这一章原本七节纯文字。读一遍「参数量 × 2 = 体积」和自己拖着滑块
+   看 8B 在 FP16 下装不进 8GB 显卡，是两种理解深度。
+   设计意图：所有 demo 共用同一个外壳（角标 + 控制区 + 输出区），学员在
+   不同页面之间不需要重新学怎么操作。
+   约束：控件一律用原生 input，不自造滑块，键盘可达性直接由浏览器保证。
+   ═══════════════════════════════════════════════════════ */
+.oss-lab {
+  position: relative;
+  background: var(--card);
+  border: 1.5px solid var(--oss-line);
+  border-radius: var(--radius);
+  padding: 22px 24px 24px;
+  margin: 20px 0;
+  box-shadow: var(--shadow-card);
+}
+/* 左上角挑明这是可以动手的区域，否则学员会当成又一张静态图划过去 */
+.oss-lab::before {
+  content: attr(data-lab);
+  position: absolute; top: -10px; left: 20px;
+  font-size: 11.5px; font-weight: 800; letter-spacing: .5px;
+  color: #fff; background: var(--oss);
+  padding: 3px 11px; border-radius: 999px;
+}
+.oss-lab .lab-q {
+  font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-top: 4px;
+}
+
+/* ── 控制区 ───────────────────────────── */
+.lab-ctrl { display: flex; flex-direction: column; gap: 16px; }
+.lab-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.lab-label {
+  font-size: 13px; font-weight: 700; color: var(--sub);
+  min-width: 72px; flex-shrink: 0;
+}
+.lab-range {
+  -webkit-appearance: none; appearance: none;
+  flex: 1; min-width: 180px; height: 6px; border-radius: 999px;
+  background: var(--oss-soft); outline: none; cursor: pointer;
+}
+.lab-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--oss); cursor: grab;
+  border: 3px solid var(--card); box-shadow: 0 1px 6px rgba(0,0,0,.22);
+}
+.lab-range::-webkit-slider-thumb:active { cursor: grabbing; }
+.lab-range::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--card);
+  background: var(--oss); cursor: grab; box-shadow: 0 1px 6px rgba(0,0,0,.22);
+}
+.lab-range:focus-visible { box-shadow: 0 0 0 3px var(--oss-line); }
+.lab-val {
+  font-size: 15px; font-weight: 800; color: var(--oss);
+  min-width: 86px; text-align: right; font-variant-numeric: tabular-nums;
+}
+
+/* 分段按钮：精度切换、硬软标签切换这类互斥选项 */
+.lab-seg { display: inline-flex; gap: 4px; background: var(--oss-soft); padding: 4px; border-radius: 10px; }
+.lab-seg button {
+  border: none; background: transparent; cursor: pointer;
+  font-size: 13px; font-weight: 700; color: var(--sub);
+  padding: 7px 14px; border-radius: 7px;
+  font-family: inherit; transition: background .15s, color .15s;
+}
+.lab-seg button:hover { color: var(--oss); }
+.lab-seg button.is-on { background: var(--card); color: var(--oss); box-shadow: var(--shadow-card); }
+.lab-seg button:focus-visible { outline: 2px solid var(--oss); outline-offset: 1px; }
+
+/* 可多选的卡片式选项，用于 oss-3 选业务、oss-7 选模型 */
+.lab-chips { display: flex; gap: 9px; flex-wrap: wrap; }
+.lab-chip {
+  border: 1.5px solid var(--border); background: var(--card);
+  border-radius: 10px; padding: 9px 15px; cursor: pointer;
+  font-size: 13.5px; font-weight: 600; color: var(--text);
+  font-family: inherit; transition: border-color .15s, background .15s, color .15s;
+}
+.lab-chip:hover { border-color: var(--oss-line); }
+.lab-chip.is-on { border-color: var(--oss); background: var(--oss-soft); color: var(--oss); }
+.lab-chip:focus-visible { outline: 2px solid var(--oss); outline-offset: 1px; }
+
+.lab-btn {
+  border: none; background: var(--oss); color: #fff; cursor: pointer;
+  font-size: 13.5px; font-weight: 700; font-family: inherit;
+  padding: 10px 20px; border-radius: 9px; transition: opacity .15s;
+}
+.lab-btn:hover { opacity: .88; }
+.lab-btn:disabled { opacity: .4; cursor: not-allowed; }
+.lab-btn.is-ghost { background: transparent; color: var(--sub); border: 1.5px solid var(--border); }
+
+/* ── 输出区 ───────────────────────────── */
+.lab-out {
+  margin-top: 18px; padding-top: 18px;
+  border-top: 1.5px dashed var(--oss-line);
+}
+.lab-big {
+  font-size: 34px; font-weight: 800; color: var(--oss);
+  line-height: 1.1; letter-spacing: -0.5px; font-variant-numeric: tabular-nums;
+}
+.lab-big small { font-size: 15px; font-weight: 700; color: var(--sub); margin-left: 6px; }
+.lab-note { font-size: 13px; color: var(--sub); line-height: 1.7; margin-top: 8px; }
+
+/* 结论条：交互产生的那句「所以呢」，是整个 demo 的落点 */
+.lab-verdict {
+  margin-top: 14px; padding: 13px 16px; border-radius: var(--radius-sm);
+  background: var(--oss-soft); font-size: 14px; line-height: 1.75;
+}
+.lab-verdict b { color: var(--oss); }
+.lab-verdict.is-warn { background: rgba(217, 119, 6, .08); }
+.lab-verdict.is-warn b { color: var(--amber); }
+
+/* 判定灯：装得下 / 装不下、已涌现 / 还没有 */
+.lab-lamps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.lab-lamp {
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px 14px; background: var(--bg);
+  transition: border-color .2s, background .2s;
+}
+.lab-lamp .ll-name { font-size: 12.5px; color: var(--sub); font-weight: 600; }
+.lab-lamp .ll-state { font-size: 15px; font-weight: 800; margin-top: 3px; }
+.lab-lamp.is-yes { border-color: rgba(22,163,74,.45); background: rgba(22,163,74,.07); }
+.lab-lamp.is-yes .ll-state { color: var(--success); }
+.lab-lamp.is-no .ll-state { color: var(--sub); opacity: .65; }
+
+/* 概率分布柱：oss-6 的软标签 */
+.lab-dist { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
+.lab-drow { display: grid; grid-template-columns: 62px 1fr 60px; align-items: center; gap: 12px; }
+.lab-drow .ld-name { font-size: 13.5px; font-weight: 700; }
+/* track 与 fill 都必须显式 block。两者在 HTML 里是 <span> 和 <i>，默认 inline，
+   而 inline 元素上 width / height 一律不生效——fill 会被渲染成 0×0，页面看起来
+   却「正常」：读者看到的是 track 的底色，两条一样长。oss-5 的账单对比和 oss-6 的
+   概率分布都靠这根条表达差距，条不长就等于结论没了。
+   track 作为 grid item 会被自动 blockify，但 fill 不会，且 PlayGround 里 track
+   未必总在 grid 中，所以两边都写死，不依赖外层布局。 */
+.lab-drow .ld-track {
+  display: block; height: 22px; background: var(--oss-soft);
+  border-radius: 6px; overflow: hidden;
+}
+.lab-drow .ld-fill {
+  display: block;
+  height: 100%; background: var(--oss); border-radius: 6px;
+  transition: width .18s ease-out;
+}
+.lab-drow .ld-p {
+  font-size: 13.5px; font-weight: 800; text-align: right;
+  font-variant-numeric: tabular-nums; color: var(--oss);
+}
+.lab-drow.is-dim .ld-fill { background: var(--oss-line); }
+.lab-drow.is-dim .ld-p { color: var(--sub); }
+
+/* 血缘树：oss-7 追溯到同一个底座 */
+.lab-tree { margin-top: 16px; }
+.lab-tree .lt-bases { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.lab-tree .lt-base {
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 18px; font-size: 13.5px; font-weight: 700;
+  background: var(--bg); opacity: .35; transition: opacity .3s, border-color .3s;
+}
+.lab-tree .lt-base.is-on { opacity: 1; border-color: var(--oss); color: var(--oss); background: var(--oss-soft); }
+.lab-tree .lt-links { height: 34px; position: relative; }
+.lab-tree .lt-links svg { width: 100%; height: 100%; overflow: visible; }
+/* dasharray 与 dashoffset 由脚本按 getTotalLength() 实测长度写入。
+   这里写死过一个 120，路径改成像素坐标后长度对不上，线会残缺或提前画完。 */
+.lab-tree .lt-links path {
+  fill: none; stroke: var(--oss-line); stroke-width: 2;
+  transition: stroke-dashoffset .5s ease-out, stroke .3s;
+}
+.lab-tree .lt-links path.is-on { stroke-dashoffset: 0; stroke: var(--oss); }
+
+/* ── 反馈动效 ─────────────────────────────
+   背景：滑块拖过去数字确实变了，但变化太安静，学员容易看不见自己刚触发了什么。
+   设计意图：只在「状态发生跳变」的那一刻给一次短促反馈，稳态下不做任何持续动画，
+   免得整页都在动、干扰阅读。动效一律由 JS 加一次性 class 触发。
+   约束：类名加完必须在 animationend 里摘掉，否则同一状态再次跳变时不会重播。 */
+
+/* 兜底：fire 加到任何元素上都该有反馈。下面几条更具体的选择器权重更高，
+   会各自覆盖这一条，所以这里只放最轻的一种。 */
+.fire { animation: lab-bump .2s ease-out; }
+
+/* 判定灯从灭到亮：蹦一下，让「又解锁一项」这件事被看见 */
+@keyframes lab-pop {
+  0%   { transform: scale(1); }
+  38%  { transform: scale(1.075); }
+  100% { transform: scale(1); }
+}
+.lab-lamp.fire { animation: lab-pop .34s cubic-bezier(.34,1.56,.64,1); }
+
+/* 亮起瞬间的一圈光晕，animation 结束即消失，不留残影 */
+@keyframes lab-glow {
+  from { box-shadow: 0 0 0 0 rgba(22,163,74,.32); }
+  to   { box-shadow: 0 0 0 11px rgba(22,163,74,0); }
+}
+.lab-lamp.is-yes.fire { animation: lab-pop .34s cubic-bezier(.34,1.56,.64,1), lab-glow .5s ease-out; }
+
+/* 大数字跳变：轻微上浮，幅度必须小，否则滑块连续拖动时整块会抖 */
+@keyframes lab-bump {
+  0%   { transform: translateY(3px); opacity: .55; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
+.lab-big.fire { animation: lab-bump .2s ease-out; }
+
+/* 结论条换文案时淡入，提示「这句话跟着你的操作变了」 */
+@keyframes lab-fade {
+  from { opacity: .35; }
+  to   { opacity: 1; }
+}
+.lab-verdict.fire { animation: lab-fade .26s ease-out; }
+
+/* 输出区首次出现（向导答完、追溯完成）：整块滑入 */
+@keyframes lab-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lab-out.fire { animation: lab-reveal .3s ease-out; }
+
+/* 只有在动画真的会播放时才需要这些过渡。开了减少动态效果的学员
+   直接看终态，不该被逐帧推进干扰。 */
+@media (prefers-reduced-motion: reduce) {
+  .lab-drow .ld-fill,
+  .lab-tree .lt-base,
+  .lab-tree .lt-links path { transition: none; }
+  .lab-tree .lt-links path { stroke-dashoffset: 0; }
+  .fire,
+  .lab-lamp.fire,
+  .lab-lamp.is-yes.fire,
+  .lab-big.fire,
+  .lab-verdict.fire,
+  .lab-out.fire { animation: none; }
+}
+
+/* ── 事实卡 ─────────────────────────────
+   用来陈述一组「已核实 / 尚未落实」混在一起的事实。刻意做得朴素：
+   这类内容一旦配上重样式，读者会以为在强调某个结论，而这里要传达的
+   恰恰是「事情还没定，别急着下结论」。 */
+.oss-fact-card {
+  border: 1px solid var(--oss-line); border-radius: var(--radius);
+  padding: 18px 20px; margin: 16px 0; background: #fff;
+}
+.oss-fact-card .of-head {
+  font-size: 14px; font-weight: 800; color: var(--oss);
+  padding-bottom: 10px; margin-bottom: 10px;
+  border-bottom: 1px solid var(--oss-line);
+}
+.oss-fact-card ul { margin: 0; padding-left: 18px; }
+.oss-fact-card li { font-size: 14.5px; line-height: 1.85; color: var(--text); }
+
+/* ── 量化实验台 ─────────────────────────────
+   oss-8 专用。要讲清楚「位数变少 → 权重被四舍五入到更少的档位 → 误差 →
+   排序翻转 → 整条推理链跑偏」这条因果链，光靠文字读者会跳过。
+   刻度尺是核心：INT4 只有 16 道刻度肉眼可数，INT8 密到成为条带，两者的
+   差距不用解释就看得见。 */
+.qz-ruler {
+  position: relative; height: 46px; margin: 14px 0 6px;
+  border-radius: 8px; background: var(--oss-soft);
+  overflow: hidden;
+}
+.qz-ruler .qr-tick {
+  position: absolute; top: 0; bottom: 0; width: 1px;
+  background: var(--oss-line);
+}
+/* 档位密到一定程度就画不清了，这时改用渐变条带表达「密到数不清」 */
+.qz-ruler.is-dense::after {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg,
+    var(--oss-line) 0 1px, transparent 1px 3px);
+  opacity: .55;
+}
+.qz-ruler .qr-dot {
+  position: absolute; top: 50%; width: 11px; height: 11px;
+  margin: -5.5px 0 0 -5.5px; border-radius: 50%;
+  background: var(--oss); box-shadow: 0 0 0 2px #fff;
+  transition: left .35s cubic-bezier(.34, 1.2, .64, 1);
+}
+.qz-ruler .qr-dot.is-zero { background: var(--danger, #dc2626); }
+
+.qz-vals { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.qz-val {
+  display: grid; grid-template-columns: 1fr auto 1fr auto;
+  align-items: center; gap: 10px;
+  font-family: "SF Mono", Menlo, monospace; font-size: 13px;
+  padding: 7px 12px; border-radius: 8px; background: var(--bg-soft, #f7f7fa);
+}
+.qz-val .qv-arrow { color: var(--sub); font-size: 12px; }
+.qz-val .qv-new { font-weight: 700; color: var(--oss); }
+.qz-val .qv-err { font-size: 11.5px; color: var(--sub); text-align: right; }
+.qz-val.is-zero { background: rgba(220, 38, 38, .07); }
+.qz-val.is-zero .qv-new { color: var(--danger, #dc2626); }
+.qz-val.is-zero .qv-err { color: var(--danger, #dc2626); font-weight: 700; }
+
+/* 候选词排序：翻转那一刻要看得见，所以名次徽标单独着色 */
+.qz-cands { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.qz-cand {
+  display: grid; grid-template-columns: 26px 1fr 76px; align-items: center; gap: 10px;
+  padding: 7px 12px; border-radius: 8px; background: var(--bg-soft, #f7f7fa);
+  transition: background .2s;
+}
+.qz-cand .qc-rank {
+  width: 22px; height: 22px; border-radius: 50%; font-size: 11.5px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--oss-line); color: var(--oss);
+}
+/* 顺序有讲究：所有候选都会被扰动，动过的都标橙色，但第一名决定模型真正写出
+   哪个词，它的高亮必须压过移动标记，否则四行一起变橙，焦点就散了。 */
+.qz-cand.is-moved { background: rgba(217, 119, 6, .1); }
+.qz-cand.is-top { background: var(--oss-soft); }
+.qz-cand.is-top .qc-rank { background: var(--oss); color: #fff; }
+.qz-cand .qc-word { font-weight: 700; }
+.qz-cand .qc-p {
+  font-family: "SF Mono", Menlo, monospace; font-size: 12.5px;
+  color: var(--sub); text-align: right;
+}
+
+@media (max-width: 560px) {
+  .qz-val { grid-template-columns: 1fr auto 1fr; }
+  .qz-val .qv-err { grid-column: 1 / -1; text-align: left; }
+}
+
+/* ── 选材说明 ─────────────────────────────
+   全章反复拿同一个系列举例，读者会怀疑是不是在打广告。这个块专门用来把
+   选材理由摆在明面上，所以样式刻意做轻：浅底、无阴影，不抢正文。全章只在
+   开头出现一次。 */
+.oss-why {
+  background: var(--oss-soft); border-left: 3px solid var(--oss);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 16px 20px; margin: 18px 0;
+  font-size: 14.5px; line-height: 1.9; color: var(--text);
+}
+.oss-why p { margin: 0 0 8px; font-size: inherit; line-height: inherit; }
+.oss-why p:last-child { margin-bottom: 0; }
+.oss-why ul { margin: 8px 0; padding-left: 18px; }
+.oss-why li { margin-bottom: 4px; }
+
+/* ── 里程碑卡 ─────────────────────────────
+   给行业级别的标志性事件用。深色底是为了在整页浅色卡片里形成一次停顿，
+   全章只用一次，用多了就不是里程碑了。 */
+.oss-milestone {
+  background: #1c1c1e; color: #f5f5f7;
+  border-radius: var(--radius); padding: 26px 28px; margin: 18px 0;
+  box-shadow: var(--shadow-pop);
+}
+.oss-milestone .om-date {
+  display: inline-block; font-size: 11.5px; font-weight: 800;
+  letter-spacing: .8px; color: #a5b4fc;
+  background: rgba(165,180,252,.14); padding: 3px 11px; border-radius: 999px;
+}
+.oss-milestone h4 {
+  font-size: 21px; font-weight: 800; line-height: 1.4;
+  margin: 12px 0 4px; color: #fff;
+}
+.oss-milestone .om-nums {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin: 18px 0; padding: 16px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.oss-milestone .om-nums div { display: flex; flex-direction: column; gap: 3px; }
+.oss-milestone .om-nums b {
+  font-size: 25px; font-weight: 800; color: #a5b4fc;
+  line-height: 1.15; letter-spacing: -0.5px;
+}
+.oss-milestone .om-nums span { font-size: 12.5px; color: rgba(245,245,247,.6); }
+.oss-milestone p { font-size: 14.5px; line-height: 1.85; color: rgba(245,245,247,.82); }
+.oss-milestone p + p { margin-top: 12px; }
+.oss-milestone p b { color: #fff; font-weight: 700; }
+.oss-milestone .om-turn {
+  margin-top: 16px; padding: 14px 18px;
+  background: rgba(165,180,252,.1); border-radius: var(--radius-sm);
+  font-size: 14.5px; line-height: 1.8;
+}
+.oss-milestone .om-turn b { color: #a5b4fc; }
+
+/* ── 风险提示条 ───────────────────────────── */
+.oss-warn {
+  display: flex; gap: 11px; align-items: flex-start;
+  background: rgba(217,119,6,.06); border: 1.5px solid rgba(217,119,6,.24);
+  border-radius: var(--radius); padding: 15px 18px;
+  font-size: 14.5px; line-height: 1.7; margin: 14px 0;
+}
+.oss-warn svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px; color: var(--amber); }
+
+/* ── 移动端 ─────────────────────────────── */
+@media (max-width: 768px) {
+  .oss-facts, .oss-lic-grid { grid-template-columns: 1fr; }
+  .oss-lab { padding: 20px 16px 22px; }
+  .lab-row { gap: 10px; }
+  .lab-label { min-width: 100%; }
+  .lab-val { min-width: auto; text-align: left; }
+  .lab-lamps { grid-template-columns: 1fr; }
+  .lab-drow { grid-template-columns: 52px 1fr 48px; gap: 8px; }
+  .lab-big { font-size: 28px; }
+  .oss-milestone { padding: 20px 18px; }
+  .oss-milestone h4 { font-size: 18px; }
+  .oss-milestone .om-nums { grid-template-columns: 1fr; gap: 12px; }
+  .oss-milestone .om-nums b { font-size: 22px; }
+  .oc-controls { grid-template-columns: 1fr; gap: 13px; }
+  .oc-row {
+    grid-template-columns: 1fr auto; gap: 6px 12px;
+    padding: 12px 14px;
+  }
+  .ocr-bar { grid-column: 1 / -1; order: 3; }
+  .ocr-need { order: 2; text-align: right; }
+  .ocr-state { grid-column: 1 / -1; order: 4; text-align: left; }
+  .oss-fact .of-num { font-size: 26px; }
+}

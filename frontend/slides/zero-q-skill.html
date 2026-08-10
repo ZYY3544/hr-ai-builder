@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>最近很火的 Skill 到底是什么？一张写给 AI 的「经验小抄」 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.qa-answer {
+  background: linear-gradient(135deg, rgba(8,145,178,0.06), rgba(0,102,255,0.05));
+  border: 1.5px solid rgba(8,145,178,0.3);
+  border-radius: var(--radius); padding: 22px 26px; margin: 4px 0 8px;
+}
+.qa-answer .qa-tag { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #0891b2; margin-bottom: 8px; }
+.qa-answer p { font-size: 16.5px; font-weight: 700; color: var(--text); line-height: 1.85; }
+.qa-answer p b { color: #0891b2; }
+
+/* 对比播放器 */
+.sk-demo {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card);
+  padding: 22px 24px;
+}
+.sk-modes { display: flex; gap: 8px; margin-bottom: 14px; }
+.sk-mode {
+  flex: 1; border: 1.5px solid var(--border); background: var(--card);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  font-size: 13.5px; font-weight: 800; color: var(--sub);
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.sk-mode:hover { border-color: rgba(0,102,255,0.4); }
+.sk-mode.on-bad { border-color: var(--danger); background: rgba(220,38,38,0.05); color: var(--danger); }
+.sk-mode.on-good { border-color: var(--success); background: rgba(22,163,74,0.05); color: var(--success); }
+.sk-stage { display: flex; flex-direction: column; gap: 7px; min-height: 240px; }
+.sk-step {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 13px; border-radius: 10px;
+  font-size: 13.5px; color: var(--text); line-height: 1.7;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+.sk-step.show { opacity: 1; transform: translateY(0); }
+.sk-step .sk-ico { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+.sk-step.s-agent { background: rgba(0,102,255,0.04); border: 1px solid rgba(0,102,255,0.1); }
+.sk-step.s-waste { background: rgba(220,38,38,0.05); border: 1px dashed rgba(220,38,38,0.25); }
+.sk-step.s-you { background: rgba(100,116,139,0.07); border: 1px solid rgba(100,116,139,0.12); }
+.sk-step.s-done { background: rgba(22,163,74,0.05); border: 1px solid rgba(22,163,74,0.15); }
+.sk-step b { color: var(--accent); }
+.sk-step.s-waste b { color: var(--danger); }
+.sk-step.s-done b { color: var(--success); }
+.sk-result {
+  margin-top: 14px; border-top: 1.5px dashed var(--border); padding-top: 14px;
+  display: flex; gap: 12px; align-items: center;
+  font-size: 14px; font-weight: 800;
+  opacity: 0; transition: opacity 0.4s;
+}
+.sk-result.show { opacity: 1; }
+.sk-result .sk-badge {
+  padding: 6px 16px; border-radius: 999px; font-size: 13px; flex-shrink: 0;
+}
+.sk-result.bad .sk-badge { background: rgba(220,38,38,0.08); color: var(--danger); }
+.sk-result.good .sk-badge { background: rgba(22,163,74,0.1); color: var(--success); }
+.sk-result .sk-verdict { color: var(--sub); font-weight: 600; font-size: 13px; line-height: 1.7; }
+
+/* 小抄文件 */
+.cheat-file {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.cheat-head {
+  padding: 11px 18px; border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.02); font-size: 13px; font-weight: 800; color: var(--sub);
+  display: flex; align-items: center; gap: 8px;
+}
+.cheat-body { padding: 18px 22px; }
+.cheat-sec { margin-bottom: 14px; }
+.cheat-sec:last-child { margin-bottom: 0; }
+.cheat-sec .ch-h { font-size: 13px; font-weight: 800; color: #0891b2; margin-bottom: 4px; }
+.cheat-sec .ch-t { font-size: 13.5px; color: var(--text); line-height: 1.85; }
+.cheat-sec .ch-t b { color: var(--accent); }
+
+/* 三点卡 */
+.pt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.pt-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-card);
+}
+.pt-card .pt-icon { font-size: 26px; margin-bottom: 8px; }
+.pt-card h4 { font-size: 14.5px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+.pt-card p { font-size: 12.5px; color: var(--sub); line-height: 1.8; }
+.pt-card p b { color: var(--text); }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .pt-grid { grid-template-columns: 1fr; }
+  .qa-answer p { font-size: 15px; }
+  .sk-modes { flex-direction: column; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="最近很火的 Skill（技能）到底是什么？其实就是一张写给 AI 的「经验小抄」：一个普通文本文件，告诉 AI 遇到某类任务先做什么、再做什么。不是新技术，但让 AI 从「来回问 4 趟」变成「一趟搞完」。播放动画亲眼对比。">
+<meta name="keywords" content="Skill是什么,AI Skill,Agent Skill,SKILL.md,Claude Skill,Cursor Skill,AI技能,AI入门问答">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-q-skill.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-q-skill.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-q-skill.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-q-skill.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-q-skill.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="最近很火的 Skill 到底是什么？">
+<meta property="og:description" content="一张写给 AI 的「经验小抄」。不是新技术，但让 AI 从「来回问 4 趟」变成「一趟搞完」。">
+<meta property="og:url" content="https://xueai.app/slides/zero-q-skill.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="最近很火的 Skill 到底是什么？">
+<meta name="twitter:description" content="一张写给 AI 的「经验小抄」，让 AI 从来回问 4 趟变成一趟搞完。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"最近很火的 Skill 是什么？","name":"最近很火的 Skill 是什么？","url":"https://xueai.app/slides/zero-q-skill.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 小白三千问","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"最近很火的 Skill（技能）到底是什么？其实就是一张写给 AI 的「经验小抄」：一个普通文本文件，告诉 AI 遇到某类任务先做什么、再做什么。不是新技术，但让 AI 从「来回问 4 趟」变成「一趟搞完」。播放动画亲眼对比。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · 小白三千问</div>
+    <h1>最近很火的 Skill 到底是什么？</h1>
+    <p class="subtitle">刷到过「给 AI 装技能」「Skill 生态爆发」这类说法吗？听着高深，其实这可能是 AI 圈里<b>最容易理解的一个新词</b>——你小时候抄在课本角落的小抄，就是它的全部原理。</p>
+  </header>
+
+  <div class="qa-answer">
+    <div class="qa-tag">一句话回答</div>
+    <p>Skill 就是<b>一张写给 AI 的「经验小抄」</b>：一个普通的文本文件（通常叫 SKILL.md），用大白话告诉 AI「遇到这类任务时，先做什么、再做什么、注意什么」。<b>它不是什么新技术</b>——但它能让 AI 从「来回问你四趟」变成「一趟全搞完」。</p>
+  </div>
+
+  <div class="sec-label">看个演示 · 让 AI 管家去阳台收衣服</div>
+
+  <p class="l-p">同一个任务：「去阳台把衣服收了」。看看<b>没带小抄</b>和<b>带了小抄</b>的 AI 管家，干起来差多少。点下面切换对比。</p>
+
+  <div class="sk-demo">
+    <div class="sk-modes">
+      <button class="sk-mode on-bad" id="modeBad">😵 没带小抄的 AI 管家</button>
+      <button class="sk-mode" id="modeGood">📋 带了小抄的 AI 管家</button>
+    </div>
+    <div class="sk-stage" id="skStage"></div>
+    <div class="sk-result" id="skResult">
+      <span class="sk-badge" id="skBadge"></span>
+      <span class="sk-verdict" id="skVerdict"></span>
+    </div>
+  </div>
+
+  <div class="sec-label">它的秘密 · 就是这样一张「小抄」</div>
+
+  <p class="l-p">刚才「好循环」的秘密全在这个文件里。注意看：<b>没有一行代码，全是大白话</b>——这就是为什么说人人都能写。</p>
+
+  <div class="cheat-file">
+    <div class="cheat-head">📄 SKILL.md — 阳台收衣服小抄</div>
+    <div class="cheat-body">
+      <div class="cheat-sec">
+        <div class="ch-h">什么时候用这张小抄</div>
+        <div class="ch-t">当主人提到「收衣服」「阳台」「晾晒」的时候。</div>
+      </div>
+      <div class="cheat-sec">
+        <div class="ch-h">怎么做</div>
+        <div class="ch-t">
+          <b>第 1 步</b>：出门前，先想好阳台上可能有什么（衣服、裤子、袜子、玩具…）<br>
+          <b>第 2 步</b>：能收的一次性全收回来，别一件一件跑<br>
+          <b>第 3 步</b>：看到植物顺手检查要不要浇水<br>
+          <b>第 4 步</b>：回来汇报一句「都好了」
+        </div>
+      </div>
+      <div class="cheat-sec">
+        <div class="ch-h">最重要的原则</div>
+        <div class="ch-t">一趟搞完，别每做一步就回来问一次。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">为什么它最近这么火</div>
+
+  <div class="pt-grid">
+    <div class="pt-card">
+      <div class="pt-icon">🤝</div>
+      <h4>大家用上了同一种小抄</h4>
+      <p>Claude、Cursor、Copilot 等主流 AI 工具先后支持了<b>同一个简单格式</b>（就是那个 SKILL.md 文件）。写一张小抄，到处都能用——生态一下就热闹起来了。</p>
+    </div>
+    <div class="pt-card">
+      <div class="pt-icon">✍️</div>
+      <h4>人人都能写</h4>
+      <p>它不用编程，就是<b>把你的经验写成大白话</b>。你怎么教新同事做一件事，就怎么写小抄。会写工作交接文档，就会写 Skill。</p>
+    </div>
+    <div class="pt-card">
+      <div class="pt-icon">💎</div>
+      <h4>经验第一次能「装」进 AI</h4>
+      <p>以前老师傅的经验只能口口相传；现在写成小抄，AI 读了就会。<b>你的经验变成了 AI 的能力</b>——这是大家兴奋的真正原因。</p>
+    </div>
+  </div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    其实你可能已经在用了：很多 AI 应用里的「智能体」「机器人模板」「一键 XX 助手」，背后本质就是包装好的 Skill——有人替你把小抄写好了。等你想让 AI 按<b>你自己的方式</b>干活时，就可以自己写一张。本站第七篇章有一整节课带你<a href="learn.html#7-5.html" target="_top">深入 Skill 的设计</a>。
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一页想和你分享的</h3>
+    <ul>
+      <li><b>Skill = 写给 AI 的经验小抄</b>：一个大白话文本文件，不是新技术</li>
+      <li><b>它解决的问题</b>：让 AI 出门前就想清楚，一趟搞完，不来回折腾</li>
+      <li><b>火的原因</b>：主流工具统一了格式 + 人人都能写 + 经验能复用</li>
+      <li><b>你可能已经在用</b>：各种「智能体模板」背后就是包装好的 Skill</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+/* ── 带/不带小抄对比播放 ── */
+(function () {
+  var MODES = {
+    bad: {
+      steps: [
+        { c: 's-agent', i: '🤖', t: '<b>AI 管家</b>：收了阳台的衣服，回来了。' },
+        { c: 's-waste', i: '🔁', t: '<b>又跑回来问</b>：主人，裤子也要收吗？' },
+        { c: 's-you',   i: '🧑', t: '<b>你</b>：当然要……' },
+        { c: 's-agent', i: '🤖', t: '<b>AI 管家</b>：出去收了裤子，又回来了。' },
+        { c: 's-waste', i: '🔁', t: '<b>又跑回来问</b>：柠檬树要浇水吗？' },
+        { c: 's-you',   i: '🧑', t: '<b>你</b>：要啊！' },
+        { c: 's-waste', i: '🔁', t: '<b>又跑回来问</b>：孩子的玩具也要收吗？' },
+        { c: 's-you',   i: '🧑', t: '<b>你</b>：你说呢…… 😮‍💨' },
+        { c: 's-agent', i: '🤖', t: '<b>AI 管家</b>：又出去收玩具……终于全搞完了。' },
+      ],
+      badge: '跑了 4 趟 · 问了你 3 次',
+      verdict: '每做一步就回来确认一次——你比自己动手还累。',
+      cls: 'bad',
+    },
+    good: {
+      steps: [
+        { c: 's-agent', i: '🤖', t: '<b>AI 管家</b>：这个任务有小抄！读一下「阳台收衣服」…' },
+        { c: 's-done',  i: '📋', t: '<b>出门前先规划</b>：衣服、裤子、玩具一起收，顺便看看植物。' },
+        { c: 's-done',  i: '✅', t: '衣服收了 ✓ 裤子收了 ✓' },
+        { c: 's-done',  i: '✅', t: '柠檬树浇了 ✓ 玩具顺手收了 ✓' },
+        { c: 's-done',  i: '🎉', t: '<b>回来汇报</b>：「都好了。」你全程没被打扰。' },
+      ],
+      badge: '1 趟搞定 · 0 次打扰',
+      verdict: '出门前就想清楚了全部——这就是那张小抄的价值。',
+      cls: 'good',
+    },
+  };
+
+  var stage = document.getElementById('skStage');
+  var result = document.getElementById('skResult');
+  var badge = document.getElementById('skBadge');
+  var verdict = document.getElementById('skVerdict');
+  var btnBad = document.getElementById('modeBad');
+  var btnGood = document.getElementById('modeGood');
+  var timers = [];
+
+  function play(mode) {
+    timers.forEach(function (t) { clearTimeout(t); });
+    timers = [];
+    btnBad.className = 'sk-mode' + (mode === 'bad' ? ' on-bad' : '');
+    btnGood.className = 'sk-mode' + (mode === 'good' ? ' on-good' : '');
+
+    var m = MODES[mode];
+    result.className = 'sk-result ' + m.cls;
+    stage.innerHTML = m.steps.map(function (s) {
+      return '<div class="sk-step ' + s.c + '"><span class="sk-ico">' + s.i + '</span><span>' + s.t + '</span></div>';
+    }).join('');
+
+    var rows = stage.querySelectorAll('.sk-step');
+    rows.forEach(function (row, i) {
+      timers.push(setTimeout(function () {
+        row.classList.add('show');
+        if (i === rows.length - 1) {
+          timers.push(setTimeout(function () {
+            badge.textContent = m.badge;
+            verdict.textContent = m.verdict;
+            result.classList.add('show');
+          }, 350));
+        }
+      }, 550 * (i + 1)));
+    });
+  }
+
+  btnBad.addEventListener('click', function () { play('bad'); });
+  btnGood.addEventListener('click', function () { play('good'); });
+  play('bad');
+})();
+</script>
+<script src="i18n.js?v=20260807b"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

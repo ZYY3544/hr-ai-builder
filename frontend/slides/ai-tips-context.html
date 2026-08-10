@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>好提问 vs 坏提问：上下文决定输出质量 | xueai.app</title>
+<link rel="stylesheet" href="lesson.css">
+<style>
+@keyframes _si{to{opacity:1}}
+body{opacity:0;animation:_si .15s ease .08s forwards}
+
+:root{
+  --red:var(--danger);
+  --green:var(--success);
+  --surface:var(--card);
+  --surface2:#f0ede6;
+  --muted:var(--sub);
+  --tips-accent:#0891b2;
+}
+
+.lesson-header h1 em{font-style:normal;color:var(--cyan)}
+
+/* 场景选择 */
+.scene-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.scene-chip{padding:9px 16px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--sub);font-family:inherit}
+.scene-chip.active{background:var(--tips-accent);border-color:var(--tips-accent);color:white}
+.scene-chip:hover:not(.active){border-color:var(--tips-accent);color:var(--tips-accent)}
+
+/* 对比区 */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp-col{border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;border:2px solid}
+.cmp-bad{background:rgba(220,38,38,.03);border-color:rgba(220,38,38,.2)}
+.cmp-good{background:rgba(22,163,74,.03);border-color:rgba(22,163,74,.2)}
+.cmp-label{font-size:12px;font-weight:800;letter-spacing:.4px}
+.cmp-bad .cmp-label{color:var(--red)}
+.cmp-good .cmp-label{color:var(--green)}
+
+.msg-bubble{border-radius:10px;padding:11px 13px;font-size:14px;line-height:1.65}
+.msg-user-bad{background:rgba(220,38,38,.08);color:#7c2d12}
+.msg-user-good{background:rgba(22,163,74,.08);color:#14532d}
+.msg-ai{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+.msg-lbl{font-size:10px;font-weight:800;opacity:.6;margin-bottom:4px;letter-spacing:.3px}
+.msg-ai .highlight{background:rgba(8,145,178,.1);padding:1px 4px;border-radius:3px;font-weight:700;color:#0e7490}
+
+.diff-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;width:fit-content}
+.diff-bad{background:rgba(220,38,38,.1);color:var(--red)}
+.diff-good{background:rgba(22,163,74,.1);color:var(--green)}
+
+/* 底部洞察 */
+.insight{background:rgba(8,145,178,.06);border:1.5px solid rgba(8,145,178,.2);border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;margin-top:16px}
+.insight-icon{font-size:18px;flex-shrink:0}
+.insight-text{font-size:14px;color:var(--sub);line-height:1.7}
+.insight-text strong{color:var(--text)}
+.insight-text em{font-style:normal;color:var(--tips-accent);font-weight:700}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .3s ease forwards}
+
+@media (max-width:768px){
+  .compare{grid-template-columns:1fr}
+}
+</style>
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/ai-tips-context.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/ai-tips-context.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/ai-tips-context.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/ai-tips-context.html">
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"好提问 vs 坏提问","name":"好提问 vs 坏提问","url":"https://xueai.app/slides/ai-tips-context.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 实用技巧","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+  <header class="lesson-header">
+    <div class="kicker">实用技巧</div>
+    <h1>好提问 vs 坏提问：<em>上下文决定一切</em></h1>
+    <p class="subtitle">同一个 AI，提问方式不同，输出天差地别。点击场景切换对比。</p>
+  </header>
+
+  <div class="sec-label">选择场景</div>
+  <div class="scene-row" id="sceneRow"></div>
+
+  <div class="sec-label">对比演示</div>
+  <div class="compare">
+    <div class="cmp-col cmp-bad" id="colBad"></div>
+    <div class="cmp-col cmp-good" id="colGood"></div>
+  </div>
+  <div class="insight" id="insightBar"></div>
+</article>
+<script>
+const SCENES = [
+  {
+    name: '写周报',
+    bad: {
+      prompt: '帮我写个周报',
+      response: '本周完成了相关工作任务，参与了多个项目的推进，与团队进行了有效沟通。下周将继续推进各项工作，确保按时完成目标…',
+      tags: ['没有具体内容', '全是废话模板', '谁都能套用'],
+    },
+    good: {
+      prompt: '我是产品经理，本周：1）完成了用户调研报告（访谈 8 人）；2）评审了 v2.3 需求，砍掉了 3 个低优先级功能；3）和开发对齐了排期，延期 2 天。\n\n请帮我写一份简洁的周报，重点突出决策和进展，风格务实不吹牛，3 段以内。',
+      response: '本周聚焦 v2.3 版本推进。<span class="highlight">完成 8 人用户调研</span>，发现核心痛点集中在首次使用流程，报告已同步设计团队。需求评审中<span class="highlight">主动砍掉 3 个低优先级功能</span>，确保核心链路资源集中。开发排期对齐后<span class="highlight">预计延期 2 天</span>，已与 PMO 同步调整里程碑。',
+      tags: ['内容具体', '有决策有数据', '风格匹配'],
+    },
+    insight: '差别在哪？好的提问给了 <em>角色 + 事实 + 风格要求</em>。AI 不是不会写，是<strong>不知道该写什么</strong>— 你给的背景越充分，输出越精准。'
+  },
+  {
+    name: '分析数据',
+    bad: {
+      prompt: '帮我分析一下数据',
+      response: '数据分析需要从多个维度展开。首先要明确分析目的，然后收集相关数据，接着选择合适的分析方法…建议使用 Excel 或 Python 进行数据处理。',
+      tags: ['在讲废话', '没有任何分析', '教科书式敷衍'],
+    },
+    good: {
+      prompt: '以下是我们 App 最近 7 天的数据：\n- DAU: 12k→15k→14k→13k→18k→16k→15k\n- 新增注册: 800→1200→950→900→1500→1100→980\n- 次日留存: 35%→32%→33%→31%→28%→30%→29%\n\n请帮我找出异常点，分析可能原因，给出 3 条可执行建议。',
+      response: '<strong>异常点：</strong>第 5 天 DAU 和注册同步跳涨（<span class="highlight">DAU +38%，注册 +67%</span>），推测有一波外部流量涌入（投放/推荐/热点事件）。\n\n<strong>隐忧：</strong>次日留存从第 5 天开始<span class="highlight">持续下降到 28-29%</span>，说明新增用户质量偏低，未被有效承接。\n\n<strong>建议：</strong>①查明第 5 天流量来源，评估 ROI；②优化新用户首日引导流程；③对低留存渠道降低投放权重。',
+      tags: ['定位异常', '归因分析', '可执行建议'],
+    },
+    insight: '差别在哪？坏提问没给数据，AI 只能讲方法论。好提问<em>直接把数据贴进去</em>，AI 立刻变成了分析师。<strong>AI 需要原料才能干活。</strong>'
+  },
+  {
+    name: '起草邮件',
+    bad: {
+      prompt: '帮我写封邮件给客户',
+      response: '尊敬的客户：\n\n您好！感谢您一直以来的支持与信任。我写信是为了与您沟通相关事宜…\n\n期待您的回复。\n\n此致\n敬礼',
+      tags: ['没有主题', '空洞客套', '完全没法用'],
+    },
+    good: {
+      prompt: '场景：客户（张总，制造业，合作 2 年）的系统上周出了 Bug，导致他们生产线停了 4 小时。我们已修复，但客户很不满。\n\n请写一封道歉 + 复盘邮件：态度诚恳但不卑微，说明根因和整改措施，语气正式但不生硬，控制在 200 字以内。',
+      response: '张总好：\n\n上周系统故障给贵司生产造成的影响，我们深表歉意。\n\n<span class="highlight">根因</span>：数据库连接池在高并发时溢出，触发服务中断。<span class="highlight">整改</span>：已完成连接池扩容 + 熔断机制部署，并新增 24h 监控告警。\n\n为避免再次发生，我们将在本周提供一次<span class="highlight">免费系统健康检查</span>，由技术负责人直接对接。\n\n后续如有任何问题，随时联系我。',
+      tags: ['态度得体', '根因+措施', '有补偿方案'],
+    },
+    insight: '差别在哪？好的提问给了 <em>完整场景（人物、事件、情绪、限制）</em>。写邮件不是打字，是<strong>在特定场景下沟通</strong>— 场景越清晰，邮件越得体。'
+  },
+  {
+    name: '学习概念',
+    bad: {
+      prompt: '什么是 RAG？',
+      response: 'RAG（Retrieval-Augmented Generation）即检索增强生成，是一种结合检索和生成的方法。它通过从外部知识库中检索相关信息，并将其作为上下文提供给语言模型，从而提高生成质量和准确性…',
+      tags: ['百科式回答', '看完还是不懂', '没有直觉'],
+    },
+    good: {
+      prompt: '我是产品经理，完全不懂技术。请用一个生活类比解释 RAG 是什么、解决什么问题。\n\n要求：先用一句话说结论，然后用类比展开，最后告诉我作为产品经理需要关心 RAG 的哪一点。',
+      response: '<strong>一句话：</strong>RAG 就是让 AI 在回答之前先去查资料，告别全凭记忆。\n\n<span class="highlight">类比：</span>想象你问一个学霸「公司报销流程是什么」。学霸再聪明，没看过你公司的制度就只能瞎猜。但如果你先把《报销制度》递给他，他边看边答，这就是 RAG。\n\n<strong>产品经理关心的：</strong>①递资料的质量决定回答质量（检索准不准）；②资料太多会超出窗口被截断；③RAG 不是万能的，资料里没有的知识它还是会编。',
+      tags: ['类比直觉', '结构清晰', '角色化建议'],
+    },
+    insight: '差别在哪？好提问说清了<em>我是谁、我要什么形式、我关心什么角度</em>。学东西时，<strong>「用什么方式教我」比「教我什么」更重要</strong>。'
+  },
+  {
+    name: '创意文案',
+    bad: {
+      prompt: '写个广告语',
+      response: '让生活更美好！\n品质之选，值得信赖。\n与您同行，共创未来。',
+      tags: ['万能废话', '毫无特色', '套谁身上都行'],
+    },
+    good: {
+      prompt: '产品：一款面向 25-35 岁独居青年的智能香薰机，主打「回家有仪式感」。\n\n品牌调性：温暖但不矫情，有点小幽默。\n\n请给 5 条备选广告语，每条不超过 15 字，避免「品质」「智能」「科技」这些烂大街的词。',
+      response: '1. <span class="highlight">推门那一刻，家在等你。</span>\n2. 一个人住，也值得被香气拥抱。\n3. <span class="highlight">别人加班到崩溃，你回家闻见薰衣草。</span>\n4. 仪式感不贵，插电就有。\n5. 房子是租的，味道是自己的。',
+      tags: ['精准人群', '风格匹配', '直接能用'],
+    },
+    insight: '差别在哪？好提问给了<em>产品、人群、调性、禁用词、格式约束</em>。创意不是天马行空，是<strong>在明确框架内的发挥</strong>— 框架越清晰，创意越精准。'
+  }
+];
+
+function renderScene(idx) {
+  document.querySelectorAll('.scene-chip').forEach((c,i) => c.classList.toggle('active', i===idx));
+  const s = SCENES[idx];
+
+  document.getElementById('colBad').innerHTML = `
+    <div class="cmp-label">❌ 坏提问</div>
+    <div class="msg-bubble msg-user-bad"><div class="msg-lbl">你说</div>${s.bad.prompt.replace(/\n/g,'<br>')}</div>
+    <div class="msg-bubble msg-ai"><div class="msg-lbl">AI 回答</div>${s.bad.response.replace(/\n/g,'<br>')}</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">${s.bad.tags.map(t=>`<span class="diff-tag diff-bad">${t}</span>`).join('')}</div>
+  `;
+  document.getElementById('colGood').innerHTML = `
+    <div class="cmp-label">✅ 好提问</div>
+    <div class="msg-bubble msg-user-good"><div class="msg-lbl">你说</div>${s.good.prompt.replace(/\n/g,'<br>')}</div>
+    <div class="msg-bubble msg-ai"><div class="msg-lbl">AI 回答</div>${s.good.response.replace(/\n/g,'<br>')}</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">${s.good.tags.map(t=>`<span class="diff-tag diff-good">${t}</span>`).join('')}</div>
+  `;
+  document.getElementById('insightBar').innerHTML = `
+    <div class="insight-icon">💡</div>
+    <div class="insight-text">${s.insight}</div>
+  `;
+}
+
+const row = document.getElementById('sceneRow');
+SCENES.forEach((s,i) => {
+  const btn = document.createElement('button');
+  btn.className = 'scene-chip' + (i===0?' active':'');
+  btn.textContent = s.name;
+  btn.onclick = () => renderScene(i);
+  row.appendChild(btn);
+});
+renderScene(0);
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

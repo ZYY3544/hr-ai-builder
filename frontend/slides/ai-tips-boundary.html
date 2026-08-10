@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>人机知识边界：四象限策略 | xueai.app</title>
+<link rel="stylesheet" href="lesson.css">
+<style>
+@keyframes _si{to{opacity:1}}
+body{opacity:0;animation:_si .15s ease .08s forwards}
+
+:root{
+  --red:var(--danger);
+  --green:var(--success);
+  --surface:var(--card);
+  --surface2:#f0ede6;
+  --muted:var(--sub);
+  --gray:#6b7280;
+  --tips-accent:#0891b2;
+}
+
+.lesson-header h1 em{font-style:normal;color:var(--cyan)}
+
+.boundary-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:20px;align-items:start}
+
+/* 四象限 */
+.left-desc{font-size:14px;color:var(--sub);line-height:1.7;margin-bottom:12px}
+.left-desc strong{color:var(--text)}
+.quad-wrap{position:relative;display:flex;flex-direction:column}
+.axis-label-y{position:absolute;left:-4px;top:50%;transform:translateY(-50%) rotate(-90deg);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap;z-index:2}
+.axis-label-x{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;z-index:2}
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-left:18px;margin-bottom:18px}
+.quad{border-radius:12px;padding:16px 14px;border:2px solid;cursor:pointer;transition:all .25s;display:flex;flex-direction:column;gap:5px;min-height:110px}
+.quad:hover{transform:scale(1.02);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.quad.active{transform:scale(1.03);box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.quad-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:7px;font-size:11px;font-weight:800;width:fit-content}
+.quad-title{font-size:15px;font-weight:800;line-height:1.3}
+.quad-hint{font-size:12px;opacity:.75;line-height:1.4}
+
+.q-safe{background:rgba(8,145,178,.06);border-color:rgba(8,145,178,.25);color:#0e7490}
+.q-safe.active{border-color:#0891b2;background:rgba(8,145,178,.12)}
+.q-safe .quad-badge{background:rgba(8,145,178,.18);color:#0e7490}
+.q-danger{background:rgba(220,38,38,.06);border-color:rgba(220,38,38,.25);color:#991b1b}
+.q-danger.active{border-color:#dc2626;background:rgba(220,38,38,.12)}
+.q-danger .quad-badge{background:rgba(220,38,38,.18);color:#991b1b}
+.q-feed{background:rgba(217,119,6,.06);border-color:rgba(217,119,6,.25);color:#92400e}
+.q-feed.active{border-color:#d97706;background:rgba(217,119,6,.12)}
+.q-feed .quad-badge{background:rgba(217,119,6,.18);color:#92400e}
+.q-dream{background:rgba(107,114,128,.06);border-color:rgba(107,114,128,.25);color:#4b5563}
+.q-dream.active{border-color:#6b7280;background:rgba(107,114,128,.12)}
+.q-dream .quad-badge{background:rgba(107,114,128,.18);color:#4b5563}
+
+/* 详情面板 */
+.detail-panel{display:flex;flex-direction:column;gap:10px}
+.detail-header{display:flex;align-items:center;gap:10px}
+.detail-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.detail-title{font-size:18px;font-weight:800;color:var(--text)}
+.detail-sub{font-size:12px;margin-top:2px}
+
+.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.dc-label{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.dc-body{font-size:14px;color:var(--sub);line-height:1.7}
+.dc-body strong{color:var(--text)}
+
+.example-list{display:flex;flex-direction:column;gap:6px}
+.example-item{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--sub);line-height:1.5}
+.example-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
+
+.strategy-box{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.7}
+.strategy-box strong{font-weight:800}
+
+.tip-box{display:flex;gap:8px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6}
+.tip-icon{flex-shrink:0;font-size:14px;margin-top:1px}
+
+@media (max-width:768px){
+  .boundary-layout{grid-template-columns:1fr}
+  .quad{min-height:96px}
+}
+</style>
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/ai-tips-boundary.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/ai-tips-boundary.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/ai-tips-boundary.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/ai-tips-boundary.html">
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"人机知识边界：四象限策略","name":"人机知识边界：四象限策略","url":"https://xueai.app/slides/ai-tips-boundary.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 实用技巧","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+  <header class="lesson-header">
+    <div class="kicker">实用技巧</div>
+    <h1>人机知识边界：<em>四象限策略</em></h1>
+    <p class="subtitle">先判断问题在哪个区，再决定怎么用 AI。每次用 AI 之前，先想一个问题：<strong style="color:var(--text)">这个答案，我能验证吗？</strong></p>
+  </header>
+
+  <div class="boundary-layout paywall-locked xa-peek">
+    <div>
+      <div class="sec-label">点击象限查看详情</div>
+      <div class="quad-wrap">
+        <div class="axis-label-y">AI 能力 ↑</div>
+        <div class="axis-label-x">← 你懂 · · · · · · · · 你不懂 →</div>
+        <div class="quad-grid">
+          <div class="quad q-safe active" onclick="showDetail(0)">
+            <div class="quad-badge">放心用</div>
+            <div class="quad-title">共识区</div>
+            <div class="quad-hint">你知道，AI 也知道</div>
+          </div>
+          <div class="quad q-danger" onclick="showDetail(1)">
+            <div class="quad-badge">必须核查！</div>
+            <div class="quad-title">高危探索区</div>
+            <div class="quad-hint">你不懂，AI "可能"知道</div>
+          </div>
+          <div class="quad q-feed" onclick="showDetail(2)">
+            <div class="quad-badge">投喂它</div>
+            <div class="quad-title">盲区</div>
+            <div class="quad-hint">你知道，AI 不知道</div>
+          </div>
+          <div class="quad q-dream" onclick="showDetail(3)">
+            <div class="quad-badge">别想了</div>
+            <div class="quad-title">未知区</div>
+            <div class="quad-hint">谁都不知道</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">象限详情</div>
+      <div class="detail-panel" id="detailPanel"></div>
+    </div>
+  </div>
+</article>
+<script>
+const DETAILS = [
+  {
+    icon:'✅', iconBg:'rgba(8,145,178,.1)', color:'#0e7490', accent:'var(--tips-accent)',
+    title:'共识区 · 放心用', sub:'AI 的舒适区，高效助理，极少出错',
+    desc:'你已经掌握相关知识，AI 也在这些领域表现优异。输出质量高，你还能轻松验证结果。',
+    examples:[
+      {text:'<strong>翻译润色</strong> — 中英互译、语法纠错、改写风格', color:'#0891b2'},
+      {text:'<strong>文本摘要</strong> — 长文章提炼要点、会议记录整理', color:'#0891b2'},
+      {text:'<strong>格式转换</strong> — Markdown 转表格、JSON 转 CSV', color:'#0891b2'},
+      {text:'<strong>头脑风暴</strong> — 列出方案选项、发散思路', color:'#0891b2'},
+      {text:'<strong>写邮件 / 周报</strong> — 给个框架，快速起草', color:'#0891b2'},
+    ],
+    strategy:{bg:'rgba(8,145,178,.06)',border:'rgba(8,145,178,.2)',color:'#0e7490',
+      text:'<strong>策略：大胆用，提高效率。</strong>这些任务你本来就会做，AI 帮你做得更快更好。偶尔检查一下就行。'},
+    tip:{bg:'rgba(8,145,178,.06)',icon:'💡',text:'<strong>诀窍：</strong>越是你自己熟悉的领域，AI 的辅助价值越高 — 因为你能一眼看出它哪里不对。'}
+  },
+  {
+    icon:'⚠️', iconBg:'rgba(220,38,38,.1)', color:'#991b1b', accent:'var(--red)',
+    title:'高危探索区 · 必须核查', sub:'幻觉重灾区，容易瞎编，长尾知识最危险',
+    desc:'你不懂这个领域，无法判断 AI 说的对不对。而 AI 在这类长尾知识上经常编造 — <strong>而且编得非常自信。</strong>',
+    examples:[
+      {text:'<strong>法律法规</strong> — 会编造不存在的法条、条文号', color:'#dc2626'},
+      {text:'<strong>医疗建议</strong> — 药物剂量、诊断建议可能致命', color:'#dc2626'},
+      {text:'<strong>学术引用</strong> — 论文标题、作者、DOI 全是假的', color:'#dc2626'},
+      {text:'<strong>具体数据</strong> — 市场数据、统计数字经常编造', color:'#dc2626'},
+      {text:'<strong>人物事件</strong> — 张冠李戴，混淆时间线', color:'#dc2626'},
+    ],
+    strategy:{bg:'rgba(220,38,38,.06)',border:'rgba(220,38,38,.2)',color:'#991b1b',
+      text:'<strong>策略：可以探索，但绝不能直接采信。</strong>把 AI 当"线索生成器"，它给的方向可以参考，但每一个事实都必须找专业来源交叉验证。'},
+    tip:{bg:'rgba(220,38,38,.06)',icon:'🚨',text:'<strong>红线：</strong>AI 的"自信"程度和"准确"程度完全无关。它编的时候跟说真话一样流畅。你验证不了的答案 = 最危险的答案。'}
+  },
+  {
+    icon:'📥', iconBg:'rgba(217,119,6,.1)', color:'#92400e', accent:'var(--amber)',
+    title:'盲区 · 投喂它', sub:'私有数据只有你有，必须主动喂给 AI',
+    desc:'AI 的训练数据里没有你的私有信息。不告诉它，它就不知道 — 它会用公开知识"猜"，往往猜错。',
+    examples:[
+      {text:'<strong>公司内部文档</strong> — 产品规格、组织架构、业务流程', color:'#d97706'},
+      {text:'<strong>项目上下文</strong> — 当前进度、历史决策、团队约定', color:'#d97706'},
+      {text:'<strong>个人偏好</strong> — 你喜欢的风格、你的写作习惯', color:'#d97706'},
+      {text:'<strong>行业 know-how</strong> — 你所在领域的潜规则和经验', color:'#d97706'},
+      {text:'<strong>最新动态</strong> — 今天的会议结论、刚发布的政策', color:'#d97706'},
+    ],
+    strategy:{bg:'rgba(217,119,6,.06)',border:'rgba(217,119,6,.2)',color:'#92400e',
+      text:'<strong>策略：把背景信息粘贴进对话。</strong>不要指望 AI 猜对你的上下文。把文档、数据、要求全贴上去，AI 就能在你的框架里工作。'},
+    tip:{bg:'rgba(217,119,6,.06)',icon:'📋',text:'<strong>技巧：</strong>把背景信息写成"参考资料"放在对话开头。AI 读到的上下文越完整，输出越贴合你的实际需求。'}
+  },
+  {
+    icon:'🚫', iconBg:'rgba(107,114,128,.1)', color:'#4b5563', accent:'var(--gray)',
+    title:'未知区 · 别想了', sub:'纯粹噪音，谁都不知道的事情问 AI 没用',
+    desc:'这类问题根本没有正确答案。AI 不会说"我不知道"，它会生成一段看起来合理的废话 — 千万别信。',
+    examples:[
+      {text:'<strong>预测未来</strong> — 明天股价、下个月市场走势', color:'#6b7280'},
+      {text:'<strong>未公开信息</strong> — 竞争对手的内部数据', color:'#6b7280'},
+      {text:'<strong>真正的未知</strong> — 没有人研究过的问题', color:'#6b7280'},
+      {text:'<strong>主观判断</strong> — "我该不该辞职"（AI 没有你的人生经验）', color:'#6b7280'},
+      {text:'<strong>实时信息</strong> — 此刻的天气、交通（除非接了工具）', color:'#6b7280'},
+    ],
+    strategy:{bg:'rgba(107,114,128,.06)',border:'rgba(107,114,128,.2)',color:'#4b5563',
+      text:'<strong>策略：直接放弃，不要问 AI。</strong>这种问题 AI 一定会给你一个答案 — 但那个答案是"编"出来的。不如直接找人、查数据源、或者承认"现在没答案"。'},
+    tip:{bg:'rgba(107,114,128,.06)',icon:'🧠',text:'<strong>记住：</strong>AI 没有"不知道"这个回答。它被训练成"一定要回答"，所以越是它不该回答的问题，它答得越像那么回事。'}
+  }
+];
+
+function showDetail(idx) {
+  document.querySelectorAll('.quad').forEach((q,i) => q.classList.toggle('active', i===idx));
+  const d = DETAILS[idx];
+  const panel = document.getElementById('detailPanel');
+  let exHtml = d.examples.map(e =>
+    `<div class="example-item"><div class="example-dot" style="background:${e.color}"></div><span>${e.text}</span></div>`
+  ).join('');
+
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-icon" style="background:${d.iconBg};font-size:22px">${d.icon}</div>
+      <div>
+        <div class="detail-title">${d.title}</div>
+        <div class="detail-sub" style="color:${d.color}">${d.sub}</div>
+      </div>
+    </div>
+    <div class="detail-card">
+      <div class="dc-label" style="color:${d.color}">场景说明</div>
+      <div class="dc-body">${d.desc}</div>
+    </div>
+    <div class="detail-card">
+      <div class="dc-label" style="color:${d.color}">典型场景</div>
+      <div class="example-list">${exHtml}</div>
+    </div>
+    <div class="strategy-box" style="background:${d.strategy.bg};border:1.5px solid ${d.strategy.border};color:${d.strategy.color}">
+      ${d.strategy.text}
+    </div>
+    <div class="tip-box" style="background:${d.tip.bg}">
+      <div class="tip-icon">${d.tip.icon}</div>
+      <div style="color:${d.color};line-height:1.6">${d.tip.text}</div>
+    </div>
+  `;
+}
+showDetail(0);
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 该有多大的自由 | xueai.app</title>
+<style>@keyframes _si{to{opacity:1}} body{opacity:0;animation:_si .15s ease .08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.spectrum-wrap{margin-top:8px}
+.spectrum-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px 24px;box-shadow:var(--shadow-card)}
+.spectrum-labels{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--sub);margin-bottom:18px}
+.spectrum-labels .left{color:var(--success)}
+.spectrum-labels .right{color:var(--danger)}
+.spectrum-track{position:relative;height:8px;background:linear-gradient(90deg,var(--success),var(--amber),var(--danger));border-radius:999px;margin:0 0 12px;cursor:pointer}
+.spectrum-thumb{position:absolute;top:50%;width:28px;height:28px;border-radius:50%;background:var(--card);border:3px solid var(--accent);box-shadow:0 2px 10px rgba(0,0,0,.15);transform:translate(-50%,-50%);cursor:grab;transition:left .35s ease;z-index:2}
+.spectrum-thumb:active{cursor:grabbing}
+.spectrum-dots{display:flex;justify-content:space-between;position:relative;margin-top:6px}
+.spectrum-dot{width:10px;height:10px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s,transform .2s;z-index:1}
+.spectrum-dot.active{background:var(--accent);transform:scale(1.4)}
+.spectrum-dot-labels{display:flex;justify-content:space-between;margin-top:8px}
+.spectrum-dot-labels span{font-size:11px;color:var(--sub);font-weight:600;text-align:center;width:0;display:flex;justify-content:center}
+
+.mode-detail{margin-top:20px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-card);min-height:220px;transition:border-color .3s}
+.mode-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.mode-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.mode-title{font-size:20px;font-weight:800;color:var(--text)}
+.mode-subtitle{font-size:13px;color:var(--sub);font-weight:600}
+.mode-body{font-size:14px;color:var(--text);line-height:1.8}
+.mode-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mode-tag{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px}
+.mode-tag.pro{background:rgba(22,163,74,.08);color:var(--success);border:1px solid rgba(22,163,74,.2)}
+.mode-tag.con{background:rgba(220,38,38,.06);color:var(--danger);border:1px solid rgba(220,38,38,.15)}
+.mode-tag.scene{background:rgba(0,102,255,.06);color:var(--accent);border:1px solid rgba(0,102,255,.15)}
+
+.mode-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:20px}
+@media(max-width:768px){.mode-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.mode-grid{grid-template-columns:1fr}}
+.mode-mini{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center;cursor:pointer;transition:all .2s}
+.mode-mini:hover{border-color:var(--accent);box-shadow:var(--shadow-pop)}
+.mode-mini.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.mode-mini .mi{font-size:22px;margin-bottom:6px}
+.mode-mini .mn{font-size:12px;font-weight:700;color:var(--text)}
+
+.takeaway{background:rgba(0,102,255,.04);border:1.5px solid rgba(0,102,255,.18);border-radius:var(--radius);padding:16px 20px;font-size:15px;color:var(--text);display:flex;gap:10px;line-height:1.7;margin-top:24px}
+.takeaway b{color:var(--accent)}
+</style>
+<meta name="description" content="五种权限模式的光谱：从完全自主到每步审批，没有最好的权限模式，只有最适合当前场景的。">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/9-27.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/9-27.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/9-27.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/9-27.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/9-27.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="AI 该有多大的自由">
+<meta property="og:url" content="https://xueai.app/slides/9-27.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:locale" content="zh_CN">
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"AI 该有多大的自由","name":"AI 该有多大的自由","url":"https://xueai.app/slides/9-27.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 权限与安全","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"五种权限模式的光谱：从完全自主到每步审批，没有最好的权限模式，只有最适合当前场景的。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">权限与安全</div>
+    <h1>AI 该有多大的自由</h1>
+    <p class="subtitle">给 AI 全部权限？它可能搞砸一切。每步都审批？用户会疯掉。权限设计是一条光谱：从完全自主到每步审批，中间还有三种选择。</p>
+  </header>
+
+  <div class="sec-label">五种权限模式光谱</div>
+
+  <div class="spectrum-wrap reveal">
+    <div class="spectrum-card">
+      <div class="spectrum-labels">
+        <span class="left">← AI 自由度高</span>
+        <span class="right">人类控制度高 →</span>
+      </div>
+      <div class="spectrum-track" id="spectrumTrack">
+        <div class="spectrum-thumb" id="spectrumThumb" style="left:0%"></div>
+      </div>
+      <div class="spectrum-dots" id="spectrumDots"></div>
+      <div class="spectrum-dot-labels" id="dotLabels"></div>
+    </div>
+  </div>
+
+  <div class="mode-grid reveal" id="modeGrid"></div>
+
+  <div class="mode-detail reveal" id="modeDetail"></div>
+
+  <div class="sec-label">怎么选？</div>
+
+  <div class="l-card reveal paywall-locked xa-peek" style="font-size:15px;line-height:1.8">
+    权限模式的选择取决于 <b>三个维度</b>：
+    <ul style="margin-top:10px;padding-left:20px">
+      <li><b>操作的可逆性</b> — 发消息不可逆，读文件可逆</li>
+      <li><b>出错的代价</b> — 删除数据代价高，搜索信息代价低</li>
+      <li><b>用户的信任度</b> — 新用户谨慎，老用户信任</li>
+    </ul>
+    <div style="margin-top:12px;color:var(--sub)">同一个产品里，不同功能可以用不同的权限模式。</div>
+  </div>
+
+  <div class="takeaway reveal paywall-locked">
+    <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span>
+    <span><b>没有最好的权限模式，只有最适合当前场景的权限模式。</b>给 AI 多大的自由，本质上是在回答一个产品问题：这件事出错了，谁来负责？</span>
+  </div>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script>
+(function(){
+  var modes = [
+    {
+      name:'全自动',emoji:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 3 0 3 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-3 0-3"/></svg>',
+      color:'var(--success)',bg:'rgba(22,163,74,.08)',
+      subtitle:'AI 全权负责，人类不介入',
+      desc:'AI 接到任务后完全自主执行，不弹任何确认，执行完直接返回结果。适合后台批量任务、风险极低的自动化场景。',
+      pros:['效率最高','无打断体验'],
+      cons:['出错无人兜底','不适合高风险操作'],
+      scenes:['后台数据处理','定时报表生成','日志清理']
+    },
+    {
+      name:'自动 + 高危确认',emoji:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+      color:'var(--accent)',bg:'rgba(0,102,255,.06)',
+      subtitle:'低风险自动执行，高风险弹窗确认',
+      desc:'大部分操作自动完成，但涉及删除、发送、支付等高风险操作时暂停并询问用户。这是目前最主流的 Agent 产品设计。',
+      pros:['效率与安全平衡','用户体验好'],
+      cons:['需要定义「什么是高危」','分级标准可能不准'],
+      scenes:['Cursor / Claude Code','智能邮件助手','自动化工作流']
+    },
+    {
+      name:'建议模式',emoji:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+      color:'var(--purple)',bg:'rgba(124,58,237,.06)',
+      subtitle:'AI 提方案，人类决定',
+      desc:'AI 分析完后给出建议和方案，但不直接执行。用户审阅后选择采纳、修改或拒绝。适合需要人类判断的决策场景。',
+      pros:['人类保持控制','AI 提供专业支持'],
+      cons:['速度较慢','用户需要专业能力审阅'],
+      scenes:['代码审查建议','投资分析','医疗诊断辅助']
+    },
+    {
+      name:'只读模式',emoji:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+      color:'var(--cyan)',bg:'rgba(8,145,178,.06)',
+      subtitle:'AI 只能看，不能动',
+      desc:'AI 可以读取信息、分析数据、回答问题，但没有任何写入或执行权限。适合信息查询和学习场景。',
+      pros:['零风险','适合探索学习'],
+      cons:['无法执行任何操作','能力受限'],
+      scenes:['知识问答','数据分析展示','学习助手']
+    },
+    {
+      name:'完全手动',emoji:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      color:'var(--danger)',bg:'rgba(220,38,38,.05)',
+      subtitle:'每一步都需要人类明确授权',
+      desc:'AI 的每个动作（包括读取文件、调用工具、生成内容）都需要用户逐一批准。安全性最高，但效率最低。',
+      pros:['最高安全性','完全可控'],
+      cons:['效率极低','用户很快疲劳'],
+      scenes:['金融交易','敏感数据操作','合规审计']
+    }
+  ];
+
+  var grid = document.getElementById('modeGrid');
+  var detail = document.getElementById('modeDetail');
+  var dots = document.getElementById('spectrumDots');
+  var labels = document.getElementById('dotLabels');
+  var thumb = document.getElementById('spectrumThumb');
+  var track = document.getElementById('spectrumTrack');
+  var current = 0;
+
+  var gridHtml = '', dotsHtml = '', labelsHtml = '';
+  modes.forEach(function(m,i){
+    gridHtml += '<div class="mode-mini'+(i===0?' active':'')+'" onclick="selectMode('+i+')" id="mg-'+i+'">'
+      + '<div class="mi">'+m.emoji+'</div>'
+      + '<div class="mn">'+m.name+'</div>'
+      + '</div>';
+    dotsHtml += '<div class="spectrum-dot'+(i===0?' active':'')+'" onclick="selectMode('+i+')" id="sd-'+i+'"></div>';
+    labelsHtml += '<span>'+m.name+'</span>';
+  });
+  grid.innerHTML = gridHtml;
+  dots.innerHTML = dotsHtml;
+  labels.innerHTML = labelsHtml;
+
+  function renderDetail(i){
+    var m = modes[i];
+    var tagsHtml = '';
+    m.pros.forEach(function(p){ tagsHtml += '<span class="mode-tag pro"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> '+p+'</span>'; });
+    m.cons.forEach(function(c){ tagsHtml += '<span class="mode-tag con"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> '+c+'</span>'; });
+    m.scenes.forEach(function(s){ tagsHtml += '<span class="mode-tag scene">'+s+'</span>'; });
+    detail.innerHTML = '<div class="mode-header">'
+      + '<div class="mode-icon" style="background:'+m.bg+';color:'+m.color+'">'+m.emoji+'</div>'
+      + '<div><div class="mode-title">'+m.name+'</div><div class="mode-subtitle">'+m.subtitle+'</div></div>'
+      + '</div>'
+      + '<div class="mode-body">'+m.desc+'</div>'
+      + '<div class="mode-tags">'+tagsHtml+'</div>';
+    detail.style.borderColor = m.color;
+  }
+
+  window.selectMode = function(i){
+    current = i;
+    thumb.style.left = (i * 25) + '%';
+    document.querySelectorAll('.mode-mini').forEach(function(el,j){ el.classList.toggle('active',j===i); });
+    document.querySelectorAll('.spectrum-dot').forEach(function(el,j){ el.classList.toggle('active',j===i); });
+    renderDetail(i);
+  };
+
+  track.addEventListener('click', function(e){
+    var rect = track.getBoundingClientRect();
+    var pct = (e.clientX - rect.left) / rect.width;
+    var idx = Math.round(pct * 4);
+    idx = Math.max(0, Math.min(4, idx));
+    selectMode(idx);
+  });
+
+  var dragging = false;
+  thumb.addEventListener('mousedown', function(){ dragging = true; });
+  thumb.addEventListener('touchstart', function(){ dragging = true; }, {passive:true});
+  function onMove(clientX){
+    if(!dragging) return;
+    var rect = track.getBoundingClientRect();
+    var pct = (clientX - rect.left) / rect.width;
+    var idx = Math.round(pct * 4);
+    idx = Math.max(0, Math.min(4, idx));
+    selectMode(idx);
+  }
+  document.addEventListener('mousemove', function(e){ onMove(e.clientX); });
+  document.addEventListener('touchmove', function(e){ onMove(e.touches[0].clientX); }, {passive:true});
+  document.addEventListener('mouseup', function(){ dragging = false; });
+  document.addEventListener('touchend', function(){ dragging = false; });
+
+  renderDetail(0);
+})();
+</script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>上下文溢出：截断、摘要、RAG 三种处理策略对比 | xueai.app</title>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.desc{font-size:16px;color:var(--sub);line-height:1.8}
+
+.strat-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.strat-btn{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-family:inherit;text-align:left;width:100%;min-height:44px}
+.strat-btn:hover{border-color:rgba(0,0,0,.15)}
+.strat-btn.active{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.strat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sb{flex:1;min-width:0}
+.sb h4{font-size:16px;font-weight:800;color:var(--text);margin-bottom:2px}
+.sb p{font-size:13px;color:var(--sub)}
+.strat-verdict{font-size:12px;font-weight:800;padding:3px 9px;border-radius:5px;flex-shrink:0}
+
+/* pros/cons */
+.pros-box{display:flex;flex-direction:column;gap:6px;margin-top:16px}
+.pros-title{font-size:13px;font-weight:800;color:var(--sub);letter-spacing:.4px;text-transform:uppercase}
+.pros-items{display:flex;flex-direction:column;gap:5px}
+.pi{display:flex;gap:8px;align-items:flex-start;font-size:15px;line-height:1.6;padding:4px 0}
+.pi.pro{color:var(--success)}.pi.con{color:var(--danger)}
+.pi-icon{flex-shrink:0;margin-top:1px;font-size:15px}
+
+.scene-box{background:rgba(0,102,255,.05);border:1px solid rgba(0,102,255,.15);border-radius:10px;padding:12px 15px;font-size:15px;color:var(--text);line-height:1.7;margin-top:14px}
+.scene-box b{color:var(--accent)}
+
+/* 演示区 */
+.demo-hd{font-size:13px;font-weight:800;color:var(--sub);letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+
+.vis-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+.vis-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.02);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vis-bar-title{font-size:14px;font-weight:700;color:var(--sub)}
+.vis-body{min-height:280px;max-height:420px;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+
+/* 消息气泡 */
+.msg{padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.6;opacity:0;transform:translateY(8px);transition:all .35s ease;flex-shrink:0}
+.msg.show{opacity:1;transform:translateY(0)}
+.msg.sys{background:rgba(91,79,207,.1);color:#5b4fcf;font-weight:600}
+.msg.user{background:rgba(8,145,178,.1);color:var(--cyan)}
+.msg.ai{background:rgba(22,163,74,.1);color:var(--success)}
+.msg.summary{background:rgba(215,119,6,.1);color:var(--amber);font-weight:600}
+.msg.dropped{background:rgba(0,0,0,0.05);color:var(--sub);text-decoration:line-through;opacity:0}
+.msg.dropped.show{opacity:.4}
+.msg.rag{background:rgba(91,79,207,.08);color:#5b4fcf}
+.msg.warning{background:rgba(220,38,38,.07);color:var(--danger);font-size:14px;font-weight:600;border-radius:8px}
+.msg.ok{background:rgba(22,163,74,.07);color:var(--success);font-size:14px;font-weight:600;border-radius:8px}
+
+.ctrl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.btn{padding:11px 22px;border-radius:9px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-p{background:var(--amber);color:white}
+.btn-p:hover{filter:brightness(1.1)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed}
+.btn-r{background:rgba(0,0,0,0.05);color:var(--sub);border:1px solid var(--border)}
+.hint{font-size:13px;color:var(--sub)}
+
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+@media (max-width:768px){
+  .strat-list{grid-template-columns:1fr}
+}
+</style>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style><!-- SEO Start -->
+<meta name="description" content="当对话超出上下文窗口限制时，如何处理？对比三种策略：截断（Truncation）、摘要压缩（Summarization）、向量检索（RAG），分析各自的适用场景与代价。">
+<meta name="keywords" content="上下文溢出,Context Overflow,Token截断,摘要压缩,RAG,上下文管理">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/5-2.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/5-2.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/5-2.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/5-2.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/5-2.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="上下文溢出：三种处理策略对比">
+<meta property="og:description" content="当对话超出上下文窗口限制时，如何处理？对比三种策略：截断（Truncation）、摘要压缩（Summarization）、向量检索（RAG），分析各自的适用场景与代价。">
+<meta property="og:url" content="https://xueai.app/slides/5-2.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="上下文溢出：三种处理策略对比">
+<meta name="twitter:description" content="当对话超出上下文窗口限制时，如何处理？对比三种策略：截断（Truncation）、摘要压缩（Summarization）、向量检索（RAG），分析各自的适用场景与代价。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"上下文溢出：三种处理策略","name":"上下文溢出：三种处理策略","url":"https://xueai.app/slides/5-2.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 上下文工程","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"当对话超出上下文窗口限制时，如何处理？对比三种策略：截断（Truncation）、摘要压缩（Summarization）、向量检索（RAG），分析各自的适用场景与代价。"}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">上下文工程</div>
+    <h1>上下文溢出：三种处理策略</h1>
+    <p class="subtitle">模块五 · 上下文工程 · 第 2 页。点击策略，下方逐步演示效果。</p>
+  </header>
+
+  <section>
+    <div class="sec-label">三种主流策略</div>
+    <p class="desc">对话越来越长超出窗口时，工程上有三种主流处理方式，各有利弊。</p>
+
+    <div class="strat-list">
+      <button class="strat-btn active" onclick="pickStrat(this,0)" id="sb0">
+        <div class="strat-icon" style="background:rgba(220,38,38,.1)">✂️</div>
+        <div class="sb"><h4>直接截断</h4><p>丢掉最早的对话轮次</p></div>
+        <span class="strat-verdict" style="background:rgba(220,38,38,.1);color:var(--danger)">简单粗暴</span>
+      </button>
+      <button class="strat-btn" onclick="pickStrat(this,1)" id="sb1">
+        <div class="strat-icon" style="background:rgba(215,119,6,.1)">📝</div>
+        <div class="sb"><h4>摘要压缩</h4><p>历史先总结再存，保留要点</p></div>
+        <span class="strat-verdict" style="background:rgba(215,119,6,.1);color:var(--amber)">平衡之选</span>
+      </button>
+      <button class="strat-btn" onclick="pickStrat(this,2)" id="sb2">
+        <div class="strat-icon" style="background:rgba(91,79,207,.1)">🎯</div>
+        <div class="sb"><h4>选择性保留</h4><p>语义检索，只注入相关历史</p></div>
+        <span class="strat-verdict" style="background:rgba(91,79,207,.1);color:var(--purple)">最精准</span>
+      </button>
+    </div>
+
+    <div class="pros-box">
+      <div class="pros-title" id="prosTitle">优缺点分析</div>
+      <div class="pros-items" id="prosItems"></div>
+    </div>
+
+    <div class="scene-box" id="sceneBox"></div>
+  </section>
+
+  <section>
+    <div class="sec-label">交互演示</div>
+    <div class="demo-hd" id="demoHd">演示：直接截断效果</div>
+    <div class="vis-wrap">
+      <div class="vis-bar">
+        <span class="vis-bar-title" id="visTitle">用户在第 1 轮说了自己的名字…</span>
+        <span style="font-size:13px;color:var(--sub)" id="stepHint"></span>
+      </div>
+      <div class="vis-body" id="visBody"></div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn-r" onclick="startPlay()">↺ 重播</button>
+      <span class="hint" id="ctrlHint"></span>
+    </div>
+  </section>
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<script>
+const STRATS = [
+  {
+    color: 'var(--danger)',
+    demoHd: '演示：直接截断的代价',
+    pros: [
+      {text:'实现简单，零额外成本', pro:true},
+      {text:'适合短对话、单次任务场景', pro:true},
+      {text:'早期信息完全丢失，对话不连贯', pro:false},
+      {text:'可能截掉第 1 轮说的重要信息', pro:false},
+    ],
+    scene: '<b>适用：</b>查天气/翻译等单次工具型对话，对话历史不重要的场景。',
+    steps: [
+      { cls:'user', text:'第 1 轮 用户：你好，我叫小明，在上海工作，想学 Python', title:'用户第 1 轮说了名字…' },
+      { cls:'ai',   text:'第 1 轮 AI：你好小明！Python 很适合入门，推荐从基础语法开始。', title:'AI 正常回复…' },
+      { cls:'user', text:'第 2 轮 用户：上海有好的线下课吗？', title:'第 2 轮继续…' },
+      { cls:'ai',   text:'第 2 轮 AI：上海有几家不错的机构，如…', title:'对话越来越长…' },
+      { cls:'user', text:'第 3 轮 用户：哪里学函数比较好？', title:'窗口快满了…' },
+      { cls:'dropped', text:'✂️ 第 1-2 轮已被截断丢弃（窗口已满）', title:'⚠️ 窗口溢出，截断第 1-2 轮！', warn:true },
+      { cls:'user', text:'第 4 轮 用户：我之前说我叫什么？', title:'用户问起名字…' },
+      { cls:'warning', text:'❌ AI：对不起，我没有找到你的姓名信息…（「小明」已永久消失）', title:'糟糕！信息已丢失！', warn:true },
+    ]
+  },
+  {
+    color: 'var(--amber)',
+    demoHd: '演示：摘要压缩保留关键信息',
+    pros: [
+      {text:'大幅压缩历史 Token，显著节省成本', pro:true},
+      {text:'保留了关键信息（人名、背景、偏好）', pro:true},
+      {text:'需要额外 LLM 调用生成摘要（有成本）', pro:false},
+      {text:'摘要本身可能有信息损耗（细节丢失）', pro:false},
+    ],
+    scene: '<b>适用：</b>长期学习对话、客服系统，需要记住用户身份的场景，对话超过 20 轮时效果明显。',
+    steps: [
+      { cls:'user',    text:'第 1-5 轮：用户小明与 AI 深入讨论 Python 基础、函数、闭包…', title:'对话积累了 5 轮…' },
+      { cls:'ai',      text:'检测到历史超过阈值，触发摘要压缩…', title:'触发自动摘要…' },
+      { cls:'summary', text:'📝 [历史摘要 · 约 200T] 用户叫小明，上海，目标学 Python。已完成基础语法，正学函数/闭包，对线下课有兴趣。', title:'摘要生成完成（200 Token 替代 2000 Token）' },
+      { cls:'user',    text:'第 6 轮 用户：闭包是什么意思？', title:'用户继续提问…' },
+      { cls:'ai',      text:'根据你的学习进度（你之前学过函数），闭包就是函数记住了定义时的变量环境…', title:'AI 记住了上下文！' },
+      { cls:'ok',      text:'✅ 摘要保留了「小明、上海、Python、函数」，对话连贯，成本降低 90%', title:'摘要策略成功！' },
+    ]
+  },
+  {
+    color: 'var(--purple)',
+    demoHd: '演示：语义检索只注入相关历史',
+    pros: [
+      {text:'Token 使用最优，精准注入相关历史', pro:true},
+      {text:'回答质量高，模型不被无关历史干扰', pro:true},
+      {text:'实现复杂，需要 Memory 向量检索系统', pro:false},
+      {text:'可能漏掉关联不强但重要的隐性上下文', pro:false},
+    ],
+    scene: '<b>适用：</b>复杂 Agent 系统、超长对话（>100 轮）、需要精准记忆的垂直应用。',
+    steps: [
+      { cls:'dropped', text:'第 1-5 轮：关于 Python 基础的讨论（已向量化存入 Memory）', title:'历史对话全部向量化存储…' },
+      { cls:'dropped', text:'第 6-9 轮：关于列表、字典的讨论（已存入 Memory）', title:'更多历史向量化…' },
+      { cls:'user',    text:'第 N 轮 用户：闭包和装饰器有什么区别？', title:'用户提出新问题…' },
+      { cls:'rag',     text:'🔍 Memory 检索中… 语义最相关：第6轮（函数作用域）、第8轮（装饰器）', title:'语义检索找到相关历史！' },
+      { cls:'ai',      text:'根据我们之前关于闭包（第6轮）和装饰器（第8轮）的讨论…（95 轮历史，只注入 2 轮）', title:'只注入最相关的 2 轮！' },
+      { cls:'ok',      text:'🎯 100 轮对话中只取 2 轮注入，Token 消耗降低 98%，回答更精准', title:'选择性保留大获全胜！' },
+    ]
+  }
+];
+
+let curStrat = 0, curStep = 0, stepTimer = null;
+let demoSeen = false; // 演示区进入过视野后，切换策略才自动播放
+const colors = ['var(--danger)', 'var(--amber)', 'var(--purple)'];
+
+function pickStrat(btn, idx) {
+  document.querySelectorAll('.strat-btn').forEach((b,i) => {
+    b.classList.toggle('active', i === idx);
+    b.style.borderColor = i === idx ? colors[idx] : '';
+    b.style.background = i === idx ? '' : '';
+  });
+  curStrat = idx;
+  resetDemo();
+  renderPros();
+  if (demoSeen) startPlay();
+}
+
+function renderPros() {
+  const s = STRATS[curStrat];
+  document.getElementById('prosTitle').textContent = '优缺点分析';
+  document.getElementById('prosItems').innerHTML = s.pros.map(p =>
+    `<div class="pi ${p.pro?'pro':'con'}"><span class="pi-icon">${p.pro?'✅':'❌'}</span><span>${p.text}</span></div>`
+  ).join('');
+  document.getElementById('sceneBox').innerHTML = s.scene;
+  document.getElementById('demoHd').textContent = s.demoHd;
+}
+
+function nextStep() {
+  const s = STRATS[curStrat];
+  if (curStep >= s.steps.length) return;
+  const step = s.steps[curStep];
+  const body = document.getElementById('visBody');
+
+  const el = document.createElement('div');
+  el.className = 'msg ' + step.cls;
+  el.textContent = step.text;
+  body.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  body.scrollTop = body.scrollHeight;
+
+  document.getElementById('visTitle').textContent = step.title;
+  curStep++;
+
+  document.getElementById('stepHint').textContent = `${curStep} / ${s.steps.length}`;
+  document.getElementById('ctrlHint').textContent = curStep >= s.steps.length ? '演示完成' : '';
+}
+
+function resetDemo() {
+  clearInterval(stepTimer);
+  stepTimer = null;
+  curStep = 0;
+  document.getElementById('visBody').innerHTML = '';
+  document.getElementById('visTitle').textContent = '自动演示中…';
+  document.getElementById('stepHint').textContent = '';
+  document.getElementById('ctrlHint').textContent = '';
+}
+
+/* 自动逐条播放（进入视野或切换策略时触发） */
+function startPlay() {
+  resetDemo();
+  stepTimer = setInterval(function(){
+    const s = STRATS[curStrat];
+    if (curStep >= s.steps.length) { clearInterval(stepTimer); stepTimer = null; return; }
+    nextStep();
+  }, 800);
+}
+
+// 初始化
+pickStrat(document.getElementById('sb0'), 0);
+lessonOnView(document.getElementById('visBody'), function(){
+  demoSeen = true;
+  startPlay();
+});
+</script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

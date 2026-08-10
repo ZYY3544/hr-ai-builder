@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>迭代的艺术：知道何时收手 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* 系统色板别名（沿用交互数据中的变量名） */
+:root{--green:var(--success);--red:var(--danger);--muted:var(--sub)}
+
+/* 质量仪表（sticky 保持可见） */
+.meter-section{
+  position:sticky;top:12px;z-index:10;
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:16px 18px;box-shadow:var(--shadow-card);margin-bottom:20px;
+}
+.meter-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.meter-title{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+.btn-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:5px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-reset:hover{border-color:var(--accent);color:var(--accent)}
+.meter-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.meter-row:last-child{margin-bottom:0}
+.meter-label{font-size:12px;font-weight:700;color:var(--sub);min-width:56px;text-align:right}
+.meter-bar-bg{flex:1;height:12px;background:rgba(0,0,0,.04);border-radius:6px;overflow:hidden}
+.meter-bar{height:100%;border-radius:6px;transition:width .8s ease,background .5s}
+.meter-val{font-size:13px;font-weight:800;min-width:36px;transition:color .5s}
+
+/* 对话流 */
+#chatPanel{min-height:60px}
+.round-divider{display:flex;align-items:center;gap:10px;padding:22px 0 10px}
+.round-badge{padding:3px 12px;border-radius:6px;font-size:12px;font-weight:800;white-space:nowrap}
+.round-line{flex:1;height:1px;background:var(--border)}
+
+.msg{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.7;margin-bottom:10px;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+.msg.show{opacity:1;transform:translateY(0)}
+.msg-lbl{font-size:11px;font-weight:800;opacity:.6;margin-bottom:5px;letter-spacing:.3px}
+.msg-user{background:rgba(8,145,178,.07);color:#0e7490;border:1.5px solid rgba(8,145,178,.18)}
+.msg-ai{background:var(--card);border:1.5px solid var(--border);color:var(--text);box-shadow:var(--shadow-card)}
+.msg-ai .hl{background:rgba(22,163,74,.1);padding:1px 4px;border-radius:3px;font-weight:700;color:#15803d}
+.msg-ai .fix{background:rgba(8,145,178,.1);padding:1px 4px;border-radius:3px;font-weight:700;color:#0e7490}
+.msg-ai .bad{background:rgba(220,38,38,.1);padding:1px 4px;border-radius:3px;font-weight:700;color:var(--danger)}
+
+/* 每轮分析卡 */
+.analysis-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:6px;opacity:0;transform:translateY(8px);transition:all .4s;box-shadow:var(--shadow-card)}
+.analysis-card.show{opacity:1;transform:translateY(0)}
+.ac-label{font-size:11px;font-weight:800;letter-spacing:.4px;margin-bottom:6px;text-transform:uppercase}
+.ac-body{font-size:14px;color:var(--sub);line-height:1.7}
+.ac-body strong{color:var(--text)}
+.ac-body em{font-style:normal;font-weight:700;color:var(--cyan)}
+
+/* 结论框 */
+.final-box{border-radius:var(--radius);padding:18px 22px;font-size:14px;line-height:1.8;margin-top:20px;opacity:0;transition:opacity .5s}
+.final-box.show{opacity:1}
+
+@media (max-width:768px){
+  .meter-section{top:8px;padding:13px 14px}
+  .meter-label{min-width:48px;font-size:11px}
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="AI 使用实用技巧：迭代的艺术。通过一个营销文案的 4 轮迭代演示，学会判断什么时候该继续磨、什么时候该收手。三轮内解决问题是高手，能在第三轮停住是顶级高手。">
+<meta name="keywords" content="AI迭代技巧,Prompt迭代,AI实用技巧,何时收手,AI文案优化">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/ai-tips-iterate.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/ai-tips-iterate.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/ai-tips-iterate.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/ai-tips-iterate.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/ai-tips-iterate.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="迭代的艺术：知道何时收手">
+<meta property="og:description" content="通过一个营销文案的 4 轮迭代演示，学会判断什么时候该继续磨、什么时候该收手。">
+<meta property="og:url" content="https://xueai.app/slides/ai-tips-iterate.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="迭代的艺术：知道何时收手">
+<meta name="twitter:description" content="通过一个营销文案的 4 轮迭代演示，学会判断什么时候该继续磨、什么时候该收手。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"迭代的艺术：知道何时收手","name":"迭代的艺术：知道何时收手","url":"https://xueai.app/slides/ai-tips-iterate.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 实用技巧","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"AI 使用实用技巧：迭代的艺术。通过一个营销文案的 4 轮迭代演示，学会判断什么时候该继续磨、什么时候该收手。三轮内解决问题是高手，能在第三轮停住是顶级高手。"}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">实用技巧</div>
+    <h1>迭代的艺术：知道何时收手</h1>
+    <p class="subtitle">跟着一个真实的文案迭代过程走 4 轮：前 3 轮质量持续上升，第 4 轮画蛇添足。演示会自动逐轮播放，注意观察质量仪表的变化。</p>
+  </header>
+
+  <div class="sec-label">输出质量仪表</div>
+  <div class="meter-section">
+    <div class="meter-hd">
+      <div class="meter-title">输出质量仪表</div>
+      <button class="btn-reset" onclick="resetDemo()">↺ 重来</button>
+    </div>
+    <div class="meter-row"><span class="meter-label">相关性</span><div class="meter-bar-bg"><div class="meter-bar" id="bar0" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val0">—</span></div>
+    <div class="meter-row"><span class="meter-label">具体性</span><div class="meter-bar-bg"><div class="meter-bar" id="bar1" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val1">—</span></div>
+    <div class="meter-row"><span class="meter-label">可用性</span><div class="meter-bar-bg"><div class="meter-bar" id="bar2" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val2">—</span></div>
+    <div class="meter-row"><span class="meter-label">风格</span><div class="meter-bar-bg"><div class="meter-bar" id="bar3" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val3">—</span></div>
+  </div>
+
+  <div class="sec-label">迭代过程</div>
+  <div id="chatPanel"></div>
+</article>
+
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script>
+const STEPS = [
+  {
+    divider:{text:'第 1 轮 · 初始提问', color:'var(--cyan)', bg:'rgba(8,145,178,.1)'},
+    user:'帮我写一段产品介绍，我们做了一个 AI 客服系统。',
+    ai:'我们的 AI 客服系统采用先进的人工智能技术，为企业提供智能化的客户服务解决方案。系统具备自然语言理解能力，能够准确理解客户意图，提供精准回答。支持多渠道接入，7×24 小时不间断服务，大幅降低人工成本，提升客户满意度。',
+    scores:[40,25,20,30],
+    analysis:{label:'第 1 轮分析',color:'var(--red)',
+      body:'典型的<strong>万能废话</strong>输出，套在任何 AI 产品上都行。没有具体数据、没有差异化、没有目标受众。<em>原因：你没给 AI 任何具体信息。</em>'}
+  },
+  {
+    divider:{text:'第 2 轮 · 补充背景', color:'var(--amber)', bg:'rgba(217,119,6,.1)'},
+    user:'补充一下：我们的产品叫「小蜜」，面向电商商家，核心优势是：1）接入只需 5 分钟；2）能自动学习商家的 FAQ；3）实测能解决 78% 的售前咨询。\n\n目标客户是中小电商，请重写。',
+    ai:'<span class="hl">小蜜</span>是专为<span class="hl">中小电商</span>打造的 AI 客服助手。商家只需 <span class="hl">5 分钟</span>即可完成接入，系统会自动学习店铺的常见问题，无需人工配置知识库。经实际商家验证，<span class="hl">小蜜能独立解决 78% 的售前咨询</span>，让客服团队聚焦高价值订单。',
+    scores:[70,65,60,50],
+    analysis:{label:'第 2 轮分析',color:'var(--amber)',
+      body:'好多了！有了<strong>产品名、数据、目标人群</strong>。但文风偏硬，像技术文档，少了营销文案的味道。还缺少<em>情感共鸣和场景代入</em>。'}
+  },
+  {
+    divider:{text:'第 3 轮 · 调整风格', color:'var(--green)', bg:'rgba(22,163,74,.1)'},
+    user:'内容方向对了，但语气太硬了。改成这种感觉：像一个懂电商的朋友在推荐，轻松但专业。\n\n另外加一句开头，点出中小电商客服的痛点。控制在 100 字以内。',
+    ai:'<span class="fix">双 11 你请了 3 个临时客服，还是忙不过来？</span>\n\n试试<span class="hl">小蜜</span> — 5 分钟接入，自动学会你店铺的 FAQ，<span class="hl">实测解决 78% 售前咨询</span>。让 AI 接住那些「亲，在吗？」，<span class="fix">你的团队只管搞定大单</span>。',
+    scores:[90,85,90,92],
+    analysis:{label:'第 3 轮分析',color:'var(--green)',
+      body:'<strong>质的飞跃</strong>！开头用场景痛点抓注意力，数据保留但不生硬，结尾有行动暗示。<em>3 轮迭代，从废话模板到可直接用的营销文案。</em><br><br><strong style="color:var(--green)">到这里已经可以直接用了。但如果你停不下来…</strong>'}
+  },
+  {
+    divider:{text:'第 4 轮 · 画蛇添足', color:'var(--red)', bg:'rgba(220,38,38,.1)'},
+    user:'再精炼一下，每句话都要有冲击力。加一些让人忍不住转发的营销金句，语气再煽动一些。',
+    ai:'还在为客服<span class="bad">焦头烂额</span>？一个<span class="bad">颠覆游戏规则</span>的方案来了！小蜜 — 5 分钟极速部署，AI 自动吃透你的 FAQ！78% 售前咨询<span class="bad">秒杀解决</span>！当竞争对手还在手忙脚乱，<span class="bad">你的 AI 客服已经在帮你印钞</span>。别犹豫，<span class="bad">现在就拥抱客服革命</span>！',
+    scores:[65,50,35,28],
+    analysis:{label:'第 4 轮分析',color:'var(--red)',
+      body:'<strong>越磨越差了。</strong>第 3 轮本来已经很好，但用户贪心多磨了一轮。现在满篇「颠覆」「秒杀」「革命」，<em>从真诚推荐变成了朋友圈微商广告</em>。数据被淹没在口号里，可信度暴跌。<br><br>问题不在 AI，在于你给的指令：「加冲击力」「再煽动」本身就是错误方向。'}
+  },
+  {
+    divider:null,
+    final:true,
+    finalContent:{
+      bg:'rgba(8,145,178,.06)',border:'rgba(8,145,178,.2)',color:'#0e7490',
+      text:'<strong>Vibe Coding 时代的核心能力：知道不做什么，比知道做什么更重要。</strong>\n\n<em>Round 1→3</em>：每轮给 AI 新信息（背景、数据、风格约束），质量持续上升。\n<em>Round 4</em>：没有新信息，只是要求「更好」，反而把好作品改坏了。\n\n<strong style="color:var(--red)">停下来的信号：</strong>\n· 产出已经<em>能用</em>了 → 收手，去做下一件事\n· 说不清哪里要改，只觉得「还能更好」 → 收手\n· 改完不如上一版 → 立刻回退\n\n<strong>三轮内解决问题是高手。能在第三轮停住不继续磨，是顶级高手。</strong>'
+    }
+  }
+];
+
+function barColor(v) {
+  if (v >= 80) return 'var(--green)';
+  if (v >= 55) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+function updateMeters(scores) {
+  scores.forEach((s,i) => {
+    const bar = document.getElementById('bar'+i);
+    const val = document.getElementById('val'+i);
+    bar.style.width = s + '%';
+    bar.style.background = barColor(s);
+    val.textContent = s;
+    val.style.color = barColor(s);
+  });
+}
+
+/* 自动播放：进入视野后逐轮渲染，用 playId 让"重来"能中断旧的播放序列 */
+let playId = 0;
+
+function playRound(idx, myId) {
+  if (myId !== playId || idx >= STEPS.length) return;
+  const s = STEPS[idx];
+  const chat = document.getElementById('chatPanel');
+
+  if (s.final) {
+    const box = document.createElement('div');
+    box.className = 'final-box';
+    box.style.background = s.finalContent.bg;
+    box.style.border = '1.5px solid ' + s.finalContent.border;
+    box.style.color = s.finalContent.color;
+    box.innerHTML = s.finalContent.text.replace(/\n/g,'<br>');
+    chat.appendChild(box);
+    setTimeout(() => box.classList.add('show'), 50);
+    return;
+  }
+
+  if (s.divider) {
+    const div = document.createElement('div');
+    div.className = 'round-divider';
+    div.innerHTML = `<span class="round-badge" style="background:${s.divider.bg};color:${s.divider.color}">${s.divider.text}</span><div class="round-line"></div>`;
+    chat.appendChild(div);
+  }
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg msg-user';
+  userMsg.innerHTML = `<div class="msg-lbl">你说</div>${s.user.replace(/\n/g,'<br>')}`;
+  chat.appendChild(userMsg);
+  setTimeout(() => userMsg.classList.add('show'), 50);
+
+  setTimeout(() => {
+    if (myId !== playId) return;
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'msg msg-ai';
+    aiMsg.innerHTML = `<div class="msg-lbl">AI 输出</div>${s.ai.replace(/\n/g,'<br>')}`;
+    chat.appendChild(aiMsg);
+    setTimeout(() => aiMsg.classList.add('show'), 50);
+
+    updateMeters(s.scores);
+
+    setTimeout(() => {
+      if (myId !== playId) return;
+      const card = document.createElement('div');
+      card.className = 'analysis-card';
+      card.innerHTML = `<div class="ac-label" style="color:${s.analysis.color}">${s.analysis.label}</div><div class="ac-body">${s.analysis.body}</div>`;
+      chat.appendChild(card);
+      setTimeout(() => card.classList.add('show'), 50);
+
+      // 间隔 1.2s 播放下一轮
+      setTimeout(() => playRound(idx + 1, myId), 1200);
+    }, 700);
+  }, 800);
+}
+
+function startDemo() {
+  playId++;
+  document.getElementById('chatPanel').innerHTML = '';
+  [0,1,2,3].forEach(i => {
+    document.getElementById('bar'+i).style.width = '0';
+    document.getElementById('bar'+i).style.background = '#ccc';
+    document.getElementById('val'+i).textContent = '—';
+    document.getElementById('val'+i).style.color = 'var(--muted)';
+  });
+  playRound(0, playId);
+}
+
+function resetDemo() {
+  startDemo();
+}
+
+lessonOnView(document.getElementById('chatPanel'), startDemo, 0.05);
+</script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

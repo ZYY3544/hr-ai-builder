@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模型、Agent、AI 应用是什么关系？一个发动机的类比 | xueai.app</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.qa-answer {
+  background: linear-gradient(135deg, rgba(8,145,178,0.06), rgba(0,102,255,0.05));
+  border: 1.5px solid rgba(8,145,178,0.3);
+  border-radius: var(--radius); padding: 22px 26px; margin: 4px 0 8px;
+}
+.qa-answer .qa-tag { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #0891b2; margin-bottom: 8px; }
+.qa-answer p { font-size: 16.5px; font-weight: 700; color: var(--text); line-height: 1.85; }
+.qa-answer p b { color: #0891b2; }
+
+/* 三层结构 */
+.layer-stack { display: flex; flex-direction: column; gap: 12px; }
+.layer-card {
+  display: flex; gap: 18px; align-items: flex-start;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-card);
+  position: relative;
+}
+.layer-card .ly-icon {
+  width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.layer-card.l-model .ly-icon { background: rgba(0,102,255,0.08); }
+.layer-card.l-agent .ly-icon { background: rgba(124,58,237,0.08); }
+.layer-card.l-app .ly-icon { background: rgba(22,163,74,0.08); }
+.layer-card .ly-tag { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 4px; }
+.layer-card.l-model .ly-tag { color: var(--accent); }
+.layer-card.l-agent .ly-tag { color: #7c3aed; }
+.layer-card.l-app .ly-tag { color: var(--success); }
+.layer-card h4 { font-size: 16.5px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+.layer-card p { font-size: 13.5px; color: var(--sub); line-height: 1.9; }
+.layer-card p b { color: var(--text); }
+.layer-arrow { text-align: center; font-size: 18px; color: var(--sub); line-height: 1; margin: -2px 0; }
+
+/* ── 对号入座小游戏 ── */
+.sort-game {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-card);
+  padding: 22px 24px;
+}
+.sg-item { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px dashed var(--border); }
+.sg-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.sg-q { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 10px; line-height: 1.6; }
+.sg-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.sg-btn {
+  border: 1.5px solid var(--border); background: var(--card);
+  border-radius: 999px; padding: 7px 18px; font-size: 13px; font-weight: 700;
+  color: var(--sub); cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.sg-btn:hover:not(:disabled) { border-color: rgba(0,102,255,0.45); color: var(--accent); }
+.sg-btn:disabled { cursor: default; opacity: 0.55; }
+.sg-btn.right { background: rgba(22,163,74,0.1); border-color: var(--success); color: var(--success); opacity: 1; }
+.sg-btn.wrong { background: rgba(220,38,38,0.06); border-color: var(--danger); color: var(--danger); opacity: 1; }
+.sg-fb {
+  margin-top: 10px; font-size: 13px; line-height: 1.8; color: var(--sub);
+  display: none; animation: sgIn 0.3s ease;
+}
+.sg-fb.show { display: block; }
+.sg-fb b { color: var(--accent); }
+@keyframes sgIn { from { opacity: 0; transform: translateY(4px); } }
+
+.takeaway-box {
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  border: 1.5px solid #bfdbfe; border-radius: var(--radius);
+  padding: 24px 28px; margin-top: 36px;
+}
+.takeaway-box h3 { font-size: 17px; font-weight: 800; color: #1e40af; margin-bottom: 10px; }
+.takeaway-box ul { list-style: none; padding: 0; margin: 0; }
+.takeaway-box li {
+  font-size: 14.5px; color: #1e3a5f; line-height: 1.8;
+  padding: 4px 0 4px 22px; position: relative;
+}
+.takeaway-box li::before {
+  content: ''; position: absolute; left: 0; top: 13px;
+  width: 8px; height: 8px; border-radius: 50%; background: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .qa-answer p { font-size: 15px; }
+  .layer-card { flex-direction: column; gap: 10px; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="大模型、Agent、AI 应用到底是什么关系？用一个类比讲清楚：模型是发动机，Agent 是装上轮子方向盘的整车，AI 应用是你叫到的那辆网约车。搞懂这三层，AI 新闻你就都能看懂了。">
+<meta name="keywords" content="大模型和Agent的区别,AI应用是什么,Agent是什么,模型应用关系,AI入门问答">
+<meta name="author" content="洛小山">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xueai.app/slides/zero-q-model-agent-app.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/zero-q-model-agent-app.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/zero-q-model-agent-app.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/zero-q-model-agent-app.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/zero-q-model-agent-app.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="xueai.app · AI 产品经理培训">
+<meta property="og:title" content="模型、Agent、AI 应用是什么关系？">
+<meta property="og:description" content="模型是发动机，Agent 是整车，AI 应用是你叫到的那辆网约车。">
+<meta property="og:url" content="https://xueai.app/slides/zero-q-model-agent-app.html">
+<meta property="og:image" content="https://xueai.app/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="模型、Agent、AI 应用是什么关系？">
+<meta name="twitter:description" content="模型是发动机，Agent 是整车，AI 应用是那辆网约车。">
+<meta name="twitter:image" content="https://xueai.app/og-cover.jpg">
+<!-- SEO End -->
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"模型、Agent、应用是什么关系？","name":"模型、Agent、应用是什么关系？","url":"https://xueai.app/slides/zero-q-model-agent-app.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 小白三千问","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"大模型、Agent、AI 应用到底是什么关系？用一个类比讲清楚：模型是发动机，Agent 是装上轮子方向盘的整车，AI 应用是你叫到的那辆网约车。搞懂这三层，AI 新闻你就都能看懂了。"}</script><!--seo:end-->
+</head>
+<body>
+<main class="lesson">
+
+  <header class="lesson-header">
+    <div class="kicker">第零篇章 · 小白三千问</div>
+    <h1>模型、Agent、AI 应用是什么关系？</h1>
+    <p class="subtitle">新闻里一会儿说「XX 发布新模型」，一会儿说「Agent 元年」，一会儿又是各种 AI App——这三个词到底谁是谁？</p>
+  </header>
+
+  <div class="qa-answer">
+    <div class="qa-tag">一句话回答</div>
+    <p>拿汽车打比方：<b>模型是发动机</b>（提供能力），<b>Agent 是装上轮子和方向盘的整车</b>（能自己上路干活），<b>AI 应用是你手机里叫到的那辆网约车</b>（包装成普通人能直接用的服务）。</p>
+  </div>
+
+  <div class="sec-label">三层拆开看</div>
+
+  <div class="layer-stack">
+    <div class="layer-card l-model">
+      <div class="ly-icon">⚙️</div>
+      <div>
+        <div class="ly-tag">第一层 · 模型（发动机）</div>
+        <h4>提供「智能」这个原材料</h4>
+        <p>GPT、Claude、DeepSeek、通义千问……这些名字指的都是模型。它只做一件事：<b>你给它文字，它接出文字</b>（见「接话茬」那一课）。发动机很强大，但单独一台发动机放在地上，普通人用不了。</p>
+      </div>
+    </div>
+    <div class="layer-arrow">↓ 给发动机装上轮子、方向盘、油箱</div>
+    <div class="layer-card l-agent">
+      <div class="ly-icon">🤖</div>
+      <div>
+        <div class="ly-tag">第二层 · Agent（整车）</div>
+        <h4>让模型能「动手」，而不只是「动嘴」</h4>
+        <p>给模型接上工具——能查资料、读文件、执行操作、检查结果不对就重来。这一整套装置叫 Agent。区别在于：<b>模型只能告诉你「怎么做」，Agent 能直接「做完」</b>。你说「帮我把这个月的发票整理成报销单」，模型给你方法，Agent 给你结果。</p>
+      </div>
+    </div>
+    <div class="layer-arrow">↓ 再包装成有界面、有服务的产品</div>
+    <div class="layer-card l-app">
+      <div class="ly-icon">📱</div>
+      <div>
+        <div class="ly-tag">第三层 · AI 应用（网约车服务）</div>
+        <h4>普通人直接用的成品</h4>
+        <p>ChatGPT、豆包、Kimi 这些 App，以及各种 AI 客服、AI 修图、AI 做 PPT 的工具，都是应用层。它们把模型或 Agent 包装好：<b>有界面、有账号、有客服，打开就能用</b>。同一台发动机，可以造出轿车、货车、跑车——同一个模型，也支撑着成百上千个不同的应用。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">对号入座 · 听到这些说法，猜猜说的是哪一层</div>
+
+  <div class="sort-game" id="sortGame"></div>
+
+  <div class="l-callout" style="margin-top:18px;">
+    看懂这三层还有一个实际的好处：<b>评价要对层。</b>同一个模型，包在不同应用里的表现可能差很远——就像同一台发动机，装在不同的车上开起来完全是两种感受。觉得某个 AI 应用不好用，未必是模型不行，可能是「车」没造好。
+  </div>
+
+  <div class="takeaway-box">
+    <h3>✅ 这一页想和你分享的</h3>
+    <ul>
+      <li><b>模型 = 发动机</b>：提供智能，但普通人没法直接用</li>
+      <li><b>Agent = 整车</b>：模型 + 工具 + 流程，能动手做完事情</li>
+      <li><b>应用 = 网约车</b>：包装成打开就能用的服务</li>
+      <li><b>评价要对层</b>：应用不好用，不一定是模型的问题</li>
+    </ul>
+  </div>
+
+</main>
+<script>
+/* ── 对号入座小游戏 ── */
+(function () {
+  var ITEMS = [
+    { q: '新闻说：「DeepSeek 发布了 V4」', a: 0,
+      fb: '这是<b>模型层</b>的新闻——发动机厂发布了新发动机。它变强后，用它的应用会跟着受益。' },
+    { q: '朋友演示：「这个 AI 自己查了三个网站，把行程订好了，还发了确认邮件」', a: 1,
+      fb: '能<b>自己动手、连续做完一串事</b>，这是 Agent 层——整车自己上路跑活儿。' },
+    { q: '你妈妈说：「我下载了个豆包，能陪我聊天」', a: 2,
+      fb: '下载就能用、有界面有账号的，是<b>应用层</b>——你叫到的那辆网约车。' },
+    { q: '发布会说：「我们的办公软件接入了通义千问」', a: 2,
+      fb: '这是<b>应用层换（装）了发动机</b>：车还是那辆车，动力换成了别家的。所以体验变化多大，还要看车本身造得怎么样。' },
+  ];
+  var LABELS = ['⚙️ 模型', '🤖 Agent', '📱 应用'];
+
+  var box = document.getElementById('sortGame');
+  ITEMS.forEach(function (item) {
+    var div = document.createElement('div');
+    div.className = 'sg-item';
+    div.innerHTML = '<div class="sg-q">' + item.q + '</div>'
+      + '<div class="sg-btns">' + LABELS.map(function (l, i) {
+          return '<button class="sg-btn" data-i="' + i + '">' + l + '</button>';
+        }).join('') + '</div>'
+      + '<div class="sg-fb"></div>';
+    box.appendChild(div);
+
+    var btns = div.querySelectorAll('.sg-btn');
+    var fb = div.querySelector('.sg-fb');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var i = parseInt(btn.dataset.i, 10);
+        btns.forEach(function (b) { b.disabled = true; });
+        btns[item.a].classList.add('right');
+        if (i !== item.a) btn.classList.add('wrong');
+        fb.innerHTML = (i === item.a ? '✓ 对！' : '✗ 差一点——') + item.fb;
+        fb.classList.add('show');
+      });
+    });
+  });
+})();
+</script>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vibe Coding 方法论第 1 节：AI 写代码很快，但没有规矩就容易返工、漏改、搞砸。Rule 是最稳的上下文注入方式。">
+<meta name="author" content="洛小山">
+<title>第1节：为什么要给 AI 立规矩 | AI 系统课</title>
+<link rel="canonical" href="https://xueai.app/slides/vibe-1.html">
+<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/vibe-1.html">
+<link rel="alternate" hreflang="en" href="https://xueai.app/slides/vibe-1.en.html">
+<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/vibe-1.ko.html">
+<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/vibe-1.html">
+<link rel="stylesheet" href="lesson.css">
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<style>
+:root{--vibe:#0d9488;--vibe-deep:#0f766e}
+.lesson-header .kicker{color:var(--vibe)}
+.desc{font-size:16px;color:var(--sub);line-height:1.8}
+
+/* 四类事故卡片 */
+.acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.acc-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(13,148,136,.1);color:var(--vibe);font-size:13px;font-weight:800;margin-bottom:8px}
+.acc-grid h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.acc-grid p{font-size:14px;color:var(--sub);line-height:1.7}
+
+/* 双时间线模拟器 */
+.tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.vis-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+.vis-wrap.tl-bad{border-color:rgba(220,38,38,.3)}
+.vis-wrap.tl-good{border-color:rgba(13,148,136,.35)}
+.vis-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vis-bar-title{font-size:14px;font-weight:800}
+.tl-bad .vis-bar-title{color:var(--danger)}
+.tl-good .vis-bar-title{color:var(--vibe)}
+.vis-body{min-height:300px;max-height:420px;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.65;opacity:0;transform:translateY(8px);transition:all .35s ease;flex-shrink:0}
+.msg.show{opacity:1;transform:translateY(0)}
+.msg.user{background:rgba(8,145,178,.1);color:var(--cyan)}
+.msg.ai{background:rgba(0,0,0,.05);color:var(--text)}
+.msg.step{background:rgba(13,148,136,.08);color:var(--vibe-deep)}
+.msg.warning{background:rgba(220,38,38,.08);color:var(--danger);font-weight:600}
+.msg.ok{background:rgba(22,163,74,.09);color:var(--success);font-weight:600}
+
+.ctrl-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.btn{padding:11px 24px;border-radius:9px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-p{background:var(--vibe);color:#fff}
+.btn-p:hover{filter:brightness(1.08)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed}
+.btn-r{background:rgba(0,0,0,.05);color:var(--sub);border:1px solid var(--border)}
+.hint{font-size:13px;color:var(--sub)}
+
+/* 注入方式切换 */
+.inj-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.inj-btn{display:flex;flex-direction:column;gap:3px;padding:13px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-family:inherit;text-align:left;width:100%;min-height:44px;box-shadow:var(--shadow-card)}
+.inj-btn:hover{border-color:rgba(0,0,0,.15)}
+.inj-btn.active{border-color:var(--vibe);background:rgba(13,148,136,.05)}
+.inj-btn h4{font-size:15px;font-weight:800;color:var(--text)}
+.inj-btn.active h4{color:var(--vibe)}
+.inj-btn p{font-size:13px;color:var(--sub);line-height:1.5}
+
+.inj-stage{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+.inj-tile{border-radius:12px;padding:14px 16px;border:1.5px solid var(--border);background:var(--card);transition:all .25s}
+.inj-tile .it-when{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--sub);margin-bottom:6px}
+.inj-tile .it-state{font-size:17px;font-weight:800;margin-bottom:4px}
+.inj-tile .it-note{font-size:13px;color:var(--sub);line-height:1.6}
+.inj-tile.st-ok{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.05)}
+.inj-tile.st-ok .it-state{color:var(--success)}
+.inj-tile.st-bad{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.04)}
+.inj-tile.st-bad .it-state{color:var(--danger)}
+.inj-tile.st-warn{border-color:rgba(217,119,6,.35);background:rgba(217,119,6,.05)}
+.inj-tile.st-warn .it-state{color:var(--amber)}
+.inj-verdict{margin-top:12px;font-size:15px;line-height:1.7;color:var(--text);background:rgba(13,148,136,.05);border:1.5px solid rgba(13,148,136,.2);border-radius:12px;padding:13px 17px}
+.inj-verdict b{color:var(--vibe)}
+
+/* 代码块 */
+pre{margin:12px 0 0;padding:16px 18px;overflow:auto;border:1.5px solid var(--border);border-radius:12px;background:#0e1c1a;color:#d9f2ec;font-size:13px;line-height:1.65}
+pre code{padding:0;background:none;color:#d9f2ec}
+code{color:var(--vibe-deep);background:rgba(13,148,136,.08)}
+
+.vibe-callout{background:rgba(13,148,136,.05);border:1.5px solid rgba(13,148,136,.25);border-radius:14px;padding:18px 22px}
+.vibe-callout b{color:var(--vibe)}
+.src-note{margin-top:28px;font-size:13px;color:var(--sub)}
+.src-note a{color:var(--vibe-deep)}
+/* ── GitHub 仓库引导卡 ── */
+.repo-cta{display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,rgba(13,148,136,.06),var(--card));border:1.5px solid rgba(13,148,136,.35);border-radius:14px;padding:20px 22px;flex-wrap:wrap}
+.repo-cta .repo-ic{width:42px;height:42px;flex-shrink:0;color:var(--text)}
+.repo-cta .repo-txt{flex:1;min-width:220px}
+.repo-cta h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.repo-cta h3 span{color:var(--vibe-deep)}
+.repo-cta .repo-txt p{font-size:13.5px;color:var(--sub);line-height:1.7}
+.repo-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--vibe);color:#fff;font-size:15px;font-weight:700;padding:12px 24px;border-radius:9px;text-decoration:none;min-height:44px;transition:filter .2s,transform .15s;flex-shrink:0}
+.repo-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+@media(max-width:768px){.repo-cta{flex-direction:column;align-items:flex-start}.repo-btn{width:100%}}
+
+@media (max-width:768px){
+  .acc-grid,.tl-grid,.inj-list,.inj-stage{grid-template-columns:1fr}
+  .vis-body{min-height:220px}
+}
+</style>
+<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"为什么要给 AI 立规矩","name":"为什么要给 AI 立规矩","url":"https://xueai.app/slides/vibe-1.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 理念与入门","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":true,"description":"Vibe Coding 方法论第 1 节：AI 写代码很快，但没有规矩就容易返工、漏改、搞砸。Rule 是最稳的上下文注入方式。"}</script><!--seo:end-->
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">Vibe Coding 方法论 · 第 1 节</div>
+    <h1>为什么要给 AI 立规矩</h1>
+    <p class="subtitle">Vibe Coding 指靠自然语言让 AI 直接产出代码的开发方式。它的问题出在质量：没有规矩的 AI 会返工、漏改、悄悄删代码、留下永久技术债。这一节先看事故长什么样，再看约束怎么注入才最稳。</p>
+  </header>
+
+  <section class="reveal">
+    <div class="sec-label">四类典型事故</div>
+    <p class="desc">下面四类事故在 AI 协作中反复出现，根源是同一件事：约束没有进入上下文。</p>
+    <div class="acc-grid">
+      <div class="l-card"><span class="acc-num">01</span><h3>理解偏差返工</h3><p>AI 拿到需求就开始写，写了 200 行才发现理解有偏差，回滚重来。更糟的情况是改了 7 个文件之后才发现思路错了，逐个 revert 成本极高。</p></div>
+      <div class="l-card"><span class="acc-num">02</span><h3>选型漂移</h3><p>不同对话里 AI 会选不同框架：今天 Express，明天 Fastify。数据库一会儿 MongoDB 一会儿 PostgreSQL。技术栈没有锁定，项目就在漂移中失去一致性。</p></div>
+      <div class="l-card"><span class="acc-num">03</span><h3>善意破坏</h3><p>AI 重构时会清理它认为多余的代码，事后才发现那段代码有用。善意的清理变成了破坏性操作。</p></div>
+      <div class="l-card"><span class="acc-num">04</span><h3>永久技术债</h3><p>要一个完整认证系统，AI 说先做简版登录、后续再加 OAuth。结果后续永远不会来，简版代码成了永久的技术债。</p></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">交互演示一 · 同一个需求，两条时间线</div>
+    <p class="desc">同一句「帮我做个登录」，在无规矩和有规矩两种模式下会走向完全不同的结局。点击「下一步」，两条时间线同步推进。</p>
+    <div class="tl-grid">
+      <div class="vis-wrap tl-bad">
+        <div class="vis-bar"><span class="vis-bar-title">无规矩</span><span class="hint" id="tlHintBad"></span></div>
+        <div class="vis-body" id="tlBad"></div>
+      </div>
+      <div class="vis-wrap tl-good">
+        <div class="vis-bar"><span class="vis-bar-title">有规矩</span><span class="hint" id="tlHintGood"></span></div>
+        <div class="vis-body" id="tlGood"></div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn-p" id="tlNext" onclick="tlStep()">下一步</button>
+      <button class="btn btn-r" onclick="tlReset()">重播</button>
+      <span class="hint" id="tlMsg"></span>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">交互演示二 · 三种注入方式的存活测试</div>
+    <p class="desc">给 AI 传达约束有三种常见方式。点击切换，看同一条约束（「数据库用 PostgreSQL」）在三个时点是否还生效。</p>
+    <div class="inj-list">
+      <button class="inj-btn active" id="ij0" onclick="pickInj(0)"><h4>对话里临时交代</h4><p>「用 PostgreSQL」「记得加日志」</p></button>
+      <button class="inj-btn" id="ij1" onclick="pickInj(1)"><h4>写在 .env 或文档里</h4><p>让 AI 自己去读配置文件</p></button>
+      <button class="inj-btn" id="ij2" onclick="pickInj(2)"><h4>写进 Cursor Rule</h4><p>每轮对话开始前自动加载</p></button>
+    </div>
+    <div class="inj-stage" id="injStage"></div>
+    <div class="inj-verdict" id="injVerdict"></div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">一个 Rule 文件长什么样</div>
+    <div class="l-cols">
+      <div class="l-card">
+        <h3 style="font-size:16px;margin-bottom:4px">frontmatter 控制生效方式</h3>
+        <pre><code>---
+alwaysApply: true   # 所有对话自动生效
+---
+# 开发约束与配置规范
+以下是用户重要的约束，请务必严格遵循。</code></pre>
+        <p style="font-size:14px;color:var(--sub);margin-top:10px;line-height:1.7"><code>true</code> 用于全局编码规范；<code>false</code> 用于写作规范这类按需引用的文件，避免污染编码对话的上下文。</p>
+      </div>
+      <div class="l-card">
+        <h3 style="font-size:16px;margin-bottom:8px">xs_vibe_rules 的三个文件</h3>
+        <ul style="padding-left:20px;font-size:14px;color:var(--sub);line-height:1.9">
+          <li><code>rule-opensource.mdc</code>：主开发规范，14 个章节覆盖全流程</li>
+          <li><code>writing-style.mdc</code>：中文写作风格，按需手动引用</li>
+          <li><code>secrets.mdc</code>：API Key 与凭据模板，占位符形式</li>
+        </ul>
+        <p style="font-size:14px;color:var(--sub);margin-top:10px;line-height:1.7">使用时放入项目的 <code>.cursor/rules/</code> 目录即可。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">拿走这套规则</div>
+    <div class="repo-cta">
+      <svg class="repo-ic" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <div class="repo-txt">
+        <h3><span>itshen/xs_vibe_rules</span> · 本专题的开源仓库</h3>
+        <p>整套规则原文全部开源（MIT License）。Fork 一份，放进你项目的 <code>.cursor/rules/</code> 目录，再按自己的技术栈删改，就是你的第一版 AI 协作规范。</p>
+      </div>
+      <a class="repo-btn" href="https://github.com/itshen/xs_vibe_rules" target="_blank" rel="noopener">去 GitHub Fork</a>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">本节要点</div>
+    <div class="vibe-callout">
+      <p style="line-height:1.8"><b>规则的价值不在于多，每条都解决一个真实问题。</b>AI 每反复犯一次错，就把它变成一条规则，这是整个专题的底层方法。约束靠不靠得住，看的是注入机制：写十遍「务必」，都比不过一个每轮自动加载的 Rule 文件。</p>
+    </div>
+    <p class="src-note">素材来源：本专题基于作者开源仓库 <a href="https://github.com/itshen/xs_vibe_rules">itshen/xs_vibe_rules</a>，内容为多个真实项目沉淀出的 Cursor Rules 与设计思考。</p>
+  </section>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script src="nav-inject.js?v=20260809q"></script>
+<script>
+/* ── 交互一：双时间线 ── */
+var TL = [
+  { bad:{cls:'user',text:'用户：帮我做个登录'},
+    good:{cls:'user',text:'用户：帮我做个登录'} },
+  { bad:{cls:'ai',text:'AI 拿到一句话立即开写，10 分钟产出 200 行：自建用户表、账号密码方案。'},
+    good:{cls:'step',text:'AI 先复述并提问：「我理解你要一个登录功能。登录方式用账号密码还是验证码？要接现有用户体系吗？」'} },
+  { bad:{cls:'ai',text:'改动继续扩散：路由、中间件、数据库脚本、前端表单，一共波及 7 个文件。'},
+    good:{cls:'user',text:'用户：接现有 OAuth，不要自建用户表。'} },
+  { bad:{cls:'warning',text:'用户看到代码才发现理解偏了：要的是接现有 OAuth，账号密码方案整体作废。'},
+    good:{cls:'step',text:'AI 产出 PRD.md：目标、Mermaid 流程图、要改的文件清单，然后停下来等许可。'} },
+  { bad:{cls:'warning',text:'逐个 revert 7 个文件，半天工作归零，还要担心有残留改动没清干净。'},
+    good:{cls:'user',text:'用户看完 PRD，确认理解一致：「批准，开始编码。」'} },
+  { bad:{cls:'warning',text:'结局：返工收场。同样的需求下次还可能再错一遍。'},
+    good:{cls:'ok',text:'结局：AI 按计划编码，改动范围和 PRD 一致，一次通过。'} }
+];
+var tlCur = 0;
+
+function tlStep() {
+  if (tlCur >= TL.length) return;
+  var s = TL[tlCur];
+  addMsg('tlBad', s.bad);
+  addMsg('tlGood', s.good);
+  tlCur++;
+  document.getElementById('tlHintBad').textContent = tlCur + ' / ' + TL.length;
+  document.getElementById('tlHintGood').textContent = tlCur + ' / ' + TL.length;
+  if (tlCur >= TL.length) {
+    document.getElementById('tlNext').disabled = true;
+    document.getElementById('tlMsg').textContent = '演示完成：断点设在动手之前，返工就发生不了。';
+  }
+}
+
+function addMsg(bodyId, m) {
+  var body = document.getElementById(bodyId);
+  var el = document.createElement('div');
+  el.className = 'msg ' + m.cls;
+  el.textContent = m.text;
+  body.appendChild(el);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('show'); }); });
+  body.scrollTop = body.scrollHeight;
+}
+
+function tlReset() {
+  tlCur = 0;
+  document.getElementById('tlBad').innerHTML = '';
+  document.getElementById('tlGood').innerHTML = '';
+  document.getElementById('tlHintBad').textContent = '';
+  document.getElementById('tlHintGood').textContent = '';
+  document.getElementById('tlMsg').textContent = '';
+  document.getElementById('tlNext').disabled = false;
+}
+
+/* ── 交互二：注入方式存活测试 ── */
+var INJECT = [
+  {
+    points: [
+      {when:'第 1 轮', state:'ok',   label:'生效',   note:'刚说完，约束还在窗口里，AI 记得。'},
+      {when:'第 30 轮', state:'bad', label:'失效',   note:'早期消息被上下文截断挤出窗口，AI 开始建议 SQLite。'},
+      {when:'新开对话', state:'bad', label:'失效',   note:'上下文清零，要从头重说一遍。'}
+    ],
+    verdict:'<b>对话交代：</b>约束跟着对话走，对话一长或一换就丢。开头说了「用 PostgreSQL」，聊了 30 轮后 AI 突然建议换库，因为那句话已经不在窗口里了。'
+  },
+  {
+    points: [
+      {when:'第 1 轮', state:'warn', label:'看运气', note:'AI 主动读了文件才生效，读不读全看它当时的判断。'},
+      {when:'第 30 轮', state:'warn', label:'看运气', note:'长对话中 AI 更少主动回头翻配置文件。'},
+      {when:'新开对话', state:'warn', label:'看运气', note:'新对话里 AI 未必想得起来去读这份文件。'}
+    ],
+    verdict:'<b>.env 或文档：</b>信息在项目里，但没有机制保证它进入上下文。约束能不能被看到，取决于 AI 那一刻的行为。'
+  },
+  {
+    points: [
+      {when:'第 1 轮', state:'ok', label:'生效', note:'对话开始前 Rule 已经加载进上下文。'},
+      {when:'第 30 轮', state:'ok', label:'生效', note:'每一轮都重新注入，截断也截不掉它。'},
+      {when:'新开对话', state:'ok', label:'生效', note:'新对话照样自动加载，不用重说。'}
+    ],
+    verdict:'<b>Cursor Rule：</b>在每轮对话开始前就被加载进上下文，AI 想忽略都难。这是结构上最稳的注入渠道。'
+  }
+];
+
+function pickInj(idx) {
+  for (var i = 0; i < 3; i++) {
+    document.getElementById('ij' + i).classList.toggle('active', i === idx);
+  }
+  var d = INJECT[idx];
+  document.getElementById('injStage').innerHTML = d.points.map(function(p){
+    return '<div class="inj-tile st-' + p.state + '"><div class="it-when">' + p.when + '</div><div class="it-state">' + p.label + '</div><div class="it-note">' + p.note + '</div></div>';
+  }).join('');
+  document.getElementById('injVerdict').innerHTML = d.verdict;
+}
+
+/* 初始化 */
+pickInj(0);
+lessonOnView(document.getElementById('tlBad'), function(){
+  if (tlCur === 0) tlStep();
+});
+</script>
+<!--seo:begin--><!--seo:end-->
+</body>
+</html>
