@@ -60,7 +60,7 @@
 <meta name="twitter:title" content="你的电脑能跑多大的模型">
 <meta name="twitter:description" content="选择你的显卡或 Mac 型号，实时算出能跑哪些开源模型，并理解背后的换算公式。">
 <!-- SEO End -->
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"你的电脑能跑多大的模型","name":"你的电脑能跑多大的模型","url":"https://xueai.app/slides/oss-8.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 在自己的机器上跑起来","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"选择你的显卡或 Mac 型号，实时算出能跑哪些开源模型。含显存估算公式、FP16 与 INT4 量化档位对照、NVIDIA 独立显存与 Apple 统一内存的差异，以及 MoE 模型显存与速度的错位。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson wide">
@@ -178,13 +178,13 @@
     </div>
   </div>
 
-  <p class="paywall-locked xa-peek">INT4 那一档有两处值得停一下。一是<b>绝对值最小的几个权重被四舍五入之后正好落在 0 上</b>，这些参数在量化后的文件里不再起任何作用；模型里这样的小权重数量庞大，单个都不重要，合起来却承担着不少细节。二是刻度尺上的点变少了——<b>那不是点丢了，是几个原本不同的权重被挤到了同一个档位上。</b>16 个档位装不下那么多种取值，只能让它们共用一个数，原来的区别就没有了。</p>
+  <p class=" xa-peek">INT4 那一档有两处值得停一下。一是<b>绝对值最小的几个权重被四舍五入之后正好落在 0 上</b>，这些参数在量化后的文件里不再起任何作用；模型里这样的小权重数量庞大，单个都不重要，合起来却承担着不少细节。二是刻度尺上的点变少了——<b>那不是点丢了，是几个原本不同的权重被挤到了同一个档位上。</b>16 个档位装不下那么多种取值，只能让它们共用一个数，原来的区别就没有了。</p>
 
-  <div class="sec-label paywall-locked">一个 6.7% 的误差，怎么变成看得见的掉分</div>
+  <div class="sec-label">一个 6.7% 的误差，怎么变成看得见的掉分</div>
 
-  <p class="paywall-locked">权重挪一点点，为什么会影响回答质量？因为<b>模型每写一个词，都是在一堆候选里挑分数最高的那个。</b>大多数时候第一名遥遥领先，挪一点无所谓；但总有些时候前两名咬得很紧，这时一点点扰动就足以让它们换位。</p>
+  <p >权重挪一点点，为什么会影响回答质量？因为<b>模型每写一个词，都是在一堆候选里挑分数最高的那个。</b>大多数时候第一名遥遥领先，挪一点无所谓；但总有些时候前两名咬得很紧，这时一点点扰动就足以让它们换位。</p>
 
-  <div class="oss-lab paywall-locked" data-lab="动手试试">
+  <div class="oss-lab" data-lab="动手试试">
     <div class="lab-q" id="qzFlipHint"></div>
 
     <div class="lab-ctrl">
@@ -211,19 +211,19 @@
     </div>
   </div>
 
-  <div class="oss-src paywall-locked">
+  <div class="oss-src">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
     <span><b>上面两个实验，一半是精确计算，一半是示意，这里说清楚哪是哪。</b>档位数、步长、舍入误差、以及每个权重被挪到哪个值，都是由量化的定义直接算出来的，你可以自己验算。<b>而候选概率、扰动幅度、以及最后那条推理链，是为了说明机制而构造的示意，不是任何模型的实测掉分。</b>真实的误差如何从权重传到输出，取决于模型结构和具体的量化实现（分组大小、是否保留敏感层的高精度等），没有一个通用公式。链条概率还假设了各步独立，而真实推理前后相关，所以这个数只能用来理解「为什么步数越多越危险」，不能拿去当预期准确率。</span>
   </div>
 
-  <div class="oss-warn paywall-locked">
+  <div class="oss-warn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
     <div>这就是为什么<b>量化的损失不是均匀分布的</b>。日常问答、总结、改写这类任务上 INT4 基本够用——它们大多一两步就出结果，就算某个词换了个近义词也不影响你读懂。但需要长链条推理、精确计算的任务不一样，前面错一步，后面全跟着错。<b>要求高的场景，宁可选小一号的模型跑 INT8，也别选大一号的跑 INT4。</b></div>
   </div>
 
-  <div class="sec-label paywall-locked">两种硬件，两套逻辑</div>
+  <div class="sec-label">两种硬件，两套逻辑</div>
 
-  <div class="arch paywall-locked">
+  <div class="arch">
     <div class="arch-box">
       <h4>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
@@ -250,28 +250,28 @@
     </div>
   </div>
 
-  <p class="paywall-locked">简单说：<b>NVIDIA 拼速度，Apple 拼容量。</b>如果你想跑 30B 以上的模型，一台大内存的 Mac 往往比消费级显卡更现实；如果追求响应速度，独显更合适。</p>
+  <p >简单说：<b>NVIDIA 拼速度，Apple 拼容量。</b>如果你想跑 30B 以上的模型，一台大内存的 Mac 往往比消费级显卡更现实；如果追求响应速度，独显更合适。</p>
 
-  <div class="oss-src paywall-locked">
+  <div class="oss-src">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
     <span>统一内存的 GPU 可用比例在 macOS 上可通过 <code>iogpu.wired_limit_max</code> 调整，75% 是默认情况下的保守估计，不是硬上限。</span>
   </div>
 
-  <div class="sec-label paywall-locked">MoE 模型的特殊之处</div>
+  <div class="sec-label">MoE 模型的特殊之处</div>
 
-  <p class="paywall-locked">结果列表里带 A 字样的是 MoE 模型，比如 <code>Qwen3-30B-A3B</code>，意思是总参数 30B、每次实际激活 3B。这类模型有个容易踩的坑：</p>
+  <p >结果列表里带 A 字样的是 MoE 模型，比如 <code>Qwen3-30B-A3B</code>，意思是总参数 30B、每次实际激活 3B。这类模型有个容易踩的坑：</p>
 
-  <div class="l-callout paywall-locked">
+  <div class="l-callout">
     <b>显存按总参数算，速度按激活参数算。</b>30B 的 MoE 模型你得准备装下 30B 的显存，但它跑起来的速度接近 3B。占地方大，跑得快。
   </div>
 
-  <p class="paywall-locked">这意味着 MoE 特别适合显存充裕但希望响应快的场景，比如大内存的 Mac。反过来，如果显存紧张，同样占用下选一个稠密的小模型更划算。</p>
+  <p >这意味着 MoE 特别适合显存充裕但希望响应快的场景，比如大内存的 Mac。反过来，如果显存紧张，同样占用下选一个稠密的小模型更划算。</p>
 
-  <div class="sec-label paywall-locked">几条免责说明</div>
+  <div class="sec-label">几条免责说明</div>
 
-  <p class="paywall-locked">上面所有数字都是估算，实际占用还会受这几个因素影响：</p>
+  <p >上面所有数字都是估算，实际占用还会受这几个因素影响：</p>
 
-  <div class="l-card paywall-locked">
+  <div class="l-card">
     <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.7">
       <li><b>上下文长度。</b>这是最大的变量。你把上下文从 4K 开到 128K，KV Cache 的占用会涨好几倍，原本跑得动的模型可能就崩了。</li>
       <li><b>并发数量。</b>同时处理多个请求，每个都要自己的一份中间状态。个人用一般不涉及，做服务就要重新算。</li>
@@ -280,11 +280,11 @@
     </ul>
   </div>
 
-  <p class="paywall-locked">所以计算器给的是可行性判断，不是精确预算。<b>结论是「勉强」的时候，就当作跑不动来准备。</b></p>
+  <p >所以计算器给的是可行性判断，不是精确预算。<b>结论是「勉强」的时候，就当作跑不动来准备。</b></p>
 
-  <div class="sec-label paywall-locked">下一步</div>
+  <div class="sec-label">下一步</div>
 
-  <p class="paywall-locked">知道能跑什么之后，下一节把它真正装起来。两个工具，命令行的 Ollama 和图形界面的 LM Studio，十分钟能跑通。</p>
+  <p >知道能跑什么之后，下一节把它真正装起来。两个工具，命令行的 Ollama 和图形界面的 LM Studio，十分钟能跑通。</p>
 
 </article>
 

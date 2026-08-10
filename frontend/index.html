@@ -416,7 +416,7 @@ function renderTopics(){
       <div class="no">${t.partTitle}</div>
       <div class="n">${t.title}</div>
       <div class="d">${t.desc}</div>
-      <div class="f"><span>${t.n} 个知识点${t.spine?' · 🧵'+t.spine:''}${lock?' · '+lock+' 节需登录':''}</span>
+      <div class="f"><span>${t.n} 个知识点${t.spine?' · 🧵'+t.spine:''}${lock?' · '+lock+' 节登录后读':''}</span>
         <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
     return first
       ? `<a class="topic ${t.neu?'isnew':''}" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`

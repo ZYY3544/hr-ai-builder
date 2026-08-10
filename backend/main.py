@@ -376,7 +376,8 @@ def wx_login_status(scene: str):
 def auth_config():
     """前端据此决定登录入口显示什么。未配置时不报错，返回 enabled:false 让前端优雅降级。"""
     return {"wechat_enabled": wx.is_any_configured(),
-            "mode": "oauth" if wx.web_is_configured() else ("miniprogram" if wx.is_configured() else None)}
+            "mode": "oauth" if wx.web_is_configured() else ("miniprogram" if wx.is_configured() else None),
+            "gate": "on" if _gate_on() else "off"}
 
 
 @app.get("/api/me")
@@ -417,36 +418,19 @@ def lessons_manifest():
 
 
 @app.get("/api/lessons/{name}")
-def get_lesson(name: str, authorization: Optional[str] = Header(None)):
-    """受保护课件的正文。
+def get_lesson(name: str):
+    """已退役。
 
-    免费章节不走这里——它们是前端静态文件，爬虫要能直接读到（SEO 命脉）。
+    课件改为全部静态托管 + 客户端 paywall（Google Flexible Sampling）——
+    正文留在 HTML 里可被索引，受限部分由 .paywall-locked + JSON-LD 声明。
+    把内容搬到后端保护不了任何东西（仓库 AGPL 公开），却会丢掉这些页面的 SEO。
     """
     name = _safe_name(name)
-    meta = _LESSON_IDX[name]
-    if meta["free"]:
-        raise HTTPException(400, "free lesson is served statically at /slides/" + name)
-
-    user = None
-    if _gate_on():
-        if not authorization or not authorization.lower().startswith("bearer "):
-            raise HTTPException(401, "login_required")
-        user = auth.decode(authorization.split(" ", 1)[1].strip())
-    elif authorization and authorization.lower().startswith("bearer "):
-        try:
-            user = auth.decode(authorization.split(" ", 1)[1].strip())
-        except HTTPException:
-            user = None
-
-    f = _LESSON_DIR / name
-    if not f.exists():
-        raise HTTPException(404, "lesson file missing")
-    body = f.read_text("utf-8")
-    m = _re.search(r"<main class=\"lesson\">([\s\S]*?)</main>", body)
-    return {"file": name, "title": meta["title"],
-            "gate": "on" if _gate_on() else "off",
-            "viewer": (user or {}).get("name") or None,
-            "html": m.group(1) if m else body}
+    raise HTTPException(410, {
+        "gone": "lessons are served statically now",
+        "static_path": f"/slides/{name}",
+        "why": "Google Flexible Sampling：正文在 HTML 里可索引，客户端遮挡 + JSON-LD 声明",
+    })
 
 
 # ── 三章 30 问题库（KSA 分类）—— 让能力测评从 3 道样题扩到 90 题 ──

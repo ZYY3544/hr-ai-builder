@@ -67,7 +67,7 @@
 <meta property="og:site_name" content="HR AI Builder">
 <meta property="og:title" content="三种 Grader：代码、模型、人工">
 <meta property="og:locale" content="zh_CN">
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"三种 Grader：代码、模型、人工","name":"三种 Grader：代码、模型、人工","url":"https://xueai.app/slides/10-9.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · Agent 评测","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"Agent 评测中三种评判器的优缺点和组合策略：代码 Grader、模型 Grader（LLM-as-Judge）、人工 Grader。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson wide">
@@ -179,9 +179,9 @@
   </div>
 
   <!-- ═══ 人工 Grader ═══ -->
-  <div class="sec-label paywall-locked xa-peek">Grader 3：人工评判器</div>
+  <div class="sec-label xa-peek">Grader 3：人工评判器</div>
 
-  <div class="grader-section reveal paywall-locked">
+  <div class="grader-section reveal">
     <div class="grader-header">
       <div class="grader-badge human">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -221,9 +221,9 @@
   </div>
 
   <!-- ═══ 混合策略 ═══ -->
-  <div class="sec-label paywall-locked">混合策略：推荐流程</div>
+  <div class="sec-label">混合策略：推荐流程</div>
 
-  <div class="flow-card reveal paywall-locked">
+  <div class="flow-card reveal">
     <div class="flow-title">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       三层评判体系
@@ -253,14 +253,14 @@
     </div>
   </div>
 
-  <div class="l-callout reveal paywall-locked" style="margin-top:16px">
+  <div class="l-callout reveal" style="margin-top:16px">
     <b>核心逻辑</b>：代码 Grader 保证底线（不出大错），模型 Grader 提升上限（产出质量），人工 Grader 校准裁判（保证公正）。三者缺一不可。
   </div>
 
   <!-- ═══ 真实案例 ═══ -->
-  <div class="sec-label paywall-locked">真实案例</div>
+  <div class="sec-label">真实案例</div>
 
-  <div class="case-card reveal paywall-locked">
+  <div class="case-card reveal">
     <div class="case-header">
       <div class="case-logo">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
@@ -289,7 +289,7 @@
     </div>
   </div>
 
-  <div class="case-card reveal paywall-locked">
+  <div class="case-card reveal">
     <div class="case-header">
       <div class="case-logo">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -318,7 +318,7 @@
     </div>
   </div>
 
-  <div class="takeaway reveal paywall-locked">
+  <div class="takeaway reveal">
     <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span>
     <span><b>没有银弹，三种 Grader 组合使用效果最好。</b>代码 Grader 守底线、模型 Grader 提上限、人工 Grader 做校准，这是经过多个头部 Agent 团队验证的最佳实践。</span>
   </div>

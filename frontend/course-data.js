@@ -32,7 +32,9 @@ window.COURSE = {
   "access": {
    "free": 68,
    "locked": 19,
-   "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。"
+   "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
+   "gate": "off",
+   "method": "Google Flexible Sampling —— 正文始终在 HTML 里可被索引，客户端遮挡 + JSON-LD 声明 isAccessibleForFree"
   }
  },
  "parts": [

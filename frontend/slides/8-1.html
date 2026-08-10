@@ -66,7 +66,7 @@ input[type=range]{width:100%;accent-color:var(--danger);height:6px;cursor:pointe
 <meta name="twitter:title" content="多轮对话为什么越来越贵？Token 计费原理">
 <meta name="twitter:description" content="大模型 API 按 Token 计费，多轮对话中每轮都要发送完整历史，Token 消耗呈线性增长。用图示拆解多轮对话的 Token 计费逻辑，帮你理解成本爆炸的根本原因。">
 <!-- SEO End -->
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"多轮对话为什么越来越贵","name":"多轮对话为什么越来越贵","url":"https://xueai.app/slides/8-1.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 成本优化与选型","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"大模型 API 按 Token 计费，多轮对话中每轮都要发送完整历史，Token 消耗呈线性增长。用图示拆解多轮对话的 Token 计费逻辑，帮你理解成本爆炸的根本原因。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson">
@@ -92,28 +92,28 @@ input[type=range]{width:100%;accent-color:var(--danger);height:6px;cursor:pointe
     </div>
   </div>
 
-  <div class="sec-label paywall-locked xa-peek">每轮输入构成</div>
+  <div class="sec-label xa-peek">每轮输入构成</div>
 
-  <div class="vis-panel paywall-locked">
+  <div class="vis-panel">
     <div class="vis-header">每轮输入构成可视化（红色 = 当前轮，灰色 = 历史）</div>
     <div class="vis-body" id="turnRows"></div>
   </div>
 
-  <div class="sec-label paywall-locked">逐轮费用明细</div>
+  <div class="sec-label">逐轮费用明细</div>
 
-  <div class="table-wrap paywall-locked">
+  <div class="table-wrap">
     <table class="cost-table">
       <thead><tr><th>轮次</th><th>新增 Token</th><th>本轮输入</th><th>费用</th></tr></thead>
       <tbody id="costTableBody"></tbody>
     </table>
   </div>
 
-  <div class="insight-box paywall-locked" style="margin-top:20px">
+  <div class="insight-box" style="margin-top:20px">
     <b>为什么最后几轮这么贵？</b><br>
     第 10 轮的输入 = System Prompt + 前 9 轮的所有问答 + 本轮问题。每轮都在给模型重新背诵一遍整个对话历史。
   </div>
 
-  <div class="takeaway paywall-locked" style="margin-top:16px">
+  <div class="takeaway" style="margin-top:16px">
     <span>📈</span>
     <span><b>成本随轮次线性增长。</b> 下一步：KV Cache 如何通过缓存把重复计算费用降低 70% 以上。</span>
   </div>

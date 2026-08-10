@@ -103,7 +103,7 @@
 <meta name="twitter:title" content="Prompt Engineering：你说什么，模型就变什么">
 <meta name="twitter:description" content="Prompt 工程的核心原理：大模型没有理解力，只有模式匹配。如何通过角色设定、任务分解、少样本示例、约束条件来精确控制模型输出质量与风格。">
 <!-- SEO End -->
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"你说什么，它就变什么","name":"你说什么，它就变什么","url":"https://xueai.app/slides/6-1.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · Prompt 工程","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"Prompt 工程的核心原理：大模型没有理解力，只有模式匹配。如何通过角色设定、任务分解、少样本示例、约束条件来精确控制模型输出质量与风格。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson">
@@ -127,7 +127,7 @@
 
   <div class="sec-label">同一个问题，不同的角色</div>
 
-  <div class="demo-cols paywall-locked xa-peek">
+  <div class="demo-cols xa-peek">
     <div>
       <div class="demo-col-lbl">System Prompt（角色定义）</div>
       <div class="code-panel" id="promptCode"></div>
@@ -141,16 +141,16 @@
     </div>
   </div>
 
-  <div class="sec-label paywall-locked">输出格式控制</div>
+  <div class="sec-label">输出格式控制</div>
 
-  <div class="fmt-row paywall-locked">
+  <div class="fmt-row">
     <button class="fmt-btn active" onclick="setFmt(this,'none')">无格式</button>
     <button class="fmt-btn" onclick="setFmt(this,'md')">Markdown 列表</button>
     <button class="fmt-btn" onclick="setFmt(this,'json')">JSON 格式</button>
     <button class="fmt-btn" onclick="setFmt(this,'step')">Step-by-step</button>
   </div>
 
-  <div class="insight-box paywall-locked">
+  <div class="insight-box">
     <span>🎭</span>
     <span><b>角色 = 系统预设。</b> 所有的 AI 产品，本质上都是在 System Prompt 里写了不同的角色定义。换角色，就换产品。</span>
   </div>

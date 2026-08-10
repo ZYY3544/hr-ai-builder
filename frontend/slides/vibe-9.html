@@ -102,7 +102,7 @@ pre code{background:none;padding:0;color:#d9f2ec}
   .df-acts .mark-btn{flex:1}
 }
 </style>
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"破坏性操作的三道闸","name":"破坏性操作的三道闸","url":"https://xueai.app/slides/vibe-9.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 环境与安全","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"Vibe Coding 方法论第 9 节：数据库先备份、不可逆操作先给回退方案、发版前做 diff 审查。含发版 diff 审查模拟器与三道闸检查清单。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson wide">
@@ -159,7 +159,7 @@ pre code{background:none;padding:0;color:#d9f2ec}
     </div>
   </section>
 
-  <section class="paywall-locked xa-peek">
+  <section class=" xa-peek">
     <div class="sec-label">交互演练二 · 这个操作要过哪几道闸</div>
     <p class="desc">选择一个操作类型，逐项勾选它要通过的闸门，然后尝试执行。漏了哪项，就会看到对应的后果。</p>
     <div class="l-card reveal">
@@ -183,7 +183,7 @@ pre code{background:none;padding:0;color:#d9f2ec}
     </div>
   </section>
 
-  <section class="paywall-locked">
+  <section >
     <div class="sec-label">规则原文要点</div>
     <div class="l-card reveal">
       <h3 style="font-size:15.5px;font-weight:800;margin-bottom:4px">备份命令（SQLite 示例）</h3>
@@ -215,14 +215,14 @@ cp database.db backups/database_$(date +%Y%m%d_%H%M%S).db</code></pre>
     </div>
   </section>
 
-  <section class="paywall-locked">
+  <section >
     <div class="sec-label">课堂练习 · 30 分钟</div>
     <div class="l-card reveal">
       <p style="font-size:14px;color:var(--sub);line-height:1.9;margin:0">提交物：一份风险审查报告。① 在测试仓库里故意混入一个与发版主题无关的改动（比如改掉一个已有函数的逻辑）；② 写一份只描述主题功能的 Release Notes，让 AI 按「取完整 diff → 逐文件比对 → 分类处理」三步做审查；③ 检查 AI 能否发现混入的改动并暂停发版，把它的风险报告存档作为流程模板。</p>
     </div>
   </section>
 
-  <div class="l-card reveal paywall-locked" style="margin-top:28px">
+  <div class="l-card reveal" style="margin-top:28px">
     <p style="font-size:12.5px;color:var(--sub);line-height:1.8;margin:0">素材来源：开源仓库 <a href="https://github.com/itshen/xs_vibe_rules">itshen/xs_vibe_rules</a> 中 <code>rule-opensource.mdc</code> 第六章 6.4/6.5「数据库备份与回退方案」、第十章「部署与环境」。</p>
   </div>
 

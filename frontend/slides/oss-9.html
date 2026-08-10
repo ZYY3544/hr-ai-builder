@@ -87,7 +87,7 @@
 <meta name="twitter:title" content="Ollama 与 LM Studio 怎么上手">
 <meta name="twitter:description" content="从安装到跑起来，加上模型标签的读法、量化档位的取舍和几个常见的坑。">
 <!-- SEO End -->
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"Ollama 与 LM Studio 怎么上手","name":"Ollama 与 LM Studio 怎么上手","url":"https://xueai.app/slides/oss-9.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · 在自己的机器上跑起来","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"用 Ollama 或 LM Studio 在本地跑开源模型。含安装到运行的完整命令、模型标签的读法、Q4 与 Q5 量化档位怎么选，以及上下文长度撑爆显存等几个最常见的坑。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson">
@@ -247,9 +247,9 @@ print(resp.choices[0].message.content)</code></pre>
     </div>
   </div>
 
-  <p class="paywall-locked xa-peek">把上面那个选择器里的机型换着点一遍，会看出一件反直觉的事：<b>决定你能跑多大模型的不是显卡多贵，是显存多大。</b>一张 RTX 4090 停在 30B，而一台统一内存 128 GB 的 Mac 能吃下 122B——后者的图形算力远不如前者，但模型装得进去，前者装不进去。</p>
+  <p class=" xa-peek">把上面那个选择器里的机型换着点一遍，会看出一件反直觉的事：<b>决定你能跑多大模型的不是显卡多贵，是显存多大。</b>一张 RTX 4090 停在 30B，而一台统一内存 128 GB 的 Mac 能吃下 122B——后者的图形算力远不如前者，但模型装得进去，前者装不进去。</p>
 
-  <div class="oss-fact-card paywall-locked">
+  <div class="oss-fact-card">
     <div class="of-head">同样是 INT4，两台机器的上限</div>
     <ul>
       <li>RTX 4090（24 GB 显存）→ 最大 <b>Qwen3-30B-A3B</b>，需 19.5 GB</li>
@@ -257,18 +257,18 @@ print(resp.choices[0].message.content)</code></pre>
     </ul>
   </div>
 
-  <p class="paywall-locked">这也是大内存 Mac 在本地跑模型这件事上唯一说得通的理由。它的优势不是快，是<b>装得下</b>：同样的钱买独显，显存到 24 GB 就到头了，而统一内存能堆到 128 GB 以上，中间这一段没有别的消费级设备能补。<b>如果你的用途就是在本地跑大尺寸模型，内存容量比 GPU 型号重要得多。</b></p>
+  <p >这也是大内存 Mac 在本地跑模型这件事上唯一说得通的理由。它的优势不是快，是<b>装得下</b>：同样的钱买独显，显存到 24 GB 就到头了，而统一内存能堆到 128 GB 以上，中间这一段没有别的消费级设备能补。<b>如果你的用途就是在本地跑大尺寸模型，内存容量比 GPU 型号重要得多。</b></p>
 
-  <div class="oss-src paywall-locked">
+  <div class="oss-src">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
     <span>上面的推荐只登记了 <b>Ollama 官方库里确实存在的标签</b>，核对日期 2026-08-07，来源 ollama.com/library。给一条拉不下来的命令比不给更糟。</span>
   </div>
 
-  <div class="sec-label paywall-locked">标签怎么读</div>
+  <div class="sec-label">标签怎么读</div>
 
-  <p class="paywall-locked">冒号后面那串不是随便写的，每一段都有含义。</p>
+  <p >冒号后面那串不是随便写的，每一段都有含义。</p>
 
-  <div class="tagbox paywall-locked">
+  <div class="tagbox">
     <div class="tb-line">
       <span class="tb-p c1">qwen3</span><span>:</span><span class="tb-p c2">30b-a3b</span><span>-</span><span class="tb-p c3">q4_K_M</span>
     </div>
@@ -279,14 +279,14 @@ print(resp.choices[0].message.content)</code></pre>
     </div>
   </div>
 
-  <div class="oss-warn paywall-locked">
+  <div class="oss-warn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
     <div><b>第一个坑：你跑的默认就是量化版。</b>不写量化后缀时，Ollama 拉的通常是 Q4 档，不是原始精度。很多人拿它跟官方 API 的效果比，觉得开源模型不行，其实比的根本不是同一个东西。<b>要对比质量，先确认两边跑的是不是同一个档位。</b></div>
   </div>
 
-  <div class="sec-label paywall-locked">量化档位怎么选</div>
+  <div class="sec-label">量化档位怎么选</div>
 
-  <div class="qz paywall-locked">
+  <div class="qz">
     <div class="qz-row is-rec">
       <div class="qz-n">Q4_K_M</div>
       <div class="qz-d"><b>默认选它。</b>体积和质量的平衡点，绝大多数工具的默认档。日常问答、总结、改写这类任务上够用。</div>
@@ -305,18 +305,18 @@ print(resp.choices[0].message.content)</code></pre>
     </div>
   </div>
 
-  <div class="l-callout paywall-locked">
+  <div class="l-callout">
     <b>一条实用规律：模型越大，量化越安全。</b>32B 模型量化到 Q4 掉的那点分，往往还是比 8B 跑 Q8 强。所以显存有限时，优先保尺寸，再考虑档位。
   </div>
 
-  <div class="oss-src paywall-locked">
+  <div class="oss-src">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
     <span>可用标签会随版本更新，实际拉取前建议到 <code>ollama.com/library</code> 对应模型的 tags 页确认当前有哪些尺寸与档位。核对日期 2026-08-07。</span>
   </div>
 
-  <div class="sec-label paywall-locked">LM Studio：点几下就行</div>
+  <div class="sec-label">LM Studio：点几下就行</div>
 
-  <div class="oss-steps paywall-locked">
+  <div class="oss-steps">
     <div class="oss-step">
       <div class="ostep-n">1</div>
       <div class="ostep-body">
@@ -347,9 +347,9 @@ print(resp.choices[0].message.content)</code></pre>
     </div>
   </div>
 
-  <div class="sec-label paywall-locked">还有三个常见的坑</div>
+  <div class="sec-label">还有三个常见的坑</div>
 
-  <div class="l-card paywall-locked">
+  <div class="l-card">
     <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;font-size:14.5px;line-height:1.7">
       <li><b>上下文开太大，显存直接爆。</b>这是最高频的问题。模型加载时显存看着够，一旦把上下文拉到几十 K，KV Cache 涨上来就崩了。现象是生成到一半卡死，或者速度突然慢到不可用。<b>先按默认上下文跑通，需要长文再一档一档往上加。</b></li>
       <li><b>显存不够时不一定报错。</b>有些工具会自动把装不下的部分放到内存里，靠 CPU 算。结果是能跑，但慢十倍以上。如果你发现生成速度慢得离谱，先检查是不是没完全装进显存。</li>
@@ -357,11 +357,11 @@ print(resp.choices[0].message.content)</code></pre>
     </ul>
   </div>
 
-  <div class="sec-label paywall-locked">三条路，什么时候走哪条</div>
+  <div class="sec-label">三条路，什么时候走哪条</div>
 
-  <p class="paywall-locked">到这里，你手上有三种用模型的方式了。它们不是替代关系，各有各的场合：</p>
+  <p >到这里，你手上有三种用模型的方式了。它们不是替代关系，各有各的场合：</p>
 
-  <div class="l-card paywall-locked">
+  <div class="l-card">
     <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:14.5px;line-height:1.7">
       <li><b>本地跑。</b>数据不能外发、要长期高频调用、或者想完全不受服务商影响时。代价是能力上限受硬件限制。</li>
       <li><b>官方 API。</b>要最强能力、不想管运维时。按量付费，用多少算多少。</li>
@@ -369,7 +369,7 @@ print(resp.choices[0].message.content)</code></pre>
     </ul>
   </div>
 
-  <p class="paywall-locked">这一章到此结束。你现在应该能自己判断一个模型的开放程度、知道小模型是怎么来的和它的代价、并且能在自己的机器上把它跑起来。</p>
+  <p >这一章到此结束。你现在应该能自己判断一个模型的开放程度、知道小模型是怎么来的和它的代价、并且能在自己的机器上把它跑起来。</p>
 
 </article>
 

@@ -103,7 +103,7 @@
 <meta name="twitter:title" content="Prompt 进阶技巧：思维链、自洽性与结构化输出">
 <meta name="twitter:description" content="掌握 Prompt 进阶技术：思维链（Chain of Thought）让模型逐步推理、自洽性（Self-Consistency）提升答案可靠性、结构化输出模板让结果可被程序解析。">
 <!-- SEO End -->
-<!--seo:begin--><script type="application/ld+json">{"@context":"https://schema.org","@type":["Article","LearningResource"],"headline":"Prompt 进阶技巧","name":"Prompt 进阶技巧","url":"https://xueai.app/slides/6-2.html","inLanguage":"zh-CN","author":{"@type":"Person","name":"洛小山"},"publisher":{"@type":"Organization","name":"xueai.app","url":"https://xueai.app"},"learningResourceType":"课程","educationalLevel":"入门到进阶","isPartOf":{"@type":"Course","name":"AI 实战课 · Prompt 工程","url":"https://xueai.app/slides/learn.html"},"isAccessibleForFree":false,"description":"掌握 Prompt 进阶技术：思维链（Chain of Thought）让模型逐步推理、自洽性（Self-Consistency）提升答案可靠性、结构化输出模板让结果可被程序解析。","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywall-locked"}}</script><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
 </head>
 <body>
 <article class="lesson">
@@ -138,7 +138,7 @@
   <div class="sec-label">实时对比演示</div>
 
   <div class="cmp-hd" id="cmpHd">01 · 少样本示例（Few-Shot）— 实时对比演示</div>
-  <div class="cmp-grid paywall-locked xa-peek">
+  <div class="cmp-grid xa-peek">
     <div class="cmp-box bad">
       <div class="cb-label">❌ 差 Prompt（不加示例）</div>
       <div class="cb-prompt" id="badPrompt"></div>
@@ -150,15 +150,15 @@
       <div class="cb-result" id="goodResult"></div>
     </div>
   </div>
-  <div class="ctrl-row paywall-locked">
+  <div class="ctrl-row">
     <button class="btn btn-play" id="btnPlay" onclick="playDemo()">▶ 开始对比演示</button>
     <button class="btn btn-rst" onclick="resetDemo()">重置</button>
     <span class="hint" id="playHint"></span>
   </div>
 
-  <div class="sec-label paywall-locked">万能公式</div>
+  <div class="sec-label">万能公式</div>
 
-  <div class="formula-box paywall-locked">
+  <div class="formula-box">
     <div class="feq">角色 + 任务 + 上下文 + 约束 + 示例 + 格式</div>
     <p class="fdesc">缺少任何一项，质量就会打折扣。把 Prompt 当代码写：加约束、加示例、加测试用例。</p>
   </div>

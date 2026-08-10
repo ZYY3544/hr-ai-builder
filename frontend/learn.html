@@ -168,8 +168,8 @@ const cur=()=>decodeURIComponent((location.hash||'').replace(/^#/,'')).trim();
 const find=f=>FLAT.findIndex(x=>x.file===f);
 
 function srcOf(l){
-  return l.free ? 'slides/'+l.file+'?embed=1'
-                : 'lesson.html?f='+encodeURIComponent(l.file)+'&embed=1';
+  // 全部课件都是静态页 —— 受限内容由页内 paywall.js 客户端遮挡（Flexible Sampling）
+  return 'slides/'+l.file+'?embed=1';
 }
 
 function renderTree(filter){
