@@ -449,3 +449,26 @@ def get_lesson(name: str, authorization: Optional[str] = Header(None)):
             "gate": "on" if _gate_on() else "off",
             "viewer": (user or {}).get("name") or None,
             "html": m.group(1) if m else body}
+
+
+# ── 三章 30 问题库（KSA 分类）—— 让能力测评从 3 道样题扩到 90 题 ──
+_QBANK = _json.loads((Path(__file__).parent / "question_bank.json").read_text("utf-8"))
+
+
+@app.get("/api/questions")
+def questions(ksa: Literal["K", "S", "A"] | None = None, chapter: Optional[str] = None):
+    """面试型开放题，无标准答案——用于自评方向与准备清单，不参与自动判分。
+
+    与 /api/quiz 的区别：quiz 是选择题、能机器判分；这里是开放题、只给「他在考什么」。
+    两者按同一套 K/S/A 归类，所以能合并成一张能力画像。
+    """
+    items = []
+    for f, qs in _QBANK["sets"].items():
+        if chapter and chapter != f:
+            continue
+        for q in qs:
+            if ksa and q["ksa"] != ksa:
+                continue
+            items.append({**q, "chapter": f, "title": _LESSON_IDX.get(f, {}).get("title", f)})
+    return {"count": len(items), "by_ksa": _QBANK["by_ksa"],
+            "note": _QBANK["note"], "items": items}

@@ -25,8 +25,8 @@ window.COURSE = {
    "copy": 40,
    "adapt": 20,
    "new": 27,
-   "ready": 84,
-   "todo": 3,
+   "ready": 87,
+   "todo": 0,
    "spine": 18
   },
   "access": {
@@ -519,7 +519,7 @@ window.COURSE = {
        "desc": "每题带 KSA 标签，回流能力画像",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       }
      ]
     }
@@ -701,7 +701,7 @@ window.COURSE = {
        "desc": "每题带 KSA 标签",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       }
      ]
     }
@@ -1043,7 +1043,7 @@ window.COURSE = {
        "desc": "每题带 KSA 标签",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       }
      ]
     }

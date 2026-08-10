@@ -283,7 +283,7 @@
   "free": true,
   "title": "幻觉与边界 · 30 问",
   "seo": "AI 幻觉相关的 30 个面试问题（HR 版）",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },
@@ -387,7 +387,7 @@
   "free": true,
   "title": "Prompt 与 Agent · 30 问",
   "seo": "Prompt 与 Agent 相关的 30 个面试问题（HR 版）",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },
@@ -579,7 +579,7 @@
   "free": true,
   "title": "Vibe Coding · 30 问",
   "seo": "AI 协作编程相关的 30 个面试问题（HR 版）",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },
