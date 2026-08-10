@@ -130,20 +130,40 @@ section{scroll-margin-top:64px}
 .wcard .go{font-size:14px;font-weight:500;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 .curmeta{font-size:13px;color:var(--faint);margin-top:30px}
-.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px;margin-top:28px}
+.part{margin-top:64px}
+.part:first-of-type{margin-top:36px}
+.part-h{display:flex;gap:26px;align-items:flex-start;padding-bottom:26px}
+.part-no{flex:0 0 auto;text-align:left;padding-right:26px;border-right:1px solid var(--line);min-width:104px}
+.part-no .k{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--faint)}
+.part-no .v{font-size:44px;font-weight:700;line-height:1;letter-spacing:-.03em;margin-top:4px;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.part-t{flex:1;min-width:0}
+.part-t .meta{font-size:12.5px;color:var(--faint)}
+.part-t .meta b{color:var(--violet);font-weight:600;margin-right:10px}
+.part-t h3{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.028em;margin-top:6px;line-height:1.3}
+.part-t p{font-size:14.5px;color:var(--muted);margin-top:10px;line-height:1.9;max-width:48em}
+@media(max-width:720px){
+  .part-h{flex-direction:column;gap:12px}
+  .part-no{border-right:0;border-bottom:1px solid var(--line);padding:0 0 12px;min-width:0;display:flex;align-items:baseline;gap:10px}
+  .part-no .v{font-size:32px}
+}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
 .topic{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;
-  padding:22px 24px;transition:.18s;display:flex;flex-direction:column}
+  padding:24px;transition:.18s;display:flex;flex-direction:column;overflow:hidden}
 .topic:hover{border-color:rgba(124,58,237,.42);transform:translateY(-2px);
   box-shadow:0 14px 32px -20px rgba(124,58,237,.6)}
-.topic .no{font-size:12px;font-weight:700;color:var(--violet);letter-spacing:.06em}
-.topic .n{font-size:17px;font-weight:600;color:var(--ink);margin:7px 0 9px;line-height:1.4;letter-spacing:-.015em}
+.topic .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;
+  background:var(--violet-s);color:var(--violet);margin-bottom:18px;transition:.18s}
+.topic:hover .ic{background:var(--grad-r);color:#fff}
+.topic .idx{position:absolute;top:22px;right:24px;font-size:13px;font-weight:600;color:var(--line);
+  font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.topic .n{font-size:17px;font-weight:600;color:var(--ink);margin:0 0 9px;line-height:1.4;letter-spacing:-.015em}
 .topic .d{font-size:13.5px;color:var(--muted);line-height:1.85;flex:1}
-.topic .f{display:flex;align-items:center;justify-content:space-between;margin-top:20px;font-size:12.5px;color:var(--faint)}
-.topic .heat{color:var(--green-d);font-weight:600;font-variant-numeric:tabular-nums}
-.topic .ch{position:absolute;top:19px;right:22px;font-size:11px;font-weight:600;color:var(--muted);
-  background:var(--line-soft);border-radius:4px;padding:1px 6px}
-.topic.free .ch{background:var(--green-s);color:var(--green-d)}
-
+.topic .f{display:flex;align-items:center;justify-content:space-between;margin-top:22px;font-size:12.5px;color:var(--faint)}
+.topic .f .kp{color:var(--violet);font-weight:500}
+.topic .lk{font-size:10px;margin-left:5px;opacity:.6}
+.ksarow{display:flex;gap:3px;align-items:center}
+.topic.dim{opacity:.55;cursor:default}
 .contact{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
 @media(max-width:860px){.contact{grid-template-columns:1fr}}
 .cc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 24px;text-align:center;transition:.18s}
@@ -284,13 +304,13 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 <section class="band" id="curriculum">
   <div class="wrap">
     <div class="eyebrow">Curriculum</div>
-    <h2 id="curTitle">9 篇章 · 87 节</h2>
+    <h2 id="curTitle"></h2>
     <p class="desc">
       从「它靠不靠得住」到「让它在组织里活下来」，<b>每一节都是「HR 场景 → 原理 → 一条能执行的规则」三段式</b>——
       通用原理一个字不少讲，但它被夹在两个 HR 场景中间，你从第一句就知道这跟自己什么关系。
     </p>
     <div class="curmeta" id="sortnote"></div>
-    <div class="topics" id="topics"></div>
+    <div id="topics"></div>
   </div>
 </section>
 
@@ -370,46 +390,45 @@ const $=s=>document.querySelector(s);
 
 /* ---- 课程：来自 course-data.js（单一真相源）---- */
 const CO = window.COURSE || {parts:[],meta:{stats:{}}};
-const FLAT = [];
-CO.parts.forEach(p=>p.topics.forEach(t=>FLAT.push({
-  part:p.num, partTitle:p.title, title:t.title, desc:t.desc||'',
-  n:t.lessons.length,
-  neu:t.lessons.filter(l=>l.action==='new').length,
-  ada:t.lessons.filter(l=>l.action==='adapt').length,
-  ksa:t.lessons.reduce((a,l)=>(a[l.ksa]=(a[l.ksa]||0)+1,a),{}),
-  spine:t.lessons.filter(l=>l.spine).length,
-  lessons:t.lessons,
-})));
 
 const AC={copy:['沿用','ac-c'],adapt:['改写','ac-a'],new:['原创','ac-n']};
+const GLYPH=['◈','◎','◇','▣','◐','⬡','✦','◑','⬢','✧','◧','⊙'];
 function renderTopics(){
-  const list = FLAT;
-  const st=CO.meta.stats||{};
-  const a=CO.meta.access||{};
-  $('#sortnote').textContent = `按学习顺序排列 · 点任一卡片进入课程阅读器 · ${a.free||0} 节免费直读，${a.locked||0} 节登录后读`;
-  $('#topics').innerHTML=list.map(t=>{
-    const ksa=Object.entries(t.ksa).sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
-    const first=(t.lessons.find(l=>l.ready)||{}).file;
-    const lock=t.lessons.filter(l=>!l.free).length;
-    const inner=`<span class="ch">${t.part}</span>
-      <div class="no">${t.partTitle}</div>
-      <div class="n">${t.title}</div>
-      <div class="d">${t.desc}</div>
-      <div class="f"><span>${t.n} 个知识点${t.spine?' · 🧵'+t.spine:''}${lock?' · '+lock+' 节登录后读':''}</span>
-        <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
-    return first
-      ? `<a class="topic" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
-      : `<div class="topic dim">${inner}</div>`;
+  const acc=CO.meta.access||{};
+  $('#sortnote').textContent=`按学习顺序排列 · 点任一主题进入课程阅读器 · ${acc.free||0} 节免费直读，${acc.locked||0} 节登录后读`;
+  let gi=0;
+  $('#topics').innerHTML=CO.parts.map((p,pi)=>{
+    const tps=p.topics, kp=tps.reduce((a,t)=>a+t.lessons.length,0);
+    const cards=tps.map((t,ti)=>{
+      const first=(t.lessons.find(l=>l.ready)||{}).file;
+      const lock=t.lessons.filter(l=>!l.free).length;
+      const ksa=Object.entries(t.lessons.reduce((a,l)=>(a[l.ksa]=(a[l.ksa]||0)+1,a),{}))
+        .sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
+      const inner=`<div class="ic">${GLYPH[gi++%GLYPH.length]}</div>
+        <span class="idx">${String(ti+1).padStart(2,'0')}</span>
+        <div class="n">${t.title}</div>
+        <div class="d">${t.desc||''}</div>
+        <div class="f"><span class="kp">${t.lessons.length} 个知识点${lock?`<span class="lk" title="${lock} 节登录后读">🔒</span>`:''}</span>
+          <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
+      return first
+        ? `<a class="topic" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
+        : `<div class="topic dim">${inner}</div>`;
+    }).join('');
+    return `<section class="part">
+      <div class="part-h">
+        <div class="part-no"><div class="k">PART</div><div class="v">${String(pi).padStart(2,'0')}</div></div>
+        <div class="part-t">
+          <div class="meta"><b>${p.num}</b>${tps.length} 个主题 · ${kp} 节</div>
+          <h3>${p.title}</h3>
+          <p>${p.desc||''}</p>
+        </div>
+      </div>
+      <div class="topics">${cards}</div>
+    </section>`;
   }).join('');
 }
+renderTopics();
 
-const JOBS=[
-{no:'腾讯 · S3',n:'AI-HR 培训生（技术&应用方向）',d:'应届实习 · 深圳总部/成都 · 一口气开了四个方向，说明他们还在试',kp:3},
-{no:'腾讯 · S3',n:'AI-HR 培训生（分析方向）',d:'应届实习 · 深圳总部/上海 · 核心不是会跑模型，是能把口径吵清楚',kp:3},
-{no:'OpenAI · People Innovation',n:'Software Engineer, Full Stack',d:'全职 · Remote-US · 注意形态：工程师进 HR 部门，不是 HR 学 AI',kp:4},
-{no:'ElevenLabs · Engineering',n:'Internal AI Transformation',d:'全职 · Amsterdam/Berlin · 岗位名一个 HR 字没有，做的是同一件事',kp:4},
-{no:'Cognition · Applied AI',n:'Applied AI Transformation Manager',d:'全职 · New York/London · 说服是主业，构建是佐证',kp:4},
-];
 $('#jobcards').innerHTML=JOBS.map(j=>`
  <a class="topic" href="demo.html"><div class="no">${j.no}</div><div class="n">${j.n}</div>
    <div class="d">${j.d}</div>
@@ -418,6 +437,8 @@ $('#jobcards').innerHTML=JOBS.map(j=>`
 /* 首屏统计数字改用真实课程数据 */
 (function(){
   const st=CO.meta&&CO.meta.stats||{};
+  const ct=document.getElementById('curTitle');
+  if(ct&&st.lessons) ct.textContent=`${st.parts} 篇章 · ${st.lessons} 节`;
   const el=document.getElementById('statline');
   if(el&&st.lessons) el.innerHTML=
     `${st.parts} 篇章 · <b>${st.lessons}</b> 节 · 全部从 HR 场景倒着写`;
