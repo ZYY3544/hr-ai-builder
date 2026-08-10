@@ -109,6 +109,23 @@ main{padding:8px 0 70px}
 .pk .m{font-size:11.5px;color:var(--muted);margin-top:5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .pk .b{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px}
 .pk.all{grid-column:1/-1;background:linear-gradient(135deg,#fff,var(--bg))}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px;text-align:left}
+@media(max-width:640px){.modes{grid-template-columns:1fr}}
+.md{border:1px solid var(--line);border-radius:12px;padding:13px 16px;cursor:pointer;display:block;transition:.15s;background:#fff}
+.md:hover{border-color:var(--faint)}
+.md.on{border-color:var(--violet);background:var(--violet-s)}
+.md input{display:none}
+.md .t{font-size:13.5px;font-weight:600;color:var(--ink);display:block}
+.md .d{font-size:11.5px;color:var(--muted);display:block;margin-top:3px;line-height:1.6}
+.md .d b{color:var(--ink)}
+.rp{font-size:11.5px;color:var(--faint);cursor:pointer;margin-top:10px;display:inline-block}
+.rp:hover{color:var(--danger)}
+.rpbox{margin-top:9px;padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
+.rpbox textarea{width:100%;font:inherit;font-size:12.5px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:7px;min-height:56px;resize:vertical}
+.rpbox .row{display:flex;gap:8px;margin-top:8px;align-items:center}
+.rpbox .msg{font-size:11.5px}
+.drill-x{margin-top:12px}
 .hide{display:none!important}
 .load{text-align:center;padding:70px 0;color:var(--faint);font-size:13px}
 </style>
@@ -136,7 +153,15 @@ main{padding:8px 0 70px}
         <div class="d">补不了，只能被重新证明。这一类才是长期资产</div></div>
     </div>
     <div class="pick" id="pick"></div>
-    <div style="margin-top:24px"><button class="btn pri lg" id="start" disabled>选一个篇章开始</button></div>
+    <div class="modes" id="modes">
+      <label class="md on"><input type="radio" name="md" value="exam" checked>
+        <span class="t">模拟考试</span>
+        <span class="d">抽题 · 选项打乱 · 答完统一判分。<b>测真实水平用这个</b></span></label>
+      <label class="md"><input type="radio" name="md" value="drill">
+        <span class="t">顺序刷题</span>
+        <span class="d">全量 · 每题答完立刻出解析。<b>查漏补缺用这个</b></span></label>
+    </div>
+    <div style="margin-top:22px"><button class="btn pri lg" id="start" disabled>选一个篇章开始</button></div>
     <p style="font-size:12px;color:var(--faint);margin-top:12px" id="meta"></p>
   </section>
 </div>
@@ -161,7 +186,7 @@ const API=(location.hostname==='localhost'||location.protocol==='file:')
   ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
 const $=s=>document.querySelector(s);
 const L='ABCD'.split('');
-let QS=[], picked={};
+let QS=[], picked={}, graded={};
 
 const TY={single:'单选',multi:'多选',judge:'判断'};
 
@@ -180,13 +205,21 @@ let ALL=[], STATS={}, CH={}, sel=null;
   }
 })();
 
-function ksaOf(list){
-  const c={K:0,S:0,A:0}; list.forEach(x=>c[x.ksa]++); return c;
+function ksaOf(list){ const c={K:0,S:0,A:0}; list.forEach(x=>c[x.ksa]++); return c; }
+function badges(c){ return ['K','S','A'].filter(k=>c[k]).map(k=>`<span class="b t-${k}">${k} ${c[k]}</span>`).join(''); }
+
+let MODE='exam';
+document.querySelectorAll('.md').forEach(el=>el.onclick=()=>{
+  document.querySelectorAll('.md').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on'); el.querySelector('input').checked=true; MODE=el.querySelector('input').value;
+  if(sel) syncStart();
+});
+function syncStart(){
+  const n=sel==='__all'?ALL.length:ALL.filter(x=>x.chapter===sel).length;
+  const b=$('#start'); b.disabled=false;
+  b.textContent = MODE==='exam' ? `开始考试 · 抽 ${Math.min(n, Math.max(12, Math.round(n*0.6)))} 题` : `开始刷题 · ${n} 题`;
 }
-function badges(c){
-  return ['K','S','A'].filter(k=>c[k]).map(k=>
-    `<span class="b t-${k}">${k} ${c[k]}</span>`).join('');
-}
+
 function renderPick(){
   const cards=Object.entries(CH).map(([id,name])=>{
     const qs=ALL.filter(x=>x.chapter===id), c=ksaOf(qs);
@@ -196,64 +229,52 @@ function renderPick(){
   const cAll=ksaOf(ALL);
   $('#pick').innerHTML=cards+
     `<div class="pk all" data-ch="__all"><div class="n">全部篇章 · 完整测评</div>
-     <div class="m"><span>${ALL.length} 题</span>${badges(cAll)}<span style="color:var(--faint)">约 40 分钟</span></div></div>`;
+     <div class="m"><span>${ALL.length} 题</span>${badges(cAll)}<span style="color:var(--faint)">考试模式约 25 分钟</span></div></div>`;
   $('#pick').querySelectorAll('.pk').forEach(el=>el.onclick=()=>{
     $('#pick').querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));
-    el.classList.add('on'); sel=el.dataset.ch;
-    const n=sel==='__all'?ALL.length:ALL.filter(x=>x.chapter===sel).length;
-    const b=$('#start'); b.disabled=false; b.textContent=`开始测评 · ${n} 题`;
+    el.classList.add('on'); sel=el.dataset.ch; syncStart();
   });
 }
 
-$('#start').onclick=()=>{
-  if(!sel) return;
-  QS = sel==='__all' ? ALL : ALL.filter(x=>x.chapter===sel);
-  picked={};
-  $('#hero').classList.add('hide'); $('#bar').classList.remove('hide'); $('#foot').classList.remove('hide');
-  render(); window.scrollTo(0,0);
-};
-
-function render(){
-  $('#body').innerHTML=QS.map((q,i)=>{
-    const multi=q.type==='multi';
-    const cur=picked[q.id];
-    const opts=q.opts.map((o,j)=>{
-      const sel=multi ? (cur||[]).includes(j) : cur===j;
-      return `<label class="opt ${sel?'sel':''}" data-q="${q.id}" data-o="${j}">
-        <input type="${multi?'checkbox':'radio'}" name="${q.id}" ${sel?'checked':''}>
-        <span class="L">${q.type==='judge'?'':L[j]+'.'}</span><span>${o}</span></label>`;
-    }).join('');
-    return `<div class="q" id="q-${q.id}">
-      <div class="qh"><span class="no">${String(i+1).padStart(2,'0')}</span>
-        <span class="tag t-${q.ksa}">${q.ksa}</span>
-        <span class="ty">${TY[q.type]}${multi?' · 可多选':''}</span></div>
-      <div class="qt">${q.q}</div>
-      <div class="opts">${opts}</div></div>`;
-  }).join('');
-  $('#body').querySelectorAll('.opt').forEach(el=>el.onclick=e=>{
-    e.preventDefault();
-    const qid=el.dataset.q, o=+el.dataset.o, q=QS.find(x=>x.id===qid);
-    if(q.type==='multi'){
-      const a=new Set(picked[qid]||[]); a.has(o)?a.delete(o):a.add(o);
-      picked[qid]=[...a].sort((x,y)=>x-y); if(!picked[qid].length) delete picked[qid];
-    }else picked[qid]=o;
-    render(); prog();
+/* 选项乱序 —— 重考时能记住「上次选 B」的话，测的就不是理解了。
+   显示顺序打乱，提交前映射回原始索引，服务端判分逻辑不用改。 */
+const ORD={};
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
+function prep(list){
+  return list.map(q=>{
+    if(q.type==='judge'){ ORD[q.id]=[0,1]; return q; }   // 判断题不打乱，「错/对」顺序固定才好读
+    const ord=shuffle(q.opts.map((_,i)=>i));
+    ORD[q.id]=ord;
+    return {...q, opts: ord.map(i=>q.opts[i])};
   });
-  prog();
+}
+function toOriginal(qid, v){
+  const ord=ORD[qid]||[];
+  return Array.isArray(v) ? v.map(i=>ord[i]).sort((a,b)=>a-b) : ord[v];
 }
 
-function prog(){
-  const n=Object.keys(picked).length, t=QS.length;
-  $('#pb').style.width=(t?n/t*100:0)+'%'; $('#pn').textContent=`${n} / ${t}`;
-  $('#submit').disabled = n<t;
-  $('#left').textContent = n<t ? `还有 ${t-n} 题未作答` : '全部答完，可以交卷了';
+/* 抽题：考试模式按篇章 + KSA 均摊，保证不整块漏掉 */
+function sampleQs(list){
+  const target=Math.min(list.length, Math.max(12, Math.round(list.length*0.6)));
+  const byKey={};
+  list.forEach(q=>{ const k=q.chapter+'|'+q.ksa; (byKey[k]=byKey[k]||[]).push(q); });
+  const keys=Object.keys(byKey), out=[];
+  keys.forEach(k=>byKey[k]=shuffle(byKey[k]));
+  let i=0;
+  while(out.length<target){
+    const k=keys[i%keys.length];
+    if(byKey[k].length) out.push(byKey[k].pop());
+    i++;
+    if(i>keys.length*200) break;
+  }
+  return out;
 }
 
 $('#submit').onclick=async()=>{
   $('#submit').disabled=true; $('#submit').textContent='判分中…';
   let r;
   try{ r=await (await fetch(API+'/api/quiz/submit',{method:'POST',
-      headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:picked})})).json();
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:Object.fromEntries(Object.entries(picked).map(([k,v])=>[k,toOriginal(k,v)]))})})).json();
   }catch(e){ $('#submit').textContent='判分失败，重试'; $('#submit').disabled=false; return; }
 
   const NAME={K:'K · 知识',S:'S · 技能',A:'A · 能力'};
@@ -276,17 +297,7 @@ $('#submit').onclick=async()=>{
   const by={}; r.details.forEach(d=>by[d.id]=d);
   QS.forEach(q=>{
     const d=by[q.id], el=$('#q-'+q.id); if(!el||!d) return;
-    const ans=Array.isArray(d.ans)?d.ans:[d.ans];
-    const mine=picked[q.id]; const my=Array.isArray(mine)?mine:[mine];
-    el.querySelectorAll('.opt').forEach((o,j)=>{
-      o.style.cursor='default'; o.onclick=e=>e.preventDefault();
-      o.classList.remove('sel');
-      if(ans.includes(j)) o.classList.add(my.includes(j)?'right':'miss');
-      else if(my.includes(j)) o.classList.add('wrong');
-    });
-    el.insertAdjacentHTML('beforeend',
-      `<div class="vd ${d.correct?'ok':'no'}">${d.correct?'✓ 答对了':'✗ 答错了'}</div>
-       <div class="expl">${d.exp}</div>`);
+    paint(q.id, d);
   });
 
   $('#results').insertAdjacentHTML('beforeend',
@@ -298,5 +309,6 @@ $('#submit').onclick=async()=>{
   $('#results').scrollIntoView({behavior:'smooth'});
 };
 </script>
+<script src="track.js"></script>
 </body>
 </html>

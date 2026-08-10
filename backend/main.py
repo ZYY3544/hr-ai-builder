@@ -257,22 +257,36 @@ def submit_quiz(sub: QuizSubmission):
         details.append({"id": qid, "ksa": q["ksa"], "type": q["type"],
                         "correct": ok, "ans": q["ans"], "exp": q["exp"], "tag": q.get("tag", "")})
 
-    advice = {
-        "K": ("知识缺口最容易补 —— 按课程顺序读几章就补上了，几天的事。"
-              "但也别在这上面花太多时间：知识的获取成本已经趋近于零，它不构成差异。"),
-        "S": ("技能缺口靠做作品补 —— 选一个选题、配套数据集直接开工，几周到几个月。"
-              "这一类是当前性价比最高的投入，因为「让结果可信」的技能正在升值。"),
-        "A": ("能力缺口补不了，只能被**重新证明** —— 从你已有的经历里挖出证据，"
-              "重构成别人认的故事。多数人的问题不是没有，是有但讲不出来。"),
+    # 分档评语 —— 每一档给的是**下一步动作**，不是评价。
+    # 「有缺口」这种词说明不了任何事；「用顺序刷题把这一章全量过一遍」才是能执行的。
+    VERDICT = {
+        "K": [
+            (0.9, "扎实", "这一章的概念你吃透了。**别在 K 上再花时间**——知识的获取成本已经趋近于零，它不构成差异。"),
+            (0.7, "基本够用", "大概念有了，丢分在边界题上。**去「顺序刷题」把这一章全量过一遍**，把模糊的钉死。"),
+            (0.4, "有洞", "错题集中在哪个考点，就回哪一节重读。**K 是唯一几天就能补上的一类，先把它补齐再谈别的。**"),
+            (0.0, "先回去读", "概念还没建立起来，做题会一直靠猜。**先按课程顺序读完这一章，再回来重考**——题目会重新抽。"),
+        ],
+        "S": [
+            (0.9, "扎实", "做法你是清楚的。**下一步是把它用在一个真作品上**——会做和做过是两回事，面试问的是后者。"),
+            (0.7, "会做但不熟", "知道该怎么做，细节上还会踩坑。**挑一个作品选题动手做一遍**，坑会自己冒出来。"),
+            (0.4, "只停在概念", "你知道有这回事，但没真做过。**S 类靠做作品补，几周到几个月**，光看课补不上来。"),
+            (0.0, "还没上手", "从「一周做出能点的原型」那一节开始，**先做出一个最小的东西**，比读十节课有用。"),
+        ],
+        "A": [
+            (0.9, "扎实", "判断力是这个角色最稀缺的东西，你有。**现在的问题是能不能讲出来**——去准备真实案例，A 类考的都是「你有没有一个例子」。"),
+            (0.7, "有直觉但不稳", "多数场景判断对了，个别地方还会被带偏。**去看错题解析里的干扰项**——每个错误选项都对应一种真实的失败模式。"),
+            (0.4, "判断还没成形", "A 类补不了，**只能被重新证明**：从你已有的经历里挖出证据。多数人的问题不是没有，是有但没这么归类过。"),
+            (0.0, "这是最该补的一类", "**A 是唯一的长期资产，也是唯一补起来以年计的。**但先别慌——先把 K 和 S 补上，A 在做事的过程中长。"),
+        ],
     }
+
     scores = {}
     for k, (c, t) in buckets.items():
         if not t:
             continue
         rate = round(c / t, 2)
-        scores[k] = {"correct": c, "total": t, "rate": rate,
-                     "level": "扎实" if rate >= .8 else ("有缺口" if rate >= .5 else "需要补"),
-                     "advice": advice[k]}
+        tier, act = next((tr, a) for lo, tr, a in VERDICT[k] if rate >= lo)
+        scores[k] = {"correct": c, "total": t, "rate": rate, "level": tier, "advice": act}
     return {"scores": scores, "details": details,
             "note": "三类分开计分，不给总分 —— 合并会掩盖「差的是能补的还是补不了的」。"}
 
@@ -454,3 +468,80 @@ def questions(ksa: Literal["K", "S", "A"] | None = None, chapter: Optional[str] 
             items.append({**q, "chapter": f, "title": _LESSON_IDX.get(f, {}).get("title", f)})
     return {"count": len(items), "by_ksa": _QBANK["by_ksa"],
             "note": _QBANK["note"], "items": items}
+
+
+# ── 题目报错 ──────────────────────────────────────────────────────────
+# 题库一定会有错题，而唯一能发现的人是做题的人。没有这个入口，错题就永远在那里。
+# 注：Render free 无持久磁盘，这里只写进服务日志（Render Logs 可查），
+#     不落库。等接了数据库再改成入表 —— 先有通道比先有存储重要。
+class QuizReport(BaseModel):
+    question_id: str
+    reason: str
+    contact: Optional[str] = None
+
+
+@app.post("/api/quiz/report")
+def report_question(body: QuizReport):
+    by_id = {q["id"] for q in _QUIZ["items"]}
+    if body.question_id not in by_id:
+        raise HTTPException(400, "unknown question id")
+    detail = (body.reason or "").strip()
+    if len(detail) < 4:
+        raise HTTPException(400, "reason too short")
+    q = next(x for x in _QUIZ["items"] if x["id"] == body.question_id)
+    print(f"[QUIZ-REPORT] id={body.question_id} ksa={q['ksa']} chapter={q['chapter']} "
+          f"contact={(body.contact or '-')[:60]} reason={detail[:500]}", flush=True)
+    return {"ok": True, "note": "已收到，我们会核对这道题。谢谢你帮忙纠错。"}
+
+
+# ── 行为埋点接收 ───────────────────────────────────────────────────────
+# Render free 无持久磁盘 —— 先进内存环形缓冲 + 打服务日志（Render Logs 可查）。
+# 接了数据库再改成入表；先有数据比先有存储重要，现在是全瞎的状态。
+from collections import deque as _deque
+
+_EVENTS = _deque(maxlen=3000)
+
+
+class TrackEvent(BaseModel):
+    visitor_id: str
+    session_id: str
+    event: str
+    page: str
+    kind: Optional[str] = None
+    in_frame: Optional[bool] = None
+    ref: Optional[str] = None
+    dwell_ms: Optional[int] = 0
+    ts: Optional[str] = None
+    extra: Optional[dict] = None
+
+
+@app.post("/api/t")
+def track(e: TrackEvent):
+    rec = e.model_dump()
+    _EVENTS.append(rec)
+    if e.event != "view" or not e.in_frame:      # iframe 的 view 太吵，只记离开
+        print(f"[T] {e.event} {e.kind}/{e.page} v={e.visitor_id[:8]} s={e.session_id[:8]} "
+              f"dwell={e.dwell_ms}ms frame={e.in_frame}", flush=True)
+    return {"ok": True}
+
+
+@app.get("/api/t/stats")
+def track_stats():
+    """粗粒度自查（内存态，重启即清）。真正的分析等接了库再说。"""
+    from collections import Counter
+    views = [x for x in _EVENTS if x["event"] == "view"]
+    leaves = [x for x in _EVENTS if x["event"] == "leave" and (x.get("dwell_ms") or 0) > 0]
+    pages = Counter(x["page"] for x in views)
+    dwell = {}
+    for x in leaves:
+        dwell.setdefault(x["page"], []).append(x["dwell_ms"])
+    top = sorted(((p, len(v), round(sum(v) / len(v) / 1000)) for p, v in dwell.items()),
+                 key=lambda r: -r[1])[:15]
+    return {
+        "buffered": len(_EVENTS), "note": "内存环形缓冲，最多 3000 条，重启清空",
+        "visitors": len({x["visitor_id"] for x in _EVENTS}),
+        "sessions": len({x["session_id"] for x in _EVENTS}),
+        "views": len(views),
+        "top_pages": pages.most_common(15),
+        "avg_dwell_sec": [{"page": p, "n": n, "sec": s} for p, n, s in top],
+    }

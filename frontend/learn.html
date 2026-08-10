@@ -110,6 +110,49 @@ a{color:inherit;text-decoration:none}
   .side{position:fixed;top:56px;left:0;bottom:0;z-index:30;transform:translateX(-100%);transition:.22s;box-shadow:0 0 40px rgba(15,23,42,.2)}
   .side.show{transform:none}
 }
+
+/* ── 深色模式：只翻中性色，品牌渐变不动 ── */
+html[data-theme="dark"]{
+  --ink:#F1F5F9; --body:#CBD5E1; --muted:#94A3B8; --faint:#64748B;
+  --line:#1E293B; --line-soft:#0F172A; --bg:#0B1220;
+  --violet-s:#241a3d; --blue-s:#14224a; --green-s:#0d2a26;
+}
+html[data-theme="dark"] body{background:#0B1220}
+html[data-theme="dark"] .top,html[data-theme="dark"] .pager,html[data-theme="dark"] .tp-h:hover,
+html[data-theme="dark"] .ls:hover,html[data-theme="dark"] .sumbar,html[data-theme="dark"] .side input{background:#0F172A}
+html[data-theme="dark"] .pane iframe{background:#fff}
+.tbtn.ico{padding:6px 10px;font-size:14px;line-height:1}
+/* ── 侧栏可拖拽调宽 ── */
+#dragbar{width:5px;flex:0 0 auto;cursor:col-resize;background:transparent;position:relative}
+#dragbar:hover::after,#dragbar.on::after{content:'';position:absolute;inset:0 2px;background:var(--violet);opacity:.5}
+body.dragging{user-select:none;cursor:col-resize}
+body.dragging iframe{pointer-events:none}
+/* ── toast ── */
+#toast{position:fixed;left:50%;bottom:74px;transform:translateX(-50%) translateY(10px);z-index:60;
+  background:var(--ink);color:#fff;font-size:12.5px;padding:9px 18px;border-radius:20px;
+  opacity:0;pointer-events:none;transition:.22s}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ── 结业证书 ── */
+#certMask{position:fixed;inset:0;z-index:70;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);
+  display:none;place-items:center;padding:24px}
+#certMask.on{display:grid}
+.cert{background:#fff;border-radius:18px;max-width:520px;width:100%;padding:0;overflow:hidden;
+  box-shadow:0 30px 70px -24px rgba(15,23,42,.5)}
+.cert-h{padding:26px 30px 20px;text-align:center;background:linear-gradient(135deg,#EEF3FF,#F5EFFF)}
+.cert-h .k{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--violet)}
+.cert-h h3{font-size:20px;margin-top:7px;color:#0F172A}
+.cert-h p{font-size:12.5px;color:#64748B;margin-top:8px;line-height:1.8}
+.cert-b{padding:22px 30px 26px}
+.cert-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;padding:9px 0;
+  border-bottom:1px solid #E2E8F0}
+.cert-row:last-of-type{border-bottom:0}
+.cert-row b{color:#0F172A;font-variant-numeric:tabular-nums}
+.cert-bar{height:8px;background:#F1F5F9;border-radius:4px;margin:14px 0 6px;overflow:hidden}
+.cert-bar i{display:block;height:100%;background:linear-gradient(100deg,#3370FF,#7C3AED,#00C6A2);border-radius:4px}
+.cert-note{font-size:11.5px;color:#94A3B8;line-height:1.8;margin-top:14px}
+.cert-x{width:100%;margin-top:18px;padding:11px;border-radius:10px;border:0;cursor:pointer;
+  background:linear-gradient(135deg,#3370FF,#7C3AED);color:#fff;font:inherit;font-size:13.5px;font-weight:500}
+.cert-x:disabled{opacity:.5;cursor:default}
 </style>
 </head>
 <body>
@@ -125,7 +168,9 @@ a{color:inherit;text-decoration:none}
     <div class="pbar"><i id="pbar" style="width:0"></i></div>
     <span class="n" id="pnum">0 / 0</span>
   </div>
-  <a class="tbtn" href="index.html">返回首页</a>
+  <button class="tbtn ico" id="shareBtn" title="分享本节">↗</button>
+  <button class="tbtn ico" id="themeBtn" title="深色 / 浅色">◐</button>
+  <a class="tbtn" href="#" id="certBtn">证书</a>
   <a class="tbtn pri" href="index.html#login" id="loginBtn">登录</a>
 </div>
 
@@ -138,6 +183,8 @@ a{color:inherit;text-decoration:none}
       衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a><br>依 AGPL-3.0 开源
     </div>
   </aside>
+
+  <div id="dragbar"></div>
 
   <div class="pane">
     <iframe id="frame" title="课程内容"></iframe>
@@ -237,6 +284,83 @@ function load(){
   $('#side').classList.remove('show');
 }
 
+/* ── toast ── */
+let _tt;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('on'),2000);
+}
+
+/* ── 深色模式（跟随 localStorage，跨页保持）── */
+(function(){
+  const K='hab_theme';
+  const set=v=>{document.documentElement.setAttribute('data-theme',v); try{localStorage.setItem(K,v)}catch(e){}};
+  try{ const v=localStorage.getItem(K); if(v) document.documentElement.setAttribute('data-theme',v); }catch(e){}
+  $('#themeBtn').onclick=()=>{
+    const cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    set(cur); toast(cur==='dark'?'已切换到深色':'已切换到浅色');
+  };
+})();
+
+/* ── 分享本节 ── */
+$('#shareBtn').onclick=async()=>{
+  const l=FLAT[find(cur())]; if(!l) return;
+  const url=location.origin+location.pathname+'#'+encodeURIComponent(l.file);
+  const text=`${l.title} · HR AI Builder`;
+  if(navigator.share){ try{ await navigator.share({title:text,text,url}); return; }catch(e){} }
+  try{ await navigator.clipboard.writeText(url); toast('链接已复制'); }
+  catch(e){ prompt('复制这个链接分享：', url); }
+  if(window.habTrack) habTrack('share',{extra:{file:l.file}});
+};
+
+/* ── 侧栏拖拽调宽 ── */
+(function(){
+  const K='hab_sidew', bar=$('#dragbar'), side=$('#side');
+  try{ const w=+localStorage.getItem(K); if(w>=200&&w<=520) side.style.width=w+'px'; }catch(e){}
+  let on=false;
+  bar.addEventListener('mousedown',e=>{on=true;bar.classList.add('on');document.body.classList.add('dragging');e.preventDefault();});
+  window.addEventListener('mousemove',e=>{
+    if(!on) return;
+    const w=Math.min(520,Math.max(200,e.clientX));
+    side.style.width=w+'px';
+  });
+  window.addEventListener('mouseup',()=>{
+    if(!on) return; on=false; bar.classList.remove('on'); document.body.classList.remove('dragging');
+    try{ localStorage.setItem(K, parseInt(side.style.width)); }catch(e){}
+  });
+})();
+
+/* ── 结业证书 ── */
+function openCert(){
+  const total=FLAT.length, dn=FLAT.filter(l=>done.has(l.file)).length;
+  const pc=total?Math.round(dn/total*100):0;
+  const byPart={};
+  CO.parts.forEach(p=>{
+    const ls=p.topics.flatMap(t=>t.lessons).filter(l=>l.ready);
+    byPart[p.num+' '+p.title]=[ls.filter(l=>done.has(l.file)).length, ls.length];
+  });
+  const rows=Object.entries(byPart).map(([k,[a,b]])=>
+    `<div class="cert-row"><span>${k}</span><b>${a} / ${b}</b></div>`).join('');
+  const nick=(function(){try{const t=localStorage.getItem(TK);return t?JSON.parse(atob(t.split('.')[1])).name:'' }catch(e){return ''}})();
+  $('#certBody').innerHTML=
+    `<div class="cert-bar"><i style="width:${pc}%"></i></div>
+     <div style="font-size:12.5px;color:#64748B;margin-bottom:12px">已学完 <b style="color:#0F172A">${dn}</b> / ${total} 节 · ${pc}%</div>
+     ${rows}
+     <div class="cert-note">
+       每节课底部点一次「标记为学完」就会记录。<b>进度目前存在本机</b>——
+       登录功能开放后会同步到账号，换设备也不会丢。<br>
+       学完全部 ${total} 节即可领取，证书带唯一编号、可下载 PNG。
+     </div>
+     <button class="cert-x" ${dn>=total?'':'disabled'}>
+       ${dn>=total?'🎉 领取我的结业证书':`还差 ${total-dn} 节`}
+     </button>`;
+  $('#certMask').classList.add('on');
+  const b=$('#certBody .cert-x');
+  if(dn>=total) b.onclick=()=>{ toast('证书功能开发中，先记下你已经学完了 🎉'); if(window.habTrack) habTrack('cert_claim'); };
+}
+$('#certBtn').onclick=e=>{e.preventDefault(); openCert(); if(window.habTrack) habTrack('cert_open');};
+$('#certMask').onclick=e=>{ if(e.target.id==='certMask') $('#certMask').classList.remove('on'); };
+
 $('#q').oninput=e=>renderTree(e.target.value);
 $('#sbtn').onclick=()=>$('#side').classList.toggle('show');
 window.addEventListener('hashchange',load);
@@ -259,5 +383,20 @@ document.addEventListener('keydown',e=>{
 
 load();
 </script>
+<script src="track.js"></script>
+<div id="toast"></div>
+
+<div id="certMask">
+  <div class="cert">
+    <div class="cert-h">
+      <div class="k">CERTIFICATE</div>
+      <h3>学完全部课程，给你一张小小的证书</h3>
+      <p>课程免费，证书也免费。<b>它不代表任何机构的资质认证</b>——只是给愿意把 87 节都学完的你，一个看得见的记号。</p>
+    </div>
+    <div class="cert-b" id="certBody"></div>
+  </div>
+</div>
+
+<script src="track.js"></script>
 </body>
 </html>
