@@ -97,7 +97,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .kb.k-S{background:var(--green-s);color:var(--green-d)}
 .kb.k-A{background:var(--violet-s);color:var(--violet)}
 .ksarow{display:flex;gap:2px;align-items:center}
-.go{margin-left:9px;color:var(--violet);font-weight:500;font-size:11.5px;white-space:nowrap;opacity:0;transition:.16s}
+.go{margin-left:9px;color:var(--pc,var(--violet));font-weight:500;font-size:12px;white-space:nowrap;opacity:0;transition:.16s}
 .topic:hover .go{opacity:1}
 .topic.dim{opacity:.55;cursor:default}
 .ac{font-size:10px;font-weight:600;padding:1px 5px;border-radius:3px;flex:0 0 auto;margin-top:1px}
@@ -130,16 +130,19 @@ section{scroll-margin-top:64px}
 .wcard .go{font-size:14px;font-weight:500;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 .curmeta{font-size:13px;color:var(--faint);margin-top:30px}
+@supports not (color: color-mix(in srgb, red 10%, blue)){
+  .topic .ic{background:var(--violet-s)}
+  .topic:hover{border-color:rgba(124,58,237,.42)}
+}
 .part{margin-top:64px}
 .part:first-of-type{margin-top:36px}
 .part-h{display:flex;gap:26px;align-items:flex-start;padding-bottom:26px}
-.part-no{flex:0 0 auto;text-align:left;padding-right:26px;border-right:1px solid var(--line);min-width:104px}
+.part-no{flex:0 0 auto;text-align:left;padding-right:26px;border-right:2px solid var(--pc);min-width:104px}
 .part-no .k{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--faint)}
-.part-no .v{font-size:44px;font-weight:700;line-height:1;letter-spacing:-.03em;margin-top:4px;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.part-no .v{font-size:44px;font-weight:700;line-height:1;letter-spacing:-.03em;margin-top:4px;color:var(--pc)}
 .part-t{flex:1;min-width:0}
 .part-t .meta{font-size:12.5px;color:var(--faint)}
-.part-t .meta b{color:var(--violet);font-weight:600;margin-right:10px}
+.part-t .meta b{color:var(--pc);font-weight:600;margin-right:10px}
 .part-t h3{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.028em;margin-top:6px;line-height:1.3}
 .part-t p{font-size:14.5px;color:var(--muted);margin-top:10px;line-height:1.9;max-width:48em}
 @media(max-width:720px){
@@ -150,17 +153,17 @@ section{scroll-margin-top:64px}
 .topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
 .topic{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;
   padding:24px;transition:.18s;display:flex;flex-direction:column;overflow:hidden}
-.topic:hover{border-color:rgba(124,58,237,.42);transform:translateY(-2px);
-  box-shadow:0 14px 32px -20px rgba(124,58,237,.6)}
+.topic:hover{border-color:color-mix(in srgb, var(--pc) 45%, #fff);transform:translateY(-2px);
+  box-shadow:0 14px 32px -20px color-mix(in srgb, var(--pc) 65%, transparent)}
 .topic .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;
-  background:var(--violet-s);color:var(--violet);margin-bottom:18px;transition:.18s}
-.topic:hover .ic{background:var(--grad-r);color:#fff}
+  background:color-mix(in srgb, var(--pc) 10%, #fff); color:var(--pc);margin-bottom:18px;transition:.18s}
+.topic:hover .ic{background:var(--pc);color:#fff}
 .topic .idx{position:absolute;top:22px;right:24px;font-size:13px;font-weight:600;color:var(--line);
   font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .topic .n{font-size:17px;font-weight:600;color:var(--ink);margin:0 0 9px;line-height:1.4;letter-spacing:-.015em}
 .topic .d{font-size:13.5px;color:var(--muted);line-height:1.85;flex:1}
 .topic .f{display:flex;align-items:center;justify-content:space-between;margin-top:22px;font-size:12.5px;color:var(--faint)}
-.topic .f .kp{color:var(--violet);font-weight:500}
+.topic .f .kp{color:var(--pc);font-weight:500}
 .topic .lk{font-size:10px;margin-left:5px;opacity:.6}
 .ksarow{display:flex;gap:3px;align-items:center}
 .topic.dim{opacity:.55;cursor:default}
@@ -414,7 +417,7 @@ function renderTopics(){
         ? `<a class="topic" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
         : `<div class="topic dim">${inner}</div>`;
     }).join('');
-    return `<section class="part">
+    return `<section class="part" style="--pc:${p.color||'#7C3AED'}">
       <div class="part-h">
         <div class="part-no"><div class="k">PART</div><div class="v">${String(pi).padStart(2,'0')}</div></div>
         <div class="part-t">

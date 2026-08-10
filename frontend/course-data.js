@@ -84,7 +84,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#64748B"
   },
   {
    "id": "p-zero",
@@ -343,7 +344,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#0891B2"
   },
   {
    "id": "p-1",
@@ -525,7 +527,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#3370FF"
   },
   {
    "id": "p-2",
@@ -707,7 +710,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#4F46E5"
   },
   {
    "id": "p-3",
@@ -861,7 +865,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#7C3AED"
   },
   {
    "id": "p-4",
@@ -1049,7 +1054,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#00A88A"
   },
   {
    "id": "p-5",
@@ -1214,7 +1220,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#D97706"
   },
   {
    "id": "p-oss",
@@ -1251,7 +1258,8 @@ window.COURSE = {
       }
      ]
     }
-   ]
+   ],
+   "color": "#475569"
   }
  ]
 };
