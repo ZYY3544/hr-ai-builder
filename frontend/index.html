@@ -23,7 +23,7 @@ body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang 
   color:var(--body);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35}
-.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+.wrap{max-width:1400px;margin:0 auto;padding:0 40px}
 .eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* ---------- nav ---------- */
@@ -46,6 +46,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .btn.pri:hover{color:#fff;box-shadow:0 7px 22px -5px rgba(124,58,237,.72);transform:translateY(-1px)}
 .btn.lg{font-size:13.5px;padding:11px 24px;border-radius:var(--r)}
 @media(max-width:860px){.nav .links{display:none}}
+@media(max-width:640px){.wrap{padding:0 20px}}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;text-align:center;padding:100px 0 92px;overflow:hidden}
@@ -71,11 +72,11 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   max-width:15em;margin:0 auto;font-weight:650}
 .hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
   -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.hero .lede{font-size:15px;line-height:1.95;color:var(--muted);max-width:41em;margin:24px auto 0}
+.hero .lede{font-size:15.5px;line-height:1.95;color:var(--muted);max-width:46em;margin:24px auto 0}
 .hero .lede b{color:var(--ink);font-weight:500}
 .hero .lede .hl{font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.entries{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:44px auto 0;max-width:920px;text-align:left}
+.entries{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:46px auto 0;max-width:1180px;text-align:left}
 @media(max-width:860px){.entries{grid-template-columns:1fr;max-width:460px}}
 .entry{position:relative;border:1px solid var(--line);border-radius:var(--r-l);padding:19px 21px;
   background:#fff;transition:.2s;overflow:hidden}
@@ -94,10 +95,10 @@ section{scroll-margin-top:64px}
 .band{padding:66px 0;border-top:1px solid var(--line)}
 .band.alt{background:var(--bg)}
 .band h2{font-size:27px;letter-spacing:-.028em;margin-top:9px}
-.band .desc{font-size:13.5px;color:var(--muted);max-width:50em;margin-top:12px;line-height:1.88}
+.band .desc{font-size:13.5px;color:var(--muted);max-width:56em;margin-top:12px;line-height:1.88}
 .band .desc b{color:var(--ink);font-weight:500}
 
-.who{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
 @media(max-width:920px){.who{grid-template-columns:1fr}}
 .wcard{background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:22px 23px;
   display:flex;flex-direction:column;transition:.18s}
@@ -114,7 +115,7 @@ section{scroll-margin-top:64px}
   background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
 .toggle button.on{background:#fff;color:var(--violet);box-shadow:0 1px 4px rgba(15,23,42,.12)}
 .sortnote{font-size:11.5px;color:var(--faint);margin-left:12px}
-.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:13px;margin-top:20px}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:14px;margin-top:20px}
 .topic{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r-l);
   padding:17px 19px;transition:.18s;display:flex;flex-direction:column}
 .topic:hover{border-color:rgba(124,58,237,.42);transform:translateY(-2px);
@@ -131,7 +132,7 @@ section{scroll-margin-top:64px}
   background:var(--grad-r);border-radius:5px;padding:2px 9px;
   box-shadow:0 4px 12px -4px rgba(124,58,237,.8)}
 
-.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
 @media(max-width:860px){.contact{grid-template-columns:1fr}}
 .cc{background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:21px;text-align:center;transition:.18s}
 .cc:hover{border-color:rgba(0,198,162,.45);box-shadow:0 14px 32px -20px rgba(0,198,162,.5)}
