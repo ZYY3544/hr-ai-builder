@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>能力测评 · 知识 / 技能 / 能力三类分开测 · HR AI Builder</title>
+<meta name="description" content="HR 的 AI 能力测评：知识、技能、能力三类分开计分，因为这三类补起来的代价完全不同。">
+<style>
+:root{
+  --blue:#3370FF;--blue-d:#1F55E0;--blue-s:#EEF3FF;
+  --violet:#7C3AED;--violet-s:#F5EFFF;
+  --green:#00C6A2;--green-d:#00A88A;--green-s:#E8FBF6;
+  --grad:linear-gradient(100deg,#3370FF 0%,#7C3AED 48%,#00C6A2 100%);
+  --grad-r:linear-gradient(135deg,#3370FF,#7C3AED);
+  --ink:#0F172A;--body:#475569;--muted:#64748B;--faint:#94A3B8;
+  --line:#E2E8F0;--line-soft:#F1F5F9;--bg:#F8FAFC;--danger:#DC2626;--amber:#D97706;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC',sans-serif;
+  color:var(--body);background:#fff;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35}
+.wrap{max-width:860px;margin:0 auto;padding:0 28px}
+
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);
+  backdrop-filter:saturate(1.6) blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:18px;height:56px;max-width:860px;margin:0 auto;padding:0 28px}
+.brand{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink)}
+.mark{width:25px;height:25px;border-radius:7px;background:var(--grad-r);display:grid;place-items:center;
+  color:#fff;font-size:11px;font-weight:700}
+.nav .sp{flex:1}
+.btn{font:inherit;font-size:12.5px;padding:6.5px 14px;border-radius:6px;border:1px solid var(--line);
+  background:#fff;color:var(--body);cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--violet);color:var(--violet)}
+.btn.pri{background:var(--grad-r);border-color:transparent;color:#fff}
+.btn.lg{font-size:14px;padding:12px 28px;border-radius:9px;font-weight:500}
+.btn:disabled{opacity:.45;cursor:default}
+
+.hero{text-align:center;padding:54px 0 30px}
+.hero h1{font-size:31px;letter-spacing:-.03em}
+.hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:14px;color:var(--muted);margin-top:14px;line-height:1.9;max-width:40em;margin-left:auto;margin-right:auto}
+.hero p b{color:var(--ink);font-weight:500}
+
+.ksarow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+@media(max-width:640px){.ksarow{grid-template-columns:1fr}}
+.kc{border:1px solid var(--line);border-radius:12px;padding:15px 17px;text-align:left;background:#fff}
+.kc .t{font-size:12px;font-weight:700;letter-spacing:.05em}
+.kc .n{font-size:20px;font-weight:600;color:var(--ink);margin-top:3px}
+.kc .d{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.65}
+.kc.K .t{color:var(--blue-d)} .kc.S .t{color:var(--green-d)} .kc.A .t{color:var(--violet)}
+
+.bar{position:sticky;top:56px;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding:11px 0}
+.bar .in{max-width:860px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:14px}
+.pbar{flex:1;height:6px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--grad);border-radius:3px;transition:width .3s}
+.bar .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+main{padding:8px 0 70px}
+.q{border-bottom:1px solid var(--line);padding:24px 0}
+.q:last-of-type{border-bottom:0}
+.qh{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+.no{font-size:12px;font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums}
+.tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+.t-K{background:var(--blue-s);color:var(--blue-d)}
+.t-S{background:var(--green-s);color:var(--green-d)}
+.t-A{background:var(--violet-s);color:var(--violet)}
+.ty{font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.qt{font-size:15px;color:var(--ink);line-height:1.75;font-weight:500}
+.opts{margin-top:13px;display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border:1px solid var(--line);
+  border-radius:9px;cursor:pointer;font-size:13.5px;line-height:1.7;transition:.13s;background:#fff}
+.opt:hover{border-color:var(--faint);background:var(--bg)}
+.opt.sel{border-color:var(--violet);background:var(--violet-s)}
+.opt input{margin-top:4px;accent-color:var(--violet);cursor:pointer;flex:0 0 auto}
+.opt .L{font-weight:600;color:var(--muted);flex:0 0 auto}
+.opt.right{border-color:var(--green-d);background:var(--green-s)}
+.opt.wrong{border-color:var(--danger);background:#FEF2F2}
+.opt.miss{border-color:var(--green-d);border-style:dashed}
+.expl{margin-top:13px;padding:13px 16px;background:var(--bg);border-left:3px solid var(--violet);
+  border-radius:0 9px 9px 0;font-size:13px;line-height:1.85}
+.expl b{color:var(--ink)}
+.vd{font-size:12px;font-weight:600;margin-top:10px}
+.vd.ok{color:var(--green-d)} .vd.no{color:var(--danger)}
+
+.foot{position:sticky;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);padding:14px 0;text-align:center}
+
+.res{padding:20px 0 0}
+.rc{border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:13px}
+.rc .top{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+.rc .nm{font-size:16px;font-weight:600;color:var(--ink)}
+.rc .sc{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
+.rc .lv{font-size:12px;font-weight:600;padding:2px 9px;border-radius:20px;margin-left:8px}
+.rc .rb{height:7px;background:var(--line-soft);border-radius:4px;margin:11px 0 12px;overflow:hidden}
+.rc .rb i{display:block;height:100%;border-radius:4px}
+.rc .ad{font-size:13px;line-height:1.9;color:var(--body)}
+.rc .ad b{color:var(--ink)}
+.note{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 19px;
+  font-size:13px;line-height:1.9;margin:6px 0 20px}
+.note b{color:var(--ink)}
+.hide{display:none!important}
+.load{text-align:center;padding:70px 0;color:var(--faint);font-size:13px}
+</style>
+</head>
+<body>
+
+<header><div class="nav">
+  <a class="brand" href="index.html"><span class="mark">HB</span>HR AI Builder</a>
+  <span class="sp"></span>
+  <a class="btn" href="learn.html">课程</a>
+  <a class="btn" href="index.html">返回首页</a>
+</div></header>
+
+<div class="wrap">
+  <section class="hero" id="hero">
+    <h1>你差的，是<span class="g">能补的</span>还是<span class="g">补不了的</span>？</h1>
+    <p>这套测评<b>不给总分</b>。知识、技能、能力三类分开计分——因为它们补起来的代价完全不同，
+       合并成一个数会把最重要的信息抹平。</p>
+    <div class="ksarow">
+      <div class="kc K"><div class="t">K · 知识</div><div class="n" id="nK">–</div>
+        <div class="d">补起来几天。但获取成本趋近于零，它不构成差异</div></div>
+      <div class="kc S"><div class="t">S · 技能</div><div class="n" id="nS">–</div>
+        <div class="d">靠做作品补，几周到几个月。当前性价比最高</div></div>
+      <div class="kc A"><div class="t">A · 能力</div><div class="n" id="nA">–</div>
+        <div class="d">补不了，只能被重新证明。这一类才是长期资产</div></div>
+    </div>
+    <div style="margin-top:26px"><button class="btn pri lg" id="start">开始测评</button></div>
+    <p style="font-size:12px;color:var(--faint);margin-top:12px" id="meta"></p>
+  </section>
+</div>
+
+<div class="bar hide" id="bar"><div class="in">
+  <div class="pbar"><i id="pb" style="width:0"></i></div>
+  <span class="n" id="pn">0 / 0</span>
+</div></div>
+
+<main><div class="wrap">
+  <div id="body"></div>
+  <div id="results" class="res hide"></div>
+</div></main>
+
+<div class="foot hide" id="foot"><div class="wrap">
+  <button class="btn pri lg" id="submit" disabled>交卷看结果</button>
+  <div style="font-size:11.5px;color:var(--faint);margin-top:8px" id="left"></div>
+</div></div>
+
+<script>
+const API=(location.hostname==='localhost'||location.protocol==='file:')
+  ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
+const $=s=>document.querySelector(s);
+const L='ABCD'.split('');
+let QS=[], picked={};
+
+const TY={single:'单选',multi:'多选',judge:'判断'};
+
+(async function(){
+  try{
+    const d=await (await fetch(API+'/api/quiz')).json();
+    QS=d.items;
+    const s=d.stats.by_ksa||{};
+    $('#nK').textContent=(s.K||0)+' 题'; $('#nS').textContent=(s.S||0)+' 题'; $('#nA').textContent=(s.A||0)+' 题';
+    $('#meta').textContent=`当前题库：${d.stats.total} 题 · 单选 ${d.stats.by_type.single||0} · 多选 ${d.stats.by_type.multi||0} · 判断 ${d.stats.by_type.judge||0} · 覆盖「第一篇章 幻觉与边界」`;
+  }catch(e){
+    $('#hero').insertAdjacentHTML('beforeend','<p style="color:var(--danger);margin-top:16px">题库服务暂时不可用，请稍后重试。</p>');
+    $('#start').disabled=true;
+  }
+})();
+
+$('#start').onclick=()=>{
+  $('#hero').classList.add('hide'); $('#bar').classList.remove('hide'); $('#foot').classList.remove('hide');
+  render(); window.scrollTo(0,0);
+};
+
+function render(){
+  $('#body').innerHTML=QS.map((q,i)=>{
+    const multi=q.type==='multi';
+    const cur=picked[q.id];
+    const opts=q.opts.map((o,j)=>{
+      const sel=multi ? (cur||[]).includes(j) : cur===j;
+      return `<label class="opt ${sel?'sel':''}" data-q="${q.id}" data-o="${j}">
+        <input type="${multi?'checkbox':'radio'}" name="${q.id}" ${sel?'checked':''}>
+        <span class="L">${q.type==='judge'?'':L[j]+'.'}</span><span>${o}</span></label>`;
+    }).join('');
+    return `<div class="q" id="q-${q.id}">
+      <div class="qh"><span class="no">${String(i+1).padStart(2,'0')}</span>
+        <span class="tag t-${q.ksa}">${q.ksa}</span>
+        <span class="ty">${TY[q.type]}${multi?' · 可多选':''}</span></div>
+      <div class="qt">${q.q}</div>
+      <div class="opts">${opts}</div></div>`;
+  }).join('');
+  $('#body').querySelectorAll('.opt').forEach(el=>el.onclick=e=>{
+    e.preventDefault();
+    const qid=el.dataset.q, o=+el.dataset.o, q=QS.find(x=>x.id===qid);
+    if(q.type==='multi'){
+      const a=new Set(picked[qid]||[]); a.has(o)?a.delete(o):a.add(o);
+      picked[qid]=[...a].sort((x,y)=>x-y); if(!picked[qid].length) delete picked[qid];
+    }else picked[qid]=o;
+    render(); prog();
+  });
+  prog();
+}
+
+function prog(){
+  const n=Object.keys(picked).length, t=QS.length;
+  $('#pb').style.width=(t?n/t*100:0)+'%'; $('#pn').textContent=`${n} / ${t}`;
+  $('#submit').disabled = n<t;
+  $('#left').textContent = n<t ? `还有 ${t-n} 题未作答` : '全部答完，可以交卷了';
+}
+
+$('#submit').onclick=async()=>{
+  $('#submit').disabled=true; $('#submit').textContent='判分中…';
+  let r;
+  try{ r=await (await fetch(API+'/api/quiz/submit',{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:picked})})).json();
+  }catch(e){ $('#submit').textContent='判分失败，重试'; $('#submit').disabled=false; return; }
+
+  const NAME={K:'K · 知识',S:'S · 技能',A:'A · 能力'};
+  const COLOR={K:'#1F55E0',S:'#00A88A',A:'#7C3AED'};
+  const LV={'扎实':['#00A88A','#E8FBF6'],'有缺口':['#D97706','#FEF3C7'],'需要补':['#DC2626','#FEF2F2']};
+  $('#results').innerHTML=
+    `<h2 style="font-size:24px;margin-bottom:6px">你的三类得分</h2>
+     <div class="note">${r.note}</div>`
+    + ['K','S','A'].filter(k=>r.scores[k]).map(k=>{
+      const v=r.scores[k], pc=Math.round(v.rate*100), lv=LV[v.level];
+      return `<div class="rc">
+        <div class="top"><div><span class="nm">${NAME[k]}</span>
+          <span class="lv" style="color:${lv[0]};background:${lv[1]}">${v.level}</span></div>
+          <div class="sc" style="color:${COLOR[k]}">${v.correct}<span style="font-size:14px;color:var(--faint)">/${v.total}</span></div></div>
+        <div class="rb"><i style="width:${pc}%;background:${COLOR[k]}"></i></div>
+        <div class="ad">${v.advice.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}</div></div>`;
+    }).join('')
+    + `<div style="margin:22px 0 8px"><h3 style="font-size:17px">逐题解析</h3></div>`;
+
+  const by={}; r.details.forEach(d=>by[d.id]=d);
+  QS.forEach(q=>{
+    const d=by[q.id], el=$('#q-'+q.id); if(!el||!d) return;
+    const ans=Array.isArray(d.ans)?d.ans:[d.ans];
+    const mine=picked[q.id]; const my=Array.isArray(mine)?mine:[mine];
+    el.querySelectorAll('.opt').forEach((o,j)=>{
+      o.style.cursor='default'; o.onclick=e=>e.preventDefault();
+      o.classList.remove('sel');
+      if(ans.includes(j)) o.classList.add(my.includes(j)?'right':'miss');
+      else if(my.includes(j)) o.classList.add('wrong');
+    });
+    el.insertAdjacentHTML('beforeend',
+      `<div class="vd ${d.correct?'ok':'no'}">${d.correct?'✓ 答对了':'✗ 答错了'}</div>
+       <div class="expl">${d.exp}</div>`);
+  });
+
+  $('#results').classList.remove('hide');
+  $('#foot').classList.add('hide');
+  $('#results').scrollIntoView({behavior:'smooth'});
+};
+</script>
+</body>
+</html>

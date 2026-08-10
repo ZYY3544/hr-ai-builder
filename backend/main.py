@@ -100,37 +100,6 @@ TERMS = [
      "assessed_by": "场景题：这个数据能不能用"},
 ]
 
-# ---------------------------------------------------------------- 测评题库
-QUESTIONS = [
-    {"id": "q1", "ksa": "K", "term": "hallucination",
-     "how": "知识题 · 直接考概念边界 · 答错说明还没建立风险直觉",
-     "stem": "你让 AI 从 200 份简历里筛出「有大厂 AI 项目经验」的候选人。以下哪个风险是 LLM 特有的，传统关键词筛选不会出现？",
-     "options": ["可能漏掉一些其实符合条件的人",
-                 "可能编造出候选人简历里根本没写过的经历",
-                 "可能因为简历格式混乱而解析失败",
-                 "可能对同一份简历给出不一致的排序"],
-     "answer": 1,
-     "explain": "B。漏筛（A）和解析失败（C）关键词方案一样会有；排序不一致（D）调温度就能压。只有「编造原文没有的内容」是生成式模型独有的——它在补全一个看起来像简历的文本。这条直接决定一道流程闸：AI 只能做召回，判定必须回到原文。"},
-    {"id": "q2", "ksa": "S", "term": "data_prep",
-     "how": "技能题 · 考做法顺序 · 答错说明没真做过数据活",
-     "stem": "你要做一个薪酬带宽诊断工具，手上是一份 500 行的薪酬明细 Excel。第一步你会做什么？",
-     "options": ["把整个 Excel 贴给大模型，让它先分析一遍",
-                 "先选一个合适的模型和框架",
-                 "先逐列确认口径——月薪还是年薪、含不含奖金、是否含股权",
-                 "先把前端界面搭出来，方便演示"],
-     "answer": 2,
-     "explain": "C。口径不确认，后面所有数字都是假的，而且假得很像真的——这比报错危险得多。选 A 的人通常还没被数据坑过：模型会很自信地把月薪和年薪混在一起算分位，你看不出来。"},
-    {"id": "q3", "ksa": "A", "term": "scoping",
-     "how": "能力题 · 情景判断（SJT）· 没有知识点可背，测的是判断",
-     "stem": "你做的简历初筛 agent 测下来效果不错。HRD 看完说：「那从下周开始，所有岗位都用它。」你的第一反应是？",
-     "options": ["太好了，立刻安排全量上线",
-                 "先问清楚：「效果不错」在她眼里是什么标准，以及漏掉一个好候选人的代价有多大",
-                 "先做一份汇报材料，把成果讲清楚",
-                 "直接说还不成熟，建议再等等"],
-     "answer": 1,
-     "explain": "B。这题测的不是 AI 知识，是你会不会在被认可的时刻仍然去校准标准。A 是最常见的死法——她说的「不错」可能只是「看着挺快」，而全量上线后第一个被误筛的高管内推候选人就会让整件事停摆。D 看似谨慎，但没给任何信息，等于把判断推回去。C 是把精力花在包装上。"},
-]
-
 # ---------------------------------------------------------------- 课程主题
 TOPICS = [
     {"no": "00", "chapter": "前菜", "free": True, "kp": 3,
@@ -206,6 +175,11 @@ JOBS = [
 
 _TERM_BY_ID = {t["id"]: t for t in TERMS}
 
+# 可判分题库（K/S/A 分类，三种题型）—— 与课程篇章同源
+import json as __json
+from pathlib import Path as __Path
+_QUIZ = __json.loads((__Path(__file__).parent / "quiz_bank.json").read_text("utf-8"))
+
 
 # ---------------------------------------------------------------- routes
 @app.get("/api/health")
@@ -240,43 +214,67 @@ def get_job(job_id: str):
 
 
 @app.get("/api/quiz")
-def get_quiz():
-    """题干与选项，不含答案。"""
-    return {"count": len(QUESTIONS),
-            "items": [{k: v for k, v in q.items() if k not in ("answer", "explain")} for q in QUESTIONS]}
+def get_quiz(chapter: Optional[str] = None, ksa: Literal["K", "S", "A"] | None = None,
+             limit: Optional[int] = None):
+    """题干与选项，**不含答案**。前端拿不到 ans，只能提交后由服务端判分。"""
+    items = [q for q in _QUIZ["items"]
+             if (not chapter or q["chapter"] == chapter) and (not ksa or q["ksa"] == ksa)]
+    if limit:
+        items = items[:limit]
+    return {"count": len(items), "stats": _QUIZ["stats"], "chapters": _QUIZ["chapters"],
+            "items": [{k: v for k, v in q.items() if k not in ("ans", "exp")} for q in items]}
 
 
 class QuizSubmission(BaseModel):
-    answers: List[int]
+    answers: dict          # {题目id: 答案}  single/judge→int, multi→int 列表
+
+
+def _correct(q, given) -> bool:
+    if q["type"] == "multi":
+        return sorted(given or []) == sorted(q["ans"])
+    return given == q["ans"]
 
 
 @app.post("/api/quiz/submit")
 def submit_quiz(sub: QuizSubmission):
-    """按 K / S / A 三类分别给分——三类的补法完全不同，所以不合并成一个总分。"""
-    if len(sub.answers) != len(QUESTIONS):
-        raise HTTPException(400, f"expected {len(QUESTIONS)} answers, got {len(sub.answers)}")
+    """按 K / S / A 三类**分开**给分。
 
-    buckets = {"K": [0, 0], "S": [0, 0], "A": [0, 0]}   # [correct, total]
+    刻意不给总分：合并会掩盖「你差的到底是能补的还是补不了的」——
+    K 缺口几天能补，A 缺口以年计、甚至补不了只能重新证明。一个总分把这个区别抹平了。
+    """
+    by_id = {q["id"]: q for q in _QUIZ["items"]}
+    unknown = [k for k in sub.answers if k not in by_id]
+    if unknown:
+        raise HTTPException(400, f"unknown question ids: {unknown[:5]}")
+
+    buckets = {"K": [0, 0], "S": [0, 0], "A": [0, 0]}
     details = []
-    for q, picked in zip(QUESTIONS, sub.answers):
-        correct = picked == q["answer"]
+    for qid, given in sub.answers.items():
+        q = by_id[qid]
+        ok = _correct(q, given)
         buckets[q["ksa"]][1] += 1
-        buckets[q["ksa"]][0] += int(correct)
-        details.append({"id": q["id"], "ksa": q["ksa"], "correct": correct,
-                        "answer": q["answer"], "explain": q["explain"]})
+        buckets[q["ksa"]][0] += int(ok)
+        details.append({"id": qid, "ksa": q["ksa"], "type": q["type"],
+                        "correct": ok, "ans": q["ans"], "exp": q["exp"], "tag": q.get("tag", "")})
 
     advice = {
-        "K": "知识缺口最容易补——按课程顺序读几章就能补上，几天的事。",
-        "S": "技能缺口靠做作品补——选一个选题，配套数据集直接开工，几周到几个月。",
-        "A": "能力缺口补不了，只能被重新证明——从你已有的经历里挖出证据，重构成别人认的故事。",
+        "K": ("知识缺口最容易补 —— 按课程顺序读几章就补上了，几天的事。"
+              "但也别在这上面花太多时间：知识的获取成本已经趋近于零，它不构成差异。"),
+        "S": ("技能缺口靠做作品补 —— 选一个选题、配套数据集直接开工，几周到几个月。"
+              "这一类是当前性价比最高的投入，因为「让结果可信」的技能正在升值。"),
+        "A": ("能力缺口补不了，只能被**重新证明** —— 从你已有的经历里挖出证据，"
+              "重构成别人认的故事。多数人的问题不是没有，是有但讲不出来。"),
     }
-    return {
-        "scores": {k: {"correct": v[0], "total": v[1],
-                       "rate": round(v[0] / v[1], 2) if v[1] else None,
-                       "advice": advice[k]}
-                   for k, v in buckets.items()},
-        "details": details,
-    }
+    scores = {}
+    for k, (c, t) in buckets.items():
+        if not t:
+            continue
+        rate = round(c / t, 2)
+        scores[k] = {"correct": c, "total": t, "rate": rate,
+                     "level": "扎实" if rate >= .8 else ("有缺口" if rate >= .5 else "需要补"),
+                     "advice": advice[k]}
+    return {"scores": scores, "details": details,
+            "note": "三类分开计分，不给总分 —— 合并会掩盖「差的是能补的还是补不了的」。"}
 
 
 # ══════════════════════════════════════════════════════════════════
