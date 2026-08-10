@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>把萃取出来的判断规则写成 Prompt 的具体做法 · HR AI Builder</title>
+<meta name="description" content="把萃取出来的判断规则写成 Prompt 的具体做法">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.needs{background:#FFFBEB;border:1px dashed #FDE68A;border-radius:var(--radius-sm);padding:14px 17px;margin:22px 0 6px;font-size:13px;line-height:1.85;color:#78350F}
+.needs .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:#B45309;display:block;margin-bottom:6px}
+.needs b{color:#78350F;font-weight:700}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="spine">🧵 主线案例 · 简历初筛</div>
+    <div class="kicker">第三篇章 · 知识萃取</div>
+    <h1>从规则到 Prompt：判断链怎么落地</h1>
+    <p class="subtitle">手上有一沓萃取记录，怎么变成一个能跑的东西？<b>关键不在措辞，在于把判断拆成有先后的链条，并且每一步都吐出中间结果。</b></p>
+  </header>
+
+  <div class="sec-label">四步：从原话到 Prompt</div>
+
+  <table class="htab">
+    <tr><th style="width:8%"></th><th style="width:26%">做什么</th><th>拿主线案例举例</th></tr>
+    <tr><td><b>1</b></td><td><b>把原话归成「信号」</b></td>
+      <td>原话「没有一段是接手别人烂摊子的」→ 信号：<b>是否有接手已有系统/团队的经历</b></td></tr>
+    <tr><td><b>2</b></td><td><b>每个信号标：能不能读到、怎么读</b></td>
+      <td>能读到。判据：经历描述里出现「接手 / 承接 / 优化现有 / 重构」等词，或项目起始时间晚于系统上线时间</td></tr>
+    <tr><td><b>3</b></td><td><b>排成有先后的判断链</b></td>
+      <td>硬性条件（学历/年限）→ 相关性（行业/职能）→ <b>深度信号（接盘经历）</b>。<b>前一步不过，后面不用跑</b></td></tr>
+    <tr><td><b>4</b></td><td><b>写成分步输出的 Prompt</b></td>
+      <td>见下</td></tr>
+  </table>
+
+  <div class="sec-label">最关键的设计：不要一步到结论</div>
+
+  <div class="bad">
+    <span class="t">✕ 一步到结论</span>
+    「阅读简历，判断该候选人是否符合岗位要求，输出通过/不通过及理由。」<br>
+    → 它会给你一个结论和一段理由。<b>但错了你不知道错在哪一环</b>——是没读到信号？读到了但判断错了？还是它压根编了一个信号？
+  </div>
+
+  <div class="good">
+    <span class="t">✓ 分步输出</span>
+    第 1 步：只输出<b>读到了哪些信号</b>（每条附原文）<br>
+    第 2 步：基于这些信号<b>逐条对照规则</b>，输出每条规则的命中情况<br>
+    第 3 步：才给结论<br><br>
+    → 错在哪一步一眼可见。<b>而且第 1 步的输出可以单独验收</b>——搜一下原文就知道它有没有编。
+  </div>
+
+  <div class="sec-label">一个可以直接改的骨架</div>
+
+  <div class="l-mono" style="white-space:pre-wrap;line-height:1.85">你是招聘初筛助手。严格按三步执行，每步的结果都要单独输出。
+
+【第一步 · 提取信号】
+逐条检查下列信号在简历中是否出现，出现的附上原文：
+  S1 接手已有系统/团队的经历 —— 线索词：接手、承接、优化现有、重构、迁移
+  S2 跨部门推动的经历 —— 线索词：牵头、协调、推动 + 涉及两个以上部门
+  S3 ……（你的信号清单）
+输出格式：S1｜是/否｜原文：「……」
+※ 原文必须能在简历中被字面搜到。找不到就写「否」，不要推断。
+
+【第二步 · 对照规则】
+  R1 若 S1=否，标记「接盘经历缺失」（这不是淘汰项，是提示项）
+  R2 ……
+输出每条规则的命中结果。
+
+【第三步 · 结论】
+只允许输出三种：建议看看 / 需人工判断 / 明显不符
+※ 不要输出分数，不要输出「高度匹配」这类评价词。</div>
+
+  <div class="l-callout">
+    <b>注意最后两行。</b>不让它输出分数，是因为<b>分数会制造一种它做了判定的假象</b>——
+    而按第一篇章那条闸，判定权不能交出去。「建议看看 / 需人工判断 / 明显不符」<b>三档都是召回结论，不是录用判断</b>。
+  </div>
+
+  <div class="sec-label">规则要用原话，不要用抽象词</div>
+
+  <table class="htab">
+    <tr><th style="width:44%">✕ 抽象词</th><th>✓ 原话改写</th></tr>
+    <tr><td>有较强的抗压能力</td><td>有接手已有系统/团队的经历</td></tr>
+    <tr><td>具备良好的沟通协调能力</td><td>有牵头两个以上部门共同完成的项目</td></tr>
+    <tr><td>学习能力强</td><td>近两年主动切换过技术栈或业务领域</td></tr>
+  </table>
+
+  <p>左边那列写进 Prompt，模型只能靠自由发挥；右边那列是<b>可检索、可验证、可争论</b>的。
+  而且右边这些恰恰来自萃取记录里的原话——<b>所以上一节说「记原话别记归纳」，这一节就是它兑现的地方。</b></p>
+
+  <div class="sec-label">上线前：跟人对一遍</div>
+
+  <p>拿 10 份简历，让 agent 跑一遍，同时让那位老法师judge一遍，对比结果。</p>
+
+  <p><b>不一致的时候，第一反应应该是回去改规则，不是改 Prompt 措辞。</b>
+  因为不一致通常说明：要么你漏了一个信号，要么你把一条「看情况」的判断硬写成了规则——<b>这两个都是上一节的问题，不是措辞问题。</b></p>
+
+  <div class="rule">
+    <span class="lbl">落地</span>
+    <h3>分步输出，用原话，先对人再上线</h3>
+    <ol>
+      <li><b>三步分开输出：提取信号 → 对照规则 → 给结论。</b>一步到结论的 Prompt 没法调试。</li>
+      <li><b>信号必须附原文，且能被字面搜到。</b>这一步验收是机械的，不依赖判断力。</li>
+      <li><b>规则用萃取来的原话，不用抽象词。</b>「有接手已有系统的经历」可验证，「抗压能力强」不可验证。</li>
+      <li><b>不让它输出分数。</b>分数制造判定的假象，而判定权不能交出去。</li>
+      <li><b>先跟人对 10 份。</b>不一致时回去改规则，不是改措辞。</li>
+    </ol>
+  </div>
+
+  <div class="needs"><span class="h">✎ 待补真实素材</span>Prompt 骨架里的信号 S1/S2 是<b>示意</b>。<br>建议替换成：铭曦引擎里真实在用的<b>一段判断链</b>（比如 JE 的某个评估维度、或序列划分的判据），做脱敏处理后放进来。<b>真实的判断链一看就跟编的不一样</b>——它会有那种「为什么这里要加一个例外」的痕迹。</div>
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

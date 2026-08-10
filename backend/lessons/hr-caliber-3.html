@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文档怎么切片、数据怎么清洗，才能喂进 RAG · HR AI Builder</title>
+<meta name="description" content="文档怎么切片、数据怎么清洗，才能喂进 RAG">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.needs{background:#FFFBEB;border:1px dashed #FDE68A;border-radius:var(--radius-sm);padding:14px 17px;margin:22px 0 6px;font-size:13px;line-height:1.85;color:#78350F}
+.needs .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:#B45309;display:block;margin-bottom:6px}
+.needs b{color:#78350F;font-weight:700}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    
+    <div class="kicker">第三篇章 · RAG 与知识库</div>
+    <h1>切片与清洗：喂进 RAG 之前要做什么</h1>
+    <p class="subtitle">你把员工手册 PDF 丢进 RAG，问「年假怎么算」，它答错了。<b>不是模型不行，是那条规则跨了三页，被切成三块，只召回了中间那块。</b></p>
+  </header>
+
+  <div class="sec-label">RAG 的效果，八成取决于切片</div>
+
+  <p>大多数人调 RAG 的顺序是：换模型 → 调 Prompt → 加重排序。<b>但真正的瓶颈通常在最前面那一步：文档是怎么被切开的。</b></p>
+
+  <p>检索召回的是「块」。<b>块切错了，后面全错</b>——模型只能看到给它的那一块，看不到被切走的部分，
+  而且它<b>不知道自己看不到</b>，于是会基于半条规则给你一个完整的答案。</p>
+
+  <div class="sec-label">HR 文档的四个特殊性</div>
+
+  <table class="htab">
+    <tr><th style="width:22%">特点</th><th style="width:36%">切错了会怎样</th><th>怎么处理</th></tr>
+    <tr>
+      <td><b>① 有层级</b></td>
+      <td>按字数切会把「第 8 条」拦腰截断</td>
+      <td><b>沿结构切</b>：章 → 条 → 款。一条就是一块，宁可块大小不均</td>
+    </tr>
+    <tr>
+      <td><b>② 有交叉引用</b></td>
+      <td>「详见第 12 条」被切走后，答案缺一半</td>
+      <td>切片时<b>把引用目标一起带上</b>，或在元数据里记录引用关系</td>
+    </tr>
+    <tr>
+      <td><b>③ 有版本</b></td>
+      <td>它引了 2024 版的旧规则，<b>而且语气一样自信</b></td>
+      <td>元数据必带版本与生效日期；<b>旧版要下线，不是留着</b></td>
+    </tr>
+    <tr>
+      <td><b>④ 有适用范围</b></td>
+      <td>「仅适用于正式员工」在标题里，被切掉了 → 它把规则套给了实习生</td>
+      <td><b>每块都带上父标题</b>，适用范围写进元数据</td>
+    </tr>
+  </table>
+
+  <div class="l-callout">
+    <b>第 ④ 条是 HR 文档特有的坑，而且后果最严重。</b>
+    制度里的适用范围经常写在章节标题或开头一句，正文里不重复。
+    按字数切片会把它丢掉，<b>于是一条只适用于北京地区正式员工的规则，被讲给了所有人听。</b>
+  </div>
+
+  <div class="sec-label">清洗：这三样必须去掉</div>
+
+  <table class="htab">
+    <tr><th style="width:26%">要去掉的</th><th>为什么</th></tr>
+    <tr><td><b>页眉页脚</b></td><td>「第 3 页 共 28 页」「XX公司内部资料」会混进每一块，<b>稀释语义、污染检索</b></td></tr>
+    <tr><td><b>水印文字</b></td><td>同上，而且它会被当成正文内容读进去</td></tr>
+    <tr><td><b>扫描件的 OCR 噪声</b></td><td>OCR 错字在制度文档里是灾难：「不得少于」被识别成「不得多于」<b>意思完全反了</b>。<b>扫描件必须人工抽检</b></td></tr>
+  </table>
+
+  <p>表格要单独处理。<b>把表格拍平成文字会丢掉行列关系</b>——薪酬标准表、假期天数表被拍平之后，
+  它会把某个职级的数字安到另一个职级头上。表格要么保留结构（转成 Markdown 表格），要么单独存成结构化数据。</p>
+
+  <div class="sec-label">验收：看召回的块，不要只看答案</div>
+
+  <div class="bad">
+    <span class="t">✕ 只看答案对不对</span>
+    问 20 个问题，答对 18 个，觉得没问题。<br>
+    → <b>但其中可能有几个是模型自己猜对的</b>，检索压根没召回正确的块。
+    这种「侥幸对」在换个问法、换个模型之后就会变成错。
+  </div>
+
+  <div class="good">
+    <span class="t">✓ 看召回</span>
+    每个问题都检查：<b>召回的前 3 块里，有没有真正包含答案的那一块？</b><br>
+    这个指标（召回命中率）才是 RAG 的真实水平。答案正确率会骗你，召回命中率不会。
+  </div>
+
+  <div class="rule">
+    <span class="lbl">怎么做</span>
+    <h3>沿结构切、带元数据、验召回不验答案</h3>
+    <ol>
+      <li><b>沿结构切，不按字数切。</b>制度文档一条就是一块，块大小不均没关系。</li>
+      <li><b>每块带父标题，元数据必含版本、生效日期、适用范围。</b>适用范围丢了，答案就是错的且看不出来。</li>
+      <li><b>表格单独处理。</b>拍平会丢行列关系，数字会串行。</li>
+      <li><b>制度更新必须重建索引，并显式下线旧版。</b>留着旧版 = 它会用同样自信的语气引旧规则。</li>
+      <li><b>验收看召回命中率，不看答案正确率。</b>答案对可能是猜的。</li>
+    </ol>
+  </div>
+
+  <div class="needs"><span class="h">✎ 待补真实素材</span>这一节的方法是通用 RAG 实践 + HR 文档特性推导，<b>没有真实项目数据支撑</b>。<br>建议补：你做<b>员工政策问答或制度知识库</b>时，真实的召回命中率是多少、调切片前后差了多少。<b>一个真实的前后对比数字，比一整页方法论有说服力。</b></div>
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

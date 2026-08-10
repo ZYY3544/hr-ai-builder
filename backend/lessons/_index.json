@@ -403,7 +403,7 @@
   "free": true,
   "title": "隐性知识显性化：老法师那一眼在看什么",
   "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？",
-  "ready": false,
+  "ready": true,
   "spine": true,
   "ksa": "A"
  },
@@ -411,7 +411,7 @@
   "free": true,
   "title": "拆到哪一层为止：哪些永远进不了 Prompt",
   "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },
@@ -419,7 +419,7 @@
   "free": false,
   "title": "从规则到 Prompt：判断链怎么落地",
   "seo": "把萃取出来的判断规则写成 Prompt 的具体做法",
-  "ready": false,
+  "ready": true,
   "spine": true,
   "ksa": "S"
  },
@@ -427,7 +427,7 @@
   "free": true,
   "title": "知识库的原料：三个系统、五种口径、人名对不上",
   "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "K"
  },
@@ -435,7 +435,7 @@
   "free": true,
   "title": "Garbage in：口径不确认，它算出来的全是假的",
   "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },
@@ -443,7 +443,7 @@
   "free": false,
   "title": "切片与清洗：喂进 RAG 之前要做什么",
   "seo": "文档怎么切片、数据怎么清洗，才能喂进 RAG",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "S"
  },
@@ -659,7 +659,7 @@
   "free": true,
   "title": "把岗位拆开重组：它接管之后这个岗位还剩什么",
   "seo": "AI 接管之后，HR 岗位该怎么重新设计？",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },
@@ -667,7 +667,7 @@
   "free": true,
   "title": "你会的哪些东西正在被模型吃掉",
   "seo": "HR 的哪些技能正在被 AI 取代？哪些反而更值钱",
-  "ready": false,
+  "ready": true,
   "spine": false,
   "ksa": "A"
  },

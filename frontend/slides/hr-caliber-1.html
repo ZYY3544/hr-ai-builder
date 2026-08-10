@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR 数据为什么这么脏？三个系统五种口径的真实现场 · HR AI Builder</title>
+<meta name="description" content="HR 数据为什么这么脏？三个系统五种口径的真实现场">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.needs{background:#FFFBEB;border:1px dashed #FDE68A;border-radius:var(--radius-sm);padding:14px 17px;margin:22px 0 6px;font-size:13px;line-height:1.85;color:#78350F}
+.needs .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:#B45309;display:block;margin-bottom:6px}
+.needs b{color:#78350F;font-weight:700}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    
+    <div class="kicker">第三篇章 · RAG 与知识库</div>
+    <h1>知识库的原料：三个系统、五种口径、人名对不上</h1>
+    <p class="subtitle">你要做一次薪酬分析。数据来自三个地方：HR 系统的花名册、财务给的薪酬表、业务给的绩效表。<b>三张表拼不起来</b>——这不是意外，这是常态。</p>
+  </header>
+
+  <div class="sec-label">拼不起来的五个地方</div>
+
+  <table class="htab">
+    <tr><th style="width:16%">字段</th><th style="width:40%">现场长什么样</th><th>为什么会这样</th></tr>
+    <tr>
+      <td><b>姓名</b></td>
+      <td>「张伟」有三个人；「张 伟」中间带全角空格；有人用英文名登记</td>
+      <td>不同系统的录入规范不同，且大多没有强校验</td>
+    </tr>
+    <tr>
+      <td><b>工号</b></td>
+      <td>财务表里是 <span class="l-mono">007312</span>，HR 系统里是 <span class="l-mono">7312</span></td>
+      <td>Excel 打开时把前导零吃了 —— <b>这一条几乎每家公司都有</b></td>
+    </tr>
+    <tr>
+      <td><b>部门</b></td>
+      <td>「技术部」「技术中心」「研发中心」指同一个组织</td>
+      <td>三代组织架构的名字都还活在不同系统里，没人做过历史映射</td>
+    </tr>
+    <tr>
+      <td><b>在职口径</b></td>
+      <td>HR 按<b>月末在职</b>、财务按<b>发薪日在职</b>、业务按<b>月中在编</b></td>
+      <td>各自服务各自的目的：算人头、算成本、算产出 —— <b>三个都对</b></td>
+    </tr>
+    <tr>
+      <td><b>金额</b></td>
+      <td>月薪 / 年薪、含不含奖金、含不含补贴、税前税后</td>
+      <td>同上。<b>而且这一列最危险，因为它不会报错</b></td>
+    </tr>
+  </table>
+
+  <div class="l-callout">
+    <b>最重要的一句：这些不是数据质量问题，是组织问题。</b><br>
+    三个系统属于三个部门，各自的口径是为各自的目的设计的，<b>没有哪一个是错的</b>。
+    你不是去「纠正」它们，你是去<b>建立一层翻译</b>。<br>
+    想明白这一点，你就不会跑去跟财务说「你们的口径不对」——<b>那句话一说出口，这个项目就推不动了。</b>
+  </div>
+
+  <div class="sec-label">第一件事：做字段对照表，不是先清洗</div>
+
+  <p>很多人拿到三张表就开始清洗——统一格式、去重、填空。<b>这个顺序是错的</b>，因为你还不知道每一列到底是什么意思。</p>
+
+  <div class="good">
+    <span class="t">✓ 字段对照表长这样</span>
+    <table class="htab" style="margin:8px 0 0">
+      <tr><th>我要的口径</th><th>HR 系统</th><th>财务表</th><th>业务表</th></tr>
+      <tr><td><b>固定月薪</b></td><td>基本工资＋岗位工资</td><td>「月度应发」<b>含全勤和补贴</b></td><td>无此字段</td></tr>
+      <tr><td><b>在职</b></td><td>月末在职</td><td>发薪日在职</td><td>月中在编</td></tr>
+      <tr><td><b>部门</b></td><td>三级部门（现行）</td><td>成本中心编码</td><td>业务线（跟组织架构不一致）</td></tr>
+    </table>
+  </div>
+
+  <p>这张表做完，你会发现<b>有些分析根本做不了</b>——比如没有任何一张表能给你「不含补贴的固定月薪」。
+  <b>这时候你有两个选择：换口径，或者去要数据。但你不会再稀里糊涂地算了。</b></p>
+
+  <div class="sec-label">关联主键的优先级</div>
+
+  <table class="htab">
+    <tr><th style="width:12%">优先级</th><th style="width:26%">用什么</th><th>注意</th></tr>
+    <tr><td><b>1</b></td><td><b>工号</b></td><td>先统一位数、去掉前导零差异。<b>读 CSV 时把工号列强制读成字符串</b>，否则 Excel 又会吃零</td></tr>
+    <tr><td><b>2</b></td><td>身份证后四位 + 姓名</td><td>敏感字段，能不用就不用；用了要立刻脱敏</td></tr>
+    <tr><td><b>3</b></td><td>姓名 + 入职日期</td><td>兜底方案，且必须人工复核关联结果</td></tr>
+    <tr><td><b>✗</b></td><td><s>姓名</s></td><td><b>永远不要单独用姓名关联。</b>同名同姓在几百人的公司就会出现</td></tr>
+  </table>
+
+  <div class="sec-label">每个口径都要记「谁定的、为什么」</div>
+
+  <p>对照表里再加一列：<b>这个口径是谁定的、当初为什么这么定。</b></p>
+
+  <p>看起来是多余的档案工作，但它会在两个时刻救你：<b>① 有人质疑你的数时</b>，你能说清依据不是自己拍的；
+  <b>② 半年后你自己忘了时</b>——而这件事一定会发生。</p>
+
+  <div class="rule">
+    <span class="lbl">第一步</span>
+    <h3>先建翻译层，别急着清洗</h3>
+    <ol>
+      <li><b>先做字段对照表。</b>没搞清每列是什么之前清洗，是在给错误数据做美容。</li>
+      <li><b>口径不分对错，只分服务谁。</b>去跟财务说「你们口径不对」，项目当场推不动。</li>
+      <li><b>关联主键：工号 &gt; 身份证后四位 &gt; 姓名+入职日期。姓名永远不能单独用。</b></li>
+      <li><b>工号列强制读成字符串。</b>前导零被吃掉是最高频的翻车点，而且它不报错。</li>
+      <li><b>每个口径记下谁定的、为什么。</b>被质疑时和半年后的你，都需要这一列。</li>
+    </ol>
+  </div>
+
+  <div class="needs"><span class="h">✎ 待补真实素材</span>这一节的五类脏数据是<b>行业通例</b>，准确但不独家。<br>建议加一段：你真实遇到过的<b>最离谱的一次口径冲突</b>——最好是那种「两个部门吵了三轮才发现在说两件事」的。<b>你在薪酬诊断里踩过的那次月薪/年薪混算</b>就是极好的素材，脱敏后直接用。</div>
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

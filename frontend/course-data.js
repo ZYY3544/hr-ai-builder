@@ -25,8 +25,8 @@ window.COURSE = {
    "copy": 40,
    "adapt": 20,
    "new": 27,
-   "ready": 76,
-   "todo": 11,
+   "ready": 84,
+   "todo": 3,
    "spine": 18
   },
   "access": {
@@ -744,7 +744,7 @@ window.COURSE = {
        "desc": "★主线·需素材",
        "spine": true,
        "free": true,
-       "ready": false
+       "ready": true
       },
       {
        "file": "hr-elicitation-2.html",
@@ -755,7 +755,7 @@ window.COURSE = {
        "desc": "需素材",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       },
       {
        "file": "hr-elicitation-3.html",
@@ -766,7 +766,7 @@ window.COURSE = {
        "desc": "需素材",
        "spine": true,
        "free": false,
-       "ready": false
+       "ready": true
       }
      ]
     },
@@ -783,7 +783,7 @@ window.COURSE = {
        "desc": "薪酬/花名册（副线）·需素材",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       },
       {
        "file": "hr-caliber-2.html",
@@ -794,7 +794,7 @@ window.COURSE = {
        "desc": "需素材",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       },
       {
        "file": "hr-caliber-3.html",
@@ -805,7 +805,7 @@ window.COURSE = {
        "desc": "需素材",
        "spine": false,
        "free": false,
-       "ready": false
+       "ready": true
       }
      ]
     },
@@ -1186,7 +1186,7 @@ window.COURSE = {
        "desc": "需素材",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       },
       {
        "file": "hr-org-2.html",
@@ -1197,7 +1197,7 @@ window.COURSE = {
        "desc": "需素材",
        "spine": false,
        "free": true,
-       "ready": false
+       "ready": true
       },
       {
        "file": "hr-org-3.html",

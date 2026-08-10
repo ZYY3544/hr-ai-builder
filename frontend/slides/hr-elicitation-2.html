@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>知识萃取拆到什么程度为止？哪些判断永远无法交给 AI · HR AI Builder</title>
+<meta name="description" content="知识萃取拆到什么程度为止？哪些判断永远无法交给 AI">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.needs{background:#FFFBEB;border:1px dashed #FDE68A;border-radius:var(--radius-sm);padding:14px 17px;margin:22px 0 6px;font-size:13px;line-height:1.85;color:#78350F}
+.needs .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:#B45309;display:block;margin-bottom:6px}
+.needs b{color:#78350F;font-weight:700}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    
+    <div class="kicker">第三篇章 · 知识萃取</div>
+    <h1>拆到哪一层为止：哪些永远进不了 Prompt</h1>
+    <p class="subtitle">你萃取出 20 条规则，全写进 Prompt，跑下来还是不对。<b>因为有些东西根本写不进去</b>——而知道哪些写不进去，比多写十条规则重要。</p>
+  </header>
+
+  <div class="sec-label">三类进不了 Prompt 的东西</div>
+
+  <table class="htab">
+    <tr><th style="width:24%">类型</th><th style="width:38%">为什么进不去</th><th>HR 里的例子</th></tr>
+    <tr>
+      <td><b>① 它拿不到的信息</b></td>
+      <td>信息不在材料里，在别的地方</td>
+      <td>候选人面试时的状态、你跟他前上级的私交、这个团队最近刚走了两个人</td>
+    </tr>
+    <tr>
+      <td><b>② 需要承担后果的判断</b></td>
+      <td>规则可以写，<b>但拍板的人得能负责</b></td>
+      <td>「这人有风险但值得赌一把」——赌输了谁承担？</td>
+    </tr>
+    <tr>
+      <td><b>③ 权重会随情境变的</b></td>
+      <td>同一条规则，此刻成立、下个月不成立</td>
+      <td>急招时降要求、业务方强推时放行、预算收紧时抬高门槛</td>
+    </tr>
+  </table>
+
+  <div class="sec-label">一个判据：问它什么时候会失效</div>
+
+  <p>拿着每一条萃取出来的规则，问一句：<b>「这条规则在什么情况下会失效？」</b></p>
+
+  <table class="htab">
+    <tr><th style="width:30%">回答</th><th>结论</th></tr>
+    <tr><td>「基本不会，硬性要求」</td><td>✅ <b>能进 Prompt</b>，而且该放在最前面</td></tr>
+    <tr><td>「如果他其他方面特别强，可以放宽」</td><td>⚠️ 能进，<b>但必须把「其他方面」也变成输入</b>，否则它会自由裁量</td></tr>
+    <tr><td>「<b>看情况</b>」</td><td>❌ <b>进不去。</b>除非你能把「情况」本身变成一个可输入的字段</td></tr>
+  </table>
+
+  <div class="l-callout">
+    <b>「看情况」这三个字是分界线。</b>听到它的时候不要放过，追一句：<b>「看什么情况？」</b><br>
+    如果他能说出来（「看这个岗位急不急」），那就把「急不急」做成输入，规则就能进去了；<br>
+    如果他说不出来，那这一条<b>必须留给人</b>——而这不是失败。
+  </div>
+
+  <div class="sec-label">拆不出来的部分，就是这个岗位的定义</div>
+
+  <p>这是这一节最重要的一句话。</p>
+
+  <p>大多数人做知识萃取时，把「拆不出来」当成没做完。<b>但反过来看：AI 接管了能拆出来的部分，剩下的那部分就是人的位置。</b>
+  你萃取得越彻底，这个位置的边界就越清楚——<b>而边界清楚，岗位才有说服力。</b></p>
+
+  <div class="good">
+    <span class="t">✓ 所以萃取的产物有两份，不是一份</span>
+    <b>① 规则清单</b> —— 能写进 Prompt 的，交给 AI<br>
+    <b>② 留人清单</b> —— 明确写出「这几件事必须由人判断，因为 ______」<br><br>
+    <b>第二份比第一份值钱。</b>因为第一份任何人拿到你的规则都能复制，
+    第二份是你重新设计这个岗位、以及说服老板「为什么不能全自动」的全部依据。
+  </div>
+
+  <div class="sec-label">别拆过头</div>
+
+  <p>还有一种失败是反过来的：<b>硬把「看情况」拆成规则。</b></p>
+
+  <div class="bad">
+    <span class="t">✕ 拆过头长什么样</span>
+    「如果岗位空缺超过 30 天，硬性条件放宽一档；如果业务方本周催过两次以上，再放宽一档……」<br>
+    → 你把一个<b>本来该有人负责的权衡</b>，变成了一套没人负责的自动规则。<br>
+    出事的时候，<b>没有人能解释为什么放行了这个人</b>——因为规则是死的，而当初做决定的人不在场。
+  </div>
+
+  <p>判据很简单：<b>如果这条规则触发的后果需要有人解释，那它就该由人来触发。</b></p>
+
+  <div class="rule">
+    <span class="lbl">怎么判</span>
+    <h3>听到「看情况」就停下来，追一句「看什么情况」</h3>
+    <ol>
+      <li><b>每条规则都问「什么时候失效」。</b>答案是「看情况」的，先别写进 Prompt。</li>
+      <li><b>追问「看什么情况」。</b>答得出来 → 把那个情况做成输入；答不出来 → 归入留人清单。</li>
+      <li><b>产出两份清单，不是一份。</b>留人清单是你重新定义这个岗位的依据，也是挡住「为什么不全自动」的答案。</li>
+      <li><b>需要有人解释后果的判断，不许自动触发。</b>把权衡变成规则，等于把责任变成无主。</li>
+    </ol>
+  </div>
+
+  <div class="needs"><span class="h">✎ 待补真实素材</span>「急招时放宽」这类情境权重是<b>通用例子</b>。<br>建议替换成：你在做<b>职级套改或薪酬定档</b>时，真实遇到过的一条「怎么都拆不出来」的判断——以及你当时是怎么处理的（留给人？还是找到了办法把情境变成输入？）。<b>这一节最需要的是一个真实的「拆不动」现场。</b></div>
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>

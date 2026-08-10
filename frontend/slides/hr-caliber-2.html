@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>口径没对齐，AI 算出来的数字全是假的——而且假得很像真的 · HR AI Builder</title>
+<meta name="description" content="口径没对齐，AI 算出来的数字全是假的——而且假得很像真的">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#9B6BFF;background:rgba(124,58,237,.18);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#7C3AED;background:#F5EFFF;border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
+.needs{background:#FFFBEB;border:1px dashed #FDE68A;border-radius:var(--radius-sm);padding:14px 17px;margin:22px 0 6px;font-size:13px;line-height:1.85;color:#78350F}
+.needs .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:#B45309;display:block;margin-bottom:6px}
+.needs b{color:#78350F;font-weight:700}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    
+    <div class="kicker">第三篇章 · RAG 与知识库</div>
+    <h1>Garbage in：口径不确认，它算出来的全是假的</h1>
+    <p class="subtitle">传统工具口径错了往往会报错。<b>AI 不会</b>——它会非常顺畅地给你一个错误答案，而且那个答案看起来完全合理。<b>这是它特有的危险。</b></p>
+  </header>
+
+  <div class="sec-label">算一遍给你看</div>
+
+  <p>一张 100 人的薪酬表，因为来自两个系统，<b>80 人填的是月薪（约 2 万），20 人填的是年薪（约 30 万）</b>。你没注意，直接让 AI 算分位。</p>
+
+  <table class="htab">
+    <tr><th style="width:26%">指标</th><th style="width:24%">它算出来</th><th>你会得出的结论</th></tr>
+    <tr><td>中位数 P50</td><td><b>约 2 万</b></td><td>「看起来正常」—— <b>所以你不会起疑</b></td></tr>
+    <tr><td>P25</td><td>约 1.6 万</td><td>正常</td></tr>
+    <tr><td>P90</td><td><b>约 30 万</b></td><td>❌「高分位薪酬极高，带宽拉得很开」</td></tr>
+    <tr><td>最高/最低比</td><td><b>约 20 倍</b></td><td>❌「内部公平性有严重问题」</td></tr>
+  </table>
+
+  <div class="bad">
+    <span class="t">✕ 于是你带着这个结论去汇报</span>
+    「我们高分位薪酬偏离市场很多，内部带宽过宽，建议做一次带宽收敛。」<br>
+    → <b>整个结论是假的</b>，但它每一步看起来都成立，而且中位数还正常——<b>正常的中位数恰恰是最好的伪装。</b>
+  </div>
+
+  <div class="sec-label">为什么 AI 不会拦你</div>
+
+  <p>传统 BI 工具里，量纲不一致常常会因为字段类型、单位设置或图表比例失衡而暴露出来。</p>
+
+  <p><b>但 AI 不做量纲校验，它只做计算。</b>你给它一列数，它就当同一种东西算。而且它会用非常专业的语言把结果讲出来，
+  <b>专业的措辞会让你更相信它。</b></p>
+
+  <div class="l-callout">
+    <b>这是「它会编」的另一种形态。</b>第一篇章讲的是它编内容，这里是<b>它顺着你的错误前提编结论</b>——
+    你没告诉它这列是混的，它也不会问。<b>它永远不会说「这批数据看起来有问题」，除非你专门让它看。</b>
+  </div>
+
+  <div class="sec-label">三道哨兵，喂进去之前跑</div>
+
+  <table class="htab">
+    <tr><th style="width:22%">哨兵</th><th>怎么做</th><th style="width:26%">触发说明什么</th></tr>
+    <tr>
+      <td><b>① 量纲哨兵</b></td>
+      <td>算 <span class="l-mono">最大值 ÷ 最小值</span>。薪酬类字段超过 <b>8 倍</b>就人工看一眼</td>
+      <td>大概率混了口径，或者混进了高管/实习生</td>
+    </tr>
+    <tr>
+      <td><b>② 分布哨兵</b></td>
+      <td>画个直方图（让 AI 画也行）。<b>看是不是单峰</b></td>
+      <td><b>双峰几乎一定是两种口径混了</b>——这一条最有效</td>
+    </tr>
+    <tr>
+      <td><b>③ 来源哨兵</b></td>
+      <td>按数据来源分组，各算一次中位数比一比</td>
+      <td>不同来源差一个数量级 = 口径不同，不是水平不同</td>
+    </tr>
+  </table>
+
+  <div class="sec-label">换个问法：让它先描述，再结论</div>
+
+  <div class="bad">
+    <span class="t">✕ 直接问结论</span>
+    「帮我算一下这份薪酬数据的分位和带宽。」→ 它直接给你数。
+  </div>
+
+  <div class="good">
+    <span class="t">✓ 先让它描述</span>
+    「先不要计算。请描述这份数据：每一列可能是什么含义、数值范围、分布形态，<b>以及你觉得哪里可疑</b>。」<br><br>
+    → 双峰分布它是看得出来的，<b>只是你不问它就不说。</b>这一步几乎零成本，却能拦住绝大多数量纲事故。
+  </div>
+
+  <div class="sec-label">最后一道：手工验算一条</div>
+
+  <p>任何要给别人看的数，<b>挑一条自己手算一遍</b>。</p>
+
+  <p>不是不信任 AI，是因为<b>这个动作会逼你把口径想清楚</b>——手算的时候你必须决定「这个人的年薪到底算不算奖金」，
+  而这个决定正是你之前跳过的那一步。</p>
+
+  <div class="rule">
+    <span class="lbl">写进流程</span>
+    <h3>口径没确认，一个数都不算</h3>
+    <ol>
+      <li><b>三道哨兵跑在计算之前</b>：最大最小比、分布形态、按来源分组。<b>双峰分布是最强的信号。</b></li>
+      <li><b>先让它描述，再让它计算。</b>加一句「你觉得哪里可疑」，成本为零，拦截率极高。</li>
+      <li><b>要给别人看的数，手工验算至少一条。</b>验算的价值不在核对，在逼你把口径想清楚。</li>
+      <li><b>记住它永远不会主动说「这数据有问题」。</b>它只会顺着你的前提，把错误算得非常专业。</li>
+    </ol>
+  </div>
+
+  <div class="needs"><span class="h">✎ 待补真实素材</span>双口径混算这个例子<b>数值是构造的</b>（80 人月薪 2 万 / 20 人年薪 30 万）。<br>如果你在真实项目里遇到过这类事故，<b>把真实的数换进来</b>——包括当时是怎么发现的、发现前有没有已经拿去汇报过。<b>「差点汇报出去」的细节最有教育意义。</b></div>
+  <div class="origin">
+    本节为 <b>HR AI Builder 原创</b>，原课程 learn-ai 中不存在。<br>
+    本站整体衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a>，依 AGPL-3.0 开源。
+  </div>
+</main>
+<script src="lesson.js"></script>
+</body>
+</html>
