@@ -100,6 +100,15 @@ main{padding:8px 0 70px}
 .note{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 19px;
   font-size:13px;line-height:1.9;margin:6px 0 20px}
 .note b{color:var(--ink)}
+.pick{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:30px;text-align:left}
+@media(max-width:640px){.pick{grid-template-columns:1fr}}
+.pk{border:1px solid var(--line);border-radius:12px;padding:15px 17px;cursor:pointer;transition:.15s;background:#fff}
+.pk:hover{border-color:var(--faint)}
+.pk.on{border-color:var(--violet);background:var(--violet-s);box-shadow:0 0 0 1px var(--violet)}
+.pk .n{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+.pk .m{font-size:11.5px;color:var(--muted);margin-top:5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pk .b{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px}
+.pk.all{grid-column:1/-1;background:linear-gradient(135deg,#fff,var(--bg))}
 .hide{display:none!important}
 .load{text-align:center;padding:70px 0;color:var(--faint);font-size:13px}
 </style>
@@ -126,7 +135,8 @@ main{padding:8px 0 70px}
       <div class="kc A"><div class="t">A · 能力</div><div class="n" id="nA">–</div>
         <div class="d">补不了，只能被重新证明。这一类才是长期资产</div></div>
     </div>
-    <div style="margin-top:26px"><button class="btn pri lg" id="start">开始测评</button></div>
+    <div class="pick" id="pick"></div>
+    <div style="margin-top:24px"><button class="btn pri lg" id="start" disabled>选一个篇章开始</button></div>
     <p style="font-size:12px;color:var(--faint);margin-top:12px" id="meta"></p>
   </section>
 </div>
@@ -155,20 +165,50 @@ let QS=[], picked={};
 
 const TY={single:'单选',multi:'多选',judge:'判断'};
 
+let ALL=[], STATS={}, CH={}, sel=null;
+
 (async function(){
   try{
     const d=await (await fetch(API+'/api/quiz')).json();
-    QS=d.items;
+    ALL=d.items; STATS=d.stats; CH=d.chapters;
     const s=d.stats.by_ksa||{};
     $('#nK').textContent=(s.K||0)+' 题'; $('#nS').textContent=(s.S||0)+' 题'; $('#nA').textContent=(s.A||0)+' 题';
-    $('#meta').textContent=`当前题库：${d.stats.total} 题 · 单选 ${d.stats.by_type.single||0} · 多选 ${d.stats.by_type.multi||0} · 判断 ${d.stats.by_type.judge||0} · 覆盖「第一篇章 幻觉与边界」`;
+    $('#meta').textContent=`题库共 ${d.stats.total} 题 · 单选 ${d.stats.by_type.single||0} · 多选 ${d.stats.by_type.multi||0} · 判断 ${d.stats.by_type.judge||0}`;
+    renderPick();
   }catch(e){
     $('#hero').insertAdjacentHTML('beforeend','<p style="color:var(--danger);margin-top:16px">题库服务暂时不可用，请稍后重试。</p>');
-    $('#start').disabled=true;
   }
 })();
 
+function ksaOf(list){
+  const c={K:0,S:0,A:0}; list.forEach(x=>c[x.ksa]++); return c;
+}
+function badges(c){
+  return ['K','S','A'].filter(k=>c[k]).map(k=>
+    `<span class="b t-${k}">${k} ${c[k]}</span>`).join('');
+}
+function renderPick(){
+  const cards=Object.entries(CH).map(([id,name])=>{
+    const qs=ALL.filter(x=>x.chapter===id), c=ksaOf(qs);
+    return `<div class="pk" data-ch="${id}"><div class="n">${name}</div>
+      <div class="m"><span>${qs.length} 题</span>${badges(c)}</div></div>`;
+  }).join('');
+  const cAll=ksaOf(ALL);
+  $('#pick').innerHTML=cards+
+    `<div class="pk all" data-ch="__all"><div class="n">全部篇章 · 完整测评</div>
+     <div class="m"><span>${ALL.length} 题</span>${badges(cAll)}<span style="color:var(--faint)">约 40 分钟</span></div></div>`;
+  $('#pick').querySelectorAll('.pk').forEach(el=>el.onclick=()=>{
+    $('#pick').querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));
+    el.classList.add('on'); sel=el.dataset.ch;
+    const n=sel==='__all'?ALL.length:ALL.filter(x=>x.chapter===sel).length;
+    const b=$('#start'); b.disabled=false; b.textContent=`开始测评 · ${n} 题`;
+  });
+}
+
 $('#start').onclick=()=>{
+  if(!sel) return;
+  QS = sel==='__all' ? ALL : ALL.filter(x=>x.chapter===sel);
+  picked={};
   $('#hero').classList.add('hide'); $('#bar').classList.remove('hide'); $('#foot').classList.remove('hide');
   render(); window.scrollTo(0,0);
 };
@@ -249,6 +289,10 @@ $('#submit').onclick=async()=>{
        <div class="expl">${d.exp}</div>`);
   });
 
+  $('#results').insertAdjacentHTML('beforeend',
+    `<div style="text-align:center;margin-top:30px">
+       <button class="btn lg" onclick="location.reload()">再测一个篇章</button>
+       <a class="btn lg" href="learn.html" style="margin-left:8px">回去补课</a></div>`);
   $('#results').classList.remove('hide');
   $('#foot').classList.add('hide');
   $('#results').scrollIntoView({behavior:'smooth'});
