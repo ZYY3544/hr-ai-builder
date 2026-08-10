@@ -97,15 +97,9 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .kb.k-S{background:var(--green-s);color:var(--green-d)}
 .kb.k-A{background:var(--violet-s);color:var(--violet)}
 .ksarow{display:flex;gap:2px;align-items:center}
-.lessons{margin-top:13px;padding-top:11px;border-top:1px solid var(--line-soft)}
-.ls{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;margin:0 -9px;font-size:12.5px;
-  color:var(--body);line-height:1.6;border-radius:7px;transition:.13s}
-a.ls:hover{background:var(--violet-s)}
-a.ls:hover .ln{color:var(--violet)}
-.ls .ln{flex:1}
-.ls.off{color:var(--faint)}
-.ls .ln::before{content:"›";color:var(--faint);margin-right:6px;font-weight:600}
-a.ls:hover .ln::before{color:var(--violet)}
+.go{margin-left:9px;color:var(--violet);font-weight:500;font-size:11.5px;white-space:nowrap;opacity:0;transition:.16s}
+.topic:hover .go{opacity:1}
+.topic.dim{opacity:.55;cursor:default}
 .ac{font-size:10px;font-weight:600;padding:1px 5px;border-radius:3px;flex:0 0 auto;margin-top:1px}
 .ac-c{background:var(--line-soft);color:var(--muted)}
 .ac-a{background:var(--blue-s);color:var(--blue-d)}
@@ -144,7 +138,8 @@ section{scroll-margin-top:64px}
 .topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:14px;margin-top:20px}
 .topic{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r-l);
   padding:17px 19px;transition:.18s;display:flex;flex-direction:column}
-.topic:hover{border-color:rgba(124,58,237,.28);box-shadow:0 10px 26px -20px rgba(15,23,42,.3)}
+.topic:hover{border-color:rgba(124,58,237,.42);transform:translateY(-2px);
+  box-shadow:0 14px 32px -20px rgba(124,58,237,.6)}
 .topic .no{font-size:11px;font-weight:700;color:var(--violet);letter-spacing:.06em}
 .topic .n{font-size:14.5px;font-weight:600;color:var(--ink);margin:5px 0 6px;line-height:1.42}
 .topic .d{font-size:12px;color:var(--muted);line-height:1.72;flex:1}
@@ -245,7 +240,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="statline" id="statline"></div>
 
     <div class="entries">
-      <a class="entry" href="#curriculum">
+      <a class="entry" href="learn.html">
         <div class="ic">◈</div>
         <div class="n">课程大纲 <span class="ar">→</span></div>
         <div class="d">从 AI 底层逻辑到组织落地，全部从 HR 场景倒着写</div>
@@ -349,7 +344,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <h2>准备好了吗？现在就开始</h2>
     <p>全部课程免费，每章前两节直接看，登录后即可解锁全部内容。</p>
     <div class="btns">
-      <a class="btn pri lg" href="#curriculum">进入课程</a>
+      <a class="btn pri lg" href="learn.html">进入课程</a>
       <a class="btn lg" href="demo.html">测测掌握度</a>
       <a class="btn lg" href="#jobs">看在招岗位</a>
       <a class="btn lg" href="#contact">加入交流群</a>
@@ -408,25 +403,22 @@ function renderTopics(){
   const st=CO.meta.stats||{};
   $('#sortnote').textContent = onlyNew
     ? `${list.length} 个主题含 HR 原创内容 —— learn-ai 里没有的部分`
-    : `按学习顺序排列 · ${(CO.meta.access||{}).free||0} 节免费直读，${(CO.meta.access||{}).locked||0} 节登录后读 · ${st.todo||0} 节待写`;
-  $('#topics').innerHTML=list.map((t,i)=>{
+    : `按学习顺序排列 · 点任一卡片进入课程阅读器 · ${(CO.meta.access||{}).free||0} 节免费直读，${(CO.meta.access||{}).locked||0} 节登录后读`;
+  $('#topics').innerHTML=list.map(t=>{
     const ksa=Object.entries(t.ksa).sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
-    const rows=t.lessons.map(l=>{
-      const [lbl,cls]=AC[l.action];
-      const lock = l.free? '' : '<span class="lk" title="登录后阅读">🔒</span>';
-      const inner=`<span class="ln">${lock}${l.title}</span><span class="ac ${cls}">${lbl}</span>`;
-      if(!l.ready) return `<span class="ls off">${inner}<span class="ac ac-t">待写</span></span>`;
-      return `<a class="ls" href="${l.free?'slides/'+l.file:'lesson.html?f='+encodeURIComponent(l.file)}">${inner}</a>`;
-    }).join('');
-    return `<div class="topic ${t.neu?'isnew':''}" data-i="${i}">
-      ${t.neu? '<span class="badge">HR 原创 '+t.neu+'</span>' : ''}
+    const first=(t.lessons.find(l=>l.ready)||{}).file;
+    const lock=t.lessons.filter(l=>!l.free).length;
+    const inner=`${t.neu? '<span class="badge">HR 原创 '+t.neu+'</span>' : ''}
       <span class="ch">${t.part}</span>
       <div class="no">${t.partTitle}</div>
       <div class="n">${t.title}</div>
       <div class="d">${t.desc}</div>
-      <div class="f"><span>${t.n} 个知识点</span><span class="ksarow">${ksa}</span></div>
-      <div class="lessons">${rows}</div>
-    </div>`}).join('');
+      <div class="f"><span>${t.n} 个知识点${lock?' · '+lock+' 节需登录':''}</span>
+        <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
+    return first
+      ? `<a class="topic ${t.neu?'isnew':''}" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
+      : `<div class="topic dim">${inner}</div>`;
+  }).join('');
 }
 document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课程阅读器 · HR AI Builder</title>
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --blue:#3370FF; --blue-d:#1F55E0; --blue-s:#EEF3FF;
+  --violet:#7C3AED; --violet-s:#F5EFFF;
+  --green:#00C6A2; --green-d:#00A88A; --green-s:#E8FBF6;
+  --grad-r:linear-gradient(135deg,#3370FF,#7C3AED);
+  --ink:#0F172A; --body:#475569; --muted:#64748B; --faint:#94A3B8;
+  --line:#E2E8F0; --line-soft:#F1F5F9; --bg:#F8FAFC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC',sans-serif;
+  color:var(--body);background:#fff;-webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;overflow:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ── 顶栏 ── */
+.top{display:flex;align-items:center;gap:18px;height:56px;padding:0 18px;flex:0 0 auto;
+  border-bottom:1px solid var(--line);background:#fff;z-index:20}
+.brand{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.mark{width:26px;height:26px;border-radius:7px;background:var(--grad-r);display:grid;place-items:center;
+  color:#fff;font-size:11px;font-weight:700;box-shadow:0 3px 10px -2px rgba(124,58,237,.55)}
+.brand .t{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.25}
+.brand .t small{display:block;font-size:11px;font-weight:400;color:var(--faint)}
+.crumb{flex:1;min-width:0;display:flex;align-items:center;gap:9px;font-size:12.5px;overflow:hidden}
+.crumb .c1{color:var(--violet);font-weight:500;white-space:nowrap}
+.crumb .sep{color:var(--line)}
+.crumb .c2{color:var(--ink);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb .tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;flex:0 0 auto}
+.t-c{background:var(--line-soft);color:var(--muted)}
+.t-a{background:var(--blue-s);color:var(--blue-d)}
+.t-n{background:var(--violet-s);color:var(--violet)}
+.t-l{background:#FEF3C7;color:#92400E}
+.prog{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.pbar{width:120px;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--grad-r);border-radius:3px;transition:width .3s}
+.prog .n{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbtn{font:inherit;font-size:12.5px;padding:6px 13px;border-radius:6px;border:1px solid var(--line);
+  background:#fff;color:var(--body);cursor:pointer;white-space:nowrap}
+.tbtn:hover{border-color:var(--violet);color:var(--violet)}
+.tbtn.pri{background:var(--grad-r);border-color:transparent;color:#fff}
+@media(max-width:900px){.crumb .c1,.prog .n{display:none}}
+
+/* ── 主体 ── */
+.main{flex:1;display:flex;min-height:0}
+.side{width:288px;flex:0 0 auto;border-right:1px solid var(--line);background:var(--bg);
+  display:flex;flex-direction:column;min-height:0}
+.side .sch{padding:12px 14px 10px;flex:0 0 auto}
+.side input{width:100%;font:inherit;font-size:12.5px;padding:8px 12px;border:1px solid var(--line);
+  border-radius:8px;background:#fff;color:var(--ink)}
+.side input:focus{outline:none;border-color:var(--violet)}
+.sumbar{margin:0 14px 10px;padding:9px 12px;background:#fff;border:1px solid var(--line);
+  border-radius:8px;font-size:12px;color:var(--body);display:flex;align-items:center;gap:7px;flex:0 0 auto}
+.sumbar b{color:var(--ink);font-weight:600}
+.tree{flex:1;overflow-y:auto;padding:0 8px 30px}
+.pt{margin:14px 0 4px;padding:0 6px}
+.pt .num{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--violet);text-transform:uppercase}
+.pt .ti{font-size:13px;font-weight:600;color:var(--ink);margin-top:1px;line-height:1.4}
+.tp{margin:2px 0}
+.tp-h{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:7px;cursor:pointer;
+  font-size:12.5px;font-weight:500;color:var(--ink)}
+.tp-h:hover{background:#fff}
+.tp-h .ar{color:var(--faint);font-size:10px;transition:.15s;flex:0 0 auto}
+.tp.open .tp-h .ar{transform:rotate(90deg)}
+.tp-h .nm{flex:1;line-height:1.45}
+.tp-h .ct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;flex:0 0 auto}
+.tp-l{display:none;padding:1px 0 4px 15px}
+.tp.open .tp-l{display:block}
+.ls{display:flex;align-items:flex-start;gap:7px;padding:6px 9px;border-radius:7px;cursor:pointer;
+  font-size:12.5px;color:var(--body);line-height:1.55}
+.ls:hover{background:#fff}
+.ls.on{background:var(--violet-s);color:var(--violet);font-weight:500}
+.ls.off{color:var(--faint);cursor:default}
+.ls.off:hover{background:none}
+.dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);flex:0 0 auto;margin-top:3px}
+.ls.on .dot{border-color:var(--violet)}
+.ls.done .dot{background:var(--green);border-color:var(--green)}
+.ls .lk{font-size:9px;opacity:.55;margin-left:3px}
+.side .foot{flex:0 0 auto;padding:11px 16px;border-top:1px solid var(--line);font-size:11px;
+  color:var(--faint);line-height:1.75}
+.side .foot a{color:var(--muted);border-bottom:1px solid var(--line)}
+
+/* ── 内容区 ── */
+.pane{flex:1;position:relative;min-width:0;display:flex;flex-direction:column}
+.pane iframe{flex:1;width:100%;border:0;background:#fff}
+.pager{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 22px;border-top:1px solid var(--line);background:#fff}
+.pg{font:inherit;font-size:12.5px;padding:7px 15px;border-radius:8px;border:1px solid var(--line);
+  background:#fff;color:var(--body);cursor:pointer;max-width:44%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg:hover:not(:disabled){border-color:var(--violet);color:var(--violet)}
+.pg:disabled{opacity:.4;cursor:default}
+.pg.next{background:var(--grad-r);border-color:transparent;color:#fff}
+.pg.next:hover:not(:disabled){color:#fff;opacity:.92}
+.mark{font-size:12.5px;color:var(--muted);cursor:pointer;user-select:none;white-space:nowrap}
+.mark:hover{color:var(--green-d)}
+.mark.done{color:var(--green-d);font-weight:500}
+
+.sbtn{display:none;font:inherit;font-size:16px;background:none;border:0;cursor:pointer;color:var(--muted);padding:4px 8px}
+@media(max-width:860px){
+  .sbtn{display:block}
+  .side{position:fixed;top:56px;left:0;bottom:0;z-index:30;transform:translateX(-100%);transition:.22s;box-shadow:0 0 40px rgba(15,23,42,.2)}
+  .side.show{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <button class="sbtn" id="sbtn">☰</button>
+  <a class="brand" href="index.html">
+    <span class="mark">HB</span>
+    <span class="t">HR AI Builder<small>读懂 AI，做组织变革的先驱者</small></span>
+  </a>
+  <div class="crumb" id="crumb"></div>
+  <div class="prog">
+    <div class="pbar"><i id="pbar" style="width:0"></i></div>
+    <span class="n" id="pnum">0 / 0</span>
+  </div>
+  <a class="tbtn" href="index.html">返回首页</a>
+  <a class="tbtn pri" href="index.html#login" id="loginBtn">登录</a>
+</div>
+
+<div class="main">
+  <aside class="side" id="side">
+    <div class="sch"><input id="q" placeholder="搜索知识点…" autocomplete="off"></div>
+    <div class="sumbar" id="sumbar"></div>
+    <div class="tree" id="tree"></div>
+    <div class="foot">
+      衍生自 <a href="https://xueai.app" target="_blank" rel="noopener">洛小山《AI 产品从入门到精通》</a><br>依 AGPL-3.0 开源
+    </div>
+  </aside>
+
+  <div class="pane">
+    <iframe id="frame" title="课程内容"></iframe>
+    <div class="pager">
+      <button class="pg" id="prev">← 上一节</button>
+      <span class="mark" id="mark"></span>
+      <button class="pg next" id="next">下一节 →</button>
+    </div>
+  </div>
+</div>
+
+<script src="course-data.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const CO=window.COURSE||{parts:[]};
+const DONE_KEY='hab_done', TK='hab_token';
+const AC={copy:['沿用','t-c'],adapt:['改写','t-a'],new:['原创','t-n']};
+
+/* 扁平序列 —— 上一节/下一节靠它 */
+const FLAT=[];
+CO.parts.forEach(p=>p.topics.forEach(t=>t.lessons.forEach(l=>{
+  if(l.ready) FLAT.push({...l, part:p.num, partTitle:p.title, topic:t.title});
+})));
+
+const done=new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'));
+const saveDone=()=>localStorage.setItem(DONE_KEY,JSON.stringify([...done]));
+const cur=()=>decodeURIComponent((location.hash||'').replace(/^#/,'')).trim();
+const find=f=>FLAT.findIndex(x=>x.file===f);
+
+function srcOf(l){
+  return l.free ? 'slides/'+l.file+'?embed=1'
+                : 'lesson.html?f='+encodeURIComponent(l.file)+'&embed=1';
+}
+
+function renderTree(filter){
+  const kw=(filter||'').trim().toLowerCase();
+  const f=cur();
+  let html='';
+  CO.parts.forEach(p=>{
+    let ptHtml='';
+    p.topics.forEach(t=>{
+      const ls=t.lessons.filter(l=>!kw || l.title.toLowerCase().includes(kw) || t.title.toLowerCase().includes(kw));
+      if(!ls.length) return;
+      const rdy=t.lessons.filter(l=>l.ready);
+      const dn=rdy.filter(l=>done.has(l.file)).length;
+      const open = kw || t.lessons.some(l=>l.file===f);
+      ptHtml+=`<div class="tp ${open?'open':''}">
+        <div class="tp-h"><span class="ar">▸</span><span class="nm">${t.title}</span><span class="ct">${dn}/${rdy.length}</span></div>
+        <div class="tp-l">${ls.map(l=>{
+          if(!l.ready) return `<div class="ls off"><span class="dot"></span><span>${l.title} · 待写</span></div>`;
+          return `<a class="ls ${l.file===f?'on':''} ${done.has(l.file)?'done':''}" href="#${encodeURIComponent(l.file)}">
+            <span class="dot"></span><span>${l.title}${l.free?'':'<span class="lk">🔒</span>'}</span></a>`;
+        }).join('')}</div></div>`;
+    });
+    if(ptHtml) html+=`<div class="pt"><div class="num">${p.num}</div><div class="ti">${p.title}</div></div>${ptHtml}`;
+  });
+  $('#tree').innerHTML=html||'<div style="padding:20px 8px;color:var(--faint);font-size:12.5px">没有匹配的知识点</div>';
+  $('#tree').querySelectorAll('.tp-h').forEach(h=>h.onclick=()=>h.parentNode.classList.toggle('open'));
+}
+
+function renderProgress(){
+  const dn=FLAT.filter(l=>done.has(l.file)).length;
+  $('#pbar').style.width=(FLAT.length?dn/FLAT.length*100:0)+'%';
+  $('#pnum').textContent=`${dn} / ${FLAT.length}`;
+  const a=CO.meta&&CO.meta.access||{};
+  $('#sumbar').innerHTML=`📚 完整目录 · <b>${FLAT.length}</b> 节可读 · 免费 ${a.free||0} / 登录 ${a.locked||0}`;
+}
+
+function load(){
+  let f=cur();
+  let i=find(f);
+  if(i<0){ i=0; f=FLAT[0].file; location.replace('#'+encodeURIComponent(f)); }
+  const l=FLAT[i];
+  $('#frame').src=srcOf(l);
+  document.title=l.title+' · HR AI Builder';
+  const [lbl,cls]=AC[l.action];
+  $('#crumb').innerHTML=`<span class="c1">${l.topic}</span><span class="sep">/</span>`
+    +`<span class="c2">${l.title}</span><span class="tag ${cls}">${lbl}</span>`
+    +(l.free?'':'<span class="tag t-l">需登录</span>');
+
+  const p=FLAT[i-1], n=FLAT[i+1];
+  $('#prev').disabled=!p; $('#next').disabled=!n;
+  $('#prev').textContent=p?'← '+p.title:'← 上一节';
+  $('#next').textContent=n?n.title+' →':'已是最后一节';
+  $('#prev').onclick=()=>p&&(location.hash='#'+encodeURIComponent(p.file));
+  $('#next').onclick=()=>n&&(location.hash='#'+encodeURIComponent(n.file));
+
+  const m=$('#mark'), isDone=done.has(l.file);
+  m.className='mark'+(isDone?' done':'');
+  m.textContent=isDone?'✓ 已学完':'○ 标记为学完';
+  m.onclick=()=>{ done.has(l.file)?done.delete(l.file):done.add(l.file);
+    saveDone(); renderTree($('#q').value); renderProgress(); load(); };
+
+  renderTree($('#q').value); renderProgress();
+  const on=$('#tree .ls.on'); if(on) on.scrollIntoView({block:'nearest'});
+  $('#side').classList.remove('show');
+}
+
+$('#q').oninput=e=>renderTree(e.target.value);
+$('#sbtn').onclick=()=>$('#side').classList.toggle('show');
+window.addEventListener('hashchange',load);
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowLeft'&&!$('#prev').disabled) $('#prev').click();
+  if(e.key==='ArrowRight'&&!$('#next').disabled) $('#next').click();
+});
+
+/* 登录态 */
+(async function(){
+  const t=localStorage.getItem(TK); if(!t) return;
+  try{
+    const r=await fetch((location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com')+'/api/me',
+      {headers:{Authorization:'Bearer '+t}});
+    if(r.ok){ const u=await r.json();
+      const b=$('#loginBtn'); b.textContent=u.nickname||'已登录'; b.className='tbtn'; b.removeAttribute('href'); }
+  }catch(e){}
+})();
+
+load();
+</script>
+</body>
+</html>
