@@ -1,5 +1,5 @@
 /* HR AI Builder 课程数据 v2 —— 单一真相源。
-   衍生自洛小山 learn-ai (AGPL-3.0)，面向 HR 重构。
+   面向 HR 领域的 AI 课程数据，AGPL-3.0 开源。
    action: copy=沿用 / adapt=重写成 HR 场景 / new=原创
    free:   true=静态直读(SEO) / false=登录后经 API 读
    spine:  是否属于「简历初筛」主线案例
@@ -13,10 +13,10 @@ window.COURSE = {
    "note": "主线案例，从第一篇章「它会编：筛简历现场」一路贯穿到第五篇章「AI 该有多大的自由」。各章另配薪酬/组织/政策问答等副线例子，避免全课只剩招聘一个场景。"
   },
   "attribution": {
-   "note": "本课程在洛小山《AI 产品从入门到精通》基础上衍生，面向 HR 领域重构。依 AGPL-3.0 开源并保留原作者署名。",
-   "author": "洛小山",
-   "repo": "https://github.com/itshen/learn-ai",
-   "site": "https://xueai.app",
+   "note": "面向 HR 领域的 AI 课程，依 AGPL-3.0 开源。",
+   "author": "HR AI Builder",
+   "repo": "https://github.com/ZYY3544/hr-ai-builder",
+   "site": "https://github.com/ZYY3544/hr-ai-builder",
    "license": "AGPL-3.0"
   },
   "stats": {

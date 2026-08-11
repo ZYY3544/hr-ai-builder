@@ -39,27 +39,10 @@
     io.observe(el);
   };
 
-  function initQrBar() {
-    return; // HR AI Builder：移除原站公众号引流横幅——署名放在页脚，不做站内广告位
-    var i18n = window.XUEAI_I18N;
-    var qrText = i18n ? i18n.t('qrText') : '扫码关注 <b>洛小山</b> 公众号，获取更多 AI 实战干货';
-    var closeLabel = i18n ? i18n.t('close') : '关闭';
-    var bar = document.createElement('div');
-    bar.className = 'qr-bar';
-    bar.innerHTML = '<img src="images/brand/qrcode.jpg" alt="QR">'
-      + '<span class="qr-text">' + qrText + '</span>'
-      + '<button class="qr-close" aria-label="' + closeLabel + '">&times;</button>';
-    document.body.insertBefore(bar, document.body.firstChild);
-    bar.querySelector('.qr-close').addEventListener('click', function() {
-      bar.remove();
-      sessionStorage.setItem('qr_bar_closed', '1');
-    });
-  }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { initReveal(); initQrBar(); });
+    document.addEventListener('DOMContentLoaded', function() { initReveal(); });
   } else {
     initReveal();
-    initQrBar();
   }
 })();

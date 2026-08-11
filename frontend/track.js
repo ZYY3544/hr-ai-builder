@@ -10,10 +10,10 @@
  *   停留时长    用 visibilitychange + beforeunload 上报，切后台不计时
  *   iframe      课件在 learn.html 的 iframe 里，必须单独上报，否则阅读行为全丢
  *
- * ⚠️ 命名禁区（抄自 learn-ai 用真实数据换来的教训）：
+ * ⚠️ 命名禁区（同类站点用真实数据换来的教训）：
  *   文件名 / 路径 / DOM id / localStorage 键里都不得出现
  *   ad / ads / banner / promo / sponsor / popup —— 会被 EasyList 规则整条拦掉。
- *   对方原来那个 interstitial-ad.js 当日只被请求 141 次，同页的 nav-inject.js 是 23,039 次。
+ *   实测同一天：命名带 -ad 的脚本被请求 141 次，同页正常命名的脚本 23,039 次。
  */
 (function () {
   'use strict';

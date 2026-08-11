@@ -25,7 +25,6 @@
       rotateTitle: '请横屏观看',
       rotateSub: '横屏后内容会按比例完整显示<br/>竖屏可关闭后继续浏览',
       rotateClose: '继续竖屏浏览',
-      qrText: '扫码关注 <b>洛小山</b> 公众号，获取更多 AI 实战干货',
       close: '关闭',
       langSwitchLabel: '切换语言'
     },
@@ -43,7 +42,6 @@
       rotateTitle: 'Please rotate to landscape',
       rotateSub: 'Content scales to fit in landscape<br/>You can dismiss this and keep browsing in portrait',
       rotateClose: 'Continue in portrait',
-      qrText: 'Scan to follow <b>Luo Xiaoshan (洛小山)</b> on WeChat for more hands-on AI insights',
       close: 'Close',
       langSwitchLabel: 'Change language'
     },
@@ -61,7 +59,6 @@
       rotateTitle: '가로 모드로 봐 주세요',
       rotateSub: '가로 모드에서 내용이 비율에 맞게 표시됩니다<br/>닫고 세로 모드로 계속 볼 수도 있습니다',
       rotateClose: '세로 모드로 계속 보기',
-      qrText: 'QR 코드를 스캔해 <b>뤄샤오산(洛小山)</b> 위챗 공식 계정을 팔로우하고 AI 실전 노하우를 받아보세요',
       close: '닫기',
       langSwitchLabel: '언어 변경'
     }
@@ -539,7 +536,7 @@
       } else {
         a.href = locFile(cur, l.id) + location.hash;
         a.addEventListener('click', function () {
-          try { localStorage.setItem('xueai_lang', l.id); } catch (e) {}
+          try { localStorage.setItem('hab_lang', l.id); } catch (e) {}
         });
       }
       menu.appendChild(a);

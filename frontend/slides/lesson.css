@@ -27,31 +27,6 @@
   --shadow-pop: 0 8px 30px rgba(0,0,0,0.10);
 }
 
-/* ── 顶部公众号关注条 ── */
-.qr-bar{
-  background:linear-gradient(135deg,#fff8f0 0%,#fff3e6 100%);
-  border-bottom:1px solid rgba(217,119,6,.12);
-  padding:10px 20px;
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  font-size:13px;color:#92400e;
-  position:relative;z-index:100;
-}
-.qr-bar img{
-  width:36px;height:36px;border-radius:6px;
-  box-shadow:0 1px 4px rgba(0,0,0,.08);
-  flex-shrink:0;
-}
-.qr-bar .qr-text{font-weight:600;}
-.qr-bar .qr-text b{color:#d97706;}
-.qr-bar .qr-close{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:24px;height:24px;border:none;background:none;cursor:pointer;
-  color:#92400e;opacity:.5;font-size:16px;line-height:1;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:50%;transition:opacity .2s,background .2s;
-}
-.qr-bar .qr-close:hover{opacity:1;background:rgba(0,0,0,.05);}
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
