@@ -197,6 +197,19 @@ body.dragging iframe{pointer-events:none}
   </div>
 </div>
 
+<div id="toast"></div>
+
+<div id="certMask">
+  <div class="cert">
+    <div class="cert-h">
+      <div class="k">CERTIFICATE</div>
+      <h3>学完全部课程，给你一张小小的证书</h3>
+      <p>课程免费，证书也免费。<b>它不代表任何机构的资质认证</b>——只是给愿意把 87 节都学完的你，一个看得见的记号。</p>
+    </div>
+    <div class="cert-b" id="certBody"></div>
+  </div>
+</div>
+
 <script src="course-data.js"></script>
 <script>
 const $=s=>document.querySelector(s);
@@ -385,19 +398,6 @@ document.addEventListener('keydown',e=>{
 load();
 </script>
 <script src="track.js"></script>
-<div id="toast"></div>
-
-<div id="certMask">
-  <div class="cert">
-    <div class="cert-h">
-      <div class="k">CERTIFICATE</div>
-      <h3>学完全部课程，给你一张小小的证书</h3>
-      <p>课程免费，证书也免费。<b>它不代表任何机构的资质认证</b>——只是给愿意把 87 节都学完的你，一个看得见的记号。</p>
-    </div>
-    <div class="cert-b" id="certBody"></div>
-  </div>
-</div>
-
 <script src="track.js"></script>
 </body>
 </html>
