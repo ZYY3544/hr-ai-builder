@@ -68,10 +68,6 @@ body{opacity:0;animation:_si .15s ease .08s forwards}
   .verify-layout{grid-template-columns:1fr}
 }
 </style>
-<link rel="alternate" hreflang="zh-CN" href="https://xueai.app/slides/ai-tips-verify.html">
-<link rel="alternate" hreflang="en" href="https://xueai.app/slides/ai-tips-verify.en.html">
-<link rel="alternate" hreflang="ko" href="https://xueai.app/slides/ai-tips-verify.ko.html">
-<link rel="alternate" hreflang="x-default" href="https://xueai.app/slides/ai-tips-verify.html">
 <!--seo:begin--><!--seo:end-->
 <script type="application/ld+json">{
  "@context": "https://schema.org",
@@ -136,15 +132,15 @@ const ROUNDS = [
     ]
   },
   {
-    question: '用户问 AI：「推荐几本关于产品管理的经典书籍」',
+    question: '用户问 AI：「推荐几本 HR 和组织管理的经典书籍」',
     claims: [
-      {text:'《启示录》（Inspired）— Marty Cagan 著，讲述如何打造用户喜爱的产品，被誉为产品经理必读书。', truth:true, explain:'✅ 正确。《Inspired》确实是 Marty Cagan 的著作，产品管理领域经典。'},
-      {text:'《用户故事地图》（User Story Mapping）— Jeff Patton 著，提出了用户故事地图方法论，帮助团队理解产品全貌。', truth:true, explain:'✅ 正确。作者、书名、内容都准确。'},
-      {text:'《产品思维的三重门》— 陈铭远 著，2022 年中信出版社出版，从认知科学角度重新定义产品设计方法论，豆瓣评分 8.9。', truth:false, explain:'❌ 完全编造。不存在这本书，"陈铭远"是虚构人名，豆瓣 8.9 分也是编的。AI 加了出版社、年份和评分，让你更容易相信。'},
-      {text:'《精益创业》（The Lean Startup）— Eric Ries 著，提出 MVP（最小可行产品）理念和"构建-测量-学习"循环。', truth:true, explain:'✅ 正确。经典创业和产品书籍，作者和核心概念都准确。'},
-      {text:'《增长黑客》— Sean Ellis & Morgan Brown 著，系统介绍了数据驱动增长的方法论。', truth:true, explain:'✅ 正确。作者和内容简介准确。'},
+      {text:'《高绩效教练》（Coaching for Performance）— John Whitmore 著，提出 GROW 模型，是教练式管理的奠基作品。', truth:true, explain:'✅ 正确。GROW 模型确实出自 John Whitmore 这本书，教练领域经典。'},
+      {text:'《第一，打破一切常规》（First, Break All the Rules）— Marcus Buckingham & Curt Coffman 著，基于盖洛普大规模调研提出 Q12 敬业度测量。', truth:true, explain:'✅ 正确。作者、盖洛普调研背景和 Q12 都准确。'},
+      {text:'《人才密度：组织效能的第一性原理》— 沈立行 著，2022 年中信出版社出版，从组织行为学角度重构人才盘点方法论，豆瓣评分 8.8。', truth:false, explain:'❌ 完全编造。不存在这本书，「沈立行」是虚构人名，豆瓣 8.8 分也是编的。注意 AI 补齐了出版社、年份、评分——细节越全，越容易骗过你。'},
+      {text:'《关键对话》（Crucial Conversations）— Kerry Patterson 等著，讲高风险、情绪化场景下怎么把话说清楚。', truth:true, explain:'✅ 正确。书名、作者团队和主题都准确。'},
+      {text:'《联盟》（The Alliance）— Reid Hoffman、Ben Casnocha、Chris Yeh 著，提出「任期制」（Tour of Duty）雇佣关系。', truth:true, explain:'✅ 正确。作者和核心概念都准确。'},
     ],
-    lesson:'第 3 条是编造的，但它<em>比真实推荐还"用心"</em>— 有出版社、年份、豆瓣评分。<strong>AI 越是给你"详细引用"，你越要警惕</strong>：真正的引用去搜就能找到，找不到的就是编的。',
+    lesson:'第 3 条是编造的，但它<em>比真实推荐还"用心"</em>— 有出版社、年份、豆瓣评分。<strong>AI 越是给你"详细引用"，你越要警惕</strong>：真正的引用去搜就能找到，找不到的就是编的。这一条对 HR 尤其致命——方案里引一本不存在的书，业务方一搜就穿帮。',
     patterns:[
       {icon:'📚',color:'var(--amber)',bg:'rgba(217,119,6,.1)',text:'<strong>编书名</strong> — 格式完美，但书根本不存在'},
       {icon:'👤',color:'var(--amber)',bg:'rgba(217,119,6,.1)',text:'<strong>编作者</strong> — 中文人名尤其容易被编造'},
