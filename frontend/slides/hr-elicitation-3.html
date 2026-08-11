@@ -22,10 +22,6 @@
 .good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
 .bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
 .bad .t{color:var(--danger)} .good .t{color:var(--success)}
-.spine{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#00A88A;background:#E8FBF6;border:1px solid rgba(0,168,138,.22);border-radius:20px;padding:3px 11px;margin-bottom:14px}
-.needs{background:#FFFBEB;border:1px dashed #FDE68A;border-radius:var(--radius-sm);padding:14px 17px;margin:22px 0 6px;font-size:13px;line-height:1.85;color:#78350F}
-.needs .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:#B45309;display:block;margin-bottom:6px}
-.needs b{color:#78350F;font-weight:700}
 .origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
 
 /* ── paywall（Flexible Sampling）：正文始终在 HTML 里，仅客户端遮挡 ── */
@@ -74,7 +70,6 @@
 <body>
 <main class="lesson">
   <header class="lesson-header">
-    <div class="spine">🧵 主线案例 · 简历初筛</div>
     <div class="kicker">第三篇章 · 知识萃取</div>
     <h1>从规则到 Prompt：判断链怎么落地</h1>
     <p class="subtitle">手上有一沓萃取记录，怎么变成一个能跑的东西？<b>关键不在措辞，在于把判断拆成有先后的链条，并且每一步都吐出中间结果。</b></p>
@@ -83,7 +78,7 @@
   <div class="sec-label">四步：从原话到 Prompt</div>
 
   <table class="htab">
-    <tr><th style="width:8%"></th><th style="width:26%">做什么</th><th>拿主线案例举例</th></tr>
+    <tr><th style="width:8%"></th><th style="width:26%">做什么</th><th>拿简历初筛举例</th></tr>
     <tr><td><b>1</b></td><td><b>把原话归成「信号」</b></td>
       <td>原话「没有一段是接手别人烂摊子的」→ 信号：<b>是否有接手已有系统/团队的经历</b></td></tr>
     <tr><td><b>2</b></td><td><b>每个信号标：能不能读到、怎么读</b></td>
@@ -169,7 +164,6 @@
     </ol>
   </div>
 
-  <div class="needs"><span class="h">✎ 待补真实素材</span>Prompt 骨架里的信号 S1/S2 是<b>示意</b>。<br>建议替换成：铭曦引擎里真实在用的<b>一段判断链</b>（比如 JE 的某个评估维度、或序列划分的判据），做脱敏处理后放进来。<b>真实的判断链一看就跟编的不一样</b>——它会有那种「为什么这里要加一个例外」的痕迹。</div>
 
   </div>
 </main>
