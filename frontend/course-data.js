@@ -1055,7 +1055,7 @@ window.COURSE = {
      ]
     }
    ],
-   "color": "#00A88A"
+   "color": "#E11D48"
   },
   {
    "id": "p-5",
