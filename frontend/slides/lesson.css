@@ -6,7 +6,7 @@
 
 :root {
   /* 色板 */
-  --bg: #f7f5f0;            /* 页面米白底 */
+  --bg: #ffffff;            /* 页面白底（与外壳统一） */
   --card: #ffffff;          /* 卡片白底 */
   --text: #1c1c1e;          /* 主文字 */
   --sub: #6b7280;           /* 次要文字 */
@@ -16,11 +16,11 @@
   --success: #16a34a;
   --cyan: #0891b2;
   --purple: #7c3aed;
-  --border: rgba(0,0,0,0.07);
+  --border: rgba(0,0,0,0.09);
 
   /* 布局 */
   --content-w: 880px;       /* 常规文章宽度 */
-  --content-w-wide: 1100px; /* 宽内容（大图表/分栏）宽度 */
+  --content-w-wide: 1000px; /* 宽内容（大图表/分栏）宽度 */
   --radius: 14px;
   --radius-sm: 10px;
   --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
@@ -125,7 +125,7 @@ body {
   position: fixed; left: 0; right: 0; bottom: 0;
   display: flex; justify-content: center;
   padding: 14px 20px calc(18px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--bg) 55%, rgba(247,245,240,0));
+  background: linear-gradient(to top, var(--bg) 55%, rgba(255,255,255,0));
   pointer-events: none; z-index: 50;
 }
 .fab-wrap .btn-next {
