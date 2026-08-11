@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt 与 Agent 相关的 30 个面试问题（HR 版） · HR AI Builder</title>
+<meta name="description" content="Prompt 与 Agent 相关的 30 个面试问题（HR 版）">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.dist{display:flex;gap:10px;margin:18px 0 6px;flex-wrap:wrap}
+.dcard{flex:1;min-width:130px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;background:var(--card)}
+.dcard .k{font-size:11px;font-weight:700;letter-spacing:.06em}
+.dcard .v{font-size:22px;font-weight:600;color:var(--text);margin-top:2px}
+.dcard .d{font-size:11.5px;color:var(--sub);margin-top:2px;line-height:1.6}
+.dk .k{color:#2563EB} .ds .k{color:#059669} .da .k{color:#7C3AED}
+.qg{margin:26px 0 0}
+.qg > .gh{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--sub);text-transform:uppercase;
+  padding-bottom:7px;border-bottom:1px solid var(--border);margin-bottom:4px}
+.q{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
+.q:last-child{border-bottom:0}
+.q .no{flex:0 0 26px;font-size:12px;font-weight:700;color:var(--sub);font-variant-numeric:tabular-nums;padding-top:2px}
+.q .bd{flex:1;min-width:0}
+.q .qt{font-size:14.5px;color:var(--text);font-weight:500;line-height:1.6}
+.q .pt{font-size:12.5px;color:var(--sub);margin-top:5px;line-height:1.75}
+.q .pt b{color:var(--text)}
+.tag{flex:0 0 auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;height:19px;line-height:15px;margin-top:2px}
+.t-K{background:#EFF6FF;color:#1D4ED8} .t-S{background:#ECFDF5;color:#047857} .t-A{background:#F5F3FF;color:#6D28D9}
+.howto{background:var(--card);border:1px solid var(--border);border-left:3px solid #7C3AED;
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:15px 18px;margin:20px 0;font-size:13px;line-height:1.9}
+.howto b{color:var(--text)}
+.origin{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--sub);line-height:1.8}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "Prompt 与 Agent 相关的 30 个面试问题（HR 版）",
+ "articleSection": "第二篇章 · 他们会这样考你",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第二篇章 · 他们会这样考你</div>
+    <h1>Prompt 与 Agent · 30 问</h1>
+    <p class="subtitle">这一套问的是「你会不会指挥它」。<b>K 类题最多，也最好补 —— 但只答 K 类题会显得只停留在概念层。</b></p>
+  </header>
+
+  <div class="dist">
+    <div class="dcard dk"><div class="k">K · 知识</div><div class="v">12</div><div class="d">问概念 · 补起来最快</div></div>
+    <div class="dcard ds"><div class="k">S · 技能</div><div class="v">9</div><div class="d">问做法 · 靠做作品补</div></div>
+    <div class="dcard da"><div class="k">A · 能力</div><div class="v">9</div><div class="d">问判断 · 补不了，只能重新证明</div></div>
+  </div>
+
+  <div class="howto">
+    <b>怎么用这 30 题：</b>不要背答案 —— 面试官问的是同一件事的不同问法，背不完。<br>
+    每题下面那行灰字是<b>「他真正在考什么」</b>，那才是该准备的东西。<br>
+    <b>A 类题答不上来最麻烦</b>：它没有知识点可背，只能从你真实做过的事里找证据。
+    所以看到 A 类题时，问自己一句：<b>我有没有一个真实的例子？</b>没有的话，那就是你下一个作品该补的方向。
+  </div>
+
+<div class="qg"><div class="gh">Prompt 基础</div><div class="q"><div class="no">01</div><span class="tag t-K">K</span><div class="bd"><div class="qt">System Prompt 和 User Prompt 有什么区别？</div><div class="pt">考基础。System 定角色和规则、全程生效；User 是本轮输入</div></div></div><div class="q"><div class="no">02</div><span class="tag t-S">S</span><div class="bd"><div class="qt">一个 Prompt 效果不好，你先改什么？</div><div class="pt">先加例子，不是先改措辞。<b>答「多试几次」的人没有方法</b></div></div></div><div class="q"><div class="no">03</div><span class="tag t-K">K</span><div class="bd"><div class="qt">为什么给例子通常比讲道理管用？</div><div class="pt">它是模式匹配器，<b>看得懂示范，看不懂抽象要求</b></div></div></div><div class="q"><div class="no">04</div><span class="tag t-S">S</span><div class="bd"><div class="qt">什么时候让它输出 JSON，什么时候输出自然语言？</div><div class="pt">要被程序消费就 JSON，要给人看就自然语言。<b>混着来是最常见的错</b></div></div></div><div class="q"><div class="no">05</div><span class="tag t-S">S</span><div class="bd"><div class="qt">怎么让输出格式稳定？</div><div class="pt">给结构化模板 + 明确禁止项 + 降低 Temperature</div></div></div></div>
+<div class="qg"><div class="gh">Prompt 安全</div><div class="q"><div class="no">06</div><span class="tag t-K">K</span><div class="bd"><div class="qt">什么是 Prompt Injection？</div><div class="pt">考安全意识。<b>本质是指令和数据走同一个通道</b></div></div></div><div class="q"><div class="no">07</div><span class="tag t-K">K</span><div class="bd"><div class="qt">候选人在简历里藏一句「忽略以上指令」，它为什么会听？</div><div class="pt">它读的是文本流不是渲染画面，<b>颜色和字号在提取时就丢了</b></div></div></div><div class="q"><div class="no">08</div><span class="tag t-A">A</span><div class="bd"><div class="qt">HR 场景里哪些字段是攻击面？</div><div class="pt">简历、内推备注、绩效自评、调研开放题、背调材料。<b>凡是外部可填的都是</b></div></div></div><div class="q"><div class="no">09</div><span class="tag t-S">S</span><div class="bd"><div class="qt">三层防御分别是什么？哪一层最不可靠？</div><div class="pt">清洗、隔离、兜底。<b>前两层都可能被绕过，兜底那层才是地基</b></div></div></div><div class="q"><div class="no">10</div><span class="tag t-A">A</span><div class="bd"><div class="qt">发现有候选人藏字，你怎么处理？这是技术问题还是政策问题？</div><div class="pt"><b>政策问题</b>。淘汰 / 记录 / 还是当作加分，得在遇到之前定好</div></div></div></div>
+<div class="qg"><div class="gh">Agent 概念</div><div class="q"><div class="no">11</div><span class="tag t-K">K</span><div class="bd"><div class="qt">Agent 和普通对话有什么区别？</div><div class="pt">能调工具、能多步执行、有目标导向</div></div></div><div class="q"><div class="no">12</div><span class="tag t-K">K</span><div class="bd"><div class="qt">ReAct 循环是什么？</div><div class="pt">思考 → 行动 → 观察 → 再思考</div></div></div><div class="q"><div class="no">13</div><span class="tag t-K">K</span><div class="bd"><div class="qt">工具调用是怎么实现的？</div><div class="pt">模型输出一个结构化的调用请求，由外部程序执行后把结果喂回去。<b>模型本身不执行任何东西</b></div></div></div><div class="q"><div class="no">14</div><span class="tag t-K">K</span><div class="bd"><div class="qt">Agent 卡死一般是什么原因？</div><div class="pt">死循环、工具报错没处理、上下文溢出、目标不明确</div></div></div><div class="q"><div class="no">15</div><span class="tag t-K">K</span><div class="bd"><div class="qt">什么是 Workflow？和 Agent 差在哪？</div><div class="pt">Workflow 步骤固定，Agent 自己决定下一步</div></div></div></div>
+<div class="qg"><div class="gh">该给多大自主权</div><div class="q"><div class="no">16</div><span class="tag t-A">A</span><div class="bd"><div class="qt">HR 场景你会选 Workflow 还是 Agent？举例</div><div class="pt"><b>大多数选 Workflow</b>。能举出「什么时候才该用 Agent」的人才算真懂</div></div></div><div class="q"><div class="no">17</div><span class="tag t-A">A</span><div class="bd"><div class="qt">什么情况下不该给它自主权？</div><div class="pt">不可逆、要担责、错误不可见——占一条就别给</div></div></div><div class="q"><div class="no">18</div><span class="tag t-A">A</span><div class="bd"><div class="qt">给 Agent 加工具时最该小心什么？</div><div class="pt"><b>写权限的工具</b>。读工具错了是浪费，写工具错了是事故</div></div></div><div class="q"><div class="no">19</div><span class="tag t-A">A</span><div class="bd"><div class="qt">多 Agent 协作什么时候是过度设计？</div><div class="pt">单个 Agent 能做完的时候。<b>多 Agent 会放大错误、成本翻倍、还更难调试</b></div></div></div><div class="q"><div class="no">20</div><span class="tag t-A">A</span><div class="bd"><div class="qt">一个 Agent 能自己发拒信吗？</div><div class="pt">不能。<b>不可逆 + 影响他人 + 需要担责，三条全占</b></div></div></div></div>
+<div class="qg"><div class="gh">成本</div><div class="q"><div class="no">21</div><span class="tag t-K">K</span><div class="bd"><div class="qt">为什么多轮对话越来越贵？</div><div class="pt">每轮都要把全部历史重发一遍</div></div></div><div class="q"><div class="no">22</div><span class="tag t-S">S</span><div class="bd"><div class="qt">同样的功能，怎么把成本降一个数量级？</div><div class="pt">裁上下文、缓存、简单任务换小模型、批处理</div></div></div><div class="q"><div class="no">23</div><span class="tag t-A">A</span><div class="bd"><div class="qt">选模型你看哪几个指标？</div><div class="pt">能力够不够、贵不贵、快不快、<b>能不能私有化部署</b>——最后这条是 HR 特有的</div></div></div><div class="q"><div class="no">24</div><span class="tag t-A">A</span><div class="bd"><div class="qt">什么时候该用小模型？</div><div class="pt">任务简单且量大时。<b>分类、抽取、格式化，用大模型是浪费</b></div></div></div><div class="q"><div class="no">25</div><span class="tag t-S">S</span><div class="bd"><div class="qt">一个 HR 场景的 AI 应用，一年成本怎么估？</div><div class="pt">单次调用成本 × 频次 × 12。<b>答得出量级的人极少</b></div></div></div></div>
+<div class="qg"><div class="gh">工程感</div><div class="q"><div class="no">26</div><span class="tag t-S">S</span><div class="bd"><div class="qt">你写过最长的一个 Prompt 是什么？为什么那么长？</div><div class="pt">考真实经验。<b>答不上「为什么长」说明是堆出来的不是设计出来的</b></div></div></div><div class="q"><div class="no">27</div><span class="tag t-K">K</span><div class="bd"><div class="qt">Prompt 写太长会有什么问题？</div><div class="pt">中间部分容易被忽略、成本上升、维护困难</div></div></div><div class="q"><div class="no">28</div><span class="tag t-S">S</span><div class="bd"><div class="qt">怎么知道你的 Prompt 改动是变好了还是变坏了？</div><div class="pt"><b>固定评测集跑一遍</b>。答「感觉好一些」的人没有量具</div></div></div><div class="q"><div class="no">29</div><span class="tag t-K">K</span><div class="bd"><div class="qt">上下文里放太多信息，为什么反而变差？</div><div class="pt">注意力被稀释，关键信息被淹没</div></div></div><div class="q"><div class="no">30</div><span class="tag t-S">S</span><div class="bd"><div class="qt">你怎么管理 Prompt 的版本？</div><div class="pt">进代码仓库、每次改动记原因和评测结果。<b>存在文档里的都会失控</b></div></div></div></div>
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

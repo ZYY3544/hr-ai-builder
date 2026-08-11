@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HR 学 AI 需要懂原理吗？——原理决定你能不能判断它什么时候会错 · HR AI Builder</title>
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+/* 核心论断 */
+.thesis-box {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.thesis-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(0,102,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.thesis-text h3 { font-size: 20px; font-weight: 800; color: var(--text); }
+.thesis-text p  { font-size: 15px; color: var(--sub); margin-top: 6px; line-height: 1.7; }
+.thesis-text p b { color: var(--accent); }
+
+/* 双列区域 */
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 36px;
+}
+
+/* 列 */
+.col { display: flex; flex-direction: column; gap: 12px; }
+.col-label {
+  font-size: 13px; font-weight: 800; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--sub);
+  padding: 0 2px; margin-bottom: 4px;
+}
+
+/* 卡片 */
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  margin-top: 2px;
+}
+.c1 .card-icon { background: rgba(0,102,255,0.08); color: var(--accent); }
+.c2 .card-icon { background: rgba(217,119,6,0.08); color: var(--amber); }
+.c3 .card-icon { background: rgba(8,145,178,0.08); color: var(--cyan); }
+.c4 .card-icon { background: rgba(22,163,74,0.08); color: var(--success); }
+.c5 .card-icon { background: rgba(124,58,237,0.08); color: var(--purple); }
+
+.card-body h4 { font-size: 16px; font-weight: 700; color: var(--text); }
+.card-body p  { font-size: 14px; color: var(--sub); margin-top: 5px; line-height: 1.7; }
+.card-body p b { color: var(--text); }
+
+/* 底部结论 */
+.bottom-box {
+  background: rgba(0,102,255,0.04);
+  border: 1.5px solid rgba(0,102,255,0.2);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.bottom-box p { font-size: 16px; color: var(--text); line-height: 1.7; }
+.bottom-box p b { color: var(--accent); }
+.bottom-box p em { font-style: normal; font-weight: 700; color: var(--danger); }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .thesis-box { padding: 18px 16px; gap: 12px; flex-direction: column; align-items: flex-start; }
+  .thesis-icon { width: 36px; height: 36px; }
+  .thesis-text h3 { font-size: 17px; }
+  .thesis-text p { font-size: 14px; }
+  .cols { grid-template-columns: 1fr; gap: 24px; }
+  .card { padding: 16px; }
+  .card-body h4 { font-size: 15px; }
+  .card-body p { font-size: 13px; }
+  .bottom-box { padding: 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .bottom-box p { font-size: 14px; }
+}
+</style>
+<!-- SEO Start -->
+<meta name="description" content="不懂底层原理，你的 AI 产品只能靠猜。理解大模型底层机制，才能精准判断问题出在哪、该用什么方案解决，从而做出真正有竞争力的 AI 产品。">
+<meta name="keywords" content="HR学AI,大模型基础,AI底层原理,HR AI Builder">
+<meta name="author" content="HR AI Builder">
+<meta name="robots" content="index, follow">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="为什么 HR 也要弄懂 AI 的原理？">
+<meta property="og:description" content="不懂底层原理，你的 AI 产品只能靠猜。理解大模型底层机制，才能精准判断问题出在哪、该用什么方案解决，从而做出真正有竞争力的 AI 产品。">
+<meta property="og:locale" content="zh_CN">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="为什么 HR 也要弄懂 AI 的原理？">
+<meta name="twitter:description" content="不懂底层原理，你的 AI 产品只能靠猜。理解大模型底层机制，才能精准判断问题出在哪、该用什么方案解决，从而做出真正有竞争力的 AI 产品。">
+<!-- SEO End -->
+<!--seo:begin--><!--seo:end-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "HR 学 AI 需要懂原理吗？——原理决定你能不能判断它什么时候会错",
+ "articleSection": "开篇 · 入门与定位",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+
+<article class="lesson">
+
+  <!-- 标题区 -->
+  <header class="lesson-header">
+    <div class="kicker">入门与定位</div>
+    <h1>为什么花这么多时间讲原理？</h1>
+    <p class="subtitle">磨刀不误砍柴工 · 打好基础才能真正做工程化</p>
+  </header>
+
+  <!-- 核心论断 -->
+  <div class="thesis-box" id="thesis">
+    <div class="thesis-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <div class="thesis-text">
+      <h3>AI 所有工程化操作，本质上都是对上下文的高效处理</h3>
+      <p>不管是 Prompt Engineering、RAG、Fine-tuning，还是 Agent 工具调用，<b>所有的花活，基本上都围绕着这个 message list 处理</b>。理解它，你才能真正判断方案好不好、问题出在哪里。</p>
+    </div>
+  </div>
+
+  <!-- 双列区域 -->
+  <div class="cols">
+
+    <!-- 左列 -->
+    <div class="col">
+      <div class="col-label reveal" id="labelL">所有工程化操作，本质都在做这件事</div>
+
+      <div class="card c1 reveal" id="c0">
+        <div class="card-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>Prompt Engineering</h4>
+          <p>精心构造 <code>messages</code>，让模型看到正确的上下文：系统指令、角色定义、少样本示例，全部是往 message list 里塞内容。</p>
+        </div>
+      </div>
+
+      <div class="card c2 reveal" id="c1">
+        <div class="card-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>RAG 检索增强生成</h4>
+          <p>从外部知识库取回相关文档片段，<b>拼进 message list</b> 再发给模型，本质是在运行时扩充上下文。</p>
+        </div>
+      </div>
+
+      <div class="card c3 reveal" id="c2">
+        <div class="card-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>Agent 工具调用</h4>
+          <p>模型输出 function call → 执行工具 → 把结果 <b>append 回 message list</b> → 再次推理。每一轮都是在积累上下文。</p>
+        </div>
+      </div>
+
+      <div class="card c4 reveal" id="c3">
+        <div class="card-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>Fine-tuning / SFT</h4>
+          <p>把大量理想的 message list 烧进模型权重，让模型默认就能按期望方式处理上下文，省去每次都要在 prompt 里说明的成本。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右列 -->
+    <div class="col">
+      <div class="col-label reveal" id="labelR">不理解底层，会卡在这些问题上</div>
+
+      <div class="card c1 reveal" id="c4">
+        <div class="card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>「Prompt 改了没用」</h4>
+          <p>System Prompt 被截断、历史对话占满窗口，<b>问题根本出在上下文管理</b>，跟 Prompt 写得好不好没有关系。</p>
+        </div>
+      </div>
+
+      <div class="card c2 reveal" id="c5">
+        <div class="card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>「RAG 效果差，不知道哪环节坏了」</h4>
+          <p>Chunking 粒度、Embedding 模型、相似度阈值，<b>不了解原理就不知道该查哪里</b>，只能瞎试。</p>
+        </div>
+      </div>
+
+      <div class="card c5 reveal" id="c6">
+        <div class="card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="card-body">
+          <h4>「模型答错了，该改 Prompt 还是 Fine-tune？」</h4>
+          <p>是上下文没给对，还是参数里压根没这个知识？<b>两件事的修复方式完全不同</b>，搞错方向浪费大量时间。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部结论 -->
+  <div class="bottom-box reveal" id="bottomBox">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <p>
+      我会花<em>比较大的篇幅</em>讲解这部分，<b>不推荐跳过</b>。<br>
+      理解了 message list 的处理逻辑，后面所有工程化方案你都能一眼看穿它在做什么，为什么有效，局限在哪。
+    </p>
+  </div>
+
+</article>
+
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<!--seo:begin--><!--seo:end-->
+<script src="../track.js"></script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vibe Coding 方法论第 2 节：复述、PRD、等确认、编码的四步流程，批量修改断点与重复造轮子检测。">
+<meta name="author" content="HR AI Builder">
+<title>不会写代码怎么指挥 AI 做东西？四步协作流程 · HR AI Builder</title>
+<link rel="stylesheet" href="lesson.css">
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
+<style>
+:root{--vibe:#0d9488;--vibe-deep:#0f766e}
+.lesson-header .kicker{color:var(--vibe)}
+.desc{font-size:16px;color:var(--sub);line-height:1.8}
+
+/* 流程阶段条 */
+.stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.stage{padding:10px 8px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);text-align:center;transition:all .25s}
+.stage .sg-num{font-size:12px;font-weight:800;color:var(--sub)}
+.stage .sg-name{font-size:14px;font-weight:800;color:var(--text);margin-top:2px}
+.stage.cur{border-color:var(--vibe);background:rgba(13,148,136,.06)}
+.stage.cur .sg-num,.stage.cur .sg-name{color:var(--vibe)}
+.stage.done{border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.04)}
+.stage.done .sg-name{color:var(--success)}
+
+/* 演示区 */
+.vis-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;margin-top:14px}
+.vis-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vis-bar-title{font-size:14px;font-weight:700;color:var(--sub)}
+.vis-body{min-height:280px;max-height:460px;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.65;opacity:0;transform:translateY(8px);transition:all .35s ease;flex-shrink:0}
+.msg.show{opacity:1;transform:translateY(0)}
+.msg.user{background:rgba(8,145,178,.1);color:var(--cyan)}
+.msg.ai{background:rgba(0,0,0,.05);color:var(--text)}
+.msg.wait{background:rgba(217,119,6,.09);color:var(--amber);font-weight:600}
+.msg.ok{background:rgba(22,163,74,.09);color:var(--success);font-weight:600}
+.msg.prd{background:rgba(13,148,136,.06);border:1.5px solid rgba(13,148,136,.22);color:var(--text)}
+.msg.prd .prd-title{font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--vibe);margin-bottom:6px}
+.msg.prd pre{margin:8px 0 0;padding:12px 14px;overflow:auto;border-radius:10px;background:#0e1c1a;color:#d9f2ec;font-size:12.5px;line-height:1.6;border:none}
+.btn-appr{display:inline-block;margin-top:8px;padding:10px 22px;border-radius:9px;border:none;background:var(--success);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;min-height:44px}
+.btn-appr:hover{filter:brightness(1.08)}
+
+.ctrl-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.btn{padding:11px 24px;border-radius:9px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-p{background:var(--vibe);color:#fff}
+.btn-p:hover{filter:brightness(1.08)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed}
+.btn-r{background:rgba(0,0,0,.05);color:var(--sub);border:1px solid var(--border)}
+.hint{font-size:13px;color:var(--sub)}
+
+/* 滑块演示 */
+.slider-box{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:20px 22px;margin-top:12px}
+.slider-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.slider-row label{font-size:15px;font-weight:700;color:var(--text);flex-shrink:0}
+.slider-row input[type=range]{flex:1;min-width:180px;accent-color:var(--vibe);height:44px;cursor:pointer}
+.file-count{font-size:26px;font-weight:800;color:var(--vibe);min-width:70px;text-align:center}
+.file-count small{font-size:13px;font-weight:600;color:var(--sub)}
+
+.gate{margin-top:16px;border-radius:12px;padding:16px 18px;transition:all .25s}
+.gate.pass{background:rgba(22,163,74,.05);border:1.5px solid rgba(22,163,74,.3)}
+.gate.stop{background:rgba(217,119,6,.06);border:1.5px solid rgba(217,119,6,.35)}
+.gate-title{font-size:16px;font-weight:800;margin-bottom:6px}
+.gate.pass .gate-title{color:var(--success)}
+.gate.stop .gate-title{color:var(--amber)}
+.gate-desc{font-size:14px;color:var(--sub);line-height:1.7}
+.plan-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.plan-item{display:grid;grid-template-columns:200px 1fr 170px;gap:12px;padding:10px 14px;border-radius:10px;background:var(--card);border:1px solid var(--border);font-size:13.5px;align-items:center}
+.plan-item .pf{font-family:"SF Mono","Fira Code",Menlo,monospace;font-weight:700;color:var(--vibe-deep);word-break:break-all}
+.plan-item .pw{color:var(--text)}
+.plan-item .pd{color:var(--sub);font-size:12.5px}
+
+/* 三要素 */
+.elem-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:12px}
+.elem-grid .l-card h3{font-size:16px;margin-bottom:4px}
+.elem-grid .l-card p{font-size:14px;color:var(--sub);line-height:1.7}
+.elem-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(13,148,136,.1);color:var(--vibe);font-size:13px;font-weight:800;margin-bottom:8px}
+
+pre{margin:12px 0 0;padding:16px 18px;overflow:auto;border:1.5px solid var(--border);border-radius:12px;background:#0e1c1a;color:#d9f2ec;font-size:13px;line-height:1.65}
+pre code{padding:0;background:none;color:#d9f2ec}
+code{color:var(--vibe-deep);background:rgba(13,148,136,.08)}
+
+.vibe-callout{background:rgba(13,148,136,.05);border:1.5px solid rgba(13,148,136,.25);border-radius:14px;padding:18px 22px}
+.vibe-callout b{color:var(--vibe)}
+.src-note{margin-top:28px;font-size:13px;color:var(--sub)}
+.src-note a{color:var(--vibe-deep)}
+
+@media (max-width:768px){
+  .stage-row{grid-template-columns:1fr 1fr}
+  .elem-grid{grid-template-columns:1fr}
+  .plan-item{grid-template-columns:1fr;gap:4px}
+  .vis-body{min-height:220px}
+}
+</style>
+<!--seo:begin--><!--seo:end-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "不会写代码怎么指挥 AI 做东西？四步协作流程",
+ "articleSection": "第四篇章 · 怎么跟它协作",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">Vibe Coding 方法论 · 第 2 节</div>
+    <h1>四步流程：复述、PRD、确认、编码</h1>
+    <p class="subtitle">把软件工程的需求确认环节搬进人机协作：AI 动手之前必须复述需求、写出 PRD、拿到明确许可。再加上批量修改断点和查重规则，把爆炸半径控制在动手之前。</p>
+  </header>
+
+  <section class="reveal">
+    <div class="sec-label">交互演示一 · 五步流程模拟器</div>
+    <p class="desc">一个真实需求「帮我加一个导出报表功能」，走一遍完整流程。点击「推进一步」，注意第 4 步：你不点「批准」，AI 就不会写代码。</p>
+    <div class="stage-row" id="stageRow">
+      <div class="stage"><div class="sg-num">STEP 1</div><div class="sg-name">思考提问</div></div>
+      <div class="stage"><div class="sg-num">STEP 2</div><div class="sg-name">复述需求</div></div>
+      <div class="stage"><div class="sg-num">STEP 3</div><div class="sg-name">编写 PRD</div></div>
+      <div class="stage"><div class="sg-num">STEP 4</div><div class="sg-name">等待许可</div></div>
+      <div class="stage"><div class="sg-num">STEP 5</div><div class="sg-name">开始开发</div></div>
+    </div>
+    <div class="vis-wrap">
+      <div class="vis-bar"><span class="vis-bar-title" id="flowTitle">点击「推进一步」开始</span><span class="hint" id="flowHint"></span></div>
+      <div class="vis-body" id="flowBody"></div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn-p" id="flowNext" onclick="flowStep()">推进一步</button>
+      <button class="btn btn-r" onclick="flowReset()">重播</button>
+      <span class="hint" id="flowMsg"></span>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">为什么必须给具体步骤</div>
+    <div class="vibe-callout">
+      <p style="line-height:1.8"><b>「请先确认理解后再编码」这句话太模糊。</b>AI 会自己判断「我已经理解了」，然后直接动手。写明「写 PRD、等待许可」这类具体动作，AI 才会真的停下来。实际使用中，简单的一行改动 AI 会自己判断不需要 PRD，这套流程主要拦截多文件变更和新功能开发，也就是返工成本最高的那类任务。</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">交互演示二 · 批量修改断点</div>
+    <p class="desc">规则原文：「修改超过 3 个文件时，必须先列出修改计划并等待用户确认后再动手。」拖动滑块，改变本次要动的文件数，看断点什么时候触发。</p>
+    <div class="slider-box">
+      <div class="slider-row">
+        <label for="fileSlider">本次要改的文件数</label>
+        <input type="range" id="fileSlider" min="1" max="8" value="2" oninput="updateGate(this.value)">
+        <div class="file-count"><span id="fileNum">2</span> <small>个文件</small></div>
+      </div>
+      <div class="gate pass" id="gateBox"></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">修改计划的三要素</div>
+    <div class="elem-grid">
+      <div class="l-card"><span class="elem-num">01</span><h3>要改哪些文件</h3><p>完整的文件清单。人先看范围对不对，再看内容。清单本身就能暴露「怎么这个需求要动配置文件」这类异常。</p></div>
+      <div class="l-card"><span class="elem-num">02</span><h3>每个文件改什么</h3><p>逐文件写清楚改动内容。避免 AI 借着一次需求「顺手」做无关的重构和清理。</p></div>
+      <div class="l-card"><span class="elem-num">03</span><h3>改动之间的依赖关系</h3><p>先改哪个、后改哪个、谁依赖谁。防止连续改一串文件后发现思路有误，回滚成本过高。</p></div>
+    </div>
+    <p class="desc" style="margin-top:12px;font-size:14px">阈值可以按项目调整：3 个文件是作者项目里的经验值，谨慎的项目可以调成 1，快速原型可以放宽到 5。</p>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">新增功能前的查重规则</div>
+    <div class="l-cols">
+      <div class="l-card">
+        <h3 style="font-size:16px;margin-bottom:4px">问题：AI 不知道项目里已经有轮子</h3>
+        <p style="font-size:14px;color:var(--sub);line-height:1.7">AI 的上下文只有当前对话，它看不到三个月前另一个对话里写的工具函数。不加约束，同一个 <code>formatDate</code> 会被写四遍，每遍行为还略有不同。</p>
+      </div>
+      <div class="l-card">
+        <h3 style="font-size:16px;margin-bottom:4px">规则：先搜索，再动手</h3>
+        <ul style="padding-left:20px;font-size:14px;color:var(--sub);line-height:1.9">
+          <li>新增功能前，必须先搜索项目中是否已有类似实现</li>
+          <li>搜索范围：相关目录的函数名、类名、工具方法</li>
+          <li>找到已有实现时，优先复用或扩展</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">本节要点</div>
+    <div class="vibe-callout">
+      <p style="line-height:1.8"><b>断点要设在动手之前。</b>复述和 PRD 拦截理解偏差，修改计划拦截连锁错改，查重拦截重复造轮子，三道关卡都比事后回滚便宜。</p>
+    </div>
+    <p class="src-note">素材来源：对应 <code style="background:none;color:var(--vibe-deep)">rule-opensource.mdc</code> 第二章「需求处理与开发流程」，仓库 <a href="https://github.com/itshen/xs_vibe_rules">itshen/xs_vibe_rules</a>。</p>
+  </section>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script>
+/* ── 交互一：五步流程模拟器 ── */
+var FLOW = [
+  {
+    stage: 0, title: 'STEP 1 · AI 先思考，再向人提问',
+    msgs: [
+      {cls:'user', text:'用户：帮我加一个「导出报表」功能'},
+      {cls:'ai', text:'AI：收到。动手前我有三个问题：导出格式要 CSV 还是 Excel？数据量最大多少行？要不要带上当前的筛选条件？'}
+    ]
+  },
+  {
+    stage: 1, title: 'STEP 2 · AI 用自己的理解复述需求',
+    msgs: [
+      {cls:'user', text:'用户：Excel，最多 5 万行，带当前筛选条件'},
+      {cls:'ai', text:'AI 复述：「我理解为：在报表页新增导出按钮，按用户当前的筛选条件导出 Excel，上限 5 万行，超出时提示分批导出。这个理解和你的预期一致吗？」'}
+    ]
+  },
+  {
+    stage: 2, title: 'STEP 3 · 整理成 PRD.md，流程图用 Mermaid',
+    msgs: [
+      {cls:'prd', html:
+        '<div class="prd-title">PRD.md · 报表导出功能</div>' +
+        '<div style="font-size:14px;line-height:1.7"><b>目标：</b>按当前筛选条件导出 Excel，上限 5 万行。<br><b>改动文件：</b>ReportPage.tsx、exportApi.ts、routes/export.py</div>' +
+        '<pre>flowchart LR\n  A[点击导出] --&gt; B{行数 &lt;= 5 万?}\n  B -- 是 --&gt; C[生成 Excel 并下载]\n  B -- 否 --&gt; D[提示分批导出]</pre>'
+      }
+    ]
+  },
+  {
+    stage: 3, title: 'STEP 4 · 拿到明确许可前，禁止编码',
+    msgs: [
+      {cls:'wait', text:'AI：PRD 已生成。得到你的明确许可之前，我不会写任何代码。', approve:true}
+    ]
+  },
+  {
+    stage: 4, title: 'STEP 5 · 开始开发，文档与代码保持同步',
+    msgs: [
+      {cls:'ai', text:'AI：开始按 PRD 编码。改动范围锁定在计划里的 3 个文件。'},
+      {cls:'ok', text:'流程走完。后续需求变更时，先更新 PRD.md，再改代码。'}
+    ]
+  }
+];
+var flowCur = 0, waitingApprove = false;
+
+function flowStep() {
+  if (waitingApprove || flowCur >= FLOW.length) return;
+  var s = FLOW[flowCur];
+  var body = document.getElementById('flowBody');
+  s.msgs.forEach(function(m){
+    var el = document.createElement('div');
+    el.className = 'msg ' + m.cls;
+    if (m.html) { el.innerHTML = m.html; } else { el.textContent = m.text; }
+    if (m.approve) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-appr';
+      btn.textContent = '批准，开始编码';
+      btn.onclick = approve;
+      el.appendChild(document.createElement('br'));
+      el.appendChild(btn);
+    }
+    body.appendChild(el);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('show'); }); });
+  });
+  body.scrollTop = body.scrollHeight;
+
+  document.getElementById('flowTitle').textContent = s.title;
+  var stages = document.querySelectorAll('#stageRow .stage');
+  stages.forEach(function(el, i){
+    el.classList.toggle('cur', i === s.stage);
+    el.classList.toggle('done', i < s.stage);
+  });
+  flowCur++;
+  document.getElementById('flowHint').textContent = flowCur + ' / ' + FLOW.length;
+
+  if (s.stage === 3) {
+    waitingApprove = true;
+    document.getElementById('flowNext').disabled = true;
+    document.getElementById('flowMsg').textContent = '断点触发：请在演示区里点「批准」，流程才能继续。';
+  } else if (flowCur >= FLOW.length) {
+    document.getElementById('flowNext').disabled = true;
+    document.getElementById('flowMsg').textContent = '演示完成。';
+    document.querySelectorAll('#stageRow .stage').forEach(function(el){ el.classList.remove('cur'); el.classList.add('done'); });
+  } else {
+    document.getElementById('flowMsg').textContent = '';
+  }
+}
+
+function approve() {
+  if (!waitingApprove) return;
+  waitingApprove = false;
+  var body = document.getElementById('flowBody');
+  var el = document.createElement('div');
+  el.className = 'msg user';
+  el.textContent = '用户：批准，开始编码。';
+  body.appendChild(el);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('show'); }); });
+  body.scrollTop = body.scrollHeight;
+  document.getElementById('flowNext').disabled = false;
+  document.getElementById('flowMsg').textContent = '许可已给出，可以推进到开发阶段。';
+}
+
+function flowReset() {
+  flowCur = 0;
+  waitingApprove = false;
+  document.getElementById('flowBody').innerHTML = '';
+  document.getElementById('flowTitle').textContent = '点击「推进一步」开始';
+  document.getElementById('flowHint').textContent = '';
+  document.getElementById('flowMsg').textContent = '';
+  document.getElementById('flowNext').disabled = false;
+  document.querySelectorAll('#stageRow .stage').forEach(function(el){ el.classList.remove('cur','done'); });
+}
+
+/* ── 交互二：批量修改断点滑块 ── */
+var FILES = [
+  {name:'ReportPage.tsx',      what:'新增「导出」按钮与加载状态',       dep:'依赖 exportApi.ts'},
+  {name:'exportApi.ts',        what:'封装导出接口调用',                 dep:'依赖后端导出路由'},
+  {name:'routes/export.py',    what:'新增导出路由，读取筛选参数',       dep:'依赖 excel_writer.py'},
+  {name:'excel_writer.py',     what:'生成 Excel，5 万行上限校验',       dep:'独立模块，先改它'},
+  {name:'models/report.py',    what:'查询函数增加筛选参数',             dep:'被 routes 调用'},
+  {name:'config.py',           what:'新增导出行数上限配置项',           dep:'被 excel_writer 读取'},
+  {name:'tests/test_export.py',what:'导出功能单元测试',                 dep:'依赖以上全部改完'},
+  {name:'docs/PRD.md',         what:'同步更新导出功能 PRD',             dep:'与代码保持同步'}
+];
+
+function updateGate(val) {
+  var n = parseInt(val, 10);
+  document.getElementById('fileNum').textContent = n;
+  var box = document.getElementById('gateBox');
+  if (n < 3) {
+    box.className = 'gate pass';
+    box.innerHTML = '<div class="gate-title">未触发断点，直接放行</div>' +
+      '<div class="gate-desc">改动只涉及 ' + n + ' 个文件，属于小范围修改。AI 自行判断不需要 PRD，直接改完并声明影响范围。规矩的目的在于控制风险，简单改动不加仪式。</div>';
+  } else {
+    box.className = 'gate stop';
+    box.innerHTML = '<div class="gate-title">断点触发：先交修改计划，等确认后再动手</div>' +
+      '<div class="gate-desc">本次要改 ' + n + ' 个文件，达到 3 个文件阈值。AI 必须先列出下面的修改计划，人确认后才能开始改代码。</div>' +
+      '<div class="plan-list">' +
+      FILES.slice(0, n).map(function(f){
+        return '<div class="plan-item"><span class="pf">' + f.name + '</span><span class="pw">' + f.what + '</span><span class="pd">' + f.dep + '</span></div>';
+      }).join('') +
+      '</div>';
+  }
+}
+
+/* 初始化 */
+updateGate(document.getElementById('fileSlider').value);
+lessonOnView(document.getElementById('flowBody'), function(){
+  if (flowCur === 0) flowStep();
+});
+</script>
+<!--seo:begin--><!--seo:end-->
+<script src="../track.js"></script>
+</body>
+</html>

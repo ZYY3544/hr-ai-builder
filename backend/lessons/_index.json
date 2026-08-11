@@ -1,5 +1,5 @@
 {
- "0-intro.html": {
+ "start-dunning-kruger.html": {
   "free": true,
   "title": "我们在哪里？达克效应",
   "seo": "AI 学习者的达克曲线：你现在在哪一段？",
@@ -7,7 +7,7 @@
   "spine": false,
   "ksa": "K"
  },
- "0-how.html": {
+ "start-how-to-learn.html": {
   "free": true,
   "title": "怎样学，知识才能过脑子",
   "seo": "看完 ≠ 学到：AI 课程怎么学才真的过脑子",
@@ -15,7 +15,7 @@
   "spine": false,
   "ksa": "K"
  },
- "0-why.html": {
+ "start-why-principles.html": {
   "free": true,
   "title": "为什么 HR 也要弄懂原理",
   "seo": "HR 学 AI 需要懂原理吗？——原理决定你能不能判断它什么时候会错",
@@ -199,7 +199,7 @@
   "spine": false,
   "ksa": "K"
  },
- "1-2-fake-chat.html": {
+ "hallu-fake-chat.html": {
   "free": false,
   "title": "它为什么像在聊天：伪造聊天记录",
   "seo": "大模型的本质是补全，不是理解——伪造一段聊天记录就看懂了",
@@ -207,7 +207,7 @@
   "spine": false,
   "ksa": "K"
  },
- "1-2-hallucination.html": {
+ "hallu-first-scene.html": {
   "free": true,
   "title": "它会编：筛简历现场",
   "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场",
@@ -215,7 +215,7 @@
   "spine": true,
   "ksa": "K"
  },
- "1-2-mitigation-prompt.html": {
+ "hallu-fix-prompt.html": {
   "free": true,
   "title": "应对 1：把约束写进 Prompt",
   "seo": "怎么用 Prompt 减少 AI 幻觉？",
@@ -223,7 +223,7 @@
   "spine": true,
   "ksa": "S"
  },
- "1-2-mitigation-rag.html": {
+ "hallu-fix-rag.html": {
   "free": false,
   "title": "应对 2：RAG——让它只答制度里有的",
   "seo": "RAG 是什么？让 AI 只回答公司制度里写过的内容",
@@ -231,7 +231,7 @@
   "spine": false,
   "ksa": "S"
  },
- "1-2-mitigation-temp.html": {
+ "hallu-fix-temp.html": {
   "free": false,
   "title": "应对 3：它为什么每次都不一样",
   "seo": "Temperature 是什么？为什么同一个问题 AI 每次答得都不同",
@@ -239,7 +239,7 @@
   "spine": false,
   "ksa": "K"
  },
- "1-2-mitigation-eval.html": {
+ "hallu-fix-eval.html": {
   "free": false,
   "title": "应对 4：评测 + 人工审核",
   "seo": "怎么评测 AI 的输出质量？评测加人工复核的组合拳",
@@ -247,7 +247,7 @@
   "spine": true,
   "ksa": "S"
  },
- "5-1.html": {
+ "context-window.html": {
   "free": true,
   "title": "上下文窗口：它的工作记忆",
   "seo": "什么是上下文窗口？AI 的工作记忆有多大",
@@ -255,7 +255,7 @@
   "spine": false,
   "ksa": "K"
  },
- "5-2.html": {
+ "context-overflow.html": {
   "free": true,
   "title": "上下文溢出：三种处理策略",
   "seo": "对话太长 AI 就失忆？上下文溢出的三种处理办法",
@@ -279,7 +279,7 @@
   "spine": true,
   "ksa": "S"
  },
- "interview-1.html": {
+ "interview-p1.html": {
   "free": true,
   "title": "幻觉与边界 · 30 问",
   "seo": "AI 幻觉相关的 30 个面试问题（HR 版）",
@@ -287,7 +287,7 @@
   "spine": false,
   "ksa": "A"
  },
- "6-1.html": {
+ "prompt-system.html": {
   "free": true,
   "title": "System Prompt：你说什么，它就变什么",
   "seo": "System Prompt 是什么？一句话改变 AI 的全部行为",
@@ -295,7 +295,7 @@
   "spine": false,
   "ksa": "S"
  },
- "6-2.html": {
+ "prompt-advanced.html": {
   "free": true,
   "title": "Prompt 进阶技巧",
   "seo": "AI 提示词进阶技巧：角色、示例、约束、格式",
@@ -335,7 +335,7 @@
   "spine": false,
   "ksa": "A"
  },
- "7-1.html": {
+ "agent-what.html": {
   "free": true,
   "title": "Agent：能干活的 AI",
   "seo": "AI Agent 是什么？和普通聊天有什么不同",
@@ -343,7 +343,7 @@
   "spine": false,
   "ksa": "K"
  },
- "10-1.html": {
+ "agent-vs-workflow.html": {
   "free": true,
   "title": "Workflow vs Agent：HR 大多不该给自主权",
   "seo": "Workflow 和 Agent 怎么选？HR 场景为什么大多不该给自主权",
@@ -351,7 +351,7 @@
   "spine": false,
   "ksa": "A"
  },
- "7-4a.html": {
+ "agent-react.html": {
   "free": false,
   "title": "ReAct 循环：思考 → 行动 → 观察",
   "seo": "ReAct 是什么？Agent 的思考-行动-观察循环",
@@ -359,7 +359,7 @@
   "spine": false,
   "ksa": "K"
  },
- "7-4b.html": {
+ "agent-stuck.html": {
   "free": false,
   "title": "Agent 卡死的 5 种模式",
   "seo": "AI Agent 为什么会卡死？五种典型失败模式",
@@ -367,7 +367,7 @@
   "spine": false,
   "ksa": "K"
  },
- "8-1.html": {
+ "token-cost.html": {
   "free": true,
   "title": "多轮对话为什么越来越贵",
   "seo": "AI 多轮对话为什么越聊越贵？Token 是怎么算钱的",
@@ -383,7 +383,7 @@
   "spine": false,
   "ksa": "K"
  },
- "interview-2.html": {
+ "interview-p2.html": {
   "free": true,
   "title": "Prompt 与 Agent · 30 问",
   "seo": "Prompt 与 Agent 相关的 30 个面试问题（HR 版）",
@@ -447,7 +447,7 @@
   "spine": false,
   "ksa": "S"
  },
- "10-8.html": {
+ "eval-why.html": {
   "free": true,
   "title": "为什么评测比调 prompt 重要",
   "seo": "为什么 AI 评测比调 Prompt 更重要？",
@@ -455,7 +455,7 @@
   "spine": true,
   "ksa": "S"
  },
- "10-9.html": {
+ "eval-graders.html": {
   "free": true,
   "title": "三种 Grader：代码判、模型判、人工判",
   "seo": "AI 输出怎么打分？代码判、模型判、人工判三种方式",
@@ -463,7 +463,7 @@
   "spine": false,
   "ksa": "S"
  },
- "10-10.html": {
+ "eval-pitfalls.html": {
   "free": false,
   "title": "Eval 的坑：噪音、作弊与退化",
   "seo": "做 AI 评测最容易踩的三个坑",
@@ -479,7 +479,7 @@
   "spine": true,
   "ksa": "S"
  },
- "vibe-1.html": {
+ "vibe-rules.html": {
   "free": true,
   "title": "为什么要给 AI 立规矩",
   "seo": "用 AI 写代码为什么要先立规矩？",
@@ -487,7 +487,7 @@
   "spine": false,
   "ksa": "S"
  },
- "vibe-2.html": {
+ "vibe-workflow.html": {
   "free": true,
   "title": "四步流程：复述、PRD、确认、编码",
   "seo": "不会写代码怎么指挥 AI 做东西？四步协作流程",
@@ -495,7 +495,7 @@
   "spine": false,
   "ksa": "S"
  },
- "vibe-5.html": {
+ "vibe-debug.html": {
   "free": true,
   "title": "调试铁律：先 Log 再改码",
   "seo": "AI 写的代码出错了怎么调？先看日志再改代码",
@@ -503,7 +503,7 @@
   "spine": false,
   "ksa": "S"
  },
- "vibe-6.html": {
+ "vibe-complete.html": {
   "free": false,
   "title": "不接受分期交付",
   "seo": "让 AI 一次交付完整功能，不接受半成品",
@@ -511,7 +511,7 @@
   "spine": false,
   "ksa": "S"
  },
- "vibe-9.html": {
+ "vibe-safety.html": {
   "free": true,
   "title": "破坏性操作的三道闸",
   "seo": "怎么防止 AI 误删数据？破坏性操作的三道闸",
@@ -519,7 +519,7 @@
   "spine": false,
   "ksa": "S"
  },
- "vibe-8.html": {
+ "vibe-env.html": {
   "free": true,
   "title": "把环境事实写进 Rule",
   "seo": "为什么要把环境信息写进 AI 的规则文件",
@@ -527,7 +527,7 @@
   "spine": false,
   "ksa": "S"
  },
- "vibe-7.html": {
+ "vibe-docs.html": {
   "free": true,
   "title": "三份文档与方法论沉淀",
   "seo": "跟 AI 协作要维护哪三份文档",
@@ -575,7 +575,7 @@
   "spine": true,
   "ksa": "A"
  },
- "interview-7.html": {
+ "interview-p4.html": {
   "free": true,
   "title": "Vibe Coding · 30 问",
   "seo": "AI 协作编程相关的 30 个面试问题（HR 版）",
@@ -607,7 +607,7 @@
   "spine": true,
   "ksa": "A"
  },
- "9-27.html": {
+ "perm-levels.html": {
   "free": true,
   "title": "AI 该有多大的自由",
   "seo": "AI Agent 该有多大权限？它能不能自己发拒信",
@@ -615,7 +615,7 @@
   "spine": true,
   "ksa": "A"
  },
- "9-28.html": {
+ "perm-confirm.html": {
   "free": true,
   "title": "弹窗太多没人用，不弹又不安全",
   "seo": "AI 的确认弹窗怎么设计才不烦人又安全",
@@ -623,7 +623,7 @@
   "spine": false,
   "ksa": "A"
  },
- "9-29.html": {
+ "perm-audit.html": {
   "free": false,
   "title": "它干了什么你知道吗：留痕与可申诉",
   "seo": "AI 参与人事决策必须留痕且可申诉",
@@ -679,7 +679,7 @@
   "spine": false,
   "ksa": "A"
  },
- "oss-8.html": {
+ "oss-local-size.html": {
   "free": true,
   "title": "你的电脑能跑多大的模型",
   "seo": "普通电脑能跑多大的大模型？",
@@ -687,7 +687,7 @@
   "spine": false,
   "ksa": "K"
  },
- "oss-9.html": {
+ "oss-local-tools.html": {
   "free": true,
   "title": "Ollama 与 LM Studio 怎么上手",
   "seo": "Ollama 和 LM Studio 怎么用？本地跑大模型入门",

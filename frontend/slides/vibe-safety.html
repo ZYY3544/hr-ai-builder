@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vibe Coding 方法论第 9 节：数据库先备份、不可逆操作先给回退方案、发版前做 diff 审查。含发版 diff 审查模拟器与三道闸检查清单。">
+<meta name="author" content="HR AI Builder">
+<title>怎么防止 AI 误删数据？破坏性操作的三道闸 · HR AI Builder</title>
+<link rel="stylesheet" href="lesson.css">
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si .15s ease .08s forwards}</style>
+<style>
+:root{--vibe:#0d9488;--vibe-deep:#0f766e;--vibe-soft:rgba(13,148,136,.08);--vibe-line:rgba(13,148,136,.25)}
+.lesson-header .kicker{color:var(--vibe)}
+a{color:var(--vibe-deep)}
+code{color:var(--vibe-deep);background:rgba(13,148,136,.08)}
+.l-callout{background:rgba(13,148,136,.04);border-color:var(--vibe-line)}
+.l-callout b{color:var(--vibe)}
+.desc{font-size:15px;color:var(--sub);line-height:1.8;margin-bottom:12px}
+pre{margin:12px 0 0;padding:16px 18px;overflow:auto;border:1.5px solid var(--border);border-radius:12px;background:#0e1c1a;color:#d9f2ec;font-size:12.5px;line-height:1.7}
+pre code{background:none;padding:0;color:#d9f2ec}
+.demo-hd{font-size:13px;font-weight:800;color:var(--sub);letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+
+/* ── 通用控制按钮 ── */
+.btn{padding:11px 22px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-p{background:var(--vibe);color:#fff}
+.btn-p:hover{filter:brightness(1.08)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed}
+.btn-r{background:rgba(0,0,0,.05);color:var(--sub);border:1.5px solid var(--border)}
+.ctrl-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.hint{font-size:13px;color:var(--sub)}
+
+/* ── 三道闸总览 ── */
+.gate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gate-grid h3{font-size:15.5px;font-weight:800;margin-bottom:5px}
+.gate-grid p{font-size:13.5px;color:var(--sub);line-height:1.75}
+.gate-tag{display:inline-block;margin-bottom:8px;padding:2px 10px;border:1px solid var(--vibe-line);border-radius:999px;background:var(--vibe-soft);color:var(--vibe-deep);font-family:"SF Mono",Menlo,monospace;font-size:11px;font-weight:800;letter-spacing:.04em}
+
+/* ── 交互一：diff 审查模拟器 ── */
+.rel-card{padding:14px 18px;border:1.5px solid var(--vibe-line);border-radius:12px;background:var(--vibe-soft)}
+.rel-card .rt{font-family:"SF Mono",Menlo,monospace;font-size:13px;font-weight:800;color:var(--vibe-deep);margin-bottom:4px}
+.rel-card p{font-size:14px;line-height:1.7;margin:0}
+.df-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.df-row{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);flex-wrap:wrap;transition:border-color .15s}
+.df-row.marked-ok{border-color:rgba(22,163,74,.4)}
+.df-row.marked-risk{border-color:rgba(220,38,38,.4)}
+.df-info{flex:1;min-width:220px}
+.df-file{font-family:"SF Mono",Menlo,monospace;font-size:13px;font-weight:700;color:var(--text)}
+.df-desc{font-size:12.5px;color:var(--sub);margin-top:2px;line-height:1.6}
+.df-acts{display:flex;gap:8px}
+.mark-btn{padding:9px 15px;border-radius:9px;border:1.5px solid var(--border);background:var(--card);font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;font-family:inherit;min-height:44px;transition:all .15s}
+.mark-btn:hover{border-color:rgba(0,0,0,.2)}
+.mark-btn.ok-on{border-color:rgba(22,163,74,.55);background:rgba(22,163,74,.08);color:var(--success)}
+.mark-btn.risk-on{border-color:rgba(220,38,38,.5);background:rgba(220,38,38,.07);color:var(--danger)}
+.report{display:none;margin-top:14px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card)}
+.report.show{display:block}
+.rp-hd{padding:10px 16px;background:rgba(0,0,0,.03);border-bottom:1px solid var(--border);font-family:"SF Mono",Menlo,monospace;font-size:12.5px;font-weight:800;letter-spacing:.5px;color:var(--sub)}
+.rp-body{padding:14px 16px;display:flex;flex-direction:column;gap:9px}
+.rp-line{font-size:13.5px;line-height:1.65;display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.rp-line .rf{font-family:"SF Mono",Menlo,monospace;font-size:12.5px;font-weight:700}
+.rp-line .you-ok{color:var(--success);font-weight:700}
+.rp-line .you-no{color:var(--danger);font-weight:700}
+.rp-why{font-size:12.5px;color:var(--sub);width:100%;line-height:1.65}
+.rp-sum{margin-top:4px;padding:13px 15px;border-radius:10px;font-size:14px;font-weight:700;line-height:1.7;border:1.5px solid rgba(220,38,38,.4);background:rgba(220,38,38,.05);color:var(--danger)}
+
+/* ── 交互二：三道闸检查清单 ── */
+.op-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.op-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 15px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-family:inherit;text-align:left;min-height:44px;transition:all .2s}
+.op-btn:hover{border-color:rgba(0,0,0,.18)}
+.op-btn.active{border-color:var(--vibe);background:var(--vibe-soft)}
+.op-btn h4{font-size:15px;font-weight:800;color:var(--text)}
+.op-btn.active h4{color:var(--vibe-deep)}
+.op-btn p{font-size:12.5px;color:var(--sub);margin:0}
+.gate-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.gate-item{display:flex;gap:12px;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;transition:all .15s;align-items:flex-start;min-height:44px}
+.gate-item:hover{border-color:rgba(0,0,0,.18)}
+.gate-item.checked{border-color:rgba(22,163,74,.45);background:rgba(22,163,74,.05)}
+.gate-item.blocked{border-color:rgba(220,38,38,.38);background:rgba(220,38,38,.04)}
+.g-box{width:22px;height:22px;border-radius:6px;border:2px solid rgba(0,0,0,.2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;transition:all .15s;background:var(--card)}
+.gate-item.checked .g-box{background:var(--success);border-color:var(--success)}
+.gate-item.blocked .g-box{border-color:rgba(220,38,38,.55);color:var(--danger);background:rgba(220,38,38,.06)}
+.g-t{font-size:14.5px;font-weight:800}
+.g-d{font-size:13px;color:var(--sub);margin-top:2px;line-height:1.65}
+.gate-result{display:none;margin-top:12px;padding:13px 16px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;line-height:1.75}
+.gate-result.show{display:block}
+.gate-result.pass{border-color:rgba(22,163,74,.4);background:rgba(22,163,74,.05)}
+.gate-result.warn{border-color:rgba(217,119,6,.4);background:rgba(217,119,6,.06)}
+.gate-result.stop{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.05)}
+.gate-result b{color:var(--text)}
+
+/* ── 规则要点 ── */
+.rule-cols h3{font-size:15.5px;font-weight:800;margin-bottom:5px}
+.rule-cols ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--sub);line-height:1.85}
+
+@media (max-width:768px){
+  .gate-grid,.op-list{grid-template-columns:1fr}
+  .df-acts{width:100%}
+  .df-acts .mark-btn{flex:1}
+}
+</style>
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么防止 AI 误删数据？破坏性操作的三道闸",
+ "articleSection": "第四篇章 · 别让它把你搞砸",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">VIBE CODING 方法论 · 第 9 节</div>
+    <h1>破坏性操作的三道闸</h1>
+    <p class="subtitle">发版时以为只改了 A 功能，实际 diff 里混进了上周调试 B 的临时改动，半成品代码进了生产环境。数据库、配置、部署这些不可逆操作，必须在执行前设闸。下面两个演练都可以动手操作。</p>
+  </header>
+
+  <div class="l-callout reveal">
+    <p style="font-size:14.5px;line-height:1.8"><b>核心原则：</b>不可逆操作的安全感来自闸门。备份拦数据损失，回退方案拦无法恢复，diff 审查拦带病发版，三道闸都设在执行之前。</p>
+  </div>
+
+  <section>
+    <div class="sec-label">三道闸总览</div>
+    <div class="gate-grid">
+      <div class="l-card reveal">
+        <span class="gate-tag">GATE 1 · 备份</span>
+        <h3>数据库改动先备份</h3>
+        <p>备份放项目根目录 <code>backups/</code>，命名带时间戳。未备份不得执行任何 migrate、drop、alter、delete 操作。成本是一行命令，赌的是整库数据。</p>
+      </div>
+      <div class="l-card reveal">
+        <span class="gate-tag">GATE 2 · 回退</span>
+        <h3>不可逆操作先说回退方案</h3>
+        <p>回退方案要回答三件事：如何恢复到操作前的状态、需要哪些备份文件、预计恢复耗时。说不出这三件事，说明操作还没想清楚。</p>
+      </div>
+      <div class="l-card reveal">
+        <span class="gate-tag">GATE 3 · 审查</span>
+        <h3>发版前做 diff 审查</h3>
+        <p>把「我以为我改了什么」和「我实际改了什么」拆开比对。SubAgent 独立分析 diff 与 Release Notes 的偏差，有风险就暂停发版。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">交互演练一 · 发版 diff 审查模拟器</div>
+    <p class="desc">你是本次发版的 reviewer。Release Notes 只写了一件事，但实际 diff 有 7 个文件。逐个判断每个文件的改动「符合预期」还是「存在风险」，全部标完后生成审查报告。</p>
+    <div class="l-card reveal">
+      <div class="rel-card">
+        <div class="rt">RELEASE_NOTES.md · v1.4.0</div>
+        <p>✨ 新增夜间模式：可以在设置里切换暗色界面，长时间使用不再刺眼。</p>
+      </div>
+      <div class="df-list" id="dfList"></div>
+      <div class="ctrl-row">
+        <button class="btn btn-p" id="dfReport" onclick="dfMakeReport()" disabled>生成审查报告</button>
+        <button class="btn btn-r" onclick="dfReset()">重置</button>
+        <span class="hint" id="dfProg">已标记 0 / 7 个文件</span>
+      </div>
+      <div class="report" id="dfReportBox">
+        <div class="rp-hd">SUBAGENT DIFF REVIEW · v1.3.2 → HEAD</div>
+        <div class="rp-body" id="dfReportBody"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class=" xa-peek">
+    <div class="sec-label">交互演练二 · 这个操作要过哪几道闸</div>
+    <p class="desc">选择一个操作类型，逐项勾选它要通过的闸门，然后尝试执行。漏了哪项，就会看到对应的后果。</p>
+    <div class="l-card reveal">
+      <div class="op-list">
+        <button class="op-btn active" id="opBtn0" onclick="pickOp(0)">
+          <h4>migrate 数据库</h4><p>改表结构，跑迁移脚本</p>
+        </button>
+        <button class="op-btn" id="opBtn1" onclick="pickOp(1)">
+          <h4>修改环境变量</h4><p>换 API Key，调服务配置</p>
+        </button>
+        <button class="op-btn" id="opBtn2" onclick="pickOp(2)">
+          <h4>直接拷文件上服务器</h4><p>scp 把改好的文件传上去</p>
+        </button>
+      </div>
+      <div class="gate-list" id="gateList"></div>
+      <div class="ctrl-row">
+        <button class="btn btn-p" onclick="gateRun()">执行操作</button>
+        <span class="hint">先勾闸门，再执行</span>
+      </div>
+      <div class="gate-result" id="gateResult"></div>
+    </div>
+  </section>
+
+  <section >
+    <div class="sec-label">规则原文要点</div>
+    <div class="l-card reveal">
+      <h3 style="font-size:15.5px;font-weight:800;margin-bottom:4px">备份命令（SQLite 示例）</h3>
+<pre><code># 任何涉及数据库结构或数据的改动，执行前必须先备份
+cp database.db backups/database_$(date +%Y%m%d_%H%M%S).db</code></pre>
+      <p class="hint" style="margin-top:8px">备份文件命名格式：{原文件名}_{YYYYMMDD_HHMMSS}.db，统一放项目根目录 backups/ 下。</p>
+    </div>
+    <div class="l-cols rule-cols" style="margin-top:14px">
+      <div class="l-card reveal">
+        <h3>发布通道</h3>
+        <ul>
+          <li>代码发布、版本发布、服务器部署必须通过 GitHub</li>
+          <li>服务器通过 <code>git pull</code> 或 CI/CD 流水线拉取代码</li>
+          <li>紧急热修复可以例外，事后必须补 commit 同步</li>
+          <li>在用户明确确认之前，打 tag、push、部署全部禁止</li>
+        </ul>
+      </div>
+      <div class="l-card reveal">
+        <h3>凭据管理</h3>
+        <ul>
+          <li>所有凭据通过环境变量或 secrets 管理</li>
+          <li>禁止硬编码在代码或配置文件中</li>
+          <li>Key 一旦进入 git 历史等于永久泄露，只能作废重发</li>
+        </ul>
+      </div>
+    </div>
+    <div class="l-callout reveal" style="margin-top:14px">
+      <p style="font-size:14px;line-height:1.8"><b>设计意图：</b>Release Notes 描述的是预期改动，实际 commit 里可能混入无关调整甚至误删。正规团队靠 CI/CD 加 PR review 拦这个问题，独立开发者往往跳过 review 直接 push，diff 审查规则等于让 SubAgent 充当 reviewer。</p>
+    </div>
+  </section>
+
+  <section >
+    <div class="sec-label">课堂练习 · 30 分钟</div>
+    <div class="l-card reveal">
+      <p style="font-size:14px;color:var(--sub);line-height:1.9;margin:0">提交物：一份风险审查报告。① 在测试仓库里故意混入一个与发版主题无关的改动（比如改掉一个已有函数的逻辑）；② 写一份只描述主题功能的 Release Notes，让 AI 按「取完整 diff → 逐文件比对 → 分类处理」三步做审查；③ 检查 AI 能否发现混入的改动并暂停发版，把它的风险报告存档作为流程模板。</p>
+    </div>
+  </section>
+
+  <div class="l-card reveal" style="margin-top:28px">
+    <p style="font-size:12.5px;color:var(--sub);line-height:1.8;margin:0">素材来源：开源仓库 <a href="https://github.com/itshen/xs_vibe_rules">itshen/xs_vibe_rules</a> 中 <code>rule-opensource.mdc</code> 第六章 6.4/6.5「数据库备份与回退方案」、第十章「部署与环境」。</p>
+  </div>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script>
+/* ═══ 交互一：发版 diff 审查模拟器 ═══ */
+const D_FILES = [
+  { f:'src/theme/darkTheme.css', d:'新增文件，定义暗色主题的颜色变量与组件样式', risk:false,
+    why:'夜间模式的核心样式文件，与 Release Notes 描述一致。' },
+  { f:'src/components/ThemeToggle.tsx', d:'新增文件，设置页的主题切换开关组件', risk:false,
+    why:'新增组件，属于本次发版主题。' },
+  { f:'src/App.tsx', d:'修改，挂载 ThemeToggle 并读取用户主题偏好', risk:false,
+    why:'为接入夜间模式所做的集成改动，范围合理。' },
+  { f:'src/utils/messageParser.ts', d:'修改，改写了已有消息解析函数的分支逻辑', risk:true,
+    why:'与夜间模式无关，改动的是已有功能的逻辑，Release Notes 完全没提。很可能是上周调试时的临时改动混了进来。' },
+  { f:'package.json', d:'修改，axios 从 0.27.2 升级到 1.6.0', risk:true,
+    why:'依赖大版本变化且 Release Notes 未提及。axios 1.x 有破坏性变更，可能影响所有网络请求。' },
+  { f:'src/styles/tokens.css', d:'修改，新增一组颜色变量供暗色主题引用', risk:false,
+    why:'只新增变量，不改已有值，服务于本次主题。' },
+  { f:'docs/RELEASE_NOTES.md', d:'修改，补充 v1.4.0 的更新说明', risk:false,
+    why:'发版流程的常规文档更新。' }
+];
+let dfMarks = new Array(D_FILES.length).fill(null); // 0 = 符合预期, 1 = 存在风险
+
+function dfRender() {
+  const list = document.getElementById('dfList');
+  list.innerHTML = '';
+  D_FILES.forEach(function (file, i) {
+    const row = document.createElement('div');
+    row.className = 'df-row';
+    row.id = 'dfRow' + i;
+
+    const info = document.createElement('div');
+    info.className = 'df-info';
+    info.innerHTML = '<div class="df-file">' + file.f + '</div><div class="df-desc">' + file.d + '</div>';
+
+    const acts = document.createElement('div');
+    acts.className = 'df-acts';
+    const bOk = document.createElement('button');
+    bOk.className = 'mark-btn';
+    bOk.textContent = '符合预期';
+    bOk.onclick = function () { dfMark(i, 0); };
+    const bRisk = document.createElement('button');
+    bRisk.className = 'mark-btn';
+    bRisk.textContent = '存在风险';
+    bRisk.onclick = function () { dfMark(i, 1); };
+    acts.appendChild(bOk);
+    acts.appendChild(bRisk);
+
+    row.appendChild(info);
+    row.appendChild(acts);
+    list.appendChild(row);
+  });
+}
+
+function dfMark(i, val) {
+  dfMarks[i] = val;
+  const row = document.getElementById('dfRow' + i);
+  row.className = 'df-row ' + (val === 0 ? 'marked-ok' : 'marked-risk');
+  const btns = row.querySelectorAll('.mark-btn');
+  btns[0].className = 'mark-btn' + (val === 0 ? ' ok-on' : '');
+  btns[1].className = 'mark-btn' + (val === 1 ? ' risk-on' : '');
+  const n = dfMarks.filter(function (m) { return m !== null; }).length;
+  document.getElementById('dfProg').textContent = '已标记 ' + n + ' / ' + D_FILES.length + ' 个文件';
+  document.getElementById('dfReport').disabled = n < D_FILES.length;
+}
+
+function dfMakeReport() {
+  const body = document.getElementById('dfReportBody');
+  body.innerHTML = '';
+  let correct = 0, riskCount = 0;
+  D_FILES.forEach(function (file, i) {
+    const truth = file.risk ? 1 : 0;
+    const you = dfMarks[i];
+    const hit = you === truth;
+    if (hit) correct++;
+    if (file.risk) riskCount++;
+    const line = document.createElement('div');
+    line.className = 'rp-line';
+    line.innerHTML =
+      '<span>' + (file.risk ? '⚠️' : '✅') + '</span>' +
+      '<span class="rf">' + file.f + '</span>' +
+      '<span>审查结论：' + (file.risk ? '存在风险' : '符合预期') + '</span>' +
+      '<span class="' + (hit ? 'you-ok' : 'you-no') + '">你的判断：' + (hit ? '正确' : '错误') + '</span>' +
+      '<span class="rp-why">' + file.why + '</span>';
+    body.appendChild(line);
+  });
+  const sum = document.createElement('div');
+  sum.className = 'rp-sum';
+  sum.textContent = '判断正确 ' + correct + ' / ' + D_FILES.length + ' · 检出风险改动 ' + riskCount +
+    ' 处 ⚠️ 存在风险：暂停发版，等待用户确认。在确认之前，打 tag、push、部署全部禁止。';
+  body.appendChild(sum);
+  document.getElementById('dfReportBox').classList.add('show');
+}
+
+function dfReset() {
+  dfMarks = new Array(D_FILES.length).fill(null);
+  document.getElementById('dfProg').textContent = '已标记 0 / ' + D_FILES.length + ' 个文件';
+  document.getElementById('dfReport').disabled = true;
+  document.getElementById('dfReportBox').classList.remove('show');
+  dfRender();
+}
+
+/* ═══ 交互二：三道闸检查清单 ═══ */
+const OPS = [
+  {
+    gates: [
+      { t:'备份闸', d:'执行 cp database.db backups/database_$(date +%Y%m%d_%H%M%S).db，备份放 backups/，命名带时间戳',
+        miss:'没有备份的 migrate 一旦出错，整库数据没有任何恢复手段。规则原文：未备份不得执行任何 migrate、drop、alter、delete 操作。' },
+      { t:'回退闸', d:'先说清三要素：如何恢复到操作前的状态、需要哪些备份文件、预计恢复耗时',
+        miss:'说不出回退三要素，说明操作还没想清楚。出问题时只能现场翻文档找恢复办法，停机时间不可控。' },
+      { t:'通道闸', d:'migration 脚本已提交 GitHub，服务器通过 git pull 或 CI/CD 获取',
+        miss:'脚本不进仓库，线上库结构和仓库代码会不一致，之后每次部署都可能再出一次问题。' }
+    ],
+    blocked: -1
+  },
+  {
+    gates: [
+      { t:'备份闸', d:'导出当前变量快照到 backups/（带时间戳），记录旧值',
+        miss:'改错后没人记得旧值是什么，服务起不来也回不去。' },
+      { t:'回退闸', d:'三要素：如何恢复、需要哪份快照、预计恢复耗时',
+        miss:'环境变量改坏经常表现为服务静默异常，没有回退方案时排查会非常慢。' },
+      { t:'凭据闸', d:'新的 Key 通过环境变量或 secrets 注入，禁止硬编码进代码或配置文件',
+        miss:'Key 一旦进了 git 历史等于永久泄露，只能作废重发。' }
+    ],
+    blocked: -1
+  },
+  {
+    gates: [
+      { t:'备份闸', d:'把将被覆盖的旧文件备份到 backups/，带时间戳',
+        miss:'覆盖后旧文件就没了，出问题连改动前后的对比都做不了。' },
+      { t:'回退闸', d:'三要素：如何恢复、需要哪些备份、预计恢复耗时',
+        miss:'手工拷贝的文件没有版本记录，不提前想好回退，出事只能凭记忆还原。' },
+      { t:'通道闸', d:'发布必须通过 GitHub，服务器 git pull 或 CI/CD 拉取',
+        blockedMsg:'这道闸过不去：直接拷文件绕过版本控制，无法追溯、无法回滚。正确做法是提交 commit 推到 GitHub，服务器执行 git pull。紧急热修复可以例外，事后必须补 commit 同步。' }
+    ],
+    blocked: 2
+  }
+];
+let curOp = 0;
+let gateChecks = [];
+
+function pickOp(i) {
+  curOp = i;
+  for (let j = 0; j < 3; j++) document.getElementById('opBtn' + j).classList.toggle('active', j === i);
+  gateChecks = OPS[i].gates.map(function () { return false; });
+  gateRender();
+  const r = document.getElementById('gateResult');
+  r.className = 'gate-result';
+  r.innerHTML = '';
+}
+
+function gateRender() {
+  const op = OPS[curOp];
+  const list = document.getElementById('gateList');
+  list.innerHTML = '';
+  op.gates.forEach(function (g, i) {
+    const isBlocked = i === op.blocked;
+    const item = document.createElement('div');
+    item.className = 'gate-item' + (isBlocked ? ' blocked' : (gateChecks[i] ? ' checked' : ''));
+    const box = document.createElement('div');
+    box.className = 'g-box';
+    box.textContent = isBlocked ? '✕' : (gateChecks[i] ? '✓' : '');
+    const txt = document.createElement('div');
+    txt.innerHTML = '<div class="g-t">' + g.t + '</div><div class="g-d">' + g.d + '</div>';
+    item.appendChild(box);
+    item.appendChild(txt);
+    item.onclick = function () {
+      if (isBlocked) {
+        gateShow('stop', '<b>⛔ 这一项勾不上。</b>' + g.blockedMsg);
+        return;
+      }
+      gateChecks[i] = !gateChecks[i];
+      gateRender();
+    };
+    list.appendChild(item);
+  });
+}
+
+function gateShow(cls, html) {
+  const r = document.getElementById('gateResult');
+  r.className = 'gate-result show ' + cls;
+  r.innerHTML = html;
+}
+
+function gateRun() {
+  const op = OPS[curOp];
+  if (op.blocked >= 0) {
+    gateShow('stop', '<b>⛔ 操作被拦截。</b>' + op.gates[op.blocked].blockedMsg +
+      (gateChecks.some(function (c, i) { return !c && i !== op.blocked; })
+        ? '<br>另外，备份闸和回退闸也还没全部通过。' : ''));
+    return;
+  }
+  const missing = [];
+  op.gates.forEach(function (g, i) { if (!gateChecks[i]) missing.push(g); });
+  if (missing.length) {
+    gateShow('warn', '<b>⚠️ 还有 ' + missing.length + ' 道闸没过，操作暂停。</b><br>' +
+      missing.map(function (g) { return '「' + g.t + '」漏了：' + g.miss; }).join('<br>'));
+    return;
+  }
+  gateShow('pass', '<b>✅ 三道闸全部通过，可以执行。</b>执行后记得把备份路径和回退方案写进 CHANGELOG，让这次操作可追溯。');
+}
+
+/* 初始化 */
+dfRender();
+pickOp(0);
+</script>
+<!--seo:begin--><!--seo:end-->
+<script src="../track.js"></script>
+</body>
+</html>

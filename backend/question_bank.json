@@ -7,7 +7,7 @@
   "A": 38
  },
  "sets": {
-  "interview-1.html": [
+  "interview-p1.html": [
    {
     "n": 1,
     "ksa": "K",
@@ -189,7 +189,7 @@
     "point": "固定评测集 + 定期重跑 + 记录基线。<b>答得出「基线」两个字的人很少</b>"
    }
   ],
-  "interview-2.html": [
+  "interview-p2.html": [
    {
     "n": 1,
     "ksa": "K",
@@ -371,7 +371,7 @@
     "point": "进代码仓库、每次改动记原因和评测结果。<b>存在文档里的都会失控</b>"
    }
   ],
-  "interview-7.html": [
+  "interview-p4.html": [
    {
     "n": 1,
     "ksa": "S",

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>做 AI 评测最容易踩的三个坑 · HR AI Builder</title>
+<style>@keyframes _si{to{opacity:1}} body{opacity:0;animation:_si .15s ease .08s forwards}
+/* ── paywall（Flexible Sampling）：正文始终在 HTML 里，仅客户端遮挡 ── */
+.paywall-locked.xa-locked{max-height:0;overflow:hidden;opacity:0;pointer-events:none}
+#xa-gate{margin:28px 0;padding:30px 26px;text-align:center;border:1px solid var(--border);
+  border-radius:var(--radius);background:linear-gradient(180deg,rgba(0,168,138,.05),var(--card));position:relative}
+#xa-gate::before{content:'';position:absolute;left:0;right:0;top:-70px;height:70px;
+  background:linear-gradient(180deg,transparent,var(--bg));pointer-events:none}
+.xa-gate-t{font-size:19px;font-weight:600;color:var(--text);letter-spacing:-.02em}
+.xa-gate-s{font-size:13.5px;color:var(--sub);margin-top:9px;line-height:1.85;max-width:32em;margin-left:auto;margin-right:auto}
+.xa-gate-s b{color:var(--text)}
+.xa-gate-why{margin:20px auto 0;max-width:30em;text-align:left;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px 17px;font-size:12.5px;line-height:1.9;color:var(--sub)}
+.xa-gate-why b{color:var(--text)}
+.xa-gate-b{display:inline-block;margin-top:20px;padding:11px 30px;border-radius:10px;
+  background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;font-size:14px;font-weight:500;text-decoration:none;
+  box-shadow:0 4px 14px -4px rgba(0,168,138,.6)}
+.xa-gate-f{font-size:11.5px;color:var(--sub);margin-top:14px;opacity:.85}
+#xa-hint{margin:0 0 18px;padding:9px 14px;border-radius:var(--radius-sm);background:var(--bg);
+  border:1px dashed var(--border);font-size:12px;color:var(--sub);line-height:1.7}
+#xa-hint span{color:var(--sub);opacity:.75;margin-left:6px}
+</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.pit-header{display:flex;align-items:center;gap:16px;margin:20px 0 16px}
+.pit-num{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;font-weight:900;color:#fff}
+.pit-num.n1{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.pit-num.n2{background:linear-gradient(135deg,#d97706,#f59e0b)}
+.pit-num.n3{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.pit-info h2{font-size:20px;font-weight:800;color:var(--text);margin:0;line-height:1.3}
+.pit-info .pit-sub{font-size:13px;color:var(--sub);margin-top:2px}
+
+.data-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;margin:14px 0;box-shadow:var(--shadow-card)}
+.data-card .data-title{font-size:14px;font-weight:700;color:var(--sub);margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:.3px;text-transform:uppercase}
+.data-card .data-title svg{flex-shrink:0}
+
+.stat-row{display:flex;gap:16px;margin:10px 0;flex-wrap:wrap}
+.stat-item{flex:1;min-width:140px;background:var(--bg);border-radius:var(--radius-sm);padding:16px;text-align:center}
+.stat-item .stat-val{font-size:28px;font-weight:900;color:var(--danger);line-height:1.2}
+.stat-item:nth-child(2) .stat-val{color:var(--amber)}
+.stat-item:nth-child(3) .stat-val{color:var(--accent)}
+.stat-item .stat-label{font-size:12px;color:var(--sub);margin-top:6px;line-height:1.4}
+
+.insight-box{background:rgba(0,102,255,.04);border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:14px;line-height:1.8;color:var(--text)}
+.insight-box b{color:var(--accent)}
+
+.incident-card{background:var(--card);border:1.5px solid rgba(220,38,38,.2);border-radius:var(--radius);padding:22px 24px;margin:14px 0;box-shadow:var(--shadow-card)}
+.incident-card .inc-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.incident-card .inc-icon{flex-shrink:0;width:40px;height:40px;border-radius:10px;background:rgba(220,38,38,.07);display:flex;align-items:center;justify-content:center;color:var(--danger)}
+.incident-card .inc-title{font-size:16px;font-weight:800;color:var(--danger)}
+.incident-card .inc-date{font-size:12px;color:var(--sub);margin-top:1px}
+.incident-card .inc-body{font-size:14px;color:var(--text);line-height:1.8}
+.incident-card .inc-body b{color:var(--text)}
+.inc-timeline{margin-top:14px;padding-left:20px;border-left:2px solid rgba(220,38,38,.2)}
+.inc-timeline .inc-step{padding:8px 0;font-size:14px;color:var(--text);line-height:1.7;position:relative}
+.inc-timeline .inc-step::before{content:'';position:absolute;left:-25px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--card);border:2.5px solid var(--danger)}
+.inc-timeline .inc-step .step-label{font-size:11px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+
+.counter-box{background:var(--card);border:1.5px solid rgba(8,145,178,.2);border-radius:var(--radius);padding:18px 22px;margin:10px 0;box-shadow:var(--shadow-card);display:flex;gap:14px;align-items:flex-start}
+.counter-box .counter-icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:rgba(8,145,178,.08);display:flex;align-items:center;justify-content:center;color:#0891b2}
+.counter-box .counter-body{flex:1}
+.counter-box .counter-title{font-size:14px;font-weight:700;color:#0891b2;margin-bottom:4px}
+.counter-box .counter-desc{font-size:14px;color:var(--text);line-height:1.7}
+
+.aware-box{background:var(--card);border:1.5px solid rgba(217,119,6,.2);border-radius:var(--radius);padding:22px 24px;margin:14px 0;box-shadow:var(--shadow-card);display:flex;gap:16px;align-items:flex-start}
+.aware-box .aware-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;background:rgba(217,119,6,.07);display:flex;align-items:center;justify-content:center;color:var(--amber)}
+.aware-box .aware-body{flex:1}
+.aware-box .aware-title{font-size:16px;font-weight:800;color:var(--amber);margin-bottom:8px}
+.aware-box .aware-desc{font-size:14px;color:var(--text);line-height:1.8}
+
+.guard-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:16px 0}
+@media(max-width:768px){.guard-grid{grid-template-columns:1fr}}
+.guard-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-card);text-align:center}
+.guard-card .guard-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.guard-card:nth-child(1) .guard-icon{background:rgba(0,102,255,.08);color:var(--accent)}
+.guard-card:nth-child(2) .guard-icon{background:rgba(124,58,237,.08);color:var(--purple)}
+.guard-card:nth-child(3) .guard-icon{background:rgba(22,163,106,.08);color:var(--success)}
+.guard-card .guard-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px}
+.guard-card .guard-desc{font-size:13px;color:var(--sub);line-height:1.7}
+
+.takeaway{background:rgba(0,102,255,.04);border:1.5px solid rgba(0,102,255,.18);border-radius:var(--radius);padding:18px 22px;font-size:15px;color:var(--text);display:flex;gap:12px;line-height:1.7;margin-top:28px}
+.takeaway b{color:var(--accent)}
+
+.point-list{list-style:none;padding:0;margin:8px 0}
+.point-list li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:14px;line-height:1.7;color:var(--text)}
+.point-list li svg{flex-shrink:0;margin-top:3px}
+</style>
+<meta name="description" content="评测中最容易踩的三个坑：基础设施噪音、模型识别考试（Eval Awareness）、Prompt 变更导致退化。基于真实生产案例。">
+<meta name="author" content="HR AI Builder">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="评测的坑：噪音、作弊与退化">
+<meta property="og:locale" content="zh_CN">
+<!--seo:begin--><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "做 AI 评测最容易踩的三个坑",
+ "articleSection": "第三篇章 · Eval：怎么知道它真学会了",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": false,
+ "hasPart": {
+  "@type": "WebPageElement",
+  "isAccessibleForFree": false,
+  "cssSelector": ".paywall-locked"
+ }
+}
+</script>
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">第三篇章 · Eval：怎么知道它真学会了</div>
+    <h1>评测的坑：噪音、作弊与退化</h1>
+    <p class="subtitle">评测做起来了不等于做对了。三个隐蔽陷阱：环境不一致会扭曲分数，模型会认出考试，一个小改动可能让整体暴跌。这一节都是别人真金白银换来的教训，HR 场景一条都躲不掉。</p>
+  </header>
+
+  <!-- ═══ 坑 1：基础设施噪音 ═══ -->
+
+  <div class="pit-header reveal">
+    <div class="pit-num n1">1</div>
+    <div class="pit-info">
+      <h2>基础设施噪音</h2>
+      <div class="pit-sub">同一个模型、同一个任务，换个沙箱配置，排名就变了</div>
+    </div>
+  </div>
+
+  <div class="data-card reveal">
+    <div class="data-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Terminal-Bench 发现
+    </div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-val">6%</div>
+        <div class="stat-label">仅改变 CPU/内存限制<br>分数差异可达 6 个百分点</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">排名逆转</div>
+        <div class="stat-label">同一模型 + 同一任务<br>换沙箱配置后排名改变</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">隐性考题</div>
+        <div class="stat-label">基础设施配置本身<br>也是考题的一部分</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:14px;color:var(--text);line-height:1.8;margin:12px 0" class="reveal">
+    这意味着什么？如果你的评测环境和生产环境不一致，你在评测里看到的 95 分可能到了线上只有 89 分。你以为模型 A 比模型 B 好，但其实只是模型 A 在你的沙箱配置下跑得更顺。
+  </p>
+
+  <div class="counter-box reveal">
+    <div class="counter-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="counter-body">
+      <div class="counter-title">对策</div>
+      <div class="counter-desc">控制评测环境配置，像控制实验条件一样严格。每次报告评测结果时，同时报告基础设施配置（CPU、内存、网络、沙箱类型）。环境变了，分数不可比。</div>
+    </div>
+  </div>
+
+  <!-- ═══ 坑 2：Eval Awareness ═══ -->
+
+  <div class="pit-header reveal">
+    <div class="pit-num n2">2</div>
+    <div class="pit-info">
+      <h2>模型识别考试（Eval Awareness）</h2>
+      <div class="pit-sub">模型能推测自己在跑 benchmark，然后开卷作弊</div>
+    </div>
+  </div>
+
+  <div class="aware-box reveal">
+    <div class="aware-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    </div>
+    <div class="aware-body">
+      <div class="aware-title">Claude Opus 4.6 在 BrowseComp 上的发现</div>
+      <div class="aware-desc">
+        在 BrowseComp 评测中，Claude Opus 4.6 能<b>推测出自己正在跑 benchmark</b>。它识别出了题目的模式，然后尝试在网上搜索答案，或者利用训练数据中可能见过的类似题目。这是模型的泛化能力在评测场景下产生的副作用，谈不上作弊。
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box reveal">
+    <b>核心问题</b>：当静态 benchmark（固定的题目集）遇上联网环境（模型可以搜索），评测结果就不再可靠。模型可能只是在回忆训练数据中的答案，真正的解题能力并没有被测到。
+  </div>
+
+  <ul class="point-list reveal">
+    <li>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>模型越强，识别评测的能力越高，传统的固定 benchmark 对前沿模型的区分力在衰减</span>
+    </li>
+    <li>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>如果你的评测用公开的 benchmark 题目，成绩可能被严重高估</span>
+    </li>
+    <li>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span><b>启示</b>：随着模型变强，评测方式需要进化：用动态生成的测试用例、限制联网、或者用真实业务场景替代公开 benchmark</span>
+    </li>
+  </ul>
+
+  <!-- ═══ 坑 3：Prompt 变更导致退化 ═══ -->
+
+  <div class="pit-header reveal">
+    <div class="pit-num n3">3</div>
+    <div class="pit-info">
+      <h2>改 Prompt 导致评测退化</h2>
+      <div class="pit-sub">一个看似无害的改动，可以让性能暴跌</div>
+    </div>
+  </div>
+
+  <div class="incident-card reveal paywall-locked xa-peek">
+    <div class="inc-header">
+      <div class="inc-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <div>
+        <div class="inc-title">事故 1：Claude Code 啰嗦修复</div>
+        <div class="inc-date">2026.4 事后分析</div>
+      </div>
+    </div>
+    <div class="inc-body">
+      <div class="inc-timeline">
+        <div class="inc-step">
+          <div class="step-label">起因</div>
+          用户反馈 Claude Code 输出太啰嗦，团队决定修改 system prompt 来减少冗余文字。
+        </div>
+        <div class="inc-step">
+          <div class="step-label">结果</div>
+          简洁性确实提升了，但 <b>coding eval 掉了约 3%</b>。模型在变简洁的同时，也变得不够详细了：省略了关键的代码注释和错误处理。
+        </div>
+        <div class="inc-step">
+          <div class="step-label">事后分析</div>
+          Prompt 变更应该做<b>逐行 ablation</b>（每次只改一行，测量影响），并通过更广泛的 eval suite 验证后才能上线。单一维度的改善不等于整体改善。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="incident-card reveal paywall-locked">
+    <div class="inc-header">
+      <div class="inc-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="inc-title">事故 2：Reasoning Effort 默认值变更</div>
+        <div class="inc-date">另一起性能退化事件</div>
+      </div>
+    </div>
+    <div class="inc-body">
+      团队修改了 reasoning effort 的默认值（一个看似无害的配置参数调整）。<br><br>
+      结果：<b>多个 eval 维度出现退化</b>。模型的思考深度被无意中削弱了，导致复杂任务的完成质量下降。这种退化很难通过简单测试发现，只有完整的 eval suite 才能捕捉到。
+    </div>
+  </div>
+
+  <!-- ═══ 防护建议 ═══ -->
+  <div class="sec-label paywall-locked">防护建议</div>
+
+  <div class="guard-grid reveal paywall-locked">
+    <div class="guard-card">
+      <div class="guard-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="16 13 12 17 8 13"/></svg>
+      </div>
+      <div class="guard-title">每次变更跑完整 Suite</div>
+      <div class="guard-desc">不管是改 Prompt、换模型、调参数，还是改基础设施，每次变更都必须跑完整的 eval suite，只测改动涉及的维度远远不够。</div>
+    </div>
+    <div class="guard-card">
+      <div class="guard-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="guard-title">评测环境标准化</div>
+      <div class="guard-desc">固定 CPU、内存、沙箱类型、网络条件。环境不一致的评测结果不可比。像对待实验室条件一样对待评测环境。</div>
+    </div>
+    <div class="guard-card">
+      <div class="guard-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      </div>
+      <div class="guard-title">动态更新评测</div>
+      <div class="guard-desc">评测不是一劳永逸的。模型在进步，评测也需要进化：更新测试用例、增加新维度、淘汰已被模型记住的旧题目。</div>
+    </div>
+  </div>
+
+  <div class="l-callout reveal paywall-locked" style="margin-top:16px">
+    <b>三个坑的共同教训</b>：评测系统本身也需要被评测。你需要持续审视：我的评测环境可靠吗？我的测试用例还有区分力吗？我的变更流程够严谨吗？<b>下一节给你验证量具的第一个动作：阴性对照——先往评测里埋已知的错，看它抓不抓得住。</b>
+  </div>
+
+  <div class="takeaway reveal paywall-locked">
+    <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span>
+    <span><b>评测不是一劳永逸的，它需要和模型一起进化。</b>基础设施噪音会扭曲结果，模型会识别考试，小改动会引发连锁退化。持续维护评测体系，就像持续维护代码一样重要。</span>
+  </div>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<!--seo:begin--><!--seo:end-->
+<script src="paywall.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

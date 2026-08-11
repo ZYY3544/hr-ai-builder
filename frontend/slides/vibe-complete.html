@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vibe Coding 方法论第 6 节：禁止简化实现，不接受分期交付。AI 爱做「先上简版」的真实原因与打破方式。">
+<meta name="author" content="HR AI Builder">
+<title>让 AI 一次交付完整功能，不接受半成品 · HR AI Builder</title>
+<link rel="stylesheet" href="lesson.css">
+<style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}
+/* ── paywall（Flexible Sampling）：正文始终在 HTML 里，仅客户端遮挡 ── */
+.paywall-locked.xa-locked{max-height:0;overflow:hidden;opacity:0;pointer-events:none}
+#xa-gate{margin:28px 0;padding:30px 26px;text-align:center;border:1px solid var(--border);
+  border-radius:var(--radius);background:linear-gradient(180deg,rgba(0,168,138,.05),var(--card));position:relative}
+#xa-gate::before{content:'';position:absolute;left:0;right:0;top:-70px;height:70px;
+  background:linear-gradient(180deg,transparent,var(--bg));pointer-events:none}
+.xa-gate-t{font-size:19px;font-weight:600;color:var(--text);letter-spacing:-.02em}
+.xa-gate-s{font-size:13.5px;color:var(--sub);margin-top:9px;line-height:1.85;max-width:32em;margin-left:auto;margin-right:auto}
+.xa-gate-s b{color:var(--text)}
+.xa-gate-why{margin:20px auto 0;max-width:30em;text-align:left;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px 17px;font-size:12.5px;line-height:1.9;color:var(--sub)}
+.xa-gate-why b{color:var(--text)}
+.xa-gate-b{display:inline-block;margin-top:20px;padding:11px 30px;border-radius:10px;
+  background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;font-size:14px;font-weight:500;text-decoration:none;
+  box-shadow:0 4px 14px -4px rgba(0,168,138,.6)}
+.xa-gate-f{font-size:11.5px;color:var(--sub);margin-top:14px;opacity:.85}
+#xa-hint{margin:0 0 18px;padding:9px 14px;border-radius:var(--radius-sm);background:var(--bg);
+  border:1px dashed var(--border);font-size:12px;color:var(--sub);line-height:1.7}
+#xa-hint span{color:var(--sub);opacity:.75;margin-left:6px}
+</style>
+<style>
+:root{--vibe:#0d9488;--vibe-deep:#0f766e;--vibe-soft:rgba(13,148,136,.08)}
+.lesson-header .kicker{color:var(--vibe)}
+
+.desc{font-size:15px;color:var(--sub);line-height:1.8}
+
+/* ── 交互一：技术债时间线 ── */
+.tl-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tl-stat{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;text-align:center}
+.tl-stat .tv{font-size:28px;font-weight:800;font-family:"SF Mono",Menlo,monospace;color:var(--text);line-height:1.3;transition:color .3s}
+.tl-stat .tv.hot{color:var(--danger)}
+.tl-stat .tl{font-size:12px;color:var(--sub);font-weight:700;letter-spacing:.4px}
+
+.tl-track{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+.tl-node{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:16px;opacity:.4;transition:all .4s ease;box-shadow:var(--shadow-card)}
+.tl-node.lit{opacity:1}
+.tl-node.lit.warn{border-color:rgba(217,119,6,.4);background:rgba(217,119,6,.04)}
+.tl-node.lit.bad{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.04)}
+.tl-node.lit.ok{border-color:rgba(13,148,136,.4);background:var(--vibe-soft)}
+.tl-day{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;background:rgba(0,0,0,.06);color:var(--sub);margin-bottom:8px;font-family:"SF Mono",Menlo,monospace}
+.tl-node.lit.ok .tl-day{background:rgba(13,148,136,.14);color:var(--vibe-deep)}
+.tl-node.lit.warn .tl-day{background:rgba(217,119,6,.14);color:var(--amber)}
+.tl-node.lit.bad .tl-day{background:rgba(220,38,38,.12);color:var(--danger)}
+.tl-node h4{font-size:15px;font-weight:800;color:var(--text);margin-bottom:5px}
+.tl-node p{font-size:13px;color:var(--sub);line-height:1.7}
+.tl-note{display:none;margin-top:10px;font-size:12.5px;font-weight:700;line-height:1.6}
+.tl-node.lit .tl-note{display:block}
+.tl-node.warn .tl-note{color:var(--amber)}
+.tl-node.bad .tl-note{color:var(--danger)}
+.tl-node.ok .tl-note{color:var(--vibe-deep)}
+
+/* ── 交互二：对话分支 ── */
+.chat-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-top:14px}
+.chat-bar{padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);font-size:14px;font-weight:700;color:var(--sub)}
+.chat-body{min-height:220px;max-height:420px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+.bub{max-width:88%;padding:10px 14px;border-radius:12px;font-size:14.5px;line-height:1.65;opacity:0;transform:translateY(8px);transition:all .35s ease;flex-shrink:0}
+.bub.show{opacity:1;transform:translateY(0)}
+.bub.ai{align-self:flex-start;background:rgba(0,0,0,.045);color:var(--text)}
+.bub.me{align-self:flex-end;background:var(--vibe);color:#fff}
+.bub.time{align-self:center;background:none;color:var(--sub);font-size:12.5px;font-weight:700;padding:2px 8px}
+.bub.warning{align-self:flex-start;background:rgba(220,38,38,.07);color:var(--danger);font-weight:600}
+.bub.ok{align-self:flex-start;background:rgba(22,163,74,.08);color:var(--success);font-weight:600}
+
+.reply-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.reply-btn{padding:13px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-family:inherit;text-align:left;width:100%;min-height:44px;box-shadow:var(--shadow-card)}
+.reply-btn:hover:not(:disabled){border-color:rgba(0,0,0,.18)}
+.reply-btn:disabled{opacity:.45;cursor:not-allowed}
+.reply-btn .rk{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:5px;margin-bottom:6px}
+.reply-btn.ra .rk{background:rgba(220,38,38,.1);color:var(--danger)}
+.reply-btn.rb .rk{background:var(--vibe-soft);color:var(--vibe-deep)}
+.reply-btn p{font-size:14px;color:var(--text);line-height:1.6;font-weight:600}
+
+.branch-verdict{display:none;margin-top:12px;padding:13px 16px;border-radius:10px;font-size:13.5px;line-height:1.75;border:1.5px solid transparent}
+.branch-verdict.show{display:block}
+.branch-verdict.bad{background:rgba(220,38,38,.05);border-color:rgba(220,38,38,.22);color:#991b1b}
+.branch-verdict.good{background:rgba(22,163,74,.06);border-color:rgba(22,163,74,.25);color:#166534}
+
+.ctrl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.btn{padding:11px 22px;border-radius:9px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-p{background:var(--vibe);color:#fff}
+.btn-p:hover{filter:brightness(1.1)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed}
+.btn-r{background:rgba(0,0,0,.05);color:var(--sub);border:1px solid var(--border)}
+.hint{font-size:13px;color:var(--sub)}
+
+.src-note{margin-top:24px;font-size:12.5px;color:var(--sub)}
+.src-note a{color:var(--vibe-deep)}
+
+@media (max-width:768px){
+  .tl-track{grid-template-columns:1fr}
+  .tl-stats{grid-template-columns:1fr 1fr}
+  .reply-row{grid-template-columns:1fr}
+}
+</style>
+<!--seo:begin--><style>html.xa-locked .paywall-locked:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "让 AI 一次交付完整功能，不接受半成品",
+ "articleSection": "第四篇章 · 怎么跟它协作",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": false,
+ "hasPart": {
+  "@type": "WebPageElement",
+  "isAccessibleForFree": false,
+  "cssSelector": ".paywall-locked"
+ }
+}
+</script>
+</head>
+<body>
+<article class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">Vibe Coding 方法论 · 第 6 节</div>
+    <h1>不接受分期交付</h1>
+    <p class="subtitle">你要一个完整的认证系统，AI 说「先做一个简版的用户名密码登录，后续再加 OAuth」。后续永远不会来。这一节用两个演示，看清「先做简版」的完整生命周期，并练习正确的回应方式。</p>
+  </header>
+
+  <section class="reveal">
+    <div class="sec-label">动机分析</div>
+    <div class="l-callout" style="background:var(--vibe-soft);border-color:rgba(13,148,136,.3)">
+      <p>实践中 AI 说「先做简版」往往与复杂度无关，<b style="color:var(--vibe-deep)">它想快速给你一个能跑的东西来换取正反馈</b>。「先用临时方案」「暂时 Mock」「简单处理一下」背后是同一个模式。打破这个模式后，AI 反而会更认真地分析完整方案。</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-label">交互演示一 · 技术债时间线播放器</div>
+    <p class="desc">点击播放，看「先做简版」的登录模块在 90 天里怎么变成永久技术债。上方两个数字会随时间线一起变化。</p>
+
+    <div class="tl-stats">
+      <div class="tl-stat"><div class="tv" id="tvDep">0</div><div class="tl">依赖简版接口的模块数</div></div>
+      <div class="tl-stat"><div class="tv" id="tvCost">0.5×</div><div class="tl">补全成本（相对当初直接做完整版）</div></div>
+    </div>
+
+    <div class="tl-track">
+      <div class="tl-node ok" id="tn0">
+        <span class="tl-day">第 1 天</span>
+        <h4>简版上线</h4>
+        <p>用户名密码登录能跑了，AI 承诺「OAuth 后续再加」，你也觉得挺合理。</p>
+        <div class="tl-note">此刻补全只要 0.5 倍成本，可惜没人回头</div>
+      </div>
+      <div class="tl-node warn" id="tn1">
+        <span class="tl-day">第 30 天</span>
+        <h4>后续没有来</h4>
+        <p>新需求源源不断，没人回头补 OAuth。会话、权限、支付、通知 4 个模块开始直接依赖简版接口。</p>
+        <div class="tl-note">依赖 +4 · 补全成本升到 3 倍</div>
+      </div>
+      <div class="tl-node bad" id="tn2">
+        <span class="tl-day">第 90 天</span>
+        <h4>成为永久技术债</h4>
+        <p>想补全时发现依赖已经长死，9 个模块与简版耦合，重构成本高过重写。简版成了永久版。</p>
+        <div class="tl-note">依赖 +9 · 补全成本 8 倍，超过重写</div>
+      </div>
+    </div>
+
+    <div class="ctrl-row">
+      <button class="btn btn-p" id="btnTl" onclick="playTimeline()">▶ 播放 90 天生命周期</button>
+      <button class="btn btn-r" onclick="resetTimeline()">重置</button>
+      <span class="hint" id="tlHint"></span>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked xa-peek">
+    <div class="sec-label">交互演示二 · 对话分支模拟</div>
+    <p class="desc">AI 提出了分期方案，你的回应决定了 90 天后的结局。两个分支都可以试。</p>
+
+    <div class="chat-wrap">
+      <div class="chat-bar">与 AI 的对话 · 需求：完整的认证系统</div>
+      <div class="chat-body" id="chatBody"></div>
+    </div>
+
+    <div class="reply-row" id="replyRow">
+      <button class="reply-btn ra" id="ra" onclick="pickReply(0)">
+        <span class="rk">回应 A</span>
+        <p>「好的，先上简版，快点看到东西。」</p>
+      </button>
+      <button class="reply-btn rb" id="rb" onclick="pickReply(1)">
+        <span class="rk">回应 B</span>
+        <p>「按规则来：给我完整方案和工作量评估。确实太复杂就列出需要我先定的前置决策。」</p>
+      </button>
+    </div>
+
+    <div class="branch-verdict bad" id="vd0"><b>分支 A 的结局：</b>简版换来了当天的正反馈，代价是 90 天后一笔高过重写的技术债。「后续再优化」的后续没有来。</div>
+    <div class="branch-verdict good" id="vd1"><b>分支 B 的结局：</b>AI 给出了完整方案、真实工作量和前置决策清单。选择权回到人手里：要不要拆、怎么拆由你决定。</div>
+
+    <div class="ctrl-row">
+      <button class="btn btn-r" onclick="resetChat()">↺ 重来，试另一个回应</button>
+      <span class="hint" id="chatHint"></span>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">规则与替代方案</div>
+    <div class="l-cols">
+      <div class="l-card">
+        <h3 style="font-size:16px;margin-bottom:6px;color:var(--danger)">禁止的做法</h3>
+        <p class="desc" style="font-size:13.5px">禁止以任何理由简化实现：「先用临时方案」「后续再优化」「暂时 Mock」「简单处理一下」全部不接受。也禁止 AI 主动规划分期、MVP、阶段一二三。每次实现都必须是完整、正确、没有代码债的方案。</p>
+      </div>
+      <div class="l-card">
+        <h3 style="font-size:16px;margin-bottom:6px;color:var(--vibe-deep)">替代的做法</h3>
+        <p class="desc" style="font-size:13.5px">评估一个功能只需回答：完整做下来需要什么、有多复杂。确实太复杂时，明确列出「需要你先做哪些前置决策」，把选择权交还给人。已知有缺陷的方案，直接给正确版本，别先做一个将就的。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">适用边界</div>
+    <div class="l-callout">
+      <p>大型项目里这条规则可能显得激进：一个功能真需要 2000 行代码时，一次写完不现实。此时正确动作依然成立，让 AI 给出完整方案和真实工作量，由人决定是否拆分、怎么拆分。<b>拆分是人的决策，降级是 AI 的自作主张</b>，两者的区别就是这条规则的核心。</p>
+    </div>
+  </section>
+
+  <section class="reveal paywall-locked">
+    <div class="sec-label">本节要点</div>
+    <div class="l-callout" style="background:var(--vibe-soft);border-color:rgba(13,148,136,.3)">
+      <p><b style="color:var(--vibe-deep)">「后续再优化」的后续永远不会来。</b>把选择权收回来：AI 负责给出完整方案和真实代价，拆不拆、怎么拆由人决定。</p>
+    </div>
+    <div class="l-card src-note">素材来源：本节内容整理自开源仓库 <a href="https://github.com/itshen/xs_vibe_rules" target="_blank" rel="noopener">itshen/xs_vibe_rules</a> 的 rule-opensource.mdc 第十一章「实现质量要求」。</div>
+  </section>
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<script>
+/* ── 交互一：技术债时间线播放器 ── */
+const TL_STEPS = [
+  { node:0, dep:0, cost:'0.5×', costHot:false },
+  { node:1, dep:4, cost:'3×',   costHot:true  },
+  { node:2, dep:9, cost:'8×',   costHot:true  }
+];
+let tlTimer = null, tlPlaying = false;
+
+function countTo(el, target, hot) {
+  let cur = parseInt(el.textContent, 10) || 0;
+  el.className = 'tv' + (hot ? ' hot' : '');
+  const iv = setInterval(function () {
+    if (cur >= target) { clearInterval(iv); return; }
+    cur++;
+    el.textContent = cur;
+  }, 90);
+}
+
+function playTimeline() {
+  if (tlPlaying) return;
+  resetTimeline();
+  tlPlaying = true;
+  document.getElementById('btnTl').disabled = true;
+  document.getElementById('tlHint').textContent = '时间流逝中';
+  let i = 0;
+
+  function step() {
+    const s = TL_STEPS[i];
+    document.getElementById('tn' + s.node).classList.add('lit');
+    countTo(document.getElementById('tvDep'), s.dep, s.costHot);
+    const costEl = document.getElementById('tvCost');
+    costEl.textContent = s.cost;
+    costEl.className = 'tv' + (s.costHot ? ' hot' : '');
+    i++;
+    if (i >= TL_STEPS.length) {
+      clearTimeout(tlTimer);
+      tlPlaying = false;
+      document.getElementById('btnTl').disabled = false;
+      document.getElementById('tlHint').textContent = '第 90 天：重构成本已高过重写';
+      return;
+    }
+    tlTimer = setTimeout(step, 1400);
+  }
+  step();
+}
+
+function resetTimeline() {
+  clearTimeout(tlTimer);
+  tlPlaying = false;
+  document.getElementById('btnTl').disabled = false;
+  ['tn0','tn1','tn2'].forEach(function (id) { document.getElementById(id).classList.remove('lit'); });
+  const dep = document.getElementById('tvDep');
+  dep.textContent = '0'; dep.className = 'tv';
+  const cost = document.getElementById('tvCost');
+  cost.textContent = '0.5×'; cost.className = 'tv';
+  document.getElementById('tlHint').textContent = '';
+}
+
+/* ── 交互二：对话分支模拟 ── */
+const OPENING = { cls:'ai', text:'AI：登录这块有点复杂，我们先做一个简版的用户名密码登录，后续再加 OAuth，怎么样？' };
+
+const BRANCHES = [
+  [
+    { cls:'me',      text:'好的，先上简版，快点看到东西。' },
+    { cls:'ai',      text:'AI：没问题！20 分钟后简版登录已经能跑了，OAuth 我记在待办里，后续补上。' },
+    { cls:'time',    text:'30 天后' },
+    { cls:'ai',      text:'AI：OAuth 还没排上。这期间会话、权限、支付、通知模块都已经在直接调用简版接口了。' },
+    { cls:'time',    text:'90 天后' },
+    { cls:'warning', text:'重构评估：补全 OAuth 需要动 9 个模块，成本高过重写。降级方案成了永久技术债。' }
+  ],
+  [
+    { cls:'me',      text:'按规则来：给我完整方案和工作量评估。确实太复杂就列出需要我先定的前置决策。' },
+    { cls:'ai',      text:'AI：明白。完整方案：用户名密码 + OAuth（Google / GitHub）+ 会话管理与 Token 刷新。工作量评估：约 3 天，主要复杂度在 OAuth 回调与多端会话。' },
+    { cls:'ai',      text:'AI：需要你先定 3 个前置决策：1. 要不要支持手机号登录；2. OAuth 供应商选哪几家；3. 会话有效期定多长。' },
+    { cls:'me',      text:'不加手机号，供应商就这两家，会话 7 天。按这个做完整版。' },
+    { cls:'ok',      text:'完整版一次到位，没有留下代码债。要不要拆成两个 PR，是你基于工作量做的决策，与降级无关。' }
+  ]
+];
+
+let chatBusy = false, chatTimer = null;
+
+function pushBub(step) {
+  const body = document.getElementById('chatBody');
+  const el = document.createElement('div');
+  el.className = 'bub ' + step.cls;
+  el.textContent = step.text;
+  body.appendChild(el);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('show'); }); });
+  body.scrollTop = body.scrollHeight;
+}
+
+function pickReply(idx) {
+  if (chatBusy) return;
+  chatBusy = true;
+  document.getElementById('ra').disabled = true;
+  document.getElementById('rb').disabled = true;
+  document.getElementById('chatHint').textContent = '';
+
+  const steps = BRANCHES[idx];
+  let i = 0;
+  chatTimer = setInterval(function () {
+    if (i >= steps.length) {
+      clearInterval(chatTimer);
+      chatTimer = null;
+      chatBusy = false;
+      document.getElementById('vd' + idx).classList.add('show');
+      document.getElementById('chatHint').textContent = '点「重来」可以试另一个回应';
+      return;
+    }
+    pushBub(steps[i]);
+    i++;
+  }, 1100);
+}
+
+function resetChat() {
+  clearInterval(chatTimer);
+  chatTimer = null;
+  chatBusy = false;
+  document.getElementById('chatBody').innerHTML = '';
+  document.getElementById('vd0').classList.remove('show');
+  document.getElementById('vd1').classList.remove('show');
+  document.getElementById('ra').disabled = false;
+  document.getElementById('rb').disabled = false;
+  document.getElementById('chatHint').textContent = '';
+  pushBub(OPENING);
+}
+
+/* 初始化：AI 先开口 */
+pushBub(OPENING);
+
+/* 进入视野时自动播放时间线 */
+lessonOnView(document.getElementById('tn0'), function () {
+  playTimeline();
+});
+</script>
+<!--seo:begin--><!--seo:end-->
+<script src="paywall.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

@@ -44,7 +44,7 @@ window.COURSE = {
      "desc": "先搞清楚我们在哪里、为什么要打基础",
      "lessons": [
       {
-       "file": "0-intro.html",
+       "file": "start-dunning-kruger.html",
        "action": "copy",
        "ksa": "K",
        "title": "我们在哪里？达克效应",
@@ -54,7 +54,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "0-how.html",
+       "file": "start-how-to-learn.html",
        "action": "copy",
        "ksa": "K",
        "title": "怎样学，知识才能过脑子",
@@ -64,7 +64,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "0-why.html",
+       "file": "start-why-principles.html",
        "action": "adapt",
        "ksa": "K",
        "title": "为什么 HR 也要弄懂原理",
@@ -350,7 +350,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "1-2-fake-chat.html",
+       "file": "hallu-fake-chat.html",
        "action": "adapt",
        "ksa": "K",
        "title": "它为什么像在聊天：伪造聊天记录",
@@ -366,7 +366,7 @@ window.COURSE = {
      "desc": "幻觉不是 bug，是它的工作方式本身",
      "lessons": [
       {
-       "file": "1-2-hallucination.html",
+       "file": "hallu-first-scene.html",
        "action": "adapt",
        "ksa": "K",
        "title": "它会编：筛简历现场",
@@ -376,7 +376,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "1-2-mitigation-prompt.html",
+       "file": "hallu-fix-prompt.html",
        "action": "adapt",
        "ksa": "S",
        "title": "应对 1：把约束写进 Prompt",
@@ -386,7 +386,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "1-2-mitigation-rag.html",
+       "file": "hallu-fix-rag.html",
        "action": "adapt",
        "ksa": "S",
        "title": "应对 2：RAG——让它只答制度里有的",
@@ -396,7 +396,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "1-2-mitigation-temp.html",
+       "file": "hallu-fix-temp.html",
        "action": "copy",
        "ksa": "K",
        "title": "应对 3：它为什么每次都不一样",
@@ -406,7 +406,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "1-2-mitigation-eval.html",
+       "file": "hallu-fix-eval.html",
        "action": "adapt",
        "ksa": "S",
        "title": "应对 4：评测 + 人工审核",
@@ -422,7 +422,7 @@ window.COURSE = {
      "desc": "会忘也是不靠谱的一种",
      "lessons": [
       {
-       "file": "5-1.html",
+       "file": "context-window.html",
        "action": "copy",
        "ksa": "K",
        "title": "上下文窗口：它的工作记忆",
@@ -432,7 +432,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "5-2.html",
+       "file": "context-overflow.html",
        "action": "copy",
        "ksa": "K",
        "title": "上下文溢出：三种处理策略",
@@ -474,7 +474,7 @@ window.COURSE = {
      "desc": "老板、业务、技术同事会怎么考察你",
      "lessons": [
       {
-       "file": "interview-1.html",
+       "file": "interview-p1.html",
        "action": "new",
        "ksa": "A",
        "title": "幻觉与边界 · 30 问",
@@ -500,7 +500,7 @@ window.COURSE = {
      "desc": "不是调措辞，是设计信息结构",
      "lessons": [
       {
-       "file": "6-1.html",
+       "file": "prompt-system.html",
        "action": "adapt",
        "ksa": "S",
        "title": "System Prompt：你说什么，它就变什么",
@@ -510,7 +510,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "6-2.html",
+       "file": "prompt-advanced.html",
        "action": "adapt",
        "ksa": "S",
        "title": "Prompt 进阶技巧",
@@ -572,7 +572,7 @@ window.COURSE = {
      "desc": "只讲概念，不讲工程实现",
      "lessons": [
       {
-       "file": "7-1.html",
+       "file": "agent-what.html",
        "action": "copy",
        "ksa": "K",
        "title": "Agent：能干活的 AI",
@@ -582,7 +582,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "10-1.html",
+       "file": "agent-vs-workflow.html",
        "action": "adapt",
        "ksa": "A",
        "title": "Workflow vs Agent：HR 大多不该给自主权",
@@ -592,7 +592,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "7-4a.html",
+       "file": "agent-react.html",
        "action": "copy",
        "ksa": "K",
        "title": "ReAct 循环：思考 → 行动 → 观察",
@@ -602,7 +602,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "7-4b.html",
+       "file": "agent-stuck.html",
        "action": "adapt",
        "ksa": "K",
        "title": "Agent 卡死的 5 种模式",
@@ -618,7 +618,7 @@ window.COURSE = {
      "desc": "知道它花你多少钱，才知道什么值得做",
      "lessons": [
       {
-       "file": "8-1.html",
+       "file": "token-cost.html",
        "action": "copy",
        "ksa": "K",
        "title": "多轮对话为什么越来越贵",
@@ -644,7 +644,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "interview-2.html",
+       "file": "interview-p2.html",
        "action": "new",
        "ksa": "A",
        "title": "Prompt 与 Agent · 30 问",
@@ -758,7 +758,7 @@ window.COURSE = {
      "desc": "不评测就是在裸奔",
      "lessons": [
       {
-       "file": "10-8.html",
+       "file": "eval-why.html",
        "action": "adapt",
        "ksa": "S",
        "title": "为什么评测比调 prompt 重要",
@@ -768,7 +768,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "10-9.html",
+       "file": "eval-graders.html",
        "action": "adapt",
        "ksa": "S",
        "title": "三种 Grader：代码判、模型判、人工判",
@@ -778,7 +778,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "10-10.html",
+       "file": "eval-pitfalls.html",
        "action": "adapt",
        "ksa": "S",
        "title": "Eval 的坑：噪音、作弊与退化",
@@ -814,7 +814,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "vibe-1.html",
+       "file": "vibe-rules.html",
        "action": "copy",
        "ksa": "S",
        "title": "为什么要给 AI 立规矩",
@@ -830,7 +830,7 @@ window.COURSE = {
      "desc": "非技术背景的人最需要的部分",
      "lessons": [
       {
-       "file": "vibe-2.html",
+       "file": "vibe-workflow.html",
        "action": "copy",
        "ksa": "S",
        "title": "四步流程：复述、PRD、确认、编码",
@@ -840,7 +840,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "vibe-5.html",
+       "file": "vibe-debug.html",
        "action": "copy",
        "ksa": "S",
        "title": "调试铁律：先 Log 再改码",
@@ -850,7 +850,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "vibe-6.html",
+       "file": "vibe-complete.html",
        "action": "copy",
        "ksa": "S",
        "title": "不接受分期交付",
@@ -866,7 +866,7 @@ window.COURSE = {
      "desc": "HR 数据敏感，这两条是刚需",
      "lessons": [
       {
-       "file": "vibe-9.html",
+       "file": "vibe-safety.html",
        "action": "copy",
        "ksa": "S",
        "title": "破坏性操作的三道闸",
@@ -876,7 +876,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "vibe-8.html",
+       "file": "vibe-env.html",
        "action": "copy",
        "ksa": "S",
        "title": "把环境事实写进 Rule",
@@ -892,7 +892,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "vibe-7.html",
+       "file": "vibe-docs.html",
        "action": "copy",
        "ksa": "S",
        "title": "三份文档与方法论沉淀",
@@ -964,7 +964,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "interview-7.html",
+       "file": "interview-p4.html",
        "action": "new",
        "ksa": "A",
        "title": "Vibe Coding · 30 问",
@@ -1026,7 +1026,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "9-27.html",
+       "file": "perm-levels.html",
        "action": "adapt",
        "ksa": "A",
        "title": "AI 该有多大的自由",
@@ -1036,7 +1036,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "9-28.html",
+       "file": "perm-confirm.html",
        "action": "adapt",
        "ksa": "A",
        "title": "弹窗太多没人用，不弹又不安全",
@@ -1046,7 +1046,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "9-29.html",
+       "file": "perm-audit.html",
        "action": "adapt",
        "ksa": "A",
        "title": "它干了什么你知道吗：留痕与可申诉",
@@ -1144,7 +1144,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "oss-8.html",
+       "file": "oss-local-size.html",
        "action": "copy",
        "ksa": "K",
        "title": "你的电脑能跑多大的模型",
@@ -1154,7 +1154,7 @@ window.COURSE = {
        "ready": true
       },
       {
-       "file": "oss-9.html",
+       "file": "oss-local-tools.html",
        "action": "copy",
        "ksa": "S",
        "title": "Ollama 与 LM Studio 怎么上手",

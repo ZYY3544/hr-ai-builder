@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 输出怎么打分？代码判、模型判、人工判三种方式 · HR AI Builder</title>
+<style>@keyframes _si{to{opacity:1}} body{opacity:0;animation:_si .15s ease .08s forwards}</style>
+<link rel="stylesheet" href="lesson.css">
+<style>
+.grader-section{margin:20px 0}
+.grader-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.grader-badge{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.grader-badge.code{background:rgba(0,102,255,.08);color:var(--accent)}
+.grader-badge.model{background:rgba(124,58,237,.08);color:var(--purple)}
+.grader-badge.human{background:rgba(217,119,6,.08);color:var(--amber)}
+.grader-info h2{font-size:20px;font-weight:800;color:var(--text);margin:0;line-height:1.3}
+.grader-info .grader-sub{font-size:13px;color:var(--sub);margin-top:2px}
+
+.method-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow-card);margin:12px 0}
+.method-table th{background:var(--bg);padding:12px 18px;font-size:12px;font-weight:700;color:var(--sub);text-align:left;border-bottom:1.5px solid var(--border);letter-spacing:.3px;text-transform:uppercase}
+.method-table td{padding:14px 18px;font-size:14px;color:var(--text);background:var(--card);border-bottom:1px solid var(--border);line-height:1.6;vertical-align:top}
+.method-table tr:last-child td{border-bottom:none}
+.method-table .tag-pro{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(22,163,106,.1);color:var(--success)}
+.method-table .tag-con{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(220,38,38,.08);color:var(--danger)}
+
+.method-list{list-style:none;padding:0;margin:8px 0}
+.method-list li{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:14px;line-height:1.7;color:var(--text)}
+.method-list li svg{flex-shrink:0;margin-top:3px}
+
+.tip-box{background:var(--card);border:1.5px solid rgba(124,58,237,.2);border-radius:var(--radius);padding:18px 22px;margin:14px 0;box-shadow:var(--shadow-card);display:flex;gap:14px;align-items:flex-start}
+.tip-box .tip-icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:rgba(124,58,237,.08);display:flex;align-items:center;justify-content:center;color:var(--purple)}
+.tip-box .tip-body{flex:1}
+.tip-box .tip-title{font-size:14px;font-weight:800;color:var(--purple);margin-bottom:4px}
+.tip-box .tip-desc{font-size:14px;color:var(--text);line-height:1.7}
+
+.flow-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;margin:16px 0;box-shadow:var(--shadow-card)}
+.flow-card .flow-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.flow-card .flow-title svg{color:var(--accent);flex-shrink:0}
+.flow-steps{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;justify-content:center}
+.flow-step{flex:1;min-width:160px;max-width:240px;background:var(--bg);border-radius:var(--radius-sm);padding:16px;text-align:center;position:relative}
+.flow-step .fs-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.flow-step:nth-child(2) .fs-num{background:#0891b2}
+.flow-step:nth-child(3) .fs-num{background:var(--purple)}
+.flow-step .fs-label{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.flow-step .fs-desc{font-size:12px;color:var(--sub);line-height:1.6}
+.flow-arrow{display:flex;align-items:center;padding:0 6px;color:var(--sub)}
+@media(max-width:768px){.flow-steps{flex-direction:column;align-items:center}.flow-step{max-width:100%;width:100%}.flow-arrow{transform:rotate(90deg);padding:6px 0}}
+
+.case-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin:14px 0;box-shadow:var(--shadow-card)}
+.case-card .case-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.case-card .case-logo{width:40px;height:40px;border-radius:10px;background:rgba(0,102,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.case-card .case-logo svg{color:var(--accent)}
+.case-card .case-name{font-size:16px;font-weight:800;color:var(--text)}
+.case-card .case-type{font-size:12px;color:var(--sub)}
+.case-card .case-body{font-size:14px;color:var(--text);line-height:1.8}
+.case-card .case-dims{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.case-card .dim-tag{font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;background:var(--bg);color:var(--text);display:flex;align-items:center;gap:6px}
+.case-card .dim-tag svg{flex-shrink:0}
+
+.takeaway{background:rgba(0,102,255,.04);border:1.5px solid rgba(0,102,255,.18);border-radius:var(--radius);padding:18px 22px;font-size:15px;color:var(--text);display:flex;gap:12px;line-height:1.7;margin-top:28px}
+.takeaway b{color:var(--accent)}
+</style>
+<meta name="description" content="Agent 评测中三种评判器的优缺点和组合策略：代码 Grader、模型 Grader（LLM-as-Judge）、人工 Grader。">
+<meta name="author" content="HR AI Builder">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="三种 Grader：代码、模型、人工">
+<meta property="og:locale" content="zh_CN">
+<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI 输出怎么打分？代码判、模型判、人工判三种方式",
+ "articleSection": "第三篇章 · Eval：怎么知道它真学会了",
+ "publisher": {
+  "@type": "Organization",
+  "name": "HR AI Builder"
+ },
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<article class="lesson wide">
+
+  <header class="lesson-header">
+    <div class="kicker">Agent 评测</div>
+    <h1>三种 Grader：代码、模型、人工</h1>
+    <p class="subtitle">Grader 是评测系统的裁判。选错了 Grader，评测结果就不可信。生产环境的经验表明，三种 Grader 组合使用，各取所长。没有银弹，但有最优组合。</p>
+  </header>
+
+  <!-- ═══ 代码 Grader ═══ -->
+  <div class="sec-label">Grader 1：代码评判器</div>
+
+  <div class="grader-section reveal">
+    <div class="grader-header">
+      <div class="grader-badge code">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <div class="grader-info">
+        <h2>代码 Grader</h2>
+        <div class="grader-sub">用程序逻辑自动判定对错</div>
+      </div>
+    </div>
+
+    <table class="method-table">
+      <thead>
+        <tr>
+          <th style="width:18%">维度</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>方法</b></td>
+          <td>字符串匹配、正则表达式、静态分析（AST）、单元测试 pass/fail、工具调用验证（是否调用了正确的 API 和参数）</td>
+        </tr>
+        <tr>
+          <td><span class="tag-pro">优点</span></td>
+          <td>速度快（毫秒级）、成本几乎为零、结果完全客观可复现、适合 CI/CD 自动化</td>
+        </tr>
+        <tr>
+          <td><span class="tag-con">缺点</span></td>
+          <td>对合理变体过于严格（比如变量名不同就判错）、缺乏语义理解、无法评判主观质量</td>
+        </tr>
+        <tr>
+          <td><b>适用场景</b></td>
+          <td>有明确正确答案的任务：代码编译是否通过、API 返回值是否正确、文件格式是否合规、数学计算是否准确</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══ 模型 Grader ═══ -->
+  <div class="sec-label">Grader 2：模型评判器（LLM-as-Judge）</div>
+
+  <div class="grader-section reveal">
+    <div class="grader-header">
+      <div class="grader-badge model">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      </div>
+      <div class="grader-info">
+        <h2>模型 Grader（LLM-as-Judge）</h2>
+        <div class="grader-sub">让另一个 LLM 按评分标准打分</div>
+      </div>
+    </div>
+
+    <table class="method-table">
+      <thead>
+        <tr>
+          <th style="width:18%">维度</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>方法</b></td>
+          <td>将 Agent 的输出和评分 Rubric 一起交给一个评委 LLM，让它按预设标准给出分数和理由</td>
+        </tr>
+        <tr>
+          <td><span class="tag-pro">优点</span></td>
+          <td>能评判主观质量（文笔、逻辑性、创造力）、能理解意图而超越字面匹配、灵活适应不同任务类型</td>
+        </tr>
+        <tr>
+          <td><span class="tag-con">缺点</span></td>
+          <td>成本较高（每次评判都消耗 token）、可能存在评分偏见、需要精心设计评分标准、结果不完全可复现</td>
+        </tr>
+        <tr>
+          <td><b>适用场景</b></td>
+          <td>开放式任务：研究报告的质量评判、代码风格评估、对话的自然度、摘要的完整性和准确性</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="tip-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+      </div>
+      <div class="tip-body">
+        <div class="tip-title">关键技巧：Rubric 要具体到每一分</div>
+        <div class="tip-desc">
+          模糊的标准如「给输出质量打 0-1 分」几乎没用。好的 Rubric 应该明确：<br>
+          <b>0 分</b> = 完全没有回答问题，或包含严重事实错误<br>
+          <b>0.3 分</b> = 回答了问题但遗漏关键信息<br>
+          <b>0.7 分</b> = 回答完整准确，但组织混乱或有冗余<br>
+          <b>1 分</b> = 完整、准确、简洁、结构清晰
+        </div>
+      </div>
+    </div>
+    <div class="l-callout" style="margin-top:14px">
+      这跟知识萃取那节说的「不让它输出分数」<b>不矛盾</b>：那条闸拦的是给<b>候选人</b>打分——判定权不交出去；这里打分的对象是 <b>AI 自己的输出</b>，这是评测。评测分永远留在你和系统之间，不跟着任何一个候选人走。
+    </div>
+  </div>
+
+  <!-- ═══ 人工 Grader ═══ -->
+  <div class="sec-label xa-peek">Grader 3：人工评判器</div>
+
+  <div class="grader-section reveal">
+    <div class="grader-header">
+      <div class="grader-badge human">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="grader-info">
+        <h2>人工 Grader</h2>
+        <div class="grader-sub">由领域专家直接评判</div>
+      </div>
+    </div>
+
+    <table class="method-table">
+      <thead>
+        <tr>
+          <th style="width:18%">维度</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>何时用</b></td>
+          <td>评测初期校准评分标准、LLM 评判出现明显盲点时、需要领域专家判断的高风险场景（医疗、法律、金融）</td>
+        </tr>
+        <tr>
+          <td><span class="tag-pro">优点</span></td>
+          <td>最高质量的反馈、能发现自动化方法的盲区、提供改进方向的深度洞察</td>
+        </tr>
+        <tr>
+          <td><span class="tag-con">缺点</span></td>
+          <td>不可扩展（人的时间有限）、速度慢（小时级到天级）、成本高、评判者之间也有分歧</td>
+        </tr>
+        <tr>
+          <td><b>适用场景</b></td>
+          <td>定期抽检校准模型 Grader 的准确度、全新场景的评测标准建立、关键产品决策的最终验证</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══ 混合策略 ═══ -->
+  <div class="sec-label">混合策略：推荐流程</div>
+
+  <div class="flow-card reveal">
+    <div class="flow-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      三层评判体系
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="fs-num">1</div>
+        <div class="fs-label">代码 Grader 打底</div>
+        <div class="fs-desc">先覆盖所有确定性场景：编译通过、格式正确、API 调用准确。快且便宜。</div>
+      </div>
+      <div class="flow-arrow">
+        <svg width="24" height="14" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="7" x2="20" y2="7"/><polyline points="16 3 20 7 16 11"/></svg>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">2</div>
+        <div class="fs-label">模型 Grader 扩展</div>
+        <div class="fs-desc">覆盖主观场景：输出质量、逻辑性、用户体验。设计好 Rubric 是关键。</div>
+      </div>
+      <div class="flow-arrow">
+        <svg width="24" height="14" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="7" x2="20" y2="7"/><polyline points="16 3 20 7 16 11"/></svg>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">3</div>
+        <div class="fs-label">人工定期校准</div>
+        <div class="fs-desc">定期抽检模型 Grader 的评分是否漂移，修正偏见，确保评测体系可信。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="l-callout reveal" style="margin-top:16px">
+    <b>核心逻辑</b>：代码 Grader 保证底线（不出大错），模型 Grader 提升上限（产出质量），人工 Grader 校准裁判（保证公正）。三者缺一不可。
+  </div>
+
+  <div class="sec-label">套在简历初筛上，三层长这样</div>
+  <div class="l-card reveal" style="margin-bottom:8px">
+    <b>代码 Grader · 守底线</b>——硬性核验：结论是否只在「建议看看 / 需人工判断 / 明显不符」三档之内；引用的原文能否在简历里被字面搜到（搜不到＝它编了，直接判负）。毫秒级，每次改动都跑。
+  </div>
+  <div class="l-card reveal" style="margin-bottom:8px">
+    <b>模型 Grader · 提上限</b>——给理由质量打分：是否逐条对照了规则、有没有把「相关经历」和「关键词撞车」混为一谈。用上面那种一分一档的 Rubric。
+  </div>
+  <div class="l-card reveal">
+    <b>人工 Grader · 校准裁判</b>——请最懂行的同事每周抽 10 份，<b>专挑模型 Grader 打了高分的看</b>：裁判有没有漂，只有人能发现。
+  </div>
+
+  <!-- ═══ 真实案例 ═══ -->
+  <div class="sec-label">真实案例</div>
+
+  <div class="case-card reveal">
+    <div class="case-header">
+      <div class="case-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div>
+        <div class="case-name">Descript</div>
+        <div class="case-type">视频编辑 Agent</div>
+      </div>
+    </div>
+    <div class="case-body">
+      Descript 的评测体系围绕三个维度展开，每个维度独立打分，组合评估：
+    </div>
+    <div class="case-dims">
+      <div class="dim-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        不破坏 -- 编辑后视频无损
+      </div>
+      <div class="dim-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        做了该做的 -- 指令被正确执行
+      </div>
+      <div class="dim-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        做得好 -- 剪辑质量专业
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card reveal">
+    <div class="case-header">
+      <div class="case-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div>
+        <div class="case-name">Bolt AI</div>
+        <div class="case-type">代码生成 Agent</div>
+      </div>
+    </div>
+    <div class="case-body">
+      Bolt AI 组合了三类 Grader 形成完整评测链：<br><br>
+      <ul class="method-list">
+        <li>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span><b>静态分析</b>（代码 Grader）：检查生成代码是否编译通过、lint 无错误</span>
+        </li>
+        <li>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span><b>浏览器 Agent 测试</b>（代码 Grader）：自动打开生成的页面，验证 UI 是否符合预期</span>
+        </li>
+        <li>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span><b>LLM Judge</b>（模型 Grader）：评判代码质量、可读性、最佳实践遵循度</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="takeaway reveal">
+    <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span>
+    <span><b>没有银弹，三种 Grader 组合使用效果最好。</b>代码 Grader 守底线、模型 Grader 提上限、人工 Grader 做校准，这是经过多个头部 Agent 团队验证的最佳实践。</span>
+  </div>
+
+</article>
+<script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
+<!--seo:begin--><!--seo:end-->
+<script src="../track.js"></script>
+</body>
+</html>
