@@ -230,7 +230,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="links">
       <a href="#who">适合谁</a>
       <a href="#curriculum">课程内容</a>
-      <a href="#jobs">学完能去哪</a>
+      <a href="jobs.html">学完能去哪</a>
     </div>
     <div class="right">
       <a class="btn" href="#contact">交流群</a>
@@ -266,7 +266,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
         <div class="n">测一测 <span class="ar">→</span></div>
         <div class="d">知识 / 技能 / 能力三类分开测——不给总分，因为三类补起来代价完全不同</div>
       </a>
-      <a class="entry" href="#jobs">
+      <a class="entry" href="jobs.html">
         <div class="ic">◇</div>
         <div class="n">学完能去哪 <span class="ar">→</span></div>
         <div class="d">真实在招岗位逐条对照能力要求与知识点</div>
@@ -318,20 +318,6 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   </div>
 </section>
 
-<!-- ========== 学完能去哪 ========== -->
-<section class="band alt" id="jobs">
-  <div class="wrap">
-    <div class="eyebrow">Where To Go</div>
-    <h2>学完能去哪</h2>
-    <p class="desc">
-      HR AI Builder 是一个正在长出来、但<b>还没有统一名字</b>的角色——腾讯叫 AI-HR，OpenAI 叫 People Innovation，
-      ElevenLabs 叫 Internal AI Transformation。每个岗位我们做五层：
-      <b>JD 背后在解决什么问题 · 能力要求分档 · 职级与薪酬带宽 · 该做什么作品 · 面试官会追问什么</b>。
-    </p>
-    <div class="topics" id="jobcards"></div>
-  </div>
-</section>
-
 <!-- ========== 交流 ========== -->
 <section class="band" id="contact">
   <div class="wrap">
@@ -354,7 +340,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="btns">
       <a class="btn pri lg" href="learn.html">进入课程</a>
       <a class="btn lg" href="quiz.html">测测掌握度</a>
-      <a class="btn lg" href="#jobs">看在招岗位</a>
+      <a class="btn lg" href="jobs.html">看在招岗位</a>
       <a class="btn lg" href="#contact">加入交流群</a>
     </div>
   </div>
@@ -433,17 +419,6 @@ function renderTopics(){
 }
 renderTopics();
 
-const JOBS=[
-{no:'腾讯 · S3',n:'AI-HR 培训生（技术&应用方向）',d:'应届实习 · 深圳总部/成都 · 一口气开了四个方向，说明他们还在试',kp:3},
-{no:'腾讯 · S3',n:'AI-HR 培训生（分析方向）',d:'应届实习 · 深圳总部/上海 · 核心不是会跑模型，是能把口径吵清楚',kp:3},
-{no:'OpenAI · People Innovation',n:'Software Engineer, Full Stack',d:'全职 · Remote-US · 注意形态：工程师进 HR 部门，不是 HR 学 AI',kp:4},
-{no:'ElevenLabs · Engineering',n:'Internal AI Transformation',d:'全职 · Amsterdam/Berlin · 岗位名一个 HR 字没有，做的是同一件事',kp:4},
-{no:'Cognition · Applied AI',n:'Applied AI Transformation Manager',d:'全职 · New York/London · 说服是主业，构建是佐证',kp:4},
-];
-$('#jobcards').innerHTML=JOBS.map(j=>`
- <a class="topic" href="demo.html"><div class="no">${j.no}</div><div class="n">${j.n}</div>
-   <div class="d">${j.d}</div>
-   <div class="f"><span>${j.kp} 项硬门槛</span><span class="heat">查看拆解 ›</span></div></a>`).join('');
 
 /* 首屏统计数字改用真实课程数据 */
 (function(){

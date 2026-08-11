@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>岗位库 · JD × 能力 × 对应课程 · HR AI Builder</title>
+<meta name="description" content="真实在招岗位的 JD 逐条拆解：这个岗位要哪些能力（K/S/A）、每项能力去学哪几节课。">
+<style>
+:root{
+  --pri:#00A88A; --pri-d:#00876F; --pri-s:#E8FBF6;
+  --blue:#3370FF; --blue-d:#1F55E0; --blue-s:#EEF3FF;
+  --violet:#7C3AED; --violet-s:#F5EFFF;
+  --grad-r:linear-gradient(135deg,#00A88A,#0891B2);
+  --ink:#0F172A; --body:#475569; --muted:#64748B; --faint:#94A3B8;
+  --line:#E2E8F0; --line-soft:#F1F5F9; --bg:#F8FAFC;
+  --must:#DC2626; --plus:#D97706;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC',sans-serif;
+  color:var(--body);background:#fff;-webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;overflow:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em}
+
+/* ── 顶栏 ── */
+.top{display:flex;align-items:center;gap:18px;height:56px;padding:0 20px;flex:0 0 auto;
+  border-bottom:1px solid var(--line);background:#fff;z-index:20}
+.brand{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.mark{width:26px;height:26px;border-radius:7px;background:var(--grad-r);display:grid;place-items:center;
+  color:#fff;font-size:11px;font-weight:700}
+.brand .t{font-size:14px;font-weight:600;color:var(--ink)}
+.top .sp{flex:1}
+.stat{display:flex;gap:20px;font-size:12.5px;color:var(--muted);flex:0 0 auto}
+.stat b{color:var(--ink);font-size:15px;font-weight:600;margin-right:3px;font-variant-numeric:tabular-nums}
+.tbtn{font:inherit;font-size:12.5px;padding:6px 13px;border-radius:6px;border:1px solid var(--line);
+  background:#fff;color:var(--body);white-space:nowrap}
+.tbtn:hover{border-color:var(--pri);color:var(--pri)}
+@media(max-width:900px){.stat{display:none}}
+
+/* ── 三栏 ── */
+.main{flex:1;display:flex;min-height:0}
+.col{display:flex;flex-direction:column;min-height:0}
+.left{width:290px;flex:0 0 auto;border-right:1px solid var(--line);background:var(--bg)}
+.mid{flex:1;min-width:0;overflow-y:auto}
+.right{width:352px;flex:0 0 auto;border-left:1px solid var(--line);background:var(--bg);overflow-y:auto}
+@media(max-width:1180px){.right{display:none}}
+@media(max-width:820px){.left{display:none}}
+
+/* 左栏 */
+.srch{padding:13px 14px 10px;flex:0 0 auto}
+.srch input{width:100%;font:inherit;font-size:12.5px;padding:8px 12px;border:1px solid var(--line);
+  border-radius:8px;background:#fff;color:var(--ink)}
+.srch input:focus{outline:none;border-color:var(--pri)}
+.cnt{padding:0 16px 10px;font-size:11.5px;color:var(--faint);flex:0 0 auto}
+.list{flex:1;overflow-y:auto;padding:0 8px 24px}
+.jc{padding:12px 12px;border-radius:9px;cursor:pointer;margin-bottom:2px;transition:.13s}
+.jc:hover{background:#fff}
+.jc.on{background:#fff;box-shadow:inset 3px 0 0 var(--pri),0 1px 6px rgba(15,23,42,.06)}
+.jc .co{font-size:11.5px;color:var(--muted)}
+.jc .ti{font-size:13.5px;font-weight:600;color:var(--ink);margin:2px 0 6px;line-height:1.42}
+.jc .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:11px;color:var(--faint)}
+.chip{border:1px solid var(--line);border-radius:4px;padding:1px 6px;background:#fff}
+.jc .n{margin-left:auto;color:var(--pri);font-weight:600}
+
+/* 中栏 */
+.mid-in{max-width:760px;padding:30px 40px 70px}
+.d-co{font-size:12.5px;color:var(--muted)}
+.d-ti{font-size:26px;letter-spacing:-.028em;margin:5px 0 12px;line-height:1.3}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.pill{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:3px 9px;color:var(--muted)}
+.pill.ok{border-color:#A7F3D0;background:var(--pri-s);color:var(--pri-d)}
+.pill.warn{border-color:#FDE68A;background:#FFFBEB;color:#92400E}
+.sec{margin-top:32px}
+.sec-h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+  display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.sec-h .no{background:var(--pri);color:#fff;border-radius:4px;padding:0 6px;letter-spacing:0;font-size:10.5px}
+.sec-h em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--muted);margin-left:auto;font-size:11.5px}
+.moat{background:var(--pri-s);border-left:3px solid var(--pri);border-radius:0 9px 9px 0;
+  padding:15px 18px;font-size:14px;line-height:1.9;color:var(--ink)}
+.jdbox{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:16px 18px;
+  font-size:13.5px;color:var(--muted);line-height:1.95}
+.jdbox .ph{color:var(--faint);font-style:italic}
+.pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:10px;overflow:hidden}
+.pay div{background:#fff;padding:13px 15px}
+.pay .k{font-size:10.5px;color:var(--faint);letter-spacing:.05em}
+.pay .v{font-size:15px;font-weight:600;color:var(--ink);margin-top:3px}
+.pay .v small{font-size:12px;font-weight:400;color:var(--muted)}
+.qs{list-style:none}
+.qs li{padding:10px 0 10px 22px;border-bottom:1px solid var(--line-soft);font-size:14px;
+  position:relative;line-height:1.75}
+.qs li:last-child{border-bottom:0}
+.qs li:before{content:"Q";position:absolute;left:0;top:11px;font-size:10.5px;font-weight:700;color:var(--must)}
+
+/* 右栏 */
+.r-in{padding:22px 20px 60px}
+.r-h{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.r-sub{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:16px}
+.grp{margin-bottom:22px}
+.grp-t{font-size:11.5px;font-weight:700;letter-spacing:.06em;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.grp-t .b{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;color:#fff}
+.b-must{background:var(--must)} .b-plus{background:var(--plus)}
+.cap{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 15px;margin-bottom:9px}
+.cap .n{font-size:13.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
+.ksa{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;color:#fff;flex:0 0 auto}
+.k-K{background:var(--blue)} .k-S{background:var(--pri)} .k-A{background:var(--violet)}
+.cap .why{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.75}
+.cap .ls{margin-top:11px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.cap .ls .lb{font-size:10.5px;color:var(--faint);letter-spacing:.05em;margin-bottom:5px}
+.cap a.l{display:flex;gap:7px;align-items:flex-start;padding:5px 7px;margin:0 -7px;border-radius:6px;
+  font-size:12.5px;color:var(--body);line-height:1.55;transition:.12s}
+.cap a.l:hover{background:var(--pri-s);color:var(--pri-d)}
+.cap a.l:before{content:"›";color:var(--faint);font-weight:700}
+.cap a.l .lk{font-size:9px;opacity:.5;margin-left:3px}
+
+.databar{background:#FFFBEB;border:1px solid #FDE68A;border-radius:9px;padding:11px 14px;
+  font-size:11.5px;color:#78350F;line-height:1.8;margin-top:26px}
+.databar b{font-weight:600}
+.load{padding:60px 20px;text-align:center;color:var(--faint);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="index.html"><span class="mark">HB</span><span class="t">HR AI Builder</span></a>
+  <span style="color:var(--line)">/</span>
+  <span style="font-size:13.5px;color:var(--ink);font-weight:500">岗位库 · JD × 能力 × 课程</span>
+  <span class="sp"></span>
+  <div class="stat">
+    <span><b id="sN">–</b>岗位</span><span><b id="sC">–</b>公司</span><span><b id="sL">–</b>可对应课程</span>
+  </div>
+  <a class="tbtn" href="learn.html">课程</a>
+  <a class="tbtn" href="index.html">返回首页</a>
+</div>
+
+<div class="main">
+  <aside class="col left">
+    <div class="srch"><input id="q" placeholder="搜岗位名 / 公司" autocomplete="off"></div>
+    <div class="cnt" id="cnt"></div>
+    <div class="list" id="list"></div>
+  </aside>
+
+  <div class="col mid"><div class="mid-in" id="detail"><div class="load">加载中…</div></div></div>
+
+  <aside class="col right"><div class="r-in" id="caps"></div></aside>
+</div>
+
+<script>
+const API=(location.hostname==='localhost'||location.protocol==='file:')
+  ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
+const $=s=>document.querySelector(s);
+let JOBS=[], cur=null, kw='';
+
+(async function(){
+  try{
+    const d=await (await fetch(API+'/api/jobs')).json();
+    JOBS=d.items;
+    $('#sN').textContent=JOBS.length;
+    $('#sC').textContent=new Set(JOBS.map(j=>j.company.split(' · ')[0])).size;
+    renderList();
+    pick(location.hash.replace('#','')||JOBS[0].id);
+  }catch(e){
+    $('#detail').innerHTML='<div class="load">岗位服务暂时不可用，请稍后重试。</div>';
+  }
+})();
+
+function renderList(){
+  const l=JOBS.filter(j=>!kw || (j.title+j.company+j.location).toLowerCase().includes(kw));
+  $('#cnt').textContent=`共 ${l.length} 个岗位`;
+  $('#list').innerHTML=l.map(j=>`
+    <div class="jc ${j.id===cur?'on':''}" data-id="${j.id}">
+      <div class="co">${j.company}</div>
+      <div class="ti">${j.title}</div>
+      <div class="m"><span class="chip">${j.type}</span><span>${j.location}</span>
+        <span class="n">${j.must.length} 项硬门槛</span></div>
+    </div>`).join('') || '<div class="load">没有匹配的岗位</div>';
+  $('#list').querySelectorAll('.jc').forEach(el=>el.onclick=()=>pick(el.dataset.id));
+}
+$('#q').oninput=e=>{kw=e.target.value.trim().toLowerCase(); renderList();};
+
+async function pick(id){
+  if(!JOBS.some(j=>j.id===id)) id=JOBS[0].id;
+  cur=id; history.replaceState(null,'','#'+id); renderList();
+  $('#detail').innerHTML='<div class="load">加载中…</div>'; $('#caps').innerHTML='';
+  let j;
+  try{ j=await (await fetch(API+'/api/jobs/'+id)).json(); }
+  catch(e){ $('#detail').innerHTML='<div class="load">读取失败</div>'; return; }
+  document.title=`${j.title} · 岗位库 · HR AI Builder`;
+  renderDetail(j); renderCaps(j);
+  if(window.habTrack) habTrack('job_view',{extra:{id}});
+}
+
+function renderDetail(j){
+  $('#detail').innerHTML=`
+   <div class="d-co">${j.company}</div>
+   <h1 class="d-ti">${j.title}</h1>
+   <div class="pills"><span class="pill">${j.type}</span><span class="pill">${j.location}</span>
+     <span class="pill ok">岗位已核实</span>${j.jd_text?'':'<span class="pill warn">JD 正文待补</span>'}</div>
+
+   <div class="sec">
+     <div class="sec-h"><span class="no">1</span>这个 JD 背后，招聘方真正在解决什么问题
+       <em>懂招聘才写得出来的一层</em></div>
+     <div class="moat">${j.intent}</div>
+   </div>
+
+   <div class="sec">
+     <div class="sec-h"><span class="no">2</span>岗位 JD</div>
+     ${j.jd_text ? `<div style="font-size:14px;line-height:2;white-space:pre-wrap">${j.jd_text}</div>`
+       : `<div class="jdbox"><span class="ph">— JD 正文尚未取到 —</span><br><br>
+          真数据接入后此处显示原文，并对<b>命中能力的整句</b>做下划线标注。<br>
+          注意标的是<b>能力主张</b>，不是关键词——「具备用户研究、良好审美、逻辑思维」这一句里
+          混了技能和能力两类，逐词高亮反而看不出要什么。</div>`}
+   </div>
+
+   <div class="sec">
+     <div class="sec-h"><span class="no">3</span>职级与薪酬带宽
+       <em>求职网站给不准的那部分</em></div>
+     <div class="pay">
+       <div><div class="k">对标职级</div><div class="v"><small>待接入 JE 引擎</small></div></div>
+       <div><div class="k">薪酬口径</div><div class="v"><small>待接入</small></div></div>
+       <div><div class="k">带宽区间</div><div class="v"><small>未公开 · 需实证</small></div></div>
+     </div>
+   </div>
+
+   <div class="sec">
+     <div class="sec-h"><span class="no">4</span>面试官会追问什么
+       <em>纯 know-how · 抄不走</em></div>
+     <ul class="qs">${(j.questions||DEFAULT_Q).map(q=>`<li>${q}</li>`).join('')}</ul>
+   </div>
+
+   <div class="databar">
+     <b>数据状态</b> · 岗位真实存在，2026-08 核实到公司/部门/地点 ·
+     <b>JD 正文、职级薪酬、面试追问为待补或示意</b>，真数据接入后重跑。
+   </div>`;
+}
+
+const DEFAULT_Q=[
+ '你怎么证明它比人工快 / 准？测过吗？',
+ '如果它给了一个错的结果，谁来兜？',
+ '为什么用 AI 做这件事，而不是写个规则？',
+];
+
+function renderCaps(j){
+  const kp=(t)=>`
+    <div class="cap">
+      <div class="n"><span class="ksa k-${t.ksa}">${t.ksa}</span>${t.name}</div>
+      <div class="why">${t.in_context||t.generic||''}</div>
+      ${t.lessons&&t.lessons.length?`<div class="ls"><div class="lb">学这几节</div>
+        ${t.lessons.map(l=>`<a class="l" href="learn.html#${encodeURIComponent(l.file)}">
+          <span>${l.title}${l.free?'':'<span class="lk">🔒</span>'}</span></a>`).join('')}</div>`:''}
+    </div>`;
+  const n=(j.must_detail||[]).reduce((a,t)=>a+(t.lessons||[]).length,0)
+         +(j.plus_detail||[]).reduce((a,t)=>a+(t.lessons||[]).length,0);
+  $('#sL').textContent=n;
+  $('#caps').innerHTML=`
+    <div class="r-h">从 JD 拆出来的能力</div>
+    <div class="r-sub">每项标了 <b>K 知识 / S 技能 / A 能力</b>——这三类补起来的代价完全不同。
+      下面直接给到该学哪几节。</div>
+    <div class="grp"><div class="grp-t"><span class="b b-must">硬门槛</span>
+      <span style="color:var(--muted)">缺一项，简历大概率过不了初筛</span></div>
+      ${(j.must_detail||[]).map(kp).join('')}</div>
+    <div class="grp"><div class="grp-t"><span class="b b-plus">加分项</span>
+      <span style="color:var(--muted)">有了明显拉开差距</span></div>
+      ${(j.plus_detail||[]).map(kp).join('')}</div>`;
+}
+
+window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h&&h!==cur)pick(h);});
+</script>
+<script src="track.js"></script>
+</body>
+</html>

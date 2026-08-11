@@ -173,6 +173,27 @@ JOBS = [
      "plus": ["structured", "vibecoding", "product"]},
 ]
 
+# 能力 → 对应练习课程（岗位库右栏「学这几节」用）
+TERM_LESSONS = {
+ "hallucination":  ["1-2-hallucination.html","1-2-mitigation-eval.html","hr-recall-vs-judge.html","zero-3.html"],
+ "agent_vs_wf":    ["7-1.html","10-1.html","7-4a.html","7-4b.html"],
+ "hr_data":        ["hr-caliber-1.html","hr-caliber-2.html","5-2.html"],
+ "compliance":     ["hr-compliance.html","ai-safety-redlines.html","9-29.html"],
+ "vibecoding":     ["vibe-1.html","vibe-2.html","vibe-5.html","hr-project-build.html"],
+ "prompt":         ["6-1.html","6-2.html","hr-cite-not-summarize.html","5-1.html"],
+ "data_prep":      ["hr-caliber-3.html","hr-project-data.html","hr-caliber-1.html"],
+ "eval":           ["10-8.html","10-9.html","10-10.html","hr-eval-negative.html"],
+ "comp_design":    ["hr-caliber-2.html","hr-caliber-1.html"],
+ "ship":           ["vibe-9.html","hr-rollout.html","9-28.html"],
+ "logic":          ["hr-elicitation-1.html","hr-elicitation-2.html","ai-tips-boundary.html"],
+ "product":        ["hr-inventory-2.html","ai-tips-scenarios.html"],
+ "structured":     ["hr-persuade.html","hr-project-tell.html"],
+ "learning_agility":["ai-tips-iterate.html","hr-org-2.html"],
+ "influence":      ["hr-persuade.html","hr-inventory-3.html","9-27.html"],
+ "elicitation":    ["hr-elicitation-1.html","hr-elicitation-2.html","hr-elicitation-3.html"],
+ "scoping":        ["hr-inventory-1.html","hr-inventory-2.html","hr-inventory-3.html"],
+}
+
 _TERM_BY_ID = {t["id"]: t for t in TERMS}
 
 # 可判分题库（K/S/A 分类，三种题型）—— 与课程篇章同源
@@ -203,13 +224,24 @@ def list_jobs():
     return {"count": len(JOBS), "items": JOBS}
 
 
+def _term_full(tid: str):
+    t = _TERM_BY_ID.get(tid)
+    if not t:
+        return None
+    files = TERM_LESSONS.get(tid, [])
+    return {**t, "lessons": [{"file": f,
+                              "title": _LESSON_IDX.get(f, {}).get("title", f),
+                              "free": _LESSON_IDX.get(f, {}).get("free", True)}
+                             for f in files if f in _LESSON_IDX]}
+
+
 @app.get("/api/jobs/{job_id}")
 def get_job(job_id: str):
     for j in JOBS:
         if j["id"] == job_id:
             return {**j,
-                    "must_detail": [_TERM_BY_ID[t] for t in j["must"] if t in _TERM_BY_ID],
-                    "plus_detail": [_TERM_BY_ID[t] for t in j["plus"] if t in _TERM_BY_ID]}
+                    "must_detail": [x for x in (_term_full(t) for t in j["must"]) if x],
+                    "plus_detail": [x for x in (_term_full(t) for t in j["plus"]) if x]}
     raise HTTPException(404, "job not found")
 
 

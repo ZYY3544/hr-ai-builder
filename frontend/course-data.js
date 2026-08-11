@@ -711,7 +711,7 @@ window.COURSE = {
      ]
     }
    ],
-   "color": "#4F46E5"
+   "color": "#DB2777"
   },
   {
    "id": "p-3",
