@@ -131,6 +131,11 @@ section{scroll-margin-top:64px}
 .wcard .go{font-size:14px;font-weight:500;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 .curmeta{font-size:13px;color:var(--faint);margin-top:30px}
+/* 板块之间的分隔：两端淡出的发丝线 —— 只给「换段了」的暗示，不把页面切块 */
+.band,.final{position:relative}
+.band::before,.final::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(15,23,42,.085) 18%,
+    rgba(15,23,42,.085) 82%,transparent 100%);pointer-events:none}
 @supports not (color: color-mix(in srgb, red 10%, blue)){
   .topic .ic{background:var(--pri-s)}
   .topic:hover{border-color:rgba(0,168,138,.42)}
