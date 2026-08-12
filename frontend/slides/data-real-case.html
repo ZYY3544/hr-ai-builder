@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>从口径到双击：一份经营月报的完整改造实录 · HR AI Builder</title>
+<meta name="description" content="前面的功夫拼起来是什么样？拿一份每月三小时的经营月报，完整走一遍——包括报错和返工。不顺利的部分不剪辑，那才是流程的一部分。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="从口径到双击：一份经营月报的完整改造实录">
+<meta property="og:description" content="前面的功夫拼起来是什么样？拿一份每月三小时的经营月报，完整走一遍——包括报错和返工。不顺利的部分不剪辑，那才是流程的一部分。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#65A30D;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "从口径到双击：一份经营月报的完整改造实录",
+ "articleSection": "第四篇章 · 真活与边界",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 真活与边界</div>
+    <h1>一个真活的全程：经营月报</h1>
+    <p class="subtitle">前面的功夫拼起来是什么样？拿一份每月三小时的经营月报，完整走一遍——包括报错和返工。不顺利的部分不剪辑，那才是流程的一部分。</p>
+  </header>
+
+  <div class="sec-label">活的原状</div>
+  <p>每月月初：从三个系统导出人员、考勤、业绩三张表 → 手工合并 → 按部门汇总在职人数、人均业绩、出勤情况 → 拼成一张月报。约三小时，中途一个口径对不上就要翻聊天记录问人。做了一年多，步骤全在脑子里。</p>
+
+  <div class="sec-label">第一幕：把活写成四要素（40 分钟里最值的 15 分钟）</div>
+  <p>照第四节的模板写。写到规则时卡住了两次——「在职人数」按月末还是按发薪日？「新部门这月刚拆分，历史数据算谁的？」<b>这两个问题过去每月都在心里拍一次，从来没写下来过。</b>这次写下来了，往后不用再拍。</p>
+
+  <div class="sec-label">第二幕：AI 给出脚本，第一次运行，报错</div>
+  <div class="bad"><span class="t">✕ UnicodeDecodeError: 'utf-8' codec can't decode…</span>看不懂没关系。整段复制，贴回对话：「运行报这个错」。AI：导出的 CSV 是 GBK 编码，改一个参数。改完能跑。<b>全程没有人「会编程」，只有人会贴报错。</b></div>
+
+  <div class="sec-label">第三幕：跑小样，抓到一个口径坑</div>
+  <p>先跑一个部门的数据（小样先行）。人数对，人均业绩不对——一核对，month 中调走的人业绩算给了老部门，但人数算给了新部门，分子分母口径劈叉。<b>注意：这不是代码错，是我的规则没说清。</b>回到四要素，把「月中异动的人怎么算」补成一条规则，让它重新生成。<b>修描述，不修代码</b>——代码永远从描述重新长出来，描述才是源头。</p>
+
+  <div class="sec-label">第四幕：全量跑，验收</div>
+  <p>三招走完：抽两个部门手工核对 ✓；总人数对得上原表 ✓；埋的那条「重复员工」测试数据被正确去重 ✓。第一次全流程完成，总耗时约 40 分钟。</p>
+
+  <div class="sec-label">第五幕：固化</div>
+  <p>让 AI 把脚本整理成最终版：读取固定文件夹里的三张表 → 输出月报到新文件；并在<b>脚本开头用注释写清所有口径</b>（在职=月末口径、月中异动业绩随人走……）。存好。下个月：三张新表放进文件夹，<b>双击，一分钟。</b></p>
+  <table class="htab">
+    <tr><th></th><th>之前</th><th>之后</th></tr>
+    <tr><td><b>每月耗时</b></td><td>约 3 小时</td><td>约 1 分钟（+首次搭建 40 分钟）</td></tr>
+    <tr><td><b>口径</b></td><td>在脑子里，每月心里拍一次</td><td>写在脚本注释里，白纸黑字</td></tr>
+    <tr><td><b>别人能接手吗</b></td><td>不能，步骤只有我知道</td><td>能：文件夹 + 脚本 + 注释，发过去就行</td></tr>
+    <tr><td><b>改口径</b></td><td>全部重做</td><td>改一句描述，重新生成</td></tr>
+  </table>
+
+  <div class="rule">
+    <span class="lbl">这一幕值得抄的四个动作</span>
+    <h3>描述是源头，代码是产物</h3>
+    <ol>
+      <li><b>写四要素时卡住的地方，就是你从没写下来过的口径。</b>写下来本身就是收益。</li>
+      <li><b>报错整段贴回去，</b>不要自己瞪着看。</li>
+      <li><b>发现算错，先怀疑自己的规则没说清，再怀疑代码。</b>修描述重新生成，不在代码上打补丁。</li>
+      <li><b>固化时把口径写进注释。</b>从此这个活可以交接。</li>
+    </ol>
+  </div>
+
+  <div class="try"><span class="t">今天就试</span>挑你清单上最值钱的那个月度活（耗时最长的），照五幕走一遍。今天走不完就走前两幕——四要素写完，你已经拿到一半的收益了。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

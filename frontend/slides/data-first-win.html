@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第一次让 AI 替你干数据活：五分钟揪出花名册里的重名 · HR AI Builder</title>
+<meta name="description" content="不讲理论，直接做。用一份编好的假数据，五分钟之内拿到你的第一次成功。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="第一次让 AI 替你干数据活：五分钟揪出花名册里的重名">
+<meta property="og:description" content="不讲理论，直接做。用一份编好的假数据，五分钟之内拿到你的第一次成功。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#65A30D;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "第一次让 AI 替你干数据活：五分钟揪出花名册里的重名",
+ "articleSection": "第四篇章 · 先尝到甜头",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 先尝到甜头</div>
+    <h1>五分钟第一单：揪出花名册里的重名</h1>
+    <p class="subtitle">不讲理论，直接做。用一份编好的假数据，五分钟之内拿到你的第一次成功。</p>
+  </header>
+
+  <div class="sec-label">这一单干什么</div>
+  <p>一个所有 HR 都遇过的活：花名册里有没有<b>重复的人</b>？难点在于「重复」不等于「完全一样」——「张伟」和「张 伟」（多个空格）是同一个人，两个「李娜」工号不同就是两个人。肉眼扫几百行，很容易漏。</p>
+  <p>下面这段话术直接抄走，贴进你在用的 AI 对话工具（Claude、ChatGPT、国产模型都行——选带「代码执行 / 数据分析」能力的）。<b>数据是编的</b>，放心贴。</p>
+
+  <div class="say">我有一份花名册数据（CSV，第一行是表头）：
+
+工号,姓名,部门,入职日期
+1001,张伟,人力资源部,2021-03-15
+1002,李娜,财务部,2020-07-01
+1003,王芳,技术部,2022-01-10
+1004,张 伟,人力资源部,2021-03-15
+1005,李娜,市场部,2019-11-20
+1006,刘强,技术部,2023-05-08
+1007,王芳,技术部,2022-01-10
+1008,陈静,财务部,2020-02-28
+
+请写一段代码（不要口算），找出其中「疑似同一个人被录了两次」的行。规则：
+1. 姓名去掉所有空格后相同，且入职日期相同 → 疑似重复
+2. 姓名相同但工号、部门、入职日期都不同 → 只是同名，不算重复
+3. 输出：每组疑似重复的行原样列出来，并说明是按哪条规则判的
+
+请先运行代码，再把运行结果给我。</div>
+
+  <div class="sec-label">你应该看到什么</div>
+  <p>它应该抓出两组：<b>1001「张伟」和 1004「张 伟」</b>（去空格后同名同日期），<b>1003 和 1007 两个「王芳」</b>（同名同部门同日期）；而 1002 和 1005 两个「李娜」<b>不该被抓</b>——部门、日期、工号都不同，只是同名。</p>
+  <p>数据只有 8 行，你自己一眼就能核对它抓得对不对——<b>这就是验收</b>，你已经在做了。后面第五节会教你数据大到眼睛核不动时怎么办。</p>
+
+  <div class="sec-label">话术里有三个设计，先记住</div>
+  <table class="htab">
+    <tr><th>设计</th><th>为什么</th></tr>
+    <tr><td><b>「请写一段代码，不要口算」</b></td><td>逼它用代码处理，不许凭感觉。为什么这条至关重要，下一节做实验给你看</td></tr>
+    <tr><td><b>规则写成 1、2、3</b></td><td>「疑似重复」是你脑子里的判断，写出来它才知道。注意规则 2——你把「什么不算」也说了，这是老手和新手的差别</td></tr>
+    <tr><td><b>「先运行，再给结果」</b></td><td>要求它真的跑代码，而不是「看起来运行了」。结果里应该能看到代码执行的痕迹</td></tr>
+  </table>
+
+  <div class="try"><span class="t">今天就试</span>把上面的话术原样跑一遍，看它抓得对不对。跑通了，改一处规则（比如「同名同部门就算疑似」）再跑一遍，看结果怎么变——<b>规则是你定的，这个感觉越早建立越好。</b>先别用你的真实花名册，为什么，第六节讲。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

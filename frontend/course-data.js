@@ -15,16 +15,16 @@ window.COURSE = {
    "license": "AGPL-3.0"
   },
   "stats": {
-   "parts": 8,
-   "lessons": 87,
+   "parts": 9,
+   "lessons": 95,
    "copy": 40,
    "adapt": 20,
-   "new": 27,
-   "ready": 87,
+   "new": 35,
+   "ready": 95,
    "todo": 0
   },
   "access": {
-   "free": 68,
+   "free": 76,
    "locked": 19,
    "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -805,6 +805,111 @@ window.COURSE = {
   {
    "id": "p-4",
    "num": "第四篇章",
+   "title": "从 Excel 到脚本：让 AI 替你干数据活",
+   "desc": "不做产品，先把手头的活干快。数字必须是代码算的，模型只负责听懂你、翻译你。这一章全程不需要你会写代码。",
+   "freeWhole": true,
+   "color": "#65A30D",
+   "topics": [
+    {
+     "title": "先尝到甜头",
+     "lessons": [
+      {
+       "file": "data-hook.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "你每月都在做的那张表",
+       "seo": "每月三小时的表格活，AI 能压到一分钟吗？",
+       "desc": "先不讲任何原理。先看两件事：你的时间去哪了，以及同一个活的另一种干法。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-first-win.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "五分钟第一单",
+       "seo": "第一次让 AI 替你干数据活：五分钟揪出花名册里的重名",
+       "desc": "不讲理论，直接做。用一份编好的假数据，五分钟之内拿到你的第一次成功。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-paste-trap.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "贴表为什么翻车",
+       "seo": "把表格直接贴给 AI 算数，为什么第三遍会算出不同的结果？",
+       "desc": "上一节话术里那句「写代码，不要口算」不是习惯用语，是护栏。这一节把护栏拆掉给你看会发生什么。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "把手艺练扎实",
+     "lessons": [
+      {
+       "file": "data-brief.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "把活说清楚",
+       "seo": "怎么跟 AI 描述一个数据活，它才不会理解偏？四要素模板",
+       "desc": "AI 写的代码错了，八成不是它代码写错了，是它把你的活理解错了。而理解偏差几乎都发生在同一个地方：你没说的那部分。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-verify.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "验收三招",
+       "seo": "AI 写的脚本跑通了，怎么知道它算对了？验收三招",
+       "desc": "脚本零报错、顺利出结果、数字看起来很合理——这三件事加起来，也不能证明它算对了。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-environment.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "在你电脑上跑起来",
+       "seo": "公司电脑受限、不会装环境，AI 写的脚本到底在哪运行？",
+       "desc": "这可能是最卡人的一关，但没人教。先说结论：三条路，按数据敏感度和使用频率选，都不需要你「会编程」。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "真活与边界",
+     "lessons": [
+      {
+       "file": "data-real-case.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "一个真活全程",
+       "seo": "从口径到双击：一份经营月报的完整改造实录",
+       "desc": "前面的功夫拼起来是什么样？拿一份每月三小时的经营月报，完整走一遍——包括报错和返工。不顺利的部分不剪辑，那才是流程的一部分。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-boundary.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "哪些活该固化",
+       "seo": "哪些数据活值得固化成脚本，哪些千万别？三个问题",
+       "desc": "学会一门锤子手艺之后，最大的风险是看什么都像钉子。这一节画边界——它和锤子本身一样重要。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p-5",
+   "num": "第五篇章",
    "title": "Vibe Coding：自己做出来",
    "desc": "不是教你写代码，是教你怎么指挥它写。学完能自己做出一个真跑起来的东西 —— 这一项在真实岗位要求里出现得最多。",
    "freeWhole": false,
@@ -964,7 +1069,7 @@ window.COURSE = {
      "desc": "",
      "lessons": [
       {
-       "file": "interview-p4.html",
+       "file": "interview-p5.html",
        "action": "new",
        "ksa": "A",
        "title": "Vibe Coding · 30 问",
@@ -979,8 +1084,8 @@ window.COURSE = {
    "color": "#E11D48"
   },
   {
-   "id": "p-5",
-   "num": "第五篇章",
+   "id": "p-6",
+   "num": "第六篇章",
    "title": "从 Demo 到落地：让它在组织里活下来",
    "desc": "做出来 ≠ 被采用。这一层决定你的天花板。三步走：盘 → 推 → 改。",
    "freeWhole": false,
