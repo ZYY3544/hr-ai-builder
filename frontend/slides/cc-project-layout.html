@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agent 的项目结构怎么组织？HR 工作区的目录设计 · HR AI Builder</title>
+<meta name="description" content="这一节看起来最琐碎，但它决定了三个月后你的 agent 是越用越顺，还是变成一团你自己都不敢碰的浆糊。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI agent 的项目结构怎么组织？HR 工作区的目录设计">
+<meta property="og:description" content="这一节看起来最琐碎，但它决定了三个月后你的 agent 是越用越顺，还是变成一团你自己都不敢碰的浆糊。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI agent 的项目结构怎么组织？HR 工作区的目录设计",
+ "articleSection": "第六篇章 · 让它认识你的活：CLAUDE.md 与项目结构",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 让它认识你的活：CLAUDE.md 与项目结构</div>
+    <h1>文件夹怎么摆：给它一个能干活的工位</h1>
+    <p class="subtitle">这一节看起来最琐碎，但它决定了三个月后你的 agent 是越用越顺，还是变成一团你自己都不敢碰的浆糊。</p>
+  </header>
+
+  <div class="sec-label">一个够用的结构</div>
+  <div class="cmd">hr-agent/
+├── CLAUDE.md          ← 口径、规矩、分析模式（它每次自动读）
+├── data/              ← 原始数据，只读不改
+│   └── 2026-08/
+├── output/            ← 所有产出写这里
+├── scripts/           ← 固化下来的脚本
+├── specs/             ← 需求规格、分析模式规格
+└── notes/             ← 它的工作笔记、历史记录</div>
+
+  <table class="htab">
+    <tr><th>目录</th><th>为什么要单独一个</th></tr>
+    <tr><td><b>data/ 只读</b></td><td>第四篇章那条铁律的物理实现。<b>原始数据和产出物理隔离</b>，它就很难误伤——而且你在 CLAUDE.md 里写死"不许改 data/"之后，它每次要碰都会被自己拦下</td></tr>
+    <tr><td><b>output/</b></td><td>产出集中，方便清理和归档。也方便你一眼看出这个月跑出了什么</td></tr>
+    <tr><td><b>scripts/</b></td><td>固化下来的东西。<b>这个目录的内容就是你的资产</b>——换电脑、给同事、放作品集，拷的就是它</td></tr>
+    <tr><td><b>specs/</b></td><td>规格文档。改需求时改这里，然后让它重新生成脚本——<b>「修描述不修代码」的落地方式</b></td></tr>
+    <tr><td><b>notes/</b></td><td>让它把工作过程记在这儿。下一章讲 harness 时你会明白这个目录有多重要</td></tr>
+  </table>
+
+  <div class="sec-label">让它自己搭</div>
+  <div class="say">帮我在当前文件夹里建好这个结构：
+data/（原始数据，只读）、output/（产出）、
+scripts/（固化脚本）、specs/（需求与分析规格）、notes/（工作笔记）
+
+然后在 CLAUDE.md 里加一段说明：每个目录放什么、
+哪些目录不许写入。
+建完把目录树打给我看一下。</div>
+
+  <div class="sec-label">一个容易忽略的收益</div>
+  <p>结构清楚之后，你可以对它下<b>更短的指令</b>：「把这个月的数据跑一遍」——它知道去 data/2026-08 找、按 scripts/ 里的脚本跑、结果写 output/。</p>
+  <div class="l-callout">这就是 agent 和聊天机器人的分界线之一：<b>聊天机器人每次都要你把上下文说全，agent 从环境里就能知道大部分事情。</b>而这个环境是你摆出来的。</div>
+
+  <div class="stuck"><span class="t">别过度设计</span>看到这个结构别急着建十个目录。<b>先建 data / output / CLAUDE.md 三样就能开工</b>，其他的等你真需要了再加。目录是长出来的，不是一开始规划出来的。</div>
+
+  <div class="try"><span class="t">今天就试</span>把上面那段话发给它，让它建。建完把你手上一份真实的（脱敏的）月度数据放进 data/，感受一下"它知道去哪找"是什么体验。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

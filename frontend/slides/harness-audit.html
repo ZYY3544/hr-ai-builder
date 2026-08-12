@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR 场景的 AI agent 必须留痕：可追溯与可申诉的工程实现 · HR AI Builder</title>
+<meta name="description" content="通用 agent 教程不会讲这一层，因为它们的场景错了不用向人解释。而你的场景，每一个判断背后都站着一个人。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="HR 场景的 AI agent 必须留痕：可追溯与可申诉的工程实现">
+<meta property="og:description" content="通用 agent 教程不会讲这一层，因为它们的场景错了不用向人解释。而你的场景，每一个判断背后都站着一个人。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "HR 场景的 AI agent 必须留痕：可追溯与可申诉的工程实现",
+ "articleSection": "第七篇章 · HR 专有的两层：权限留痕与自动验收",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第七篇章 · HR 专有的两层：权限留痕与自动验收</div>
+    <h1>留痕：一个 HR agent 上线的前提</h1>
+    <p class="subtitle">通用 agent 教程不会讲这一层，因为它们的场景错了不用向人解释。而你的场景，每一个判断背后都站着一个人。</p>
+  </header>
+
+      <div class="sec-label">为什么这一层是 HR 独有的</div>
+      <p>一个写代码的 agent 出错了，代码跑不通，你重跑一次就好。<b>一个筛简历的 agent 出错了，一个人的机会没了，而且没有人知道。</b></p>
+      <table class="htab">
+        <tr><th>你早晚会被问到的问题</th><th>没有留痕层时你的回答</th></tr>
+        <tr><td>这个人为什么被筛掉了</td><td>「系统判的」——这个回答在任何一场申诉里都不成立</td></tr>
+        <tr><td>三个月前那批用的什么标准</td><td>「应该是……我记不清了」</td></tr>
+        <tr><td>你们改过规则吗？什么时候改的</td><td>答不上来</td></tr>
+        <tr><td>能证明没有性别/年龄倾向吗</td><td>没有数据支撑</td></tr>
+      </table>
+      <div class="l-callout">这四个问题不是假设。<b>只要你的 agent 参与了任何和人相关的决定，它们就一定会来</b>——从员工、从业务方、从法务、从审计。留痕层就是你回答它们的能力。</div>
+
+      <div class="sec-label">留什么</div>
+      <div class="say">＃ 留痕规则（涉及人的判断，一条都不能少）
+
+每一次对人的判断，必须在 output/audit/ 下留一条记录，包含：
+1. 时间、处理对象（工号或编号，不用姓名）
+2. 输入了什么材料（文件名 + 版本）
+3. 当时生效的规则版本（指向 notes/calibers.md 的哪一条）
+4. 判断结果，以及命中了哪几条规则
+5. 每条规则命中的原文依据（必须能在原材料里字面搜到）
+6. 模型和 prompt 的版本标识
+
+＃ 特别注意
+- 判断结果只能是「建议看看 / 需人工判断 / 明显不符」三档，
+  不许输出分数，不许输出「不推荐」这类结论性措辞
+- 最终决定由人做出后，把决定和决定人也追加到这条记录里</div>
+      <p>第 5 条是这套留痕的骨头：<b>「原文依据必须能字面搜到」</b>——这一条把「它凭什么这么判」从一句空话变成了可机械核验的东西。第一篇章讲的召回与判定、"让它只引用不概括"，在这里变成了合规能力。</p>
+
+      <div class="sec-label">留痕带来的第二个好处</div>
+      <p>它不只是防守。<b>攒下来的审计记录，本身就是你最好的分析素材</b>：</p>
+      <table class="htab">
+        <tr><td>哪条规则命中率最高</td><td>可能它过于宽松，或者它其实就是唯一起作用的规则</td></tr>
+        <tr><td>哪条规则从来没命中过</td><td>写了等于没写，该删或该改</td></tr>
+        <tr><td>人工推翻率是多少</td><td><b>这是你的 agent 到底有没有用的唯一硬指标</b></td></tr>
+        <tr><td>推翻集中在什么情况</td><td>直接告诉你下一条该补什么规则</td></tr>
+      </table>
+      <div class="l-callout">看最后两行：<b>留痕层攒的数据，正好是记忆层里"判断案例库"的原料。</b>这两层接上，你的 agent 就有了自我改进的闭环——而且改进的依据是你这家公司的真实决策，不是通用知识。</div>
+
+      <div class="try"><span class="t">今天就试</span>把留痕规则加进 CLAUDE.md，让它跑一批（假的）简历，然后<b>打开 output/audit/ 看一条记录</b>。问自己：拿着这一条，我能向一个被筛掉的候选人解释清楚吗？解释不了，说明还缺东西。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

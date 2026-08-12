@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 第一次怎么用？理解它和网页版聊天的根本区别 · HR AI Builder</title>
+<meta name="description" content="装好之后第一件该做的事，不是让它干活，是搞清楚它和你用惯的网页版聊天，到底差在哪。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="Claude Code 第一次怎么用？理解它和网页版聊天的根本区别">
+<meta property="og:description" content="装好之后第一件该做的事，不是让它干活，是搞清楚它和你用惯的网页版聊天，到底差在哪。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "Claude Code 第一次怎么用？理解它和网页版聊天的根本区别",
+ "articleSection": "第六篇章 · 先把工具装上：终端与 Claude Code",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 先把工具装上：终端与 Claude Code</div>
+    <h1>第一次对话：它看得见你的文件夹</h1>
+    <p class="subtitle">装好之后第一件该做的事，不是让它干活，是搞清楚它和你用惯的网页版聊天，到底差在哪。</p>
+  </header>
+
+  <div class="sec-label">最根本的一个差别</div>
+  <div class="l-callout"><b>网页版聊天：你把东西贴给它。<br>终端里的 Claude Code：它自己去看你的文件夹。</b></div>
+  <p>你在哪个文件夹里启动它，它就以那个文件夹为工作区。它可以列出里面有什么文件、打开来读、修改、新建、运行——<b>就像一个坐在你电脑前的同事</b>，而不是一个隔着窗口跟你对话的人。</p>
+
+  <div class="sec-label">动手感受一下</div>
+  <p>新建一个空文件夹（比如桌面上建一个叫 <code>hr-agent</code> 的），把两三份<b>假的</b>花名册/考勤表扔进去，然后在这个文件夹里启动它：</p>
+  <div class="cmd">cd ~/Desktop/hr-agent
+claude</div>
+  <p>然后问它一句最简单的话：</p>
+  <div class="say">这个文件夹里有什么？帮我看一眼，
+每个文件是什么内容、有多少行、列是什么。</div>
+  <p>你会看到它<b>自己去读了文件</b>，然后告诉你结果。你没有上传任何东西。这就是这一章后面所有内容的基础。</p>
+
+  <div class="sec-label">它每一步都会问你</div>
+  <p>当它要读文件、改文件、运行命令时，会先弹出来问你同不同意。<b>这个确认机制非常重要，别嫌烦</b>——它是你和一个能操作你电脑的 AI 之间唯一的安全带。</p>
+  <table class="htab">
+    <tr><th>它要做什么</th><th>你该怎么想</th></tr>
+    <tr><td>读文件</td><td>基本都可以同意</td></tr>
+    <tr><td>改文件 / 新建文件</td><td>看清楚是哪个文件。<b>改的不该是你的原始数据</b></td></tr>
+    <tr><td>运行命令</td><td>看一眼命令里有没有 <code>rm</code>、<code>delete</code>、<code>drop</code> 这类词——有就停下来问清楚</td></tr>
+  </table>
+  <div class="stuck"><span class="t">一个建议：别急着开"全部允许"</span>它有个选项可以让你不用每次确认。<b>前两周别开。</b>这两周里你会通过一次次确认，逐渐建立起"它大概会做什么"的直觉——这个直觉比省下的那点点击值钱得多。</div>
+
+  <div class="sec-label">三个立刻能用的动作</div>
+  <table class="htab">
+    <tr><td><b>让它读</b></td><td>「读一下这个文件夹里的花名册，告诉我有哪些列、有没有明显的脏数据」</td></tr>
+    <tr><td><b>让它做</b></td><td>「写一个脚本，把这三张表按工号合并，结果存成新文件」——第四篇章学的东西，现在它可以直接帮你跑</td></tr>
+    <tr><td><b>让它记</b></td><td>「把我们刚才定的口径写进一个 CLAUDE.md 文件」——下一节的主题</td></tr>
+  </table>
+
+  <div class="try"><span class="t">今天就试</span>建那个文件夹，扔几份假数据进去，让它读一遍。<b>然后让它做一件你第四篇章里做过的活</b>——你会立刻感觉到差别：不用贴数据、不用下载结果，它直接在你的文件夹里干完。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

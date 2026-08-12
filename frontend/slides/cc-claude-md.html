@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径 · HR AI Builder</title>
+<meta name="description" content="每次新开对话都要把口径重讲一遍——这是你在第四篇章反复吃过的苦。这一节把它一次性解决。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径">
+<meta property="og:description" content="每次新开对话都要把口径重讲一遍——这是你在第四篇章反复吃过的苦。这一节把它一次性解决。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径",
+ "articleSection": "第六篇章 · 让它认识你的活：CLAUDE.md 与项目结构",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 让它认识你的活：CLAUDE.md 与项目结构</div>
+    <h1>CLAUDE.md：它的长期记忆</h1>
+    <p class="subtitle">每次新开对话都要把口径重讲一遍——这是你在第四篇章反复吃过的苦。这一节把它一次性解决。</p>
+  </header>
+
+  <div class="sec-label">一个文件解决的问题</div>
+  <p>在你的工作文件夹里放一个叫 <code>CLAUDE.md</code> 的文本文件，Claude Code <b>每次启动都会自动读它</b>。你写在里面的东西，等于每次对话的默认前提，不用再重复。</p>
+  <div class="l-callout">回想第四篇章那句话：<b>「每次新对话，四要素重新给全，它不记得你上周说过什么。」</b>CLAUDE.md 就是这句话的解药——你把口径写进去一次，从此它一直记得。</div>
+
+  <div class="sec-label">HR 的 CLAUDE.md 该写什么</div>
+  <div class="say">＃ 这个工作区是做什么的
+我是 HRBP，这个文件夹用来处理月度人员数据和分析。
+
+＃ 数据口径（重要，不要自己改）
+- 在职：按月末在职口径，不是发薪日
+- 月中异动：业绩随人走，人数算新部门
+- 部门名映射：技术中心 = 研发中心（旧系统遗留，是同一个部门）
+- 打卡状态里，「年假」和「年休假」是同一件事
+
+＃ 铁的规矩
+- 所有数值计算必须写代码跑，不许口算
+- 任何脚本都不许修改 data/ 目录下的原始文件，结果写到 output/
+- 遇到我没规定过的情况，停下来问我，不要自己拍板
+- 分析结论里的数字只能引用结果表，不许重新计算
+
+＃ 我怎么看数（分析模式）
+1. 先看各序列人数分布，人数少于 5 的序列所有分位只做参考
+2. 再看 P25（比 P90 重要，它是流失风险的先行指标）
+3. 高分位离群先判断是不是历史溢价，是就说明后跳过
+4. 只写能对应到动作的结论，纯描述现象一律删掉</div>
+
+  <div class="sec-label">看出来了吗——这份文件你早就写好了</div>
+  <p>第三篇章你萃取出的判断规则、第四篇章你写下的口径和分析模式——<b>那些文档搬进来就是 CLAUDE.md 的主体。</b>你前面那些看起来"只是写文档"的功夫，到这一节才变成了 agent 的一部分。</p>
+  <div class="l-callout">这也是这门课的一条暗线：<b>你的护城河不在工具里，在你写下来的那些东西里。</b>工具会换，CLAUDE.md 跟着你走。</div>
+
+  <div class="sec-label">三条实操经验</div>
+  <table class="htab">
+    <tr><td><b>让它帮你写</b></td><td>「根据我们刚才这轮对话，把定下来的口径和规矩追加到 CLAUDE.md」——比你自己敲快得多，而且不会漏</td></tr>
+    <tr><td><b>写具体，别写正确的废话</b></td><td>「注意数据质量」没有任何作用。「打卡状态里年假=年休假」才有用</td></tr>
+    <tr><td><b>定期删</b></td><td>它会越写越长，长了反而稀释重点。每隔一阵读一遍，把过时的、没在用的删掉</td></tr>
+  </table>
+
+  <div class="try"><span class="t">今天就试</span>在你的工作文件夹里建一个 CLAUDE.md，<b>先只写三条</b>：一条口径、一条铁的规矩、一条你看数的顺序。然后新开一个对话，问它「我们这个工作区有什么规矩」——看它是不是真的记得。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

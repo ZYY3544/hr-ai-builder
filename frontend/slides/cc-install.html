@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 怎么安装？零基础从终端开始的完整步骤 · HR AI Builder</title>
+<meta name="description" content="这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="Claude Code 怎么安装？零基础从终端开始的完整步骤">
+<meta property="og:description" content="这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "Claude Code 怎么安装？零基础从终端开始的完整步骤",
+ "articleSection": "第六篇章 · 先把工具装上：终端与 Claude Code",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 先把工具装上：终端与 Claude Code</div>
+    <h1>装上它：一步都不跳</h1>
+    <p class="subtitle">这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。</p>
+  </header>
+
+  <div class="sec-label">你需要准备什么</div>
+  <table class="htab">
+    <tr><td><b>一台你能装软件的电脑</b></td><td>公司电脑装不了就用个人电脑。这一章不像第四篇章，没有"零安装"的变通路径</td></tr>
+    <tr><td><b>一个 Claude 账号</b></td><td>需要付费订阅或 API 额度。这是真实成本，先知道再决定</td></tr>
+    <tr><td><b>三十分钟</b></td><td>第一次装。以后再也不用装了</td></tr>
+  </table>
+
+  <div class="sec-label">最重要的一句话：别自己查教程</div>
+  <div class="l-callout">网上的安装教程会过时、会写给工程师看、会跳过它们觉得"显然"的步骤。<b>最好的做法是让 AI 带你装</b>——打开任何一个 AI 对话工具，把下面这段发给它，然后严格按它说的一步步做。卡住就把报错原样贴回去。</div>
+  <div class="say">我要在我的电脑上安装 Claude Code（终端版）。
+
+我的情况：
+- 系统：macOS（或 Windows 11，按你的实际情况改）
+- 我完全没有编程经验，从来没用过终端
+- 我不知道自己有没有装过 Node.js 或其他任何开发工具
+
+请一步一步带我装，要求：
+1. 每一步告诉我：在哪里操作、敲什么、按什么键
+2. 每一步告诉我"看到什么就算成功了"
+3. 一次只给我一步，我做完回复你"好了"，你再给下一步
+4. 如果我需要判断什么，直接告诉我怎么判断，不要假设我知道
+
+现在开始第一步。</div>
+  <p>第 3 条是关键：<b>「一次只给我一步」</b>。没有这句，它会一口气给你八个步骤，你在第三步卡住之后就不知道自己在哪了。</p>
+
+  <div class="sec-label">大致会经历什么（心里有个数）</div>
+  <table class="htab">
+    <tr><td><b>1</b></td><td>装 Node.js —— 一个运行环境，去官网下载安装包，一路下一步</td></tr>
+    <tr><td><b>2</b></td><td>在终端里敲一行命令装 Claude Code</td></tr>
+    <tr><td><b>3</b></td><td>第一次运行，它会让你登录 Claude 账号（会自动打开浏览器）</td></tr>
+    <tr><td><b>4</b></td><td>看到它的欢迎界面，装完了</td></tr>
+  </table>
+  <div class="cmd">npm install -g @anthropic-ai/claude-code
+
+# 装完后，在任意文件夹里敲：
+claude</div>
+
+  <div class="sec-label">卡住的时候</div>
+  <div class="stuck"><span class="t">铁律：报错整段复制，贴回去问</span>终端里的报错又长又难看，但<b>你一个字都不需要看懂</b>。全选、复制、贴给 AI，说「我按你说的做，报了这个错」。它解决这类问题的成功率极高。<br><br>如果连着三轮还没解决，换个说法重新描述你的处境（系统版本、你已经做了哪几步、现在屏幕上显示什么），往往一下就通了。</div>
+
+  <div class="try"><span class="t">今天就试</span>就装这一件事。装完在终端里敲 <code>claude</code>，看到它跟你打招呼，这一节就过了。<b>别急着让它干活</b>——下一节才开始。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

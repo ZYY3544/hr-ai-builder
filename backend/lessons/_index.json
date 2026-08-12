@@ -738,5 +738,73 @@
  "data-human.html": {
   "title": "评价人的活永远留给人",
   "free": true
+ },
+ "cc-why-terminal.html": {
+  "title": "为什么是终端里的 CC",
+  "free": true
+ },
+ "cc-install.html": {
+  "title": "三十分钟装好",
+  "free": true
+ },
+ "cc-first-talk.html": {
+  "title": "第一次对话：它能看见什么",
+  "free": true
+ },
+ "cc-claude-md.html": {
+  "title": "CLAUDE.md：让它记住你的口径",
+  "free": true
+ },
+ "cc-project-layout.html": {
+  "title": "文件夹怎么摆",
+  "free": true
+ },
+ "cc-tools.html": {
+  "title": "它的手和眼睛：工具",
+  "free": true
+ },
+ "cc-permissions.html": {
+  "title": "权限：HR 场景的三道闸",
+  "free": true
+ },
+ "cc-first-agent.html": {
+  "title": "第一个真活跑通",
+  "free": true
+ },
+ "harness-what.html": {
+  "title": "Harness 是什么",
+  "free": true
+ },
+ "harness-why-unstable.html": {
+  "title": "你的 agent 为什么不稳",
+  "free": true
+ },
+ "harness-loop.html": {
+  "title": "模式一：让它自己检查自己",
+  "free": true
+ },
+ "harness-memory.html": {
+  "title": "模式二：文件系统当记忆",
+  "free": true
+ },
+ "harness-subagent.html": {
+  "title": "模式三：分身与后台任务",
+  "free": true
+ },
+ "harness-audit.html": {
+  "title": "留痕层：它凭什么这么判",
+  "free": true
+ },
+ "harness-eval-loop.html": {
+  "title": "把评测焊进循环",
+  "free": true
+ },
+ "harness-tradeoff.html": {
+  "title": "哪些 harness 值得造",
+  "free": true
+ },
+ "harness-closing.html": {
+  "title": "回到原点：这一层到底是什么",
+  "free": true
  }
 }

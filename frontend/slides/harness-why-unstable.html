@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agent 不稳定的四种典型症状与对应的 harness 缺失 · HR AI Builder</title>
+<meta name="description" content="上一章那个 agent 能跑，但你多用几次就会遇到问题。这一节把症状和病因对上——每一种不稳，都对应 harness 里缺的一块。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI agent 不稳定的四种典型症状与对应的 harness 缺失">
+<meta property="og:description" content="上一章那个 agent 能跑，但你多用几次就会遇到问题。这一节把症状和病因对上——每一种不稳，都对应 harness 里缺的一块。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI agent 不稳定的四种典型症状与对应的 harness 缺失",
+ "articleSection": "第七篇章 · Harness 是什么：agent 真正的分水岭",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第七篇章 · Harness 是什么：agent 真正的分水岭</div>
+    <h1>四种不稳，四层缺失</h1>
+    <p class="subtitle">上一章那个 agent 能跑，但你多用几次就会遇到问题。这一节把症状和病因对上——每一种不稳，都对应 harness 里缺的一块。</p>
+  </header>
+
+  <div class="sec-label">四种症状，你多半已经遇到了</div>
+  <table class="htab">
+    <tr><th>症状</th><th>缺的是哪一层</th><th>这一章哪节讲</th></tr>
+    <tr><td><b>① 同一个活，这次做对了下次做错</b><br>你没改任何东西，它自己变了</td><td><b>循环层</b>——它没有自我检查的环节，做完就交，对不对全看运气</td><td>模式一：工作流循环</td></tr>
+    <tr><td><b>② 聊着聊着它忘了前面说过的</b><br>你上周定的口径，这周它又问一遍</td><td><b>记忆层</b>——重要的东西留在对话里，对话一长就被挤出去了</td><td>模式二：文件系统做记忆</td></tr>
+    <tr><td><b>③ 活一复杂它就乱</b><br>让它同时处理三张表，它顾此失彼</td><td><b>分身层</b>——一个上下文里塞了太多任务，互相干扰</td><td>模式三：子 agent</td></tr>
+    <tr><td><b>④ 它做的事你不敢给别人看</b><br>不知道它中间干了什么、依据是什么</td><td><b>留痕层</b>——过程没记录，结果无从追溯</td><td>HR 专有：权限与留痕</td></tr>
+  </table>
+
+  <div class="sec-label">一个具体的现场</div>
+  <div class="bad"><span class="t">✕ 症状 ② 的真实样子</span>周一：你跟它说清楚了「在职按月末口径」，它照做，结果对。<br>周三：新开一个对话让它算另一批数据，它用了发薪日口径。<br>你问它为什么变了，它说「抱歉，我按常见做法处理了」。<br><br><b>它没有说谎，它是真的不记得</b>——那句口径在周一那个对话里，而这是一个新对话。</div>
+  <p>解法你已经知道了：写进 CLAUDE.md。<b>但这只是记忆层最浅的一层。</b>更深的问题是：那些不适合写进 CLAUDE.md 的东西——上个月的分析结论、历史上踩过的坑、三十份岗位的判断记录——它们塞不进去，又必须能被用上。这就是模式二要解决的。</p>
+
+  <div class="sec-label">一个反直觉的判断</div>
+  <div class="l-callout">遇到 agent 不稳，大多数人的第一反应是<b>「换个更强的模型」或者「把 prompt 写得更详细」</b>。<br>但看上面那张表：<b>四种症状没有一种是靠换模型能解决的</b>，也没有一种是靠 prompt 写得更长能解决的。它们都是结构问题，得用结构来解。</p></div>
+  <p>这就是"agent 拼的是 harness"这句话的实际含义——它不是一个宏观论断，它是你排查问题时的<b>第一诊断方向</b>。</p>
+
+  <div class="try"><span class="t">今天就试</span>回想你上一章那个 agent 用得最不顺的一次，对照四种症状认领一个。<b>认领完先别修</b>——带着这个具体问题读后面三节，每一节都会给你对应的解法。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

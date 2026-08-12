@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agent 的工具是什么？Claude Code 有哪些能力边界 · HR AI Builder</title>
+<meta name="description" content="第四篇章讲过工具调用的机制。这一节讲清楚：一个 agent 的能力边界，就是它的工具清单。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI agent 的工具是什么？Claude Code 有哪些能力边界">
+<meta property="og:description" content="第四篇章讲过工具调用的机制。这一节讲清楚：一个 agent 的能力边界，就是它的工具清单。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI agent 的工具是什么？Claude Code 有哪些能力边界",
+ "articleSection": "第六篇章 · 给它手和眼睛：工具、权限与第一个真活",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 给它手和眼睛：工具、权限与第一个真活</div>
+    <h1>工具：它能干什么，取决于你给了它什么</h1>
+    <p class="subtitle">第四篇章讲过工具调用的机制。这一节讲清楚：一个 agent 的能力边界，就是它的工具清单。</p>
+  </header>
+
+      <div class="sec-label">它自带的工具，分四类</div>
+      <table class="htab">
+        <tr><th>类</th><th>它能做什么</th><th>对 HR 意味着</th></tr>
+        <tr><td><b>看文件</b></td><td>列目录、读文件、搜内容</td><td>你几十个 Excel 和几份制度 Word，它能直接翻</td></tr>
+        <tr><td><b>改文件</b></td><td>新建、编辑、写入</td><td>产出结果表、写脚本、维护文档</td></tr>
+        <tr><td><b>跑命令</b></td><td>在你电脑上执行程序</td><td>跑 Python 脚本算数——第四篇章的两段架构在这里落地</td></tr>
+        <tr><td><b>上网</b></td><td>搜索、抓网页</td><td>查政策原文、查市场薪酬公开数据</td></tr>
+      </table>
+      <div class="l-callout">记住这个判据就够了，别背工具名：<b>agent 的能力边界 = 它的工具清单。</b>它做不到某件事，通常不是"它不够聪明"，是<b>它没有那只手</b>。想清楚这一点，你排查问题的方向会完全不同。</div>
+
+      <div class="sec-label">加工具：MCP 是什么</div>
+      <p>自带工具之外，你可以给它接更多手——这套接法叫 <b>MCP</b>。你可以理解成"给 agent 装外设"：接上公司的 HR 系统、接上数据库、接上企业微信。</p>
+      <div class="stuck"><span class="t">但这一节先别学 MCP</span>接外部系统要过 IT、要权限、要接口——这些不是你现在该碰的。<b>先用自带的四类工具做出一个真正能用的东西</b>，那已经能覆盖你八成的活。MCP 等你有了真实需求再说，那时候你也知道该接什么了。</div>
+
+      <div class="sec-label">工具越多越好吗</div>
+      <p>不是。工具多了它会犹豫、会选错、会绕远路。这是下一章 harness 的核心议题之一。<b>现在你只需要记住一个反直觉的事实：给 agent 减工具，常常比加工具更能提升它的表现。</b></p>
+
+      <div class="try"><span class="t">今天就试</span>问它一句：「你现在有哪些工具可以用？each 一句话说明。」看它自己怎么描述自己的能力边界——这比读任何文档都直观。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

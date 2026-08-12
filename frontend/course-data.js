@@ -15,16 +15,16 @@ window.COURSE = {
    "license": "AGPL-3.0"
   },
   "stats": {
-   "parts": 9,
-   "lessons": 101,
+   "parts": 11,
+   "lessons": 118,
    "copy": 40,
    "adapt": 20,
-   "new": 41,
-   "ready": 101,
+   "new": 58,
+   "ready": 118,
    "todo": 0
   },
   "access": {
-   "free": 82,
+   "free": 99,
    "locked": 19,
    "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -983,8 +983,8 @@ window.COURSE = {
   {
    "id": "p-5",
    "num": "第五篇章",
-   "title": "Vibe Coding：自己做出来",
-   "desc": "不是教你写代码，是教你怎么指挥它写。学完能自己做出一个真跑起来的东西 —— 这一项在真实岗位要求里出现得最多。",
+   "title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+   "desc": "不绑任何工具——Cursor、Claude Code、还是明年出现的新东西，这套纪律都成立。JD 里写的「vibe coding」，指的就是这个。",
    "freeWhole": false,
    "topics": [
     {
@@ -1090,10 +1090,115 @@ window.COURSE = {
        "ready": true
       }
      ]
+    }
+   ],
+   "color": "#E11D48"
+  },
+  {
+   "id": "p-6",
+   "num": "第六篇章",
+   "title": "用 Claude Code 搭出你的第一个 agent",
+   "desc": "从这一章起，你不再是使用者，是造东西的人。工具是终端里的 Claude Code——工程师真正在用的那个，不是拖拽平台。产出是一个能跑起来、能拿去面试、能给同事用的东西。",
+   "freeWhole": true,
+   "color": "#15803D",
+   "topics": [
+    {
+     "title": "先把工具装上：终端与 Claude Code",
+     "lessons": [
+      {
+       "file": "cc-why-terminal.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "为什么是终端里的 CC",
+       "seo": "HR 学 AI 为什么要用 Claude Code？和拖拽平台的区别在哪",
+       "desc": "市面上教 HR 搭 agent 的，用的几乎都是拖拽平台。这一节说清楚我们为什么不走那条路——不是因为它不好用，是因为它的天花板是别人给你定的。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "cc-install.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "三十分钟装好",
+       "seo": "Claude Code 怎么安装？零基础从终端开始的完整步骤",
+       "desc": "这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "cc-first-talk.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "第一次对话：它能看见什么",
+       "seo": "Claude Code 第一次怎么用？理解它和网页版聊天的根本区别",
+       "desc": "装好之后第一件该做的事，不是让它干活，是搞清楚它和你用惯的网页版聊天，到底差在哪。",
+       "free": true,
+       "ready": true
+      }
+     ]
     },
     {
-     "title": "做出你的第一个作品",
-     "desc": "把方法用在 HR 场景上，交出一个真能跑的东西",
+     "title": "让它认识你的活：CLAUDE.md 与项目结构",
+     "lessons": [
+      {
+       "file": "cc-claude-md.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "CLAUDE.md：让它记住你的口径",
+       "seo": "CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径",
+       "desc": "每次新开对话都要把口径重讲一遍——这是你在第四篇章反复吃过的苦。这一节把它一次性解决。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "cc-project-layout.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "文件夹怎么摆",
+       "seo": "AI agent 的项目结构怎么组织？HR 工作区的目录设计",
+       "desc": "这一节看起来最琐碎，但它决定了三个月后你的 agent 是越用越顺，还是变成一团你自己都不敢碰的浆糊。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "给它手和眼睛：工具、权限与第一个真活",
+     "lessons": [
+      {
+       "file": "cc-tools.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "它的手和眼睛：工具",
+       "seo": "AI agent 的工具是什么？Claude Code 有哪些能力边界",
+       "desc": "第四篇章讲过工具调用的机制。这一节讲清楚：一个 agent 的能力边界，就是它的工具清单。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "cc-permissions.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "权限：HR 场景的三道闸",
+       "seo": "让 AI 操作 HR 数据怎么设权限？三道闸与留痕",
+       "desc": "一个能读你文件夹、能跑命令的 AI，是效率工具也是风险源。这一节是 HR 场景特有的，通用教程里没有。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "cc-first-agent.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "第一个真活跑通",
+       "seo": "用 Claude Code 做第一个 HR agent：从零到跑通一个真活",
+       "desc": "工具装好了、口径写好了、闸设好了。这一节把它们串起来，做出第一个真正能用的东西。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "做出你的作品：从选题到讲清楚",
      "lessons": [
       {
        "file": "hr-project-pick.html",
@@ -1137,12 +1242,131 @@ window.COURSE = {
       }
      ]
     }
-   ],
-   "color": "#E11D48"
+   ]
   },
   {
-   "id": "p-6",
-   "num": "第六篇章",
+   "id": "p-7",
+   "num": "第七篇章",
+   "title": "Harness：模型之外，你造的一切",
+   "desc": "模型能力正在拉平，拉不平的是模型外面那一层——它记什么、能碰什么、怎么被验收、出错了谁负责。这一层叫 harness，是 agent 真正的分水岭，也是你上一章那个 agent 为什么还不够稳的答案。",
+   "freeWhole": true,
+   "color": "#A21CAF",
+   "topics": [
+    {
+     "title": "Harness 是什么：agent 真正的分水岭",
+     "lessons": [
+      {
+       "file": "harness-what.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "Harness 是什么",
+       "seo": "什么是 AI Harness？为什么说 agent 拼的是 harness 而不是模型",
+       "desc": "同样是 Claude 的模型，为什么 Claude Code 能干活、你自己搭的东西只能聊天？差的不是模型，是模型外面那一层。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "harness-why-unstable.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "你的 agent 为什么不稳",
+       "seo": "AI agent 不稳定的四种典型症状与对应的 harness 缺失",
+       "desc": "上一章那个 agent 能跑，但你多用几次就会遇到问题。这一节把症状和病因对上——每一种不稳，都对应 harness 里缺的一块。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "三大设计模式：循环、记忆、分身",
+     "lessons": [
+      {
+       "file": "harness-loop.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "模式一：让它自己检查自己",
+       "seo": "AI agent 工作流循环设计：让它做完自己检查",
+       "desc": "agent 和聊天机器人最根本的差别：聊天机器人答完就完，agent 答完会看一眼自己答得对不对。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "harness-memory.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "模式二：文件系统当记忆",
+       "seo": "AI agent 的长期记忆怎么做？文件系统作为持久记忆",
+       "desc": "这是三大模式里对 HR 价值最大的一个——因为你手上那些最值钱的东西，恰恰是塞不进上下文、又必须能被用上的。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "harness-subagent.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "模式三：分身与后台任务",
+       "seo": "AI agent 什么时候该拆成多个子 agent？",
+       "desc": "第三个模式是子 agent。它很好用，但也是最容易被滥用的一个——所以这一节一半在讲怎么用，一半在讲什么时候别用。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "HR 专有的两层：权限留痕与自动验收",
+     "lessons": [
+      {
+       "file": "harness-audit.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "留痕层：它凭什么这么判",
+       "seo": "HR 场景的 AI agent 必须留痕：可追溯与可申诉的工程实现",
+       "desc": "通用 agent 教程不会讲这一层，因为它们的场景错了不用向人解释。而你的场景，每一个判断背后都站着一个人。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "harness-eval-loop.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "把评测焊进循环",
+       "seo": "怎么把 AI 评测变成 agent 的自动环节而不是上线前跑一次",
+       "desc": "第三篇章教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "取舍：哪些 harness 值得造",
+     "lessons": [
+      {
+       "file": "harness-tradeoff.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "哪些 harness 值得造",
+       "seo": "Harness 值不值得做？一个判据：模型升级后它还需要吗",
+       "desc": "Harness 是护城河，但不是所有 harness 都是。有一类你辛苦造的东西，下一代模型发布那天就归零了。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "harness-closing.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "回到原点：这一层到底是什么",
+       "seo": "Harness 的第一性原理：你给它的上下文，够它做好这件事吗",
+       "desc": "这一章讲了四层、三个模式、一堆规则。但当你面对一个具体问题不知道该怎么办时，只需要回到一句话。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p-8",
+   "num": "第八篇章",
    "title": "从 Demo 到落地：让它在组织里活下来",
    "desc": "做出来 ≠ 被采用。这一层决定你的天花板。三步走：盘 → 推 → 改。",
    "freeWhole": false,

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>什么是 AI Harness？为什么说 agent 拼的是 harness 而不是模型 · HR AI Builder</title>
+<meta name="description" content="同样是 Claude 的模型，为什么 Claude Code 能干活、你自己搭的东西只能聊天？差的不是模型，是模型外面那一层。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="什么是 AI Harness？为什么说 agent 拼的是 harness 而不是模型">
+<meta property="og:description" content="同样是 Claude 的模型，为什么 Claude Code 能干活、你自己搭的东西只能聊天？差的不是模型，是模型外面那一层。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "什么是 AI Harness？为什么说 agent 拼的是 harness 而不是模型",
+ "articleSection": "第七篇章 · Harness 是什么：agent 真正的分水岭",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第七篇章 · Harness 是什么：agent 真正的分水岭</div>
+    <h1>Harness：模型之外的那一整层</h1>
+    <p class="subtitle">同样是 Claude 的模型，为什么 Claude Code 能干活、你自己搭的东西只能聊天？差的不是模型，是模型外面那一层。</p>
+  </header>
+
+  <div class="sec-label">先给定义</div>
+  <div class="l-callout"><b>Harness = 模型之外，你造的一切。</b><br>它决定模型怎么规划、能调什么工具、记得住什么、产出存在哪、结果由谁来判。模型是发动机，harness 是车的其余部分——底盘、方向盘、仪表盘、刹车。</div>
+  <p>这个词的中文常译成「脚手架」，但那个译法容易让人以为它是临时的、辅助性的。<b>实际上它是主体</b>：一辆车里，发动机只是其中一个部件。</p>
+
+  <div class="sec-label">那句你需要记住的话</div>
+  <div class="good"><span class="t">✓ 核心论断</span><b>一个平庸的模型加上优秀的 harness，往往胜过裸露的更强模型。</b></div>
+  <p>这不是安慰话，是当前最强的那批 AI 产品共同验证的事实。Claude Code、Codex、Cursor 用的都是公开可得的模型——<b>任何人都能调到同样的模型，但做不出同样的东西</b>。差别全在 harness 层。</p>
+  <p>这套说法出自 Lilian Weng 2026 年 7 月的长文
+  <a href="https://lilianweng.github.io/posts/2026-07-04-harness/" target="_blank" rel="noopener">《Harness Engineering for Self-Improvement》</a>，
+  这一章的框架来自那篇文章，我们做的是把它翻译成 HR 能用的东西。想读原文的，那篇值得。</p>
+
+  <div class="sec-label">为什么这件事对你格外重要</div>
+  <p>模型能力正在快速拉平——今年某家领先半年，明年就被追上。<b>如果你的东西全靠"我用了更强的模型"，你没有任何护城河。</b>而 harness 是你自己造的：你的口径、你的判断规则、你的验收标准、你的权限设计，这些没有任何厂商会替你做。</p>
+  <div class="l-callout">这句话你在这门课里已经听过三遍了，只是换了名字：<br>第三篇章叫它<b>知识萃取</b>，第四篇章叫它<b>分析模式</b>，这一章叫它<b>harness</b>。<b>它们是同一件事在不同层面的名字。</b></div>
+
+  <div class="sec-label">你上一章已经造了一半</div>
+  <table class="htab">
+    <tr><th>你做过的</th><th>它在 harness 里叫什么</th></tr>
+    <tr><td>写 CLAUDE.md 存口径和分析模式</td><td><b>上下文与记忆层</b></td></tr>
+    <tr><td>摆 data/output/scripts 目录</td><td><b>制品与状态管理</b></td></tr>
+    <tr><td>设三道闸、写安全红线</td><td><b>权限层</b></td></tr>
+    <tr><td>小样先行、埋雷、对总数</td><td><b>评估层</b></td></tr>
+  </table>
+  <p>所以这一章不是从零开始学新东西，是<b>给你已经在做的事情一套结构和名字</b>——有了名字，你才能系统地改进它，而不是凭手感修补。</p>
+
+  <div class="try"><span class="t">今天就试</span>打开你上一章建的那个工作区，对照上面这张表，看看四层你各自造了什么、哪一层基本是空的。<b>空的那层，就是你的 agent 现在最不稳的地方。</b></div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

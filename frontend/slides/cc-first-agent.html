@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用 Claude Code 做第一个 HR agent：从零到跑通一个真活 · HR AI Builder</title>
+<meta name="description" content="工具装好了、口径写好了、闸设好了。这一节把它们串起来，做出第一个真正能用的东西。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="用 Claude Code 做第一个 HR agent：从零到跑通一个真活">
+<meta property="og:description" content="工具装好了、口径写好了、闸设好了。这一节把它们串起来，做出第一个真正能用的东西。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "用 Claude Code 做第一个 HR agent：从零到跑通一个真活",
+ "articleSection": "第六篇章 · 给它手和眼睛：工具、权限与第一个真活",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 给它手和眼睛：工具、权限与第一个真活</div>
+    <h1>第一个真活：把月度数据跑通</h1>
+    <p class="subtitle">工具装好了、口径写好了、闸设好了。这一节把它们串起来，做出第一个真正能用的东西。</p>
+  </header>
+
+      <div class="sec-label">选什么活</div>
+      <p>用第四篇章那份清单，挑一个<b>符合三个条件</b>的：每月都做、口径你写得出来、目前要花你一小时以上。别选最难的，选最烦的。</p>
+
+      <div class="sec-label">一句话启动</div>
+      <div class="say">我要把每月的人员月报做成一个可以重复跑的流程。
+
+现在 data/2026-08/ 里有三张表（人员、考勤、业绩）。
+specs/ 里有我写好的需求规格。
+CLAUDE.md 里有口径和我的分析模式。
+
+请你：
+1. 先读一遍规格和 CLAUDE.md，用你自己的话复述一遍
+   你打算怎么做，我确认后你再动手
+2. 写脚本放 scripts/，结果写 output/
+3. 先跑 10 行小样给我看，我核对后再跑全量
+4. 全量跑完，按 CLAUDE.md 里的分析模式写一段分析，
+   数字只许引用结果表
+
+一步一步来，每步等我确认。</div>
+      <p>这段话里没有一个新东西——<b>四要素、小样先行、数字只许引用，全是前面章节学过的</b>。区别只是：以前你要每次重讲，现在它从环境里就知道。</p>
+
+      <div class="sec-label">你会经历什么（照实说）</div>
+      <table class="htab">
+        <tr><th>大概率会发生</th><th>怎么办</th></tr>
+        <tr><td>它复述的时候，你发现规格里有个洞</td><td><b>这是好事，而且是这一步的主要价值。</b>补进 specs/，让它重新复述</td></tr>
+        <tr><td>脚本报错</td><td>它自己会看到报错并尝试修——终端版的优势在这里，它能看到运行结果</td></tr>
+        <tr><td>小样有一行不对</td><td>回去改规格，不改代码。让它重新生成</td></tr>
+        <tr><td>分析写得像废话</td><td>说「按 CLAUDE.md 里的分析模式重写，只要能对应到动作的结论」</td></tr>
+        <tr><td>它想动 data/</td><td>它应该被自己拦下。没拦下，回去检查闸</td></tr>
+      </table>
+
+      <div class="sec-label">跑通之后，做一件事</div>
+      <div class="say">把我们这一轮做的事情整理成一个可复用的流程：
+- 在 notes/ 里写一份运行说明：下个月要做什么、
+  数据放哪、怎么启动、怎么验收
+- 把这次踩到的坑和解决办法也记进去
+- 如果有哪些口径是这次才定下来的，补进 CLAUDE.md</div>
+      <p>这一步是<b>把一次性的成功变成可重复的能力</b>。下一章讲 harness 时，你会发现你刚才做的这件事有个正式的名字。</p>
+
+      <div class="try"><span class="t">今天就试</span>就跑这一个活，从头到尾。跑通了你就有了这一章的产出——<b>而且它已经是一个可以拿去面试讲的东西了。</b>下一个主题讲怎么讲。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agent 什么时候该拆成多个子 agent？ · HR AI Builder</title>
+<meta name="description" content="第三个模式是子 agent。它很好用，但也是最容易被滥用的一个——所以这一节一半在讲怎么用，一半在讲什么时候别用。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI agent 什么时候该拆成多个子 agent？">
+<meta property="og:description" content="第三个模式是子 agent。它很好用，但也是最容易被滥用的一个——所以这一节一半在讲怎么用，一半在讲什么时候别用。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI agent 什么时候该拆成多个子 agent？",
+ "articleSection": "第七篇章 · 三大设计模式：循环、记忆、分身",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第七篇章 · 三大设计模式：循环、记忆、分身</div>
+    <h1>模式三：分身，但别急着分</h1>
+    <p class="subtitle">第三个模式是子 agent。它很好用，但也是最容易被滥用的一个——所以这一节一半在讲怎么用，一半在讲什么时候别用。</p>
+  </header>
+
+      <div class="sec-label">为什么需要分身</div>
+      <p>一个上下文里塞太多东西会互相干扰：你让它同时处理考勤、薪酬、组织三块，它在薪酬的口径上会不自觉沿用考勤的规则。<b>这不是它笨，是上下文本来就是共享的。</b></p>
+      <p>解法是给每块活派一个独立的分身：各自有自己的任务和上下文，互不打扰，做完把结果写成文件，主 agent 再汇总。</p>
+
+      <div class="sec-label">HR 场景里真正用得上的两种</div>
+      <table class="htab">
+        <tr><th>场景</th><th>怎么分</th></tr>
+        <tr><td><b>多份材料并行处理</b></td><td>三十份简历、二十份岗位说明书——每份派一个分身独立判断，避免它看完第五份之后被前面的影响（<b>顺带解决了一个真问题：连续判断时的锚定效应</b>）</td></tr>
+        <tr><td><b>互不相干的几块活</b></td><td>考勤、薪酬、组织三块分别处理，各自的口径不会串</td></tr>
+      </table>
+      <div class="l-callout">第一种对 HR 尤其有价值：<b>人连着看三十份简历会疲劳会漂移，agent 连着看也会</b>——因为前面的内容都在上下文里。给每份派一个干净的分身，等于每一份都是"第一份"。这是纸面流程做不到的公平性。</div>
+
+      <div class="sec-label">三条纪律</div>
+      <table class="htab">
+        <tr><td><b>① 结果落文件，不落上下文</b></td><td>每个分身把结果写成文件，主 agent 读文件汇总。中断了也能接着来</td></tr>
+        <tr><td><b>② 并行要可见</b></td><td>不能"发射后不管"。主 agent 要能看到每个分身的状态和输出</td></tr>
+        <tr><td><b>③ 每个分身也要有自己的验收</b></td><td>否则你只是把一个不可靠的判断复制了三十份</td></tr>
+      </table>
+
+      <div class="sec-label">但先别急着分</div>
+      <div class="stuck"><span class="t">这是最容易过度设计的一层</span>并行带来速度，也带来复杂度：调试变难、出错难定位、结果不一致时更难查。<br><b>判据很简单：先把单个跑稳。</b>如果一个 agent 处理一份简历都不够可靠，分成三十个只会让你有三十份不可靠的结果——而且你更难发现。</div>
+      <p>顺序应该是：<b>循环（自查）→ 记忆 → 稳定之后，才考虑分身。</b>前两个模式解决的是"对不对"，第三个解决的是"快不快"。对不对没解决之前，快是负资产。</p>
+
+      <div class="try"><span class="t">今天就试</span>这一节可以只读不做。<b>如果你上一章那个 agent 还没稳定到能连续跑对三次，就先别碰分身。</b>把这一节记在心里，等你真的遇到"活太多一个跑不完"的时候再回来。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

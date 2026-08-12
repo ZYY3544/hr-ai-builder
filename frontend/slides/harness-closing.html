@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness 的第一性原理：你给它的上下文，够它做好这件事吗 · HR AI Builder</title>
+<meta name="description" content="这一章讲了四层、三个模式、一堆规则。但当你面对一个具体问题不知道该怎么办时，只需要回到一句话。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="Harness 的第一性原理：你给它的上下文，够它做好这件事吗">
+<meta property="og:description" content="这一章讲了四层、三个模式、一堆规则。但当你面对一个具体问题不知道该怎么办时，只需要回到一句话。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "Harness 的第一性原理：你给它的上下文，够它做好这件事吗",
+ "articleSection": "第七篇章 · 取舍：哪些 harness 值得造",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第七篇章 · 取舍：哪些 harness 值得造</div>
+    <h1>回到原点：一句可以随时问自己的话</h1>
+    <p class="subtitle">这一章讲了四层、三个模式、一堆规则。但当你面对一个具体问题不知道该怎么办时，只需要回到一句话。</p>
+  </header>
+
+      <div class="sec-label">那一句话</div>
+      <div class="l-callout" style="font-size:16px;text-align:center"><b>「我现在给它的东西，<br>是它做好这件事所需要的全部吗？」</b></div>
+      <p>它不知道你的口径 → 补进 CLAUDE.md。<br>
+         它记不住上个月的结论 → 建记忆层。<br>
+         它拿不到某份材料 → 给它工具或把文件放进工作区。<br>
+         它不知道什么算做对了 → 给它验收标准。<br>
+         它不知道哪些事不能做 → 写红线。</p>
+      <p><b>你会发现这一章所有的内容，都是这一个问题的不同答案。</b>harness 的每一层，本质都是在补齐"它需要但还没有"的那部分。</p>
+
+      <div class="sec-label">但要小心一个陷阱</div>
+      <div class="stuck"><span class="t">「所需要的全部」不等于「越多越好」</span>把所有东西一股脑塞给它，效果反而更差——重点被稀释、无关信息干扰判断、成本还高。<br><b>是「所需要的」，不是「你有的」。</b>这也是记忆层要分层的原因：该在眼前的在眼前，该能查到的能查到，两者不能混。</div>
+
+      <div class="sec-label">这门课到这里，其实一直在讲同一件事</div>
+      <table class="htab">
+        <tr><th>篇章</th><th>它在补哪一块「它需要但没有的东西」</th></tr>
+        <tr><td>第一篇章 幻觉与边界</td><td>先搞清楚它天生缺什么、哪些缺口补不上</td></tr>
+        <tr><td>第二篇章 Prompt 与 Agent</td><td>怎么把意图说清楚、什么时候该给它自主权</td></tr>
+        <tr><td>第三篇章 RAG 与 Eval</td><td>把公司的知识和判断喂进去，并验证它学对了</td></tr>
+        <tr><td>第四篇章 Code Interpreter</td><td>给它算数的工具，和你看数的方式</td></tr>
+        <tr><td>第五篇章 Vibe Coding</td><td>协作的纪律——让它写得快也写得稳</td></tr>
+        <tr><td>第六篇章 Claude Code</td><td>给它一个能真正干活的工作环境</td></tr>
+        <tr><td><b>第七篇章 Harness</b></td><td><b>把以上全部组织成一个能持续运转、能被追溯、能自我改进的系统</b></td></tr>
+      </table>
+      <div class="l-callout">所以这一章不是新知识，是<b>收口</b>。前面六章你造的每一样东西，在这里各就各位。</div>
+
+      <div class="sec-label">最后一件事</div>
+      <p>Harness 这个概念还很新，它本身也在快速演进——Lilian Weng 那篇文章的后半部分讲的是「让 agent 自己改进自己的 harness」，那是研究前沿，我们没讲。<b>但你不需要追那个前沿</b>，因为对你来说，最值钱的那一层永远不会变：</p>
+      <div class="good"><span class="t">✓ 记住这一条就够</span><b>模型是租来的，harness 是你自己的。</b>模型每半年换一代，你的口径、判断、案例库、验收标准，是跟着你走的。<br>这也是这整门课想告诉你的唯一一件事。</div>
+
+      <div class="l-callout" style="margin-top:26px">
+        <b>第七篇章到此收束。</b>你现在能造出一个稳、可追溯、会自我检查的 agent。<b>下一篇章是最后一关，也是最难的一关</b>——它在你电脑上跑得好好的，怎么让它在一个有制度、有审批、有既得利益、有人不想改变的组织里，真的活下来。
+      </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agent 工作流循环设计：让它做完自己检查 · HR AI Builder</title>
+<meta name="description" content="agent 和聊天机器人最根本的差别：聊天机器人答完就完，agent 答完会看一眼自己答得对不对。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI agent 工作流循环设计：让它做完自己检查">
+<meta property="og:description" content="agent 和聊天机器人最根本的差别：聊天机器人答完就完，agent 答完会看一眼自己答得对不对。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI agent 工作流循环设计：让它做完自己检查",
+ "articleSection": "第七篇章 · 三大设计模式：循环、记忆、分身",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第七篇章 · 三大设计模式：循环、记忆、分身</div>
+    <h1>模式一：循环，而不是一次性回答</h1>
+    <p class="subtitle">agent 和聊天机器人最根本的差别：聊天机器人答完就完，agent 答完会看一眼自己答得对不对。</p>
+  </header>
+
+      <div class="sec-label">循环长什么样</div>
+      <div class="cmd">规划 → 执行 → 观察结果 → 发现问题 → 改 → 再执行
+                    ↑                              ↓
+                    └──────────────────────────────┘</div>
+      <p>关键在<b>「观察结果」</b>这一步。大多数人搭出来的东西是「规划 → 执行 → 交付」，中间没有任何环节让它看到自己做的对不对。<b>而失败信号是免费的</b>：脚本报错、总数对不上、埋的雷没抓住——这些它都能看见，只要你让它去看。</p>
+
+      <div class="sec-label">在 HR 场景里怎么落</div>
+      <div class="say">＃ 每次跑完数据处理，必须自己走完这个循环，不许直接交付
+
+1. 跑完之后，先自己核对：
+   - 结果行数 = 原表人数吗？
+   - 各分类加总 = 总数吗？
+   - specs/testcases.md 里的测试行，处理结果和预期一致吗？
+2. 有任何一条不一致：停下来，先告诉我哪里不一致，
+   分析可能的原因，等我确认后再改
+3. 全部一致，才把结果交给我，并附上这三项的核对数字
+
+＃ 分析阶段同样要自查
+写完分析后，逐个检查结论里的数字能不能在结果表里找到。
+找不到的，删掉或标注「需要补充计算」。</div>
+      <p>注意这段话里的东西<b>你全都学过</b>——对总数、埋雷、数字只许引用。区别在于：以前是你手动做，现在写进 harness，它每次自动做。</p>
+      <div class="l-callout"><b>这就是 harness 的本质动作：把你脑子里的检查清单，变成系统的固定环节。</b>依赖你记得去检查，早晚有一天你会忘；写进 harness，它不会忘。</div>
+
+      <div class="sec-label">一个容易做错的地方</div>
+      <div class="bad"><span class="t">✕ 让它自己判断"我做得对不对"</span>「检查一下你刚才做得对不对」——它会说「我检查了，没问题」。<b>因为它是在用同一套理解检查同一件事，等于让人自己批自己的卷子。</b></div>
+      <div class="good"><span class="t">✓ 给它可机械核对的标准</span>「行数对不对」「总数对不对」「测试用例的实际结果和 specs/testcases.md 里写的预期一致吗」——<b>这些是客观的、不依赖它的理解的</b>。自查要有效，判据必须是它没法自圆其说的那种。</div>
+
+      <div class="try"><span class="t">今天就试</span>在你的 CLAUDE.md 里加一段自查循环，然后<b>故意给它一份有问题的数据</b>（比如少了两行），看它在交付前会不会自己发现。发现了，这一层就活了。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
