@@ -279,14 +279,6 @@
   "spine": true,
   "ksa": "S"
  },
- "interview-p1.html": {
-  "free": true,
-  "title": "幻觉与边界 · 30 问",
-  "seo": "AI 幻觉相关的 30 个面试问题（HR 版）",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
  "prompt-system.html": {
   "free": true,
   "title": "System Prompt：你说什么，它就变什么",
@@ -382,14 +374,6 @@
   "ready": true,
   "spine": false,
   "ksa": "K"
- },
- "interview-p2.html": {
-  "free": true,
-  "title": "Prompt 与 Agent · 30 问",
-  "seo": "Prompt 与 Agent 相关的 30 个面试问题（HR 版）",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
  },
  "hr-bridge.html": {
   "free": true,
@@ -686,14 +670,6 @@
   "ready": true,
   "spine": false,
   "ksa": "S"
- },
- "interview-p5.html": {
-  "free": true,
-  "title": "Vibe Coding · 30 问",
-  "seo": "AI 协作编程相关的 30 个面试问题（HR 版）",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
  },
  "data-hook.html": {
   "title": "你每月都在做的那张表",

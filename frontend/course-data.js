@@ -16,15 +16,15 @@ window.COURSE = {
   },
   "stats": {
    "parts": 9,
-   "lessons": 95,
+   "lessons": 92,
    "copy": 40,
    "adapt": 20,
-   "new": 35,
-   "ready": 95,
+   "new": 32,
+   "ready": 92,
    "todo": 0
   },
   "access": {
-   "free": 76,
+   "free": 73,
    "locked": 19,
    "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -468,22 +468,6 @@ window.COURSE = {
        "ready": true
       }
      ]
-    },
-    {
-     "title": "他们会这样考你",
-     "desc": "老板、业务、技术同事会怎么考察你",
-     "lessons": [
-      {
-       "file": "interview-p1.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "幻觉与边界 · 30 问",
-       "seo": "AI 幻觉相关的 30 个面试问题（HR 版）",
-       "desc": "每题带 KSA 标签，回流能力画像",
-       "free": true,
-       "ready": true
-      }
-     ]
     }
    ],
    "color": "#3370FF"
@@ -634,22 +618,6 @@ window.COURSE = {
        "title": "模型选型：能力 vs 成本",
        "seo": "AI 模型怎么选？能力和成本怎么权衡",
        "desc": "",
-       "free": true,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "他们会这样考你",
-     "desc": "",
-     "lessons": [
-      {
-       "file": "interview-p2.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "Prompt 与 Agent · 30 问",
-       "seo": "Prompt 与 Agent 相关的 30 个面试问题（HR 版）",
-       "desc": "每题带 KSA 标签",
        "free": true,
        "ready": true
       }
@@ -811,7 +779,7 @@ window.COURSE = {
    "color": "#65A30D",
    "topics": [
     {
-     "title": "先尝到甜头",
+     "title": "第一个脚本：别再把表贴给 AI",
      "lessons": [
       {
        "file": "data-hook.html",
@@ -846,7 +814,7 @@ window.COURSE = {
      ]
     },
     {
-     "title": "把手艺练扎实",
+     "title": "基本功：说清需求、验收结果、选对环境",
      "lessons": [
       {
        "file": "data-brief.html",
@@ -881,7 +849,7 @@ window.COURSE = {
      ]
     },
     {
-     "title": "真活与边界",
+     "title": "实战与边界：月报全程与固化三问",
      "lessons": [
       {
        "file": "data-real-case.html",
@@ -1060,22 +1028,6 @@ window.COURSE = {
        "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题",
        "desc": "",
        "free": false,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "他们会这样考你",
-     "desc": "",
-     "lessons": [
-      {
-       "file": "interview-p5.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "Vibe Coding · 30 问",
-       "seo": "AI 协作编程相关的 30 个面试问题（HR 版）",
-       "desc": "每题带 KSA 标签",
-       "free": true,
        "ready": true
       }
      ]
