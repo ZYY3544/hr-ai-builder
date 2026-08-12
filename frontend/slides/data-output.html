@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么让 AI 输出判断而不是复述数字？分析输出的纪律 · HR AI Builder</title>
+<meta name="description" content="把分析模式喂进去之后，还差最后一道纪律。这道纪律不设，前面所有功夫会在最后一步全废。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么让 AI 输出判断而不是复述数字？分析输出的纪律">
+<meta property="og:description" content="把分析模式喂进去之后，还差最后一道纪律。这道纪律不设，前面所有功夫会在最后一步全废。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么让 AI 输出判断而不是复述数字？分析输出的纪律",
+ "articleSection": "第四篇章 · 分析模式：让它按你的方式看数",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 分析模式：让它按你的方式看数</div>
+    <h1>从数字到观点：只给判断，不复述</h1>
+    <p class="subtitle">把分析模式喂进去之后，还差最后一道纪律。这道纪律不设，前面所有功夫会在最后一步全废。</p>
+  </header>
+
+      <div class="sec-label">最常见的失败：它把数字重念了一遍</div>
+      <div class="bad"><span class="t">✕ 复述</span>「本月在职 342 人，较上月增加 8 人；技术部占比 41%，为最大部门；平均司龄 2.3 年。整体人员结构保持稳定。」<br>——这些数你的表里都有。它把表念了一遍，加了一句「保持稳定」。<b>零信息增量。</b></div>
+      <div class="good"><span class="t">✓ 判断</span>「技术部占比升到 41%，但这 8 个新增全是外包转正，实际编制没动——所以别把它当扩张信号。真正要注意的是平均司龄降到 2.3 年，主要是 2023 年入职那批人走了一半，这批人正好是当时唯一一次大规模校招。」<br>——有因果、有反直觉、能引出动作。</div>
+      <p>差别不在文笔，在<b>有没有做判断</b>。要它做判断，就得在规格里把「不许复述」明确禁掉。</p>
+
+      <div class="sec-label">一条铁律：数字只许引用，不许重算</div>
+      <p>这是两段架构的焊接点，也是最容易破的地方。<b>模型在写结论时，会顺手把数字改成更「顺」的那个。</b>——你的结果表里是 41.3%，它写着写着就成了「超过四成」，再往下就变成「接近一半」。更糟的是它会自己算一个新的比率来支撑论点。</p>
+      <div class="say">【数字纪律】
+- 你只能引用我提供的结果表里已有的数字，一个字都不许改
+- 不许做任何新的计算，包括加减、求比例、算增长率
+- 如果论证需要一个表里没有的数字，不要自己算，写成
+  「需要补充计算：______」，我去算完再给你
+- 每个出现在结论里的数字，都要标明来自结果表的哪一行/哪一列</div>
+      <p>最后一句是可验收的：<b>你可以逐个数字回表里查。</b>查不到的，就是它编的。</p>
+
+      <div class="sec-label">输出形态也要规定</div>
+      <table class="htab">
+        <tr><th>要它给</th><th>而不是</th></tr>
+        <tr><td>三条以内的判断，每条带「所以要做什么」</td><td>八条现象罗列</td></tr>
+        <tr><td>明确写「拿不准的：___」</td><td>把不确定的说得像确定的</td></tr>
+        <tr><td>反直觉的先说</td><td>按数据表的列顺序讲</td></tr>
+      </table>
+
+      <div class="rule">
+        <span class="lbl">写进流程</span>
+        <h3>分析阶段：只许引用，不许重算</h3>
+        <ol>
+          <li><b>数字只能来自第一段的结果表</b>，不许模型做任何新计算——包括看起来很简单的求比例。</li>
+          <li><b>每个结论里的数字要能回表查到。</b>查不到就是编的。</li>
+          <li><b>明确禁止复述</b>：只要判断和动作，不要现象罗列。</li>
+          <li><b>逼它区分「结论」和「需要确认」</b>，别让不确定的东西以确定的语气出场。</li>
+        </ol>
+      </div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

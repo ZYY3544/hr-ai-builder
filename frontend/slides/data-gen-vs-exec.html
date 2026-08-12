@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>把表格贴给 AI 算数，为什么每次结果都不一样？ · HR AI Builder</title>
+<meta name="description" content="先不讲原理，先看现象。这个实验你自己跑一遍，比读十遍解释管用。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="把表格贴给 AI 算数，为什么每次结果都不一样？">
+<meta property="og:description" content="先不讲原理，先看现象。这个实验你自己跑一遍，比读十遍解释管用。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "把表格贴给 AI 算数，为什么每次结果都不一样？",
+ "articleSection": "第四篇章 · 生成 vs 执行：它给的数是算的还是猜的",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 生成 vs 执行：它给的数是算的还是猜的</div>
+    <h1>一个实验：贴表问 vs 让它写代码</h1>
+    <p class="subtitle">先不讲原理，先看现象。这个实验你自己跑一遍，比读十遍解释管用。</p>
+  </header>
+
+  <div class="sec-label">实验怎么做</div>
+  <p>准备一份 60 行左右的工资表（造假数据即可，也可以让 AI 帮你生成）。然后做两组，<b>每组都开三个全新对话各问一遍</b>：</p>
+  <table class="htab">
+    <tr><th></th><th>A 组：把表贴进去问</th><th>B 组：让它写代码算</th></tr>
+    <tr><td><b>怎么问</b></td><td>「这是工资表：（粘贴 60 行）帮我算月薪的中位数和 P90」</td><td>同样的数据，末尾加一句：「写代码计算，先运行再给结果」</td></tr>
+    <tr><td><b>看什么</b></td><td colspan="2">三遍的答案一样吗？回答里有没有代码块和运行痕迹？</td></tr>
+  </table>
+
+  <div class="sec-label">典型结果</div>
+  <div class="bad"><span class="t">✕ A 组：三遍里会出现不一样的数</span>而且每一遍都答得非常自信，还会附上「从分布来看，高分位偏离明显……」这类专业分析。<b>没有任何一遍会告诉你「我可能算错了」。</b></div>
+  <div class="good"><span class="t">✓ B 组：三遍完全一致</span>回答里能看到一段代码和它的运行输出。你甚至可以把那段代码复制走，自己再跑一遍，结果还是一样。</div>
+
+  <div class="sec-label">这个差别的名字</div>
+  <p>A 组是让模型<b>直接生成答案</b>，B 组是让模型<b>调用工具执行</b>。这两种模式贯穿这一整章：</p>
+  <table class="htab">
+    <tr><th></th><th>生成</th><th>执行</th></tr>
+    <tr><td><b>数从哪来</b></td><td>模型「说」出来的</td><td>代码算出来的</td></tr>
+    <tr><td><b>同样的问题问十遍</b></td><td>可能有几种答案</td><td>十遍一样</td></tr>
+    <tr><td><b>算错了你知道吗</b></td><td>不知道，它不会报错</td><td>代码报错会停，逻辑错可以核对</td></tr>
+    <tr><td><b>能给别人交代吗</b></td><td>不能，无从复现</td><td>能，代码就是依据</td></tr>
+  </table>
+  <p>至于模型为什么会算错、为什么错得这么自然，下一节讲。这一节你只需要<b>亲眼看见它会错</b>——这个印象比任何解释都值钱。</p>
+
+  <div class="try"><span class="t">今天就试</span>把这个实验跑一遍，A 组三遍。看到两个不同的数之后，你对「AI 给的数字」的信任方式会永久改变——这正是这一章想要的。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

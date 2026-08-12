@@ -16,15 +16,15 @@ window.COURSE = {
   },
   "stats": {
    "parts": 9,
-   "lessons": 92,
+   "lessons": 101,
    "copy": 40,
    "adapt": 20,
-   "new": 32,
-   "ready": 92,
+   "new": 41,
+   "ready": 101,
    "todo": 0
   },
   "access": {
-   "free": 73,
+   "free": 82,
    "locked": 19,
    "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -773,101 +773,206 @@ window.COURSE = {
   {
    "id": "p-4",
    "num": "第四篇章",
-   "title": "从 Excel 到脚本：让 AI 替你干数据活",
-   "desc": "不做产品，先把手头的活干快。数字必须是代码算的，模型只负责听懂你、翻译你。这一章全程不需要你会写代码。",
+   "title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+   "desc": "数据活分两段，架构相反：算得准的那段必须走代码，模型不碰数字；说得对的那段才是模型的活，但它得学你的分析模式。第一段正在被通用工具吃掉，第二段永远是你的。",
    "freeWhole": true,
    "color": "#65A30D",
    "topics": [
     {
-     "title": "第一个脚本：别再把表贴给 AI",
+     "title": "生成 vs 执行：它给的数是算的还是猜的",
      "lessons": [
       {
-       "file": "data-hook.html",
+       "file": "data-gen-vs-exec.html",
        "action": "new",
        "ksa": "K",
-       "title": "你每月都在做的那张表",
-       "seo": "每月三小时的表格活，AI 能压到一分钟吗？",
-       "desc": "先不讲任何原理。先看两件事：你的时间去哪了，以及同一个活的另一种干法。",
+       "title": "同一张表问三遍出三个数",
+       "seo": "把表格贴给 AI 算数，为什么每次结果都不一样？",
+       "desc": "先不讲原理，先看现象。这个实验你自己跑一遍，比读十遍解释管用。",
        "free": true,
        "ready": true
       },
       {
-       "file": "data-first-win.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "五分钟第一单",
-       "seo": "第一次让 AI 替你干数据活：五分钟揪出花名册里的重名",
-       "desc": "不讲理论，直接做。用一份编好的假数据，五分钟之内拿到你的第一次成功。",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "data-paste-trap.html",
+       "file": "data-token.html",
        "action": "new",
        "ksa": "K",
-       "title": "贴表为什么翻车",
-       "seo": "把表格直接贴给 AI 算数，为什么第三遍会算出不同的结果？",
-       "desc": "上一节话术里那句「写代码，不要口算」不是习惯用语，是护栏。这一节把护栏拆掉给你看会发生什么。",
-       "free": true,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "基本功：说清需求、验收结果、选对环境",
-     "lessons": [
-      {
-       "file": "data-brief.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "把活说清楚",
-       "seo": "怎么跟 AI 描述一个数据活，它才不会理解偏？四要素模板",
-       "desc": "AI 写的代码错了，八成不是它代码写错了，是它把你的活理解错了。而理解偏差几乎都发生在同一个地方：你没说的那部分。",
+       "title": "它在预测 token，不在做运算",
+       "seo": "大模型为什么算不准数学？因为它在预测 token 而不是计算",
+       "desc": "不是模型「不够聪明」，是这件事从机制上就不是它干的活。理解这一层，你就知道该在哪里设防。",
        "free": true,
        "ready": true
       },
       {
-       "file": "data-verify.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "验收三招",
-       "seo": "AI 写的脚本跑通了，怎么知道它算对了？验收三招",
-       "desc": "脚本零报错、顺利出结果、数字看起来很合理——这三件事加起来，也不能证明它算对了。",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "data-environment.html",
-       "action": "new",
-       "ksa": "K",
-       "title": "在你电脑上跑起来",
-       "seo": "公司电脑受限、不会装环境，AI 写的脚本到底在哪运行？",
-       "desc": "这可能是最卡人的一关，但没人教。先说结论：三条路，按数据敏感度和使用频率选，都不需要你「会编程」。",
-       "free": true,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "实战与边界：月报全程与固化三问",
-     "lessons": [
-      {
-       "file": "data-real-case.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "一个真活全程",
-       "seo": "从口径到双击：一份经营月报的完整改造实录",
-       "desc": "前面的功夫拼起来是什么样？拿一份每月三小时的经营月报，完整走一遍——包括报错和返工。不顺利的部分不剪辑，那才是流程的一部分。",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "data-boundary.html",
+       "file": "data-when-code.html",
        "action": "new",
        "ksa": "A",
-       "title": "哪些活该固化",
-       "seo": "哪些数据活值得固化成脚本，哪些千万别？三个问题",
-       "desc": "学会一门锤子手艺之后，最大的风险是看什么都像钉子。这一节画边界——它和锤子本身一样重要。",
+       "title": "三问判据：什么时候必须走代码",
+       "seo": "什么时候可以直接问 AI，什么时候必须让它写代码？三个判据",
+       "desc": "「所有数据都不能贴给 AI」是句假话，你三分钟就能找到反例。真正该学的是判断——什么时候贴一下没事，什么时候必须走代码。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+     "lessons": [
+      {
+       "file": "data-ci-how.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "工具调用怎么发生的",
+       "seo": "Code Interpreter 是什么？AI 写代码算数据的完整机制",
+       "desc": "上一节的结论是「必须走代码」。这一节讲清楚：代码是谁写的、在哪跑的、你怎么确认它真的跑了。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-ci-first.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "第一次工具调用：五分钟揪重名",
+       "seo": "第一次让 AI 写代码处理数据：五分钟揪出花名册里的重名",
+       "desc": "原理够了，动手。一份编好的假花名册，一段可以整段抄走的话术，五分钟拿到第一次成功。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-ci-sandbox.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "沙箱：你的数据去了哪",
+       "seo": "把员工数据上传给 AI 安全吗？沙箱机制与 HR 的数据红线",
+       "desc": "上一节让你用假数据，不是谨慎过头。要用真数据之前，你必须知道文件上传之后发生了什么。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-ci-where.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "三条路：代码在哪跑",
+       "seo": "公司电脑装不了软件，AI 写的代码在哪运行？三条路",
+       "desc": "这可能是最卡人的一关，但几乎没人教。三条路，按数据敏感度和使用频率选，没有一条需要你「会编程」。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "需求规格：把口径写成它能执行的东西",
+     "lessons": [
+      {
+       "file": "data-spec-four.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "四要素模板",
+       "seo": "怎么向 AI 描述一个数据处理需求？四要素模板",
+       "desc": "AI 写的代码出错，八成不是代码写错了，是它把你的活理解错了。而理解偏差几乎都发生在同一个地方——你没说的那部分。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-spec-cleaning.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "清洗规则必须逐条写",
+       "seo": "AI 做数据清洗为什么最危险？静默错误与逐条写规则",
+       "desc": "计算错了，数字可能看着离谱，你还有机会发现。清洗错了，数据看起来完全正常——错误会一路传到汇报，全程没有任何信号。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "验收与对账：怎么知道它算对了",
+     "lessons": [
+      {
+       "file": "data-check-three.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "小样、抽查、对总数",
+       "seo": "AI 写的脚本跑通了怎么验证算得对？验收三招",
+       "desc": "脚本零报错、顺利出结果、数字看起来合理——这三件事加起来也不能证明它算对了。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-check-canary.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "埋雷：给脚本做阴性对照",
+       "seo": "怎么验证你的数据脚本本身有效？往里埋一条已知的错",
+       "desc": "三招验的是「这次算对了吗」。还有一个更狠的问题：你的验收方式本身，抓得住错吗？",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "分析模式：让它按你的方式看数",
+     "lessons": [
+      {
+       "file": "data-two-stage.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "两段架构：数据干净之后",
+       "seo": "数据干净之后 AI 该干什么？数据活的两段架构",
+       "desc": "前面四节全在讲同一件事：别让模型碰数字。这一节要说反过来的一半——有一段活，恰恰只有模型干得了，而且那一段才是你的价值所在。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-pattern.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "把你的分析模式写下来",
+       "seo": "怎么把自己的数据分析思路写成 AI 能用的规格？",
+       "desc": "「分析模式」听起来抽象，其实它就三件事：你按什么顺序看、什么算异常、什么值得写进结论。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-output.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "从数字到观点",
+       "seo": "怎么让 AI 输出判断而不是复述数字？分析输出的纪律",
+       "desc": "把分析模式喂进去之后，还差最后一道纪律。这道纪律不设，前面所有功夫会在最后一步全废。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-monthly.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "月报改造全程",
+       "seo": "一份经营月报的完整 AI 改造：从口径到一键运行",
+       "desc": "前面所有功夫拼起来是什么样？拿一份每月三小时的经营月报走一遍——包括报错和返工，不顺利的部分不剪辑，那才是流程本身。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "自动化边界：什么该固化，什么留给人",
+     "lessons": [
+      {
+       "file": "data-auto-three.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "固化三问",
+       "seo": "哪些数据活值得固化成脚本？三个问题",
+       "desc": "学会一门手艺之后最大的风险，是看什么都像钉子。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "data-human.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "评价人的活永远留给人",
+       "seo": "哪些 HR 数据判断绝对不能自动化？边界与 Skill 判据",
+       "desc": "这一节是这一章的刹车。会做不等于该做，尤其当处理对象是人的时候。",
        "free": true,
        "ready": true
       }

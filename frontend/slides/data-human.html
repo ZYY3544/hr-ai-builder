@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>哪些 HR 数据判断绝对不能自动化？边界与 Skill 判据 · HR AI Builder</title>
+<meta name="description" content="这一节是这一章的刹车。会做不等于该做，尤其当处理对象是人的时候。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="哪些 HR 数据判断绝对不能自动化？边界与 Skill 判据">
+<meta property="og:description" content="这一节是这一章的刹车。会做不等于该做，尤其当处理对象是人的时候。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "哪些 HR 数据判断绝对不能自动化？边界与 Skill 判据",
+ "articleSection": "第四篇章 · 自动化边界：什么该固化，什么留给人",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 自动化边界：什么该固化，什么留给人</div>
+    <h1>评价人的活，永远留给人</h1>
+    <p class="subtitle">这一节是这一章的刹车。会做不等于该做，尤其当处理对象是人的时候。</p>
+  </header>
+
+      <div class="sec-label">一条写起来毫无障碍的规则</div>
+      <div class="bad"><span class="t">✕「出勤率低于 80% 且入职不满一年 → 标记为待淘汰」</span>这条写进脚本，运行零障碍，结果整整齐齐。<b>而这正是它可怕的地方</b>：一个本来需要有人看着办、出了事有人负责解释的判断，变成了一段没人负责的自动规则。</div>
+      <p>出事的时候没有人能解释为什么标了这个人——因为规则是死的，而当初定规则的人不在场，甚至已经忘了当时的前提。</p>
+
+      <div class="sec-label">判据：谁来解释后果</div>
+      <div class="l-callout"><b>如果一条规则触发的后果需要有人向员工解释，那它就该由人来触发。</b></div>
+      <table class="htab">
+        <tr><th>放心固化</th><th>永远留给人</th></tr>
+        <tr><td>合并、汇总、比对、查重、算分位</td><td>谁该走、谁该晋、谁该调薪</td></tr>
+        <tr><td>把符合条件的人<b>列出来</b></td><td>对列出来的人<b>做决定</b></td></tr>
+        <tr><td>标注数据异常、提示需要关注</td><td>把「需要关注」变成「处理动作」</td></tr>
+      </table>
+      <p>注意中间那一行——这是最实用的切法：<b>脚本可以把数据准备到决策桌上，最后那一下必须有人按。</b>第三篇章知识萃取讲过「拆不出来的部分就是这个岗位的定义」，在这里它变得非常具体。</p>
+
+      <div class="sec-label">顺带回答一个问题：那些「一键分析」的智能体能替代这一章吗</div>
+      <p>市面上很多打包好的数据分析智能体、Skill、模板。判断靠不靠谱不用看包装，问一个问题就够：</p>
+      <div class="good"><span class="t">✓ 唯一的判据</span><b>我的数字有没有流经模型？</b><br>它背后真在写代码、跑代码（你能看到执行痕迹）→ 那它就是把这一章的第一段打了包，能用。<br>它只是把你的表读进对话里「分析」→ 那就是第一节实验里翻车的做法，包装得再像产品也一样。</div>
+      <p>判据是<b>架构，不是名字</b>。工具年年换，这个问题永远有效。</p>
+
+      <div class="rule">
+        <span class="lbl">写进流程</span>
+        <h3>数字归代码，判断归你，评价人的活不许自动触发</h3>
+        <ol>
+          <li><b>需要向员工解释后果的判断，不许写成自动规则。</b>把权衡变成规则，等于把责任变成无主。</li>
+          <li><b>脚本负责把人列出来，人负责做决定。</b>这条线不许模糊。</li>
+          <li><b>数字必须流经代码，不许流经模型。</b>看到「智能分析」先问数在哪算的。</li>
+          <li><b>写不清规则的活不硬写</b>——写不清本身就是信号。</li>
+        </ol>
+      </div>
+
+      <div class="l-callout" style="margin-top:26px">
+        <b>第四篇章到此收束。</b>你现在能让 AI 算得准，也能让它按你的方式说得对——但产出的东西还是你自用的。下一篇章升级：做一个<b>给别人用的东西</b>。规矩会变多（要立规则、要防它闯祸、要沉淀文档），因为别人要用的东西，标准完全不同。
+      </div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

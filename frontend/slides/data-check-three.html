@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 写的脚本跑通了怎么验证算得对？验收三招 · HR AI Builder</title>
+<meta name="description" content="脚本零报错、顺利出结果、数字看起来合理——这三件事加起来也不能证明它算对了。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI 写的脚本跑通了怎么验证算得对？验收三招">
+<meta property="og:description" content="脚本零报错、顺利出结果、数字看起来合理——这三件事加起来也不能证明它算对了。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI 写的脚本跑通了怎么验证算得对？验收三招",
+ "articleSection": "第四篇章 · 验收与对账：怎么知道它算对了",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 验收与对账：怎么知道它算对了</div>
+    <h1>跑通不等于算对：三招</h1>
+    <p class="subtitle">脚本零报错、顺利出结果、数字看起来合理——这三件事加起来也不能证明它算对了。</p>
+  </header>
+
+      <div class="sec-label">三招，按顺序来</div>
+      <table class="htab">
+        <tr><th>招</th><th>怎么做</th><th>防什么</th></tr>
+        <tr><td><b>① 小样先行</b></td><td>先别跑全量。挑 10 行<b>你心里有数</b>的数据，最好包含几个特殊情况（有年假的、月中入职的、有重复记录的），让脚本先跑这 10 行，你人眼逐行核</td><td><b>规则理解偏。</b>10 行你核得动，错在哪一眼看见</td></tr>
+        <tr><td><b>② 抽查手算</b></td><td>全量跑完后，随机抽 3 条<b>手工算一遍</b>对答案。别抽最顺眼的，专抽复杂的</td><td><b>小样没覆盖的情况。</b>手算还会逼你把口径再想一遍——第三篇章说过，这才是手工验算真正的价值</td></tr>
+        <tr><td><b>③ 对总数</b></td><td>结果行数 = 原表人数吗？各分类加起来 = 总数吗？合计金额和原表对得上吗</td><td><b>静默丢行。</b>有人被过滤掉了、有行没读进来，只有总数对不上能暴露</td></tr>
+      </table>
+
+      <div class="sec-label">两条铁的护栏</div>
+      <div class="l-callout">
+        <b>① 永不覆盖原表。</b>结果一律写到新文件。规格里那句「不要改动原表」每次都带上——逻辑错了，原始数据还在，一切可以重来；原表被写坏了，什么都没了。<br><br>
+        <b>② 报错整段贴回去。</b>脚本报错别自己瞪着看，把红色的报错<b>原样整段</b>贴回对话，说「报这个错」。它读报错比你读得好，九成能自己修好。
+      </div>
+
+      <div class="sec-label">一个顺序问题</div>
+      <p>很多人是<b>先跑全量、看结果不对劲才回头查</b>。这个顺序的问题在于：等你觉得「不对劲」的时候，你已经在用这批数思考了，而更多时候是——<b>你根本不会觉得不对劲</b>。小样先行的意义就是把验收放在你还核得动的时候。</p>
+
+      <div class="try"><span class="t">今天就试</span>给你写好规格的那个活跑一遍三招。跑完你才第一次有资格说「这个结果是对的」——而不是「它跑出来了」。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

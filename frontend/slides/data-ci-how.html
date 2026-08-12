@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Interpreter 是什么？AI 写代码算数据的完整机制 · HR AI Builder</title>
+<meta name="description" content="上一节的结论是「必须走代码」。这一节讲清楚：代码是谁写的、在哪跑的、你怎么确认它真的跑了。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="Code Interpreter 是什么？AI 写代码算数据的完整机制">
+<meta property="og:description" content="上一节的结论是「必须走代码」。这一节讲清楚：代码是谁写的、在哪跑的、你怎么确认它真的跑了。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "Code Interpreter 是什么？AI 写代码算数据的完整机制",
+ "articleSection": "第四篇章 · Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · Code Interpreter 与沙箱：代码在哪跑，数据去哪了</div>
+    <h1>Code Interpreter：从提问到执行痕迹</h1>
+    <p class="subtitle">上一节的结论是「必须走代码」。这一节讲清楚：代码是谁写的、在哪跑的、你怎么确认它真的跑了。</p>
+  </header>
+
+  <div class="sec-label">四步，一次工具调用</div>
+  <table class="htab">
+    <tr><td><b>1</b></td><td><b>模型判断这活得算</b></td><td>你问的是数值问题，它决定不自己答，而是调工具</td></tr>
+    <tr><td><b>2</b></td><td><b>模型写代码</b></td><td>这一步是它的强项——写代码正是语言模型擅长的事</td></tr>
+    <tr><td><b>3</b></td><td><b>代码在沙箱里执行</b></td><td>一个隔离的临时环境真的把代码跑起来，得到真实结果</td></tr>
+    <tr><td><b>4</b></td><td><b>结果回到对话</b></td><td>模型拿到运行输出，再翻译成人话讲给你听</td></tr>
+  </table>
+  <p>这就是<b>工具调用</b>——第二篇章讲 Agent 时说过的那个能力，现在你第一次真正用上它。而且用的是最实用的那个工具：代码执行器。</p>
+  <div class="l-callout"><b>分工看清楚了：模型当翻译官，代码当计算器。</b>模型负责两头——把你的人话翻译成代码，把运行结果翻译回人话。<b>中间那个数，全程没经过模型的嘴。</b></div>
+
+  <div class="sec-label">各家叫法不一样，是同一件事</div>
+  <p>Code Interpreter、代码解释器、数据分析、高级数据分析、Analysis tool……名字不同，机制一样。<b>选工具时认能力不认名字</b>：能不能上传文件、能不能看到代码、能不能看到运行输出。</p>
+
+  <div class="sec-label">怎么确认它真的跑了代码</div>
+  <p>这是你要养成的验收动作，只看三样：</p>
+  <table class="htab">
+    <tr><th>看什么</th><th>说明</th></tr>
+    <tr><td><b>有没有代码块</b></td><td>能看到它写的那段代码，而不是直接蹦出一个数</td></tr>
+    <tr><td><b>有没有运行输出</b></td><td>代码下面跟着执行结果，通常有独立的样式或「已分析」之类的标记</td></tr>
+    <tr><td><b>报没报错</b></td><td>报错反而是好事——说明它真的在跑。真跑的过程一定会有失败和重试</td></tr>
+  </table>
+  <div class="bad"><span class="t">✕ 最需要警惕的一种回答</span>它写了一段代码<b>给你看</b>，然后直接告诉你结果——但中间没有任何运行痕迹。这种情况下那段代码只是「示意」，数字还是它编的。</div>
+
+  <div class="sec-label">怎么强制它走这条路</div>
+  <p>大部分时候模型会自己判断该不该调工具，但它也常常图省事直接答。所以在话术里明写一句，成本为零：</p>
+  <div class="say">请写代码计算，不要口算。先运行代码，再把运行结果给我。
+如果无法运行代码，请直接告诉我「无法运行」，不要给估算值。</div>
+  <p>第二句是关键——它给了模型一条<b>诚实的退路</b>。没有这句，它在跑不了代码的时候会默默改成口算，你还以为拿到的是算出来的数。</p>
+
+  <div class="rule">
+    <span class="lbl">写进流程</span>
+    <h3>没有运行痕迹的数字，一律当它编的</h3>
+    <ol>
+      <li><b>模型写代码，代码出数字</b>——中间那个数不许经过模型的嘴。</li>
+      <li><b>验收看三样：</b>代码块、运行输出、报错。三样都没有就是没跑。</li>
+      <li><b>话术里给它诚实的退路：</b>跑不了就说跑不了，不许估。</li>
+    </ol>
+  </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

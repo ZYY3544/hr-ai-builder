@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据干净之后 AI 该干什么？数据活的两段架构 · HR AI Builder</title>
+<meta name="description" content="前面四节全在讲同一件事：别让模型碰数字。这一节要说反过来的一半——有一段活，恰恰只有模型干得了，而且那一段才是你的价值所在。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="数据干净之后 AI 该干什么？数据活的两段架构">
+<meta property="og:description" content="前面四节全在讲同一件事：别让模型碰数字。这一节要说反过来的一半——有一段活，恰恰只有模型干得了，而且那一段才是你的价值所在。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "数据干净之后 AI 该干什么？数据活的两段架构",
+ "articleSection": "第四篇章 · 分析模式：让它按你的方式看数",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 分析模式：让它按你的方式看数</div>
+    <h1>数据干净之后，AI 的活才真正开始</h1>
+    <p class="subtitle">前面四节全在讲同一件事：别让模型碰数字。这一节要说反过来的一半——有一段活，恰恰只有模型干得了，而且那一段才是你的价值所在。</p>
+  </header>
+
+      <div class="sec-label">数据活分两段，架构是相反的</div>
+      <table class="htab">
+        <tr><th></th><th>第一段：算得准</th><th>第二段：说得对</th></tr>
+        <tr><td><b>干什么</b></td><td>清洗、合并、计算、比对</td><td>解读、判断、下结论、写成文</td></tr>
+        <tr><td><b>工作性质</b></td><td>确定性——同样输入必须同样输出</td><td>判断性——需要视角和取舍</td></tr>
+        <tr><td><b>正确架构</b></td><td><b>必须走代码</b>，模型不碰数字</td><td><b>这才是模型该干的活</b></td></tr>
+        <tr><td><b>AI 缺什么</b></td><td>缺你的口径（在职按月末还是发薪日）</td><td>缺你的<b>分析模式</b>（看到这组数，你先看什么、什么算异常、什么值得说）</td></tr>
+      </table>
+
+      <div class="sec-label">为什么第一段不值得你建立优势</div>
+      <p>说句实在话：<b>第一段正在被通用工具吃掉。</b>各家 AI 产品的数据分析功能、公司内部的数据平台、各种一键分析的智能体——它们做清洗和计算会越做越好，而且比你快。</p>
+      <p>你在第一段要学的不是「比它强」，是<b>不出错和会验收</b>——知道它什么时候会静默出错、怎么把口径说清楚、怎么验它算对没有。这是门槛，不是护城河。</p>
+      <div class="l-callout">第三篇章开头那句话在这里第二次兑现：<b>AI 缺的从来不是能力，是你这家公司的上下文。</b>在这一章里，那个上下文的名字叫<b>分析模式</b>。</div>
+
+      <div class="sec-label">通用工具做第二段是什么样</div>
+      <div class="bad"><span class="t">✕ 通用分析</span>「P90 分位薪酬为 30 万，高于市场中位水平，带宽较宽，建议关注内部公平性。」<br>——每一句都对，每一句都可以套在任何一家公司身上。这就是<b>正确的废话</b>。</div>
+      <div class="good"><span class="t">✓ 有你的分析模式</span>「P90 偏高全部来自算法岗那三个人，是去年抢人留下的溢价，不构成带宽问题；真正要看的是 P25——技术序列的 P25 已经连续两季低于同城，这批人是流失风险最高的。」<br>——这里面每一个判断都来自你知道而它不知道的东西。</div>
+      <p>看出差别了吗：<b>不是它分析得不够深，是它不知道该往哪儿看。</b>「先看离群点来自哪个岗位」「看到高分位先想是不是历史溢价」「真正的风险常在 P25 不在 P90」——这些是你的看数顺序，从来没写下来过，所以没有任何模型学过。</p>
+
+      <div class="sec-label">所以第二段该怎么干</div>
+      <p>跟第三篇章的知识萃取是同一个动作，只是对象换了：那里掏的是老法师的判断，这里掏的是<b>你自己的分析模式</b>。下一节讲怎么掏、怎么写下来。</p>
+
+      <div class="try"><span class="t">今天就试</span>回想你上一次看一份人员数据（花名册、绩效分布、薪酬表都行）：<b>你第一眼看的是哪一列？为什么是那一列？</b>能答上来，你就已经有分析模式了，只是没写下来。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

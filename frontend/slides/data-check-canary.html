@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么验证你的数据脚本本身有效？往里埋一条已知的错 · HR AI Builder</title>
+<meta name="description" content="三招验的是「这次算对了吗」。还有一个更狠的问题：你的验收方式本身，抓得住错吗？">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么验证你的数据脚本本身有效？往里埋一条已知的错">
+<meta property="og:description" content="三招验的是「这次算对了吗」。还有一个更狠的问题：你的验收方式本身，抓得住错吗？">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么验证你的数据脚本本身有效？往里埋一条已知的错",
+ "articleSection": "第四篇章 · 验收与对账：怎么知道它算对了",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 验收与对账：怎么知道它算对了</div>
+    <h1>埋雷：给自己的脚本做阴性对照</h1>
+    <p class="subtitle">三招验的是「这次算对了吗」。还有一个更狠的问题：你的验收方式本身，抓得住错吗？</p>
+  </header>
+
+      <div class="sec-label">一分钟的大招</div>
+      <p>往测试数据里<b>故意塞一条你知道该被怎么处理的行</b>，看脚本处理对没有。抓住了，说明那条规则真的生效了；没抓住，说明规则根本没跑起来——<b>而这一点，光看正常数据的结果永远看不出来。</b></p>
+
+      <div class="sec-label">埋什么</div>
+      <table class="htab">
+        <tr><th>埋</th><th>验的是</th></tr>
+        <tr><td>一个人同一天两条记录（一条正常一条缺勤）</td><td>「以较差的为准」这条规则有没有生效</td></tr>
+        <tr><td>一个「年假(带薪)」这种没在规则里列过的取值</td><td>它是举手问你了，还是默默自己归了类</td></tr>
+        <tr><td>一个月中入职的人</td><td>应出勤天数是不是真的按入职日起算了</td></tr>
+        <tr><td>一行姓名带全角空格的重复记录</td><td>去空格的清洗有没有真做</td></tr>
+      </table>
+      <p>每条埋的雷你都<b>预先写下期望结果</b>，跑完逐条对。对不上的那条，就是一条名存实亡的规则。</p>
+
+      <div class="sec-label">这一招的出处</div>
+      <p>这就是第三篇章讲的<b>阴性对照</b>——做新量具的第一件事不是量东西，是先量一个你已知答案的东西。那一节讲的是给整套 AI 评测用的重武器，用在自己的小脚本上，也就是一分钟的事。</p>
+      <div class="l-callout"><b>顺序不能反：埋的雷全被抓住了，你才开始看真实数据的结果。</b>先看结果、觉得不对劲才回头查量具——那时候你多半已经拿这个数去说过话了。</div>
+
+      <div class="rule">
+        <span class="lbl">写进流程</span>
+        <h3>每条规则都要有一条对应的雷</h3>
+        <ol>
+          <li><b>写规则的同时写雷。</b>一条规则配一行测试数据 + 一个预期结果。</li>
+          <li><b>雷没被抓住 = 规则没生效</b>，这时候真实结果一个都不能信。</li>
+          <li><b>改了规则、换了模型、脚本重生成，雷要重跑。</b>规则会在重新生成时悄悄丢掉。</li>
+        </ol>
+      </div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

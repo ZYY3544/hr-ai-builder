@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 做数据清洗为什么最危险？静默错误与逐条写规则 · HR AI Builder</title>
+<meta name="description" content="计算错了，数字可能看着离谱，你还有机会发现。清洗错了，数据看起来完全正常——错误会一路传到汇报，全程没有任何信号。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI 做数据清洗为什么最危险？静默错误与逐条写规则">
+<meta property="og:description" content="计算错了，数字可能看着离谱，你还有机会发现。清洗错了，数据看起来完全正常——错误会一路传到汇报，全程没有任何信号。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI 做数据清洗为什么最危险？静默错误与逐条写规则",
+ "articleSection": "第四篇章 · 需求规格：把口径写成它能执行的东西",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · 需求规格：把口径写成它能执行的东西</div>
+    <h1>清洗：静默错误的重灾区</h1>
+    <p class="subtitle">计算错了，数字可能看着离谱，你还有机会发现。清洗错了，数据看起来完全正常——错误会一路传到汇报，全程没有任何信号。</p>
+  </header>
+
+      <div class="sec-label">一个不会报错的灾难</div>
+      <p>你在规格里写：「年假算出勤」。它写代码时匹配「年假」两个字。而表里实际写的是<b>「年休假」</b>。</p>
+      <table class="htab">
+        <tr><th>发生了什么</th><th>你会看到什么</th></tr>
+        <tr><td>几十个人的年休假被归进「不算出勤」</td><td><b>什么都看不到。</b>脚本零报错，结果表格式完好，出勤率是个正常的百分数</td></tr>
+        <tr><td>这批错数据流进部门汇总</td><td>某几个部门出勤率偏低——你可能还会认真分析一下原因</td></tr>
+        <tr><td>结论写进月报</td><td>全程没有任何环节会提示你「有一类状态被漏掉了」</td></tr>
+      </table>
+      <div class="l-callout"><b>这就是清洗错误比计算错误更危险的地方：它不制造异常，它制造合理。</b></div>
+
+      <div class="sec-label">三个动作，把静默变成有声</div>
+      <table class="htab">
+        <tr><th>动作</th><th>怎么做</th></tr>
+        <tr><td><b>① 先让它列取值</b></td><td>动手清洗之前，先问一句：<b>「把『打卡状态』这一列所有不重复的取值列出来，各出现多少次」</b>。你会当场发现「年休假」「年假」「年假(带薪)」三种写法并存——这一步几乎零成本，却能拦住大部分清洗事故</td></tr>
+        <tr><td><b>② 规则逐条写，含「什么不算」</b></td><td>把每个取值明确归类。没归类的取值必须有兜底规则</td></tr>
+        <tr><td><b>③ 强制它举手</b></td><td>规格里写死：<b>「遇到规则里没列出的取值，不要自己猜，停下来告诉我」</b>。这一句把它从「静默自己拍」改成「举手问你」</td></tr>
+      </table>
+
+      <div class="sec-label">清洗完必须做的一次核对</div>
+      <p>这不是可选项：<b>清洗后的数据，抽 10 行跟原表逐字段对一遍。</b>重点看你定义了归类规则的那些列——年假归到哪去了、异动的人在不在、部门名映射对不对。</p>
+      <p>为什么必须人来核：因为你要验的正是「它有没有理解对你的口径」，而它自己检查自己的理解，等于让它复述一遍——它会复述得很好，然后错照旧。</p>
+
+      <div class="rule">
+        <span class="lbl">写进流程</span>
+        <h3>清洗之前先看取值，清洗之后必须人核</h3>
+        <ol>
+          <li><b>先让它列出每一列的不重复取值</b>，再写清洗规则。同一个意思的三种写法，只有看了取值才知道。</li>
+          <li><b>规则逐条写，含「什么不算」和兜底。</b></li>
+          <li><b>规格里写死「遇到没规定的情况要停下来问」</b>——把静默改成举手。</li>
+          <li><b>清洗后抽 10 行人工逐字段核对。</b>这一步不许省，也不许让 AI 代劳。</li>
+        </ol>
+      </div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

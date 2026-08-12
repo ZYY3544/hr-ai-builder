@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>公司电脑装不了软件，AI 写的代码在哪运行？三条路 · HR AI Builder</title>
+<meta name="description" content="这可能是最卡人的一关，但几乎没人教。三条路，按数据敏感度和使用频率选，没有一条需要你「会编程」。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="公司电脑装不了软件，AI 写的代码在哪运行？三条路">
+<meta property="og:description" content="这可能是最卡人的一关，但几乎没人教。三条路，按数据敏感度和使用频率选，没有一条需要你「会编程」。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "公司电脑装不了软件，AI 写的代码在哪运行？三条路",
+ "articleSection": "第四篇章 · Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · Code Interpreter 与沙箱：代码在哪跑，数据去哪了</div>
+    <h1>三条路：代码在哪跑</h1>
+    <p class="subtitle">这可能是最卡人的一关，但几乎没人教。三条路，按数据敏感度和使用频率选，没有一条需要你「会编程」。</p>
+  </header>
+
+  <div class="sec-label">三条路</div>
+  <table class="htab">
+    <tr><th>路</th><th>怎么跑</th><th>适合</th><th>代价</th></tr>
+    <tr><td><b>① 托管沙箱</b></td><td>就是前面几节你一直在用的：AI 在对话里写代码、当场运行。零安装</td><td>练手、假数据、脱敏数据、公开数据</td><td><b>数据要上传</b>——红线内的数据不能走</td></tr>
+    <tr><td><b>② 本地 Python</b></td><td>让 AI 写好代码，你复制到自己电脑运行。装环境是一次性的，而且可以让 AI 全程带你装，装报错就把报错贴回去问</td><td>敏感数据、大表、每月固化要跑的活</td><td>首次装环境约半小时</td></tr>
+    <tr><td><b>③ Excel 宏（VBA）</b></td><td>公司电脑装不了任何软件？Excel 自带 VBA、WPS 有宏，<b>零安装</b>。让 AI 写 VBA，你贴进宏编辑器运行，数据全程不离开那张表</td><td>受管控的办公电脑 + 敏感数据</td><td>能力上限比 Python 低，但日常表格活绰绰有余</td></tr>
+  </table>
+
+  <div class="sec-label">怎么选：两个问题</div>
+  <p><b>数据敏感吗？</b>敏感 → 只能 ②③（或者把数据脱敏后走 ①）。<br>
+     <b>这活每月都跑吗？</b>是 → 值得走 ②③ 固化成一个文件，以后双击就跑；只跑一次的临时活 → ① 最省事。</p>
+
+  <div class="sec-label">走 ③ 的话术</div>
+  <div class="say">我在用公司电脑，不能安装任何软件，只有 Excel（版本 2016）。
+请把刚才那个活写成 VBA 宏：
+- 数据在工作表「花名册」，结果写到新建的工作表「查重结果」
+- 请给我打开 VBA 编辑器、粘贴、运行的具体步骤（我没用过宏）
+- 不要修改「花名册」表里的任何单元格</div>
+
+  <div class="sec-label">一个心理关</div>
+  <p>「装环境」「开宏编辑器」听起来像程序员的事？换个算法：<b>装环境半小时是一次性的，你每月那三小时是永续的。</b>而且你不是自学——你身边坐着一个有无限耐心、随叫随到的工程师，每一步卡住都能问它，报错原样贴回去就行。</p>
+  <div class="l-callout">这个时代「不会」的含义已经变了：<b>不会 = 还没问。</b></div>
+
+  <div class="try"><span class="t">今天就试</span>给你清单上的每个活标一条路。标完你多半会发现：练手全走 ①，真正值钱的月度活几乎都得走 ② 或 ③——因为它们碰的都是真数据。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

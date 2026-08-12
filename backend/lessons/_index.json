@@ -671,36 +671,72 @@
   "spine": false,
   "ksa": "S"
  },
- "data-hook.html": {
-  "title": "你每月都在做的那张表",
+ "data-gen-vs-exec.html": {
+  "title": "同一张表问三遍出三个数",
   "free": true
  },
- "data-first-win.html": {
-  "title": "五分钟第一单",
+ "data-token.html": {
+  "title": "它在预测 token，不在做运算",
   "free": true
  },
- "data-paste-trap.html": {
-  "title": "贴表为什么翻车",
+ "data-when-code.html": {
+  "title": "三问判据：什么时候必须走代码",
   "free": true
  },
- "data-brief.html": {
-  "title": "把活说清楚",
+ "data-ci-how.html": {
+  "title": "工具调用怎么发生的",
   "free": true
  },
- "data-verify.html": {
-  "title": "验收三招",
+ "data-ci-first.html": {
+  "title": "第一次工具调用：五分钟揪重名",
   "free": true
  },
- "data-environment.html": {
-  "title": "在你电脑上跑起来",
+ "data-ci-sandbox.html": {
+  "title": "沙箱：你的数据去了哪",
   "free": true
  },
- "data-real-case.html": {
-  "title": "一个真活全程",
+ "data-ci-where.html": {
+  "title": "三条路：代码在哪跑",
   "free": true
  },
- "data-boundary.html": {
-  "title": "哪些活该固化",
+ "data-spec-four.html": {
+  "title": "四要素模板",
+  "free": true
+ },
+ "data-spec-cleaning.html": {
+  "title": "清洗规则必须逐条写",
+  "free": true
+ },
+ "data-check-three.html": {
+  "title": "小样、抽查、对总数",
+  "free": true
+ },
+ "data-check-canary.html": {
+  "title": "埋雷：给脚本做阴性对照",
+  "free": true
+ },
+ "data-two-stage.html": {
+  "title": "两段架构：数据干净之后",
+  "free": true
+ },
+ "data-pattern.html": {
+  "title": "把你的分析模式写下来",
+  "free": true
+ },
+ "data-output.html": {
+  "title": "从数字到观点",
+  "free": true
+ },
+ "data-monthly.html": {
+  "title": "月报改造全程",
+  "free": true
+ },
+ "data-auto-three.html": {
+  "title": "固化三问",
+  "free": true
+ },
+ "data-human.html": {
+  "title": "评价人的活永远留给人",
   "free": true
  }
 }

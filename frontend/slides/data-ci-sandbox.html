@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>把员工数据上传给 AI 安全吗？沙箱机制与 HR 的数据红线 · HR AI Builder</title>
+<meta name="description" content="上一节让你用假数据，不是谨慎过头。要用真数据之前，你必须知道文件上传之后发生了什么。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="把员工数据上传给 AI 安全吗？沙箱机制与 HR 的数据红线">
+<meta property="og:description" content="上一节让你用假数据，不是谨慎过头。要用真数据之前，你必须知道文件上传之后发生了什么。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "把员工数据上传给 AI 安全吗？沙箱机制与 HR 的数据红线",
+ "articleSection": "第四篇章 · Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第四篇章 · Code Interpreter 与沙箱：代码在哪跑，数据去哪了</div>
+    <h1>沙箱：你的文件到底去了哪</h1>
+    <p class="subtitle">上一节让你用假数据，不是谨慎过头。要用真数据之前，你必须知道文件上传之后发生了什么。</p>
+  </header>
+
+  <div class="sec-label">沙箱是什么</div>
+  <p>代码不可能在模型「脑子里」跑，它跑在一个真实的计算环境里，这个环境叫<b>沙箱</b>——一个临时的、隔离的小机器，特点通常是：</p>
+  <table class="htab">
+    <tr><td><b>隔离</b></td><td>跑在独立环境里，碰不到别人的东西，也碰不到你的本地电脑</td></tr>
+    <tr><td><b>通常无外网</b></td><td>代码一般不能自己联网下载东西（各家策略不同）</td></tr>
+    <tr><td><b>临时</b></td><td>会话结束或闲置一段时间后环境销毁，<b>你上传的文件也就没了</b>——所以结果要及时下载</td></tr>
+  </table>
+
+  <div class="sec-label">关键的一句：沙箱在谁的机器上</div>
+  <p>在<b>服务商的服务器上</b>。你点「上传文件」的那一刻，这份文件离开了你的电脑，进入了对方的基础设施。它在那里被存储、被代码读取，具体保留多久、会不会被用于改进模型，取决于对方的条款和你的账号类型。</p>
+  <div class="l-callout">这跟「AI 会不会记住我的数据」是两个问题。就算模型完全不学你的数据，<b>文件本身也确实传出去了</b>——这才是 HR 要算的那笔账。</div>
+
+  <div class="sec-label">HR 的红线</div>
+  <div class="bad"><span class="t">✕ 不要上传到外部工具的东西</span>员工花名册、薪酬明细、绩效结果、身份证号手机号、候选人简历原件、离职原因记录——<b>凡是能定位到具体的人、且属于公司人事档案的，一律不出内网。</b></div>
+  <p>这条不是「谨慎」，是 HR 这个岗位的基本职业要求。你手上的数据是全公司最敏感的那一类，一次泄露不是效率问题，是事故。</p>
+  <p>那怎么办？三条出路，下一节讲：<b>脱敏后再用托管沙箱、把代码拿回自己电脑跑、或者干脆让代码在 Excel 里跑</b>。都不需要你放弃这门手艺。</p>
+
+  <div class="sec-label">脱敏怎么做才算数</div>
+  <table class="htab">
+    <tr><th>做法</th><th>够不够</th></tr>
+    <tr><td>删掉姓名列</td><td><b>不够</b>——工号、部门+职级+入职日期的组合照样能定位到人</td></tr>
+    <tr><td>姓名换成「员工A/B/C」，工号重新编号</td><td>基本够，前提是你自己留一张对照表在本地</td></tr>
+    <tr><td>只上传结构、不上传数据</td><td><b>最安全也最常用</b>：把表头和几行编造的示例发给它，让它写代码；代码拿回本地跑真数据</td></tr>
+  </table>
+  <p>最后那一行值得单独记住：<b>你要的是代码，不是它帮你算。</b>代码不含任何数据，随便发；数据一步不出内网。这是兼顾效率和红线最干净的姿势。</p>
+
+  <div class="rule">
+    <span class="lbl">写进流程</span>
+    <h3>要它的代码，不要它帮你算</h3>
+    <ol>
+      <li><b>上传 = 数据离开你的电脑。</b>能定位到人的人事数据，一律不上传外部工具。</li>
+      <li><b>默认姿势：给它表结构和假数据，拿回代码，本地跑真数据。</b></li>
+      <li><b>沙箱是临时的</b>，会话结束文件就没了，要的结果当场下载。</li>
+      <li><b>删姓名不等于脱敏</b>，组合字段照样能还原到人。</li>
+    </ol>
+  </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
