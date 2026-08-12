@@ -58,7 +58,7 @@
     box.innerHTML =
       '<div class="xa-gate-in">' +
         '<div class="xa-gate-t">登录后继续免费阅读</div>' +
-        '<div class="xa-gate-s">这一节还没结束。登录即可解锁余下内容与全部 87 节课程——' +
+        '<div class="xa-gate-s">这一课还没结束。登录即可解锁余下内容与全部课程——' +
           '<b>完全免费，不花一分钱</b>。</div>' +
         '<div class="xa-gate-why">' +
           '<div><b>为什么要登录</b></div>' +
@@ -66,7 +66,7 @@
           '<div>· 防止课程内容被批量抓走后包装成付费课程贩卖</div>' +
         '</div>' +
         '<a class="xa-gate-b" href="' + (inFrame ? '../index.html' : '../index.html') + '#login" target="_top">去登录</a>' +
-        '<div class="xa-gate-f">开篇与第零篇章、以及每个主题的前两节，不登录也能直接读。</div>' +
+        '<div class="xa-gate-f">开篇、第零篇章与大部分章节，不登录也能直接读。</div>' +
       '</div>';
     LOCK.parentNode.insertBefore(box, LOCK);
   }

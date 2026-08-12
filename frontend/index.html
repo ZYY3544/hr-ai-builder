@@ -411,7 +411,7 @@ function renderTopics(){
       <div class="part-h">
         <div class="part-no"><div class="k">PART</div><div class="v">${String(pi).padStart(2,'0')}</div></div>
         <div class="part-t">
-          <div class="meta"><b>${p.num}</b>${tps.length} 个主题 · ${kp} 节</div>
+          <div class="meta"><b>${p.num}</b>${tps.length} 节</div>
           <h3>${p.title}</h3>
           <p>${p.desc||''}</p>
         </div>
@@ -427,10 +427,11 @@ renderTopics();
 (function(){
   const st=CO.meta&&CO.meta.stats||{};
   const ct=document.getElementById('curTitle');
-  if(ct&&st.lessons) ct.textContent=`${st.parts} 篇章 · ${st.lessons} 节`;
+  const tpN=CO.parts.reduce((a,p)=>a+p.topics.length,0);
+  if(ct&&st.lessons) ct.textContent=`${st.parts} 篇章 · ${tpN} 节`;
   const el=document.getElementById('statline');
   if(el&&st.lessons) el.innerHTML=
-    `${st.parts} 篇章 · <b>${st.lessons}</b> 节 · 全部从 HR 场景倒着写`;
+    `${st.parts} 篇章 · <b>${tpN}</b> 节 · 全部从 HR 场景倒着写`;
 })();
 
 renderTopics();

@@ -246,7 +246,7 @@ function renderCaps(j){
     <div class="cap">
       <div class="n"><span class="ksa k-${t.ksa}">${t.ksa}</span>${t.name}</div>
       <div class="why">${t.in_context||t.generic||''}</div>
-      ${t.lessons&&t.lessons.length?`<div class="ls"><div class="lb">学这几节</div>
+      ${t.lessons&&t.lessons.length?`<div class="ls"><div class="lb">对应课程</div>
         ${t.lessons.map(l=>`<a class="l" href="learn.html#${encodeURIComponent(l.file)}">
           <span>${l.title}${l.free?'':'<span class="lk">🔒</span>'}</span></a>`).join('')}</div>`:''}
     </div>`;
