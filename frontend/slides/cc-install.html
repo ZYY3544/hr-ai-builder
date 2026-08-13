@@ -34,6 +34,9 @@
 .cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
 .stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
 .stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+.vwrap{position:relative;padding-bottom:56.25%;height:0;border-radius:var(--radius);overflow:hidden;margin:16px 0;background:#000}
+.vwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vnote{font-size:12.5px;color:var(--sub);line-height:1.8;margin-top:-2px}
 </style>
 <script type="application/ld+json">
 {
@@ -55,47 +58,76 @@
     <p class="subtitle">这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。</p>
   </header>
 
+  <div class="sec-label">好消息：这一关比你想的容易</div>
+  <div class="l-callout">
+    Claude Code 是<b>工具</b>，背后用哪个模型是可以换的。<b>它可以接国产模型，全程不需要海外账号、不需要海外支付、API 流量也不出境。</b><br>
+    这一节走的就是这条路——你只需要一个手机号能注册的国内账号，和人民币充值。
+  </div>
+  <p>为什么可以这样：这正是第七篇章那句话提前兑现了——<b>CC 是你的 harness，模型是租来的。</b>换个模型，你的工作方式、你写的 CLAUDE.md、你造的那一整层东西，全都不变。</p>
+
+  <div class="sec-label">跟着视频走最快</div>
+  <p>B 站 UP 主 <b>秋芝2046</b> 把全流程拍完了（约 21 分钟），思路很巧：<b>先装 Cursor，再让 Cursor 帮你装 Claude Code</b>——把"在黑框框里敲命令"这一关直接绕过去了。</p>
+  <div class="vwrap"><iframe src="//player.bilibili.com/player.html?bvid=BV1zqeMzfEiQ&amp;page=1&amp;autoplay=0&amp;high_quality=1" scrolling="no" frameborder="no" framespacing="0" allowfullscreen="true" title="用神器 Claude Code！打造贴身 AI 秘书团（小白教程）· 秋芝2046"></iframe></div>
+  <p class="vnote">视频出处：B 站 <a href="https://www.bilibili.com/video/BV1zqeMzfEiQ" target="_blank" rel="noopener">秋芝2046 · 用神器 Claude Code！打造贴身 AI 秘书团【小白教程】</a>。下面的文字步骤给你对照用——<b>视频万一失效，照着文字也能装完。</b></p>
+
   <div class="sec-label">你需要准备什么</div>
   <table class="htab">
-    <tr><td><b>一台你能装软件的电脑</b></td><td>公司电脑装不了就用个人电脑。这一章不像第四篇章，没有"零安装"的变通路径</td></tr>
-    <tr><td><b>一个 Claude 账号</b></td><td>需要付费订阅或 API 额度。这是真实成本，先知道再决定</td></tr>
+    <tr><td><b>一台能装软件的电脑</b></td><td>Windows 和 Mac 都行。公司电脑装不了就用个人电脑</td></tr>
+    <tr><td><b>一个国内 AI 平台账号</b></td><td>手机号注册，<b>人民币充值</b>。视频里用的是智谱 GLM——它提供 Anthropic 协议兼容接口，CC 直接能连</td></tr>
     <tr><td><b>三十分钟</b></td><td>第一次装。以后再也不用装了</td></tr>
   </table>
+  <div class="stuck"><span class="t">明确一下不需要什么</span><b>不需要 Anthropic 账号 · 不需要海外信用卡 · 不需要科学上网。</b><br>如果你之前听说"用 Claude Code 得先解决网络"，那说的是接官方 API 的走法。接国产模型这条路没有这个问题。</div>
 
-  <div class="sec-label">最重要的一句话：别自己查教程</div>
-  <div class="l-callout">网上的安装教程会过时、会写给工程师看、会跳过它们觉得"显然"的步骤。<b>最好的做法是让 AI 带你装</b>——打开任何一个 AI 对话工具，把下面这段发给它，然后严格按它说的一步步做。卡住就把报错原样贴回去。</div>
-  <div class="say">我要在我的电脑上安装 Claude Code（终端版）。
+  <div class="sec-label">四步，每步都能验证</div>
+  <table class="htab">
+    <tr><td><b>1</b></td><td><b>装 Node.js</b></td><td>官网下安装包，一路下一步。装完敲 <code>node -v</code>，能打印版本号就成了</td></tr>
+    <tr><td><b>2</b></td><td><b>换国内镜像</b></td><td>不换会很慢甚至超时。<b>这一步几乎决定成败</b>，但只有一行</td></tr>
+    <tr><td><b>3</b></td><td><b>装 Claude Code</b></td><td>一行命令</td></tr>
+    <tr><td><b>4</b></td><td><b>指向国产模型</b></td><td>配两个环境变量，告诉它去哪儿找模型</td></tr>
+  </table>
+  <div class="cmd"># 2. 换国内镜像（不换会很慢）
+npm config set registry https://registry.npmmirror.com
+
+# 3. 装 Claude Code
+npm install -g @anthropic-ai/claude-code
+
+# 4. 告诉它用国产模型（把 你的KEY 换成你申请到的）
+export ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic
+export ANTHROPIC_AUTH_TOKEN=你的KEY
+
+# 启动
+claude</div>
+  <p>第 4 步这两行是关键：<b>它们让 CC 不再去找 Anthropic，而是去找国内的接口</b>——所以既不用登录海外账号，流量也不出境。想让它永久生效（不用每次敲），让 AI 教你写进配置文件，一句话的事。</p>
+
+  <div class="sec-label">别自己查教程，让 AI 带你装</div>
+  <p>网上的教程会过时、会写给工程师看、会跳过它们觉得"显然"的步骤。<b>最省事的做法是让 AI 一步步带你</b>——下面这段发给任何一个国内 AI（豆包、DeepSeek、Kimi 都行），然后严格照做。</p>
+  <div class="say">我要在我的电脑上安装 Claude Code，并接入国内的智谱 GLM 模型
+（不使用 Anthropic 官方 API，我没有海外账号）。
 
 我的情况：
-- 系统：macOS（或 Windows 11，按你的实际情况改）
-- 我完全没有编程经验，从来没用过终端
-- 我不知道自己有没有装过 Node.js 或其他任何开发工具
+- 系统：Windows 11（或 macOS，按你的实际情况改）
+- 我完全没有编程经验，从来没用过终端/命令行
+- 我不知道自己有没有装过 Node.js
 
 请一步一步带我装，要求：
 1. 每一步告诉我：在哪里操作、敲什么、按什么键
 2. 每一步告诉我"看到什么就算成功了"
 3. 一次只给我一步，我做完回复你"好了"，你再给下一步
-4. 如果我需要判断什么，直接告诉我怎么判断，不要假设我知道
+4. 需要我做判断时，直接告诉我怎么判断，不要假设我知道
+5. npm 请用国内镜像源
 
 现在开始第一步。</div>
-  <p>第 3 条是关键：<b>「一次只给我一步」</b>。没有这句，它会一口气给你八个步骤，你在第三步卡住之后就不知道自己在哪了。</p>
-
-  <div class="sec-label">大致会经历什么（心里有个数）</div>
-  <table class="htab">
-    <tr><td><b>1</b></td><td>装 Node.js —— 一个运行环境，去官网下载安装包，一路下一步</td></tr>
-    <tr><td><b>2</b></td><td>在终端里敲一行命令装 Claude Code</td></tr>
-    <tr><td><b>3</b></td><td>第一次运行，它会让你登录 Claude 账号（会自动打开浏览器）</td></tr>
-    <tr><td><b>4</b></td><td>看到它的欢迎界面，装完了</td></tr>
-  </table>
-  <div class="cmd">npm install -g @anthropic-ai/claude-code
-
-# 装完后，在任意文件夹里敲：
-claude</div>
+  <p>第 3 条是关键：<b>「一次只给我一步」</b>。没有这句，它会一口气给你八步，你在第三步卡住之后就不知道自己在哪了。</p>
 
   <div class="sec-label">卡住的时候</div>
-  <div class="stuck"><span class="t">铁律：报错整段复制，贴回去问</span>终端里的报错又长又难看，但<b>你一个字都不需要看懂</b>。全选、复制、贴给 AI，说「我按你说的做，报了这个错」。它解决这类问题的成功率极高。<br><br>如果连着三轮还没解决，换个说法重新描述你的处境（系统版本、你已经做了哪几步、现在屏幕上显示什么），往往一下就通了。</div>
+  <div class="stuck"><span class="t">铁律：报错整段复制，贴回去问</span>终端里的报错又长又难看，但<b>你一个字都不需要看懂</b>。全选、复制、贴给 AI，说「我按你说的做，报了这个错」。它解决这类问题的成功率极高。<br><br>
+  两个高频坑先说在前面：<b>①「命令找不到」</b>——多半是 Node 没装好，或者要重开一次终端；<b>② Windows 提示权限不足</b>——用管理员身份重开终端再试。这两个直接告诉 AI，它知道怎么办。</div>
 
-  <div class="try"><span class="t">今天就试</span>就装这一件事。装完在终端里敲 <code>claude</code>，看到它跟你打招呼，这一节就过了。<b>别急着让它干活</b>——下一节才开始。</div>
+  <div class="sec-label">如果你确实想接 Anthropic 官方</div>
+  <p>能力上限更高，但你要自己解决三件事：Anthropic 账号、海外支付、网络。<b>这三件这门课不提供帮助</b>——不是藏私，是这条路的门槛跟这门课要教的东西无关。</p>
+  <div class="l-callout"><b>而且说实话：对你要做的活，国产模型完全够用。</b>把月报自动化、把口径写成规格、让它照着你的判断干活——这些拼的是<b>你写下来的东西</b>，不是模型的天花板。</div>
+
+  <div class="try"><span class="t">今天就试</span>就装这一件事。装完敲 <code>claude</code>，看到它跟你打招呼，这一节就过了。<b>别急着让它干活</b>——下一节才开始。</div>
 
 </main>
 <script src="lesson.js"></script>

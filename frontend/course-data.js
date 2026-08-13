@@ -21,7 +21,8 @@ window.COURSE = {
    "adapt": 20,
    "new": 95,
    "ready": 149,
-   "todo": 0
+   "todo": 0,
+   "minutes": 567
   },
   "access": {
    "free": 128,
@@ -51,7 +52,8 @@ window.COURSE = {
        "seo": "AI 学习者的达克曲线：你现在在哪一段？",
        "desc": "用达克曲线定位你现在的位置",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "start-how-to-learn.html",
@@ -61,7 +63,8 @@ window.COURSE = {
        "seo": "看完 ≠ 学到：AI 课程怎么学才真的过脑子",
        "desc": "每节都要代入自己的场景",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "start-why-principles.html",
@@ -71,9 +74,11 @@ window.COURSE = {
        "seo": "HR 学 AI 需要懂原理吗？——原理决定你能不能判断它什么时候会错",
        "desc": "HR 犯错的代价是人的职业生涯",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 11
     },
     {
      "title": "AI 是个什么东西",
@@ -87,7 +92,8 @@ window.COURSE = {
        "seo": "AI 到底能干什么？先看它的能力清单",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-1.html",
@@ -97,7 +103,8 @@ window.COURSE = {
        "seo": "AI 是怎么工作的？它其实在玩接话茬",
        "desc": "全课最重要的一个隐喻",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "zero-2.html",
@@ -107,7 +114,8 @@ window.COURSE = {
        "seo": "AI 和搜索引擎有什么区别？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "zero-3.html",
@@ -117,9 +125,11 @@ window.COURSE = {
        "seo": "AI 为什么会一本正经地胡说八道？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 15
     },
     {
      "title": "怎么和它说话",
@@ -133,7 +143,8 @@ window.COURSE = {
        "seo": "AI 提示词怎么写？把它当不了解你的新同事",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-5.html",
@@ -143,9 +154,11 @@ window.COURSE = {
        "seo": "一句万能开场白，让 AI 主动问你需求",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     },
     {
      "title": "HR 三千问",
@@ -159,7 +172,8 @@ window.COURSE = {
        "seo": "提示词到底怎么写才好？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "zero-q-prompt-engineering.html",
@@ -169,7 +183,8 @@ window.COURSE = {
        "seo": "提示词工程是什么，对普通人有意义吗？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "zero-q-model-agent-app.html",
@@ -179,7 +194,8 @@ window.COURSE = {
        "seo": "大模型、Agent、AI 应用是什么关系？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-q-agent.html",
@@ -189,7 +205,8 @@ window.COURSE = {
        "seo": "AI Agent 到底强在哪里？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-q-skill.html",
@@ -199,7 +216,8 @@ window.COURSE = {
        "seo": "AI 的 Skill 是什么？和插件有什么区别？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-q-china-models.html",
@@ -209,7 +227,8 @@ window.COURSE = {
        "seo": "国产大模型有哪些？企业该怎么选？",
        "desc": "内网合规场景尤其相关",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-q-companies.html",
@@ -219,9 +238,11 @@ window.COURSE = {
        "seo": "除了 OpenAI，还有哪些重要的 AI 公司？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 23
     },
     {
      "title": "日常用它的手感",
@@ -235,7 +256,8 @@ window.COURSE = {
        "seo": "什么该问 AI，什么该问人？一张四象限图",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "ai-tips-context.html",
@@ -245,7 +267,8 @@ window.COURSE = {
        "seo": "同一个问题，怎么问 AI 才给得出好答案",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "ai-tips-verify.html",
@@ -255,7 +278,8 @@ window.COURSE = {
        "seo": "AI 说的话怎么验证？三步找出幻觉",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "ai-tips-iterate.html",
@@ -265,7 +289,8 @@ window.COURSE = {
        "seo": "跟 AI 来回改了十轮还不满意，什么时候该收手",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "ai-tips-scenarios.html",
@@ -275,9 +300,11 @@ window.COURSE = {
        "seo": "哪些场景可以放心用 AI，哪些必须人工复核",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 15
     },
     {
      "title": "什么能放心交给它",
@@ -291,7 +318,8 @@ window.COURSE = {
        "seo": "什么活能放心交给 AI？一套三秒判断法",
        "desc": "全章对 HR 最有价值的两节之一",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "zero-final.html",
@@ -301,12 +329,15 @@ window.COURSE = {
        "seo": "零基础学完 AI 之后，下一步该学什么",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     }
    ],
-   "color": "#0891B2"
+   "color": "#0891B2",
+   "min": 76
   },
   {
    "id": "p-1",
@@ -327,7 +358,8 @@ window.COURSE = {
        "seo": "大模型的训练数据是什么？为什么它决定了 AI 会说什么",
        "desc": "换成 HR 语料的例子",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "train-vs-infer.html",
@@ -337,7 +369,8 @@ window.COURSE = {
        "seo": "大模型训练和推理有什么区别？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hallu-fake-chat.html",
@@ -347,9 +380,11 @@ window.COURSE = {
        "seo": "大模型的本质是补全，不是理解——伪造一段聊天记录就看懂了",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 11
     },
     {
      "title": "幻觉的四种应对",
@@ -363,7 +398,8 @@ window.COURSE = {
        "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "hallu-fix-prompt.html",
@@ -373,7 +409,8 @@ window.COURSE = {
        "seo": "怎么用 Prompt 减少 AI 幻觉？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hallu-fix-rag.html",
@@ -383,7 +420,8 @@ window.COURSE = {
        "seo": "RAG 是什么？让 AI 只回答公司制度里写过的内容",
        "desc": "换员工政策问答场景",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hallu-fix-temp.html",
@@ -393,7 +431,8 @@ window.COURSE = {
        "seo": "Temperature 是什么？为什么同一个问题 AI 每次答得都不同",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hallu-fix-eval.html",
@@ -403,9 +442,11 @@ window.COURSE = {
        "seo": "怎么评测 AI 的输出质量？评测加人工复核的组合拳",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 5
       }
-     ]
+     ],
+     "min": 22
     },
     {
      "title": "上下文窗口：它为什么会忘",
@@ -419,7 +460,8 @@ window.COURSE = {
        "seo": "什么是上下文窗口？AI 的工作记忆有多大",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "context-overflow.html",
@@ -429,9 +471,11 @@ window.COURSE = {
        "seo": "对话太长 AI 就失忆？上下文溢出的三种处理办法",
        "desc": "一场组织盘点跑到一半失忆",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 7
     },
     {
      "title": "召回 vs 判定：HR 必须设的那道闸",
@@ -445,7 +489,8 @@ window.COURSE = {
        "seo": "AI 筛简历给的理由是编的怎么办？召回与判定必须拆开",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-cite-not-summarize.html",
@@ -455,12 +500,15 @@ window.COURSE = {
        "seo": "怎么让 AI 引用原文而不是自己概括？一个可执行的 Prompt 约束",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 8
     }
    ],
-   "color": "#3370FF"
+   "color": "#3370FF",
+   "min": 48
   },
   {
    "id": "p-2",
@@ -481,7 +529,8 @@ window.COURSE = {
        "seo": "System Prompt 是什么？一句话改变 AI 的全部行为",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "prompt-skeleton.html",
@@ -491,7 +540,8 @@ window.COURSE = {
        "seo": "怎么写好一个 Prompt？五件套骨架与 HR 完整实例",
        "desc": "「万能公式」听起来像口号，但它确实能套。这一节把五件套拆开，每一件配一个 HR 的实例，最后给一个能整段抄走的完整模板。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "prompt-hr-cases.html",
@@ -501,7 +551,8 @@ window.COURSE = {
        "seo": "HR 常用的 Prompt 模板：JD、面试题、绩效反馈、政策问答",
        "desc": "上一节是骨架，这一节是填好的成品。每一段都可以整段抄走改改就用。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "prompt-advanced.html",
@@ -511,7 +562,8 @@ window.COURSE = {
        "seo": "AI 提示词进阶技巧：角色、示例、约束、格式",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "hr-elicitation-3.html",
@@ -521,9 +573,11 @@ window.COURSE = {
        "seo": "把萃取出来的判断规则写成 Prompt 的具体做法",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 5
       }
-     ]
+     ],
+     "min": 24
     },
     {
      "title": "Prompt Injection：它会听谁的话",
@@ -537,7 +591,8 @@ window.COURSE = {
        "seo": "什么是 Prompt Injection？为什么 AI 分不清指令和数据",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-resume-injection.html",
@@ -547,7 +602,8 @@ window.COURSE = {
        "seo": "候选人在简历里藏白色字体骗过 AI 筛选，怎么防？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "prompt-defense.html",
@@ -557,7 +613,8 @@ window.COURSE = {
        "seo": "Prompt Injection 怎么防？清洗、隔离、兜底三层拦截",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 6
       },
       {
        "file": "ai-safety-redlines.html",
@@ -567,9 +624,11 @@ window.COURSE = {
        "seo": "HR 用 AI 的四条安全底线",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 18
     },
     {
      "title": "Agent 与 Workflow：它能自己干活吗",
@@ -583,7 +642,8 @@ window.COURSE = {
        "seo": "AI Agent 是什么？和普通聊天有什么不同",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "agent-vs-workflow.html",
@@ -593,7 +653,8 @@ window.COURSE = {
        "seo": "Workflow 和 Agent 怎么选？HR 场景为什么大多不该给自主权",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "agent-react.html",
@@ -603,7 +664,8 @@ window.COURSE = {
        "seo": "ReAct 是什么？Agent 的思考-行动-观察循环",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "agent-stuck.html",
@@ -613,9 +675,11 @@ window.COURSE = {
        "seo": "AI Agent 为什么会卡死？五种典型失败模式",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 16
     },
     {
      "title": "Token 与成本：它花你多少钱",
@@ -629,7 +693,8 @@ window.COURSE = {
        "seo": "AI 多轮对话为什么越聊越贵？Token 是怎么算钱的",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "cost-eval.html",
@@ -639,12 +704,15 @@ window.COURSE = {
        "seo": "AI 模型怎么选？能力和成本怎么权衡",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 7
     }
    ],
-   "color": "#DB2777"
+   "color": "#DB2777",
+   "min": 65
   },
   {
    "id": "p-3",
@@ -665,9 +733,11 @@ window.COURSE = {
        "seo": "AI 术语为什么听起来那么难？三种用途与一个通用判据",
        "desc": "在开始逐个拆词之前，先给你一把尺子——它比这一章任何一个具体定义都有用。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 3
     },
     {
      "title": "喂知识给它：RAG、向量、切片",
@@ -680,7 +750,8 @@ window.COURSE = {
        "seo": "RAG 是什么？什么时候需要，什么时候完全不需要",
        "desc": "这是最常被神化的一个词。它的原理一句话能说完，而且大多数 HR 场景其实不需要它。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "hr-caliber-3.html",
@@ -690,9 +761,11 @@ window.COURSE = {
        "seo": "文档怎么切片、数据怎么清洗，才能喂进 RAG",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 7
     },
     {
      "title": "训练、部署与工具：微调、蒸馏、私有化、MCP",
@@ -705,7 +778,8 @@ window.COURSE = {
        "seo": "微调和蒸馏是什么？HR 需要训练自己的大模型吗",
        "desc": "「我们给您训练一个专属大模型」——这句话是本章最该警惕的一句。这一节讲清楚它背后的三个词，以及为什么你不需要。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "jargon-deploy.html",
@@ -715,7 +789,8 @@ window.COURSE = {
        "seo": "私有化部署是什么？开源模型和参数量对 HR 意味着什么",
        "desc": "「私有化部署」是 HR SaaS 采购里最高频的一个词，也是最容易被含糊过去的一个。这一节把它拆开。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "jargon-tools.html",
@@ -725,9 +800,11 @@ window.COURSE = {
        "seo": "MCP 是什么？Skill 和插件的本质是什么",
        "desc": "这一组词讲的是同一件事的不同层次——怎么让 AI 不只是说话，而是真的能干活。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 11
     },
     {
      "title": "验收与提问：Eval、benchmark、问话清单",
@@ -740,7 +817,8 @@ window.COURSE = {
        "seo": "AI 的准确率怎么看？供应商报的分数为什么不能信",
        "desc": "这一节可能是这一章里最省钱的一节——它教你怎么看穿一个数字，以及怎么要到一个真正有意义的数字。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "jargon-table.html",
@@ -750,11 +828,14 @@ window.COURSE = {
        "seo": "AI 术语速查表与采购问话清单",
        "desc": "这一章的全部内容，压成一张你可以随时翻的表，和一份可以直接带进会议室的问话清单。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 7
     }
-   ]
+   ],
+   "min": 28
   },
   {
    "id": "p-4",
@@ -775,9 +856,11 @@ window.COURSE = {
        "seo": "会用 AI 之后呢？从「它靠不靠谱」到「你担什么责」",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 3
     },
     {
      "title": "生成 vs 执行：它给的数是算的还是猜的",
@@ -790,7 +873,8 @@ window.COURSE = {
        "seo": "把表格贴给 AI 算数，为什么每次结果都不一样？",
        "desc": "先不讲原理，先看现象。这个实验你自己跑一遍，比读十遍解释管用。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "data-token.html",
@@ -800,7 +884,8 @@ window.COURSE = {
        "seo": "大模型为什么算不准数学？因为它在预测 token 而不是计算",
        "desc": "不是模型「不够聪明」，是这件事从机制上就不是它干的活。理解这一层，你就知道该在哪里设防。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-when-code.html",
@@ -810,9 +895,11 @@ window.COURSE = {
        "seo": "什么时候可以直接问 AI，什么时候必须让它写代码？三个判据",
        "desc": "「所有数据都不能贴给 AI」是句假话，你三分钟就能找到反例。真正该学的是判断——什么时候贴一下没事，什么时候必须走代码。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 13
     },
     {
      "title": "Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
@@ -825,7 +912,8 @@ window.COURSE = {
        "seo": "Code Interpreter 是什么？AI 写代码算数据的完整机制",
        "desc": "上一节的结论是「必须走代码」。这一节讲清楚：代码是谁写的、在哪跑的、你怎么确认它真的跑了。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-ci-first.html",
@@ -835,7 +923,8 @@ window.COURSE = {
        "seo": "第一次让 AI 写代码处理数据：五分钟揪出花名册里的重名",
        "desc": "原理够了，动手。一份编好的假花名册，一段可以整段抄走的话术，五分钟拿到第一次成功。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-ci-sandbox.html",
@@ -845,7 +934,8 @@ window.COURSE = {
        "seo": "把员工数据上传给 AI 安全吗？沙箱机制与 HR 的数据红线",
        "desc": "上一节让你用假数据，不是谨慎过头。要用真数据之前，你必须知道文件上传之后发生了什么。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-ci-where.html",
@@ -855,9 +945,11 @@ window.COURSE = {
        "seo": "公司电脑装不了软件，AI 写的代码在哪运行？三条路",
        "desc": "这可能是最卡人的一关，但几乎没人教。三条路，按数据敏感度和使用频率选，没有一条需要你「会编程」。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 19
     },
     {
      "title": "需求规格：把口径写成它能执行的东西",
@@ -870,7 +962,8 @@ window.COURSE = {
        "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场",
        "desc": "薪酬/花名册",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-caliber-2.html",
@@ -880,7 +973,8 @@ window.COURSE = {
        "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "data-spec-four.html",
@@ -890,7 +984,8 @@ window.COURSE = {
        "seo": "怎么向 AI 描述一个数据处理需求？四要素模板",
        "desc": "AI 写的代码出错，八成不是代码写错了，是它把你的活理解错了。而理解偏差几乎都发生在同一个地方——你没说的那部分。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-spec-cleaning.html",
@@ -900,9 +995,11 @@ window.COURSE = {
        "seo": "AI 做数据清洗为什么最危险？静默错误与逐条写规则",
        "desc": "计算错了，数字可能看着离谱，你还有机会发现。清洗错了，数据看起来完全正常——错误会一路传到汇报，全程没有任何信号。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       }
-     ]
+     ],
+     "min": 18
     },
     {
      "title": "验收与对账：怎么知道它算对了",
@@ -915,7 +1012,8 @@ window.COURSE = {
        "seo": "AI 写的脚本跑通了怎么验证算得对？验收三招",
        "desc": "脚本零报错、顺利出结果、数字看起来合理——这三件事加起来也不能证明它算对了。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "data-check-canary.html",
@@ -925,9 +1023,11 @@ window.COURSE = {
        "seo": "怎么验证你的数据脚本本身有效？往里埋一条已知的错",
        "desc": "三招验的是「这次算对了吗」。还有一个更狠的问题：你的验收方式本身，抓得住错吗？",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 8
     },
     {
      "title": "分析模式：让它按你的方式看数",
@@ -940,7 +1040,8 @@ window.COURSE = {
        "seo": "数据干净之后 AI 该干什么？数据活的两段架构",
        "desc": "前面四节全在讲同一件事：别让模型碰数字。这一节要说反过来的一半——有一段活，恰恰只有模型干得了，而且那一段才是你的价值所在。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-pattern.html",
@@ -950,7 +1051,8 @@ window.COURSE = {
        "seo": "怎么把自己的数据分析思路写成 AI 能用的规格？",
        "desc": "「分析模式」听起来抽象，其实它就三件事：你按什么顺序看、什么算异常、什么值得写进结论。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-output.html",
@@ -960,7 +1062,8 @@ window.COURSE = {
        "seo": "怎么让 AI 输出判断而不是复述数字？分析输出的纪律",
        "desc": "把分析模式喂进去之后，还差最后一道纪律。这道纪律不设，前面所有功夫会在最后一步全废。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "data-monthly.html",
@@ -970,9 +1073,11 @@ window.COURSE = {
        "seo": "一份经营月报的完整 AI 改造：从口径到一键运行",
        "desc": "前面所有功夫拼起来是什么样？拿一份每月三小时的经营月报走一遍——包括报错和返工，不顺利的部分不剪辑，那才是流程本身。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 6
       }
-     ]
+     ],
+     "min": 21
     },
     {
      "title": "自动化边界：什么该固化，什么留给人",
@@ -985,7 +1090,8 @@ window.COURSE = {
        "seo": "哪些数据活值得固化成脚本？三个问题",
        "desc": "学会一门手艺之后最大的风险，是看什么都像钉子。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "data-human.html",
@@ -995,11 +1101,14 @@ window.COURSE = {
        "seo": "哪些 HR 数据判断绝对不能自动化？边界与 Skill 判据",
        "desc": "这一节是这一章的刹车。会做不等于该做，尤其当处理对象是人的时候。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       }
-     ]
+     ],
+     "min": 9
     }
-   ]
+   ],
+   "min": 91
   },
   {
    "id": "p-5",
@@ -1020,9 +1129,11 @@ window.COURSE = {
        "seo": "用 AI 写代码为什么要先立规矩？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       }
-     ]
+     ],
+     "min": 5
     },
     {
      "title": "怎么跟它协作",
@@ -1036,7 +1147,8 @@ window.COURSE = {
        "seo": "不会写代码怎么指挥 AI 做东西？四步协作流程",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "vibe-debug.html",
@@ -1046,7 +1158,8 @@ window.COURSE = {
        "seo": "AI 写的代码出错了怎么调？先看日志再改代码",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "vibe-complete.html",
@@ -1056,9 +1169,11 @@ window.COURSE = {
        "seo": "让 AI 一次交付完整功能，不接受半成品",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 5
       }
-     ]
+     ],
+     "min": 14
     },
     {
      "title": "别让它把你搞砸",
@@ -1072,7 +1187,8 @@ window.COURSE = {
        "seo": "怎么防止 AI 误删数据？破坏性操作的三道闸",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 7
       },
       {
        "file": "vibe-env.html",
@@ -1082,9 +1198,11 @@ window.COURSE = {
        "seo": "为什么要把环境信息写进 AI 的规则文件",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 9
       }
-     ]
+     ],
+     "min": 16
     },
     {
      "title": "沉淀下来",
@@ -1098,7 +1216,8 @@ window.COURSE = {
        "seo": "跟 AI 协作要维护哪三份文档",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 8
       },
       {
        "file": "vibe-final.html",
@@ -1108,12 +1227,15 @@ window.COURSE = {
        "seo": "为什么每条 AI 协作规则都对应一次真实踩坑",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 6
       }
-     ]
+     ],
+     "min": 14
     }
    ],
-   "color": "#E11D48"
+   "color": "#E11D48",
+   "min": 49
   },
   {
    "id": "p-6",
@@ -1134,7 +1256,8 @@ window.COURSE = {
        "seo": "HR 学 AI 为什么要用 Claude Code？和拖拽平台的区别在哪",
        "desc": "市面上教 HR 搭 agent 的，用的几乎都是拖拽平台。这一节说清楚我们为什么不走那条路——不是因为它不好用，是因为它的天花板是别人给你定的。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "cc-install.html",
@@ -1144,7 +1267,8 @@ window.COURSE = {
        "seo": "Claude Code 怎么安装？零基础从终端开始的完整步骤",
        "desc": "这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "cc-first-talk.html",
@@ -1154,9 +1278,11 @@ window.COURSE = {
        "seo": "Claude Code 第一次怎么用？理解它和网页版聊天的根本区别",
        "desc": "装好之后第一件该做的事，不是让它干活，是搞清楚它和你用惯的网页版聊天，到底差在哪。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 9
     },
     {
      "title": "让它认识你的活：CLAUDE.md 与项目结构",
@@ -1169,7 +1295,8 @@ window.COURSE = {
        "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "cc-claude-md.html",
@@ -1179,7 +1306,8 @@ window.COURSE = {
        "seo": "CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径",
        "desc": "每次新开对话都要把口径重讲一遍——这是你在第四篇章反复吃过的苦。这一节把它一次性解决。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "cc-project-layout.html",
@@ -1189,9 +1317,11 @@ window.COURSE = {
        "seo": "AI agent 的项目结构怎么组织？HR 工作区的目录设计",
        "desc": "这一节看起来最琐碎，但它决定了三个月后你的 agent 是越用越顺，还是变成一团你自己都不敢碰的浆糊。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 11
     },
     {
      "title": "给它手和眼睛：工具、权限与第一个真活",
@@ -1204,7 +1334,8 @@ window.COURSE = {
        "seo": "AI agent 的工具是什么？Claude Code 有哪些能力边界",
        "desc": "第四篇章讲过工具调用的机制。这一节讲清楚：一个 agent 的能力边界，就是它的工具清单。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "cc-permissions.html",
@@ -1214,7 +1345,8 @@ window.COURSE = {
        "seo": "让 AI 操作 HR 数据怎么设权限？三道闸与留痕",
        "desc": "一个能读你文件夹、能跑命令的 AI，是效率工具也是风险源。这一节是 HR 场景特有的，通用教程里没有。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "cc-first-agent.html",
@@ -1224,9 +1356,11 @@ window.COURSE = {
        "seo": "用 Claude Code 做第一个 HR agent：从零到跑通一个真活",
        "desc": "工具装好了、口径写好了、闸设好了。这一节把它们串起来，做出第一个真正能用的东西。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 9
     },
     {
      "title": "选对活：先把部门的活盘一遍",
@@ -1239,7 +1373,8 @@ window.COURSE = {
        "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-inventory-2.html",
@@ -1249,7 +1384,8 @@ window.COURSE = {
        "seo": "AI 场景盘点怎么打标？三类任务的判断标准",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-inventory-3.html",
@@ -1259,9 +1395,11 @@ window.COURSE = {
        "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里",
        "desc": "简历初筛为什么是好的第一刀",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 11
     },
     {
      "title": "做出你的作品：从选题到讲清楚",
@@ -1274,7 +1412,8 @@ window.COURSE = {
        "seo": "HR 做 AI 作品选什么题？六个能站住的选题",
        "desc": "简历初筛是第一选题",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-project-data.html",
@@ -1284,7 +1423,8 @@ window.COURSE = {
        "seo": "做 HR AI 作品没有数据怎么办？合成数据怎么造得像真的",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "hr-project-build.html",
@@ -1294,7 +1434,8 @@ window.COURSE = {
        "seo": "一周内把一个 HR 场景做成能演示的原型",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-project-tell.html",
@@ -1304,11 +1445,14 @@ window.COURSE = {
        "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       }
-     ]
+     ],
+     "min": 17
     }
-   ]
+   ],
+   "min": 57
   },
   {
    "id": "p-7",
@@ -1329,7 +1473,8 @@ window.COURSE = {
        "seo": "什么是 AI Harness？为什么说 agent 拼的是 harness 而不是模型",
        "desc": "同样是 Claude 的模型，为什么 Claude Code 能干活、你自己搭的东西只能聊天？差的不是模型，是模型外面那一层。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "harness-why-unstable.html",
@@ -1339,9 +1484,11 @@ window.COURSE = {
        "seo": "AI agent 不稳定的四种典型症状与对应的 harness 缺失",
        "desc": "上一章那个 agent 能跑，但你多用几次就会遇到问题。这一节把症状和病因对上——每一种不稳，都对应 harness 里缺的一块。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     },
     {
      "title": "三大设计模式：循环、记忆、分身",
@@ -1354,7 +1501,8 @@ window.COURSE = {
        "seo": "AI agent 工作流循环设计：让它做完自己检查",
        "desc": "agent 和聊天机器人最根本的差别：聊天机器人答完就完，agent 答完会看一眼自己答得对不对。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "harness-memory.html",
@@ -1364,7 +1512,8 @@ window.COURSE = {
        "seo": "AI agent 的长期记忆怎么做？文件系统作为持久记忆",
        "desc": "这是三大模式里对 HR 价值最大的一个——因为你手上那些最值钱的东西，恰恰是塞不进上下文、又必须能被用上的。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "harness-subagent.html",
@@ -1374,9 +1523,11 @@ window.COURSE = {
        "seo": "AI agent 什么时候该拆成多个子 agent？",
        "desc": "第三个模式是子 agent。它很好用，但也是最容易被滥用的一个——所以这一节一半在讲怎么用，一半在讲什么时候别用。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 10
     },
     {
      "title": "Eval：怎么知道它真的行",
@@ -1389,7 +1540,8 @@ window.COURSE = {
        "seo": "为什么 AI 评测比调 Prompt 更重要？",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 6
       },
       {
        "file": "eval-graders.html",
@@ -1399,7 +1551,8 @@ window.COURSE = {
        "seo": "AI 输出怎么打分？代码判、模型判、人工判三种方式",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 7
       },
       {
        "file": "eval-pitfalls.html",
@@ -1409,7 +1562,8 @@ window.COURSE = {
        "seo": "做 AI 评测最容易踩的三个坑",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 7
       },
       {
        "file": "hr-eval-negative.html",
@@ -1419,7 +1573,8 @@ window.COURSE = {
        "seo": "怎么验证你的 AI 评测本身是有效的？先做阴性对照",
        "desc": "往简历堆里埋假简历",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "hr-rollout.html",
@@ -1429,9 +1584,11 @@ window.COURSE = {
        "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 27
     },
     {
      "title": "HR 专有的两层：权限留痕与自动验收",
@@ -1444,7 +1601,8 @@ window.COURSE = {
        "seo": "AI 做错了人事决策谁负责？合规的四条红线",
        "desc": "",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "harness-audit.html",
@@ -1454,7 +1612,8 @@ window.COURSE = {
        "seo": "HR 场景的 AI agent 必须留痕：可追溯与可申诉的工程实现",
        "desc": "通用 agent 教程不会讲这一层，因为它们的场景错了不用向人解释。而你的场景，每一个判断背后都站着一个人。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "harness-eval-loop.html",
@@ -1464,9 +1623,11 @@ window.COURSE = {
        "seo": "怎么把 AI 评测变成 agent 的自动环节而不是上线前跑一次",
        "desc": "第三篇章教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 11
     },
     {
      "title": "取舍：哪些 harness 值得造",
@@ -1479,7 +1640,8 @@ window.COURSE = {
        "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI",
        "desc": "",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 4
       },
       {
        "file": "harness-tradeoff.html",
@@ -1489,7 +1651,8 @@ window.COURSE = {
        "seo": "Harness 值不值得做？一个判据：模型升级后它还需要吗",
        "desc": "Harness 是护城河，但不是所有 harness 都是。有一类你辛苦造的东西，下一代模型发布那天就归零了。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "hr-org-3.html",
@@ -1499,7 +1662,8 @@ window.COURSE = {
        "seo": "AI 时代 HR 哪些能力在升值？按 KSA 拆开看",
        "desc": "接能力词典",
        "free": false,
-       "ready": true
+       "ready": true,
+       "min": 5
       },
       {
        "file": "harness-closing.html",
@@ -1509,11 +1673,14 @@ window.COURSE = {
        "seo": "Harness 的第一性原理：你给它的上下文，够它做好这件事吗",
        "desc": "这一章讲了四层、三个模式、一堆规则。但当你面对一个具体问题不知道该怎么办时，只需要回到一句话。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 15
     }
-   ]
+   ],
+   "min": 69
   },
   {
    "id": "p-8",
@@ -1534,7 +1701,8 @@ window.COURSE = {
        "seo": "HR 内部产品的用户心理跟 C 端有什么不一样？",
        "desc": "C 端产品做得烂，用户卸载走人。HR 做的东西做得烂，用户走不掉——这一条差别，决定了这一整章。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-perceived.html",
@@ -1544,9 +1712,11 @@ window.COURSE = {
        "seo": "系统响应明明很快，用户为什么还是觉得慢？感知性能设计",
        "desc": "用户的秒表和服务器的秒表走得不一样。这一节讲清楚差在哪，以及怎么在不优化一行代码的前提下让它「变快」。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     },
     {
      "title": "等待与过程：难受的不是那几秒",
@@ -1559,7 +1729,8 @@ window.COURSE = {
        "seo": "让员工等待的时候，怎么让等待不那么难熬",
        "desc": "等待的痛苦几乎跟时长无关，跟别的四件事有关。这四件事你全都控制得了。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-labor.html",
@@ -1569,7 +1740,8 @@ window.COURSE = {
        "seo": "为什么 AI 答得太快反而没人信？劳动错觉与过程可见性",
        "desc": "一个反直觉的现象：同样的答案，立刻给出来的那个，用户觉得更不可信、更不值钱。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-peak-end.html",
@@ -1579,9 +1751,11 @@ window.COURSE = {
        "seo": "峰终定律怎么用在员工体验和 HR 产品设计上",
        "desc": "这一条你可能已经在员工旅程设计里用过了。这一节讲怎么把同一把尺子，用到你做的 AI 产品上。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 9
     },
     {
      "title": "算法厌恶：它犯一次错就被永久拉黑",
@@ -1594,7 +1768,8 @@ window.COURSE = {
        "seo": "算法厌恶是什么？为什么 AI 犯一次错人们就再也不用了",
        "desc": "这是这一整章里对 HR 最要命的一条。它有扎实的实验支撑，也有明确的解法——而解法便宜得让人意外。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-error-comms.html",
@@ -1604,9 +1779,11 @@ window.COURSE = {
        "seo": "怎么跟老板和同事说清楚 AI 的错误率而不被否决",
        "desc": "你知道它会错，你也知道错误率比人低。但这句话说不好，项目当场就死。这一节讲怎么说。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     },
     {
      "title": "信任与防御：不是不会用，是不敢用",
@@ -1619,7 +1796,8 @@ window.COURSE = {
        "seo": "怎么让用户对 AI 的信任刚刚好？信任校准设计",
        "desc": "用户对你的 AI 信任太低不用，信任太高不查。这两头都出事，而且第二头更安静。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-defense.html",
@@ -1629,7 +1807,8 @@ window.COURSE = {
        "seo": "员工为什么不敢用 HR 的 AI 工具？防御心理与心理安全",
        "desc": "你以为要做培训，其实要做的是让他放心。尤其当这个工具属于 HR——一个天然让人紧张的部门。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-mental-model.html",
@@ -1639,9 +1818,11 @@ window.COURSE = {
        "seo": "用户为什么用错 AI？心智模型与预期管理",
        "desc": "用户会用他熟悉的东西来理解你的新东西。他套错了模板，后面所有的困惑都从这里来。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 9
     },
     {
      "title": "长期使用的三个坑",
@@ -1654,7 +1835,8 @@ window.COURSE = {
        "seo": "AI 产品上线后为什么用着用着就没人用了？蜜月悬崖",
        "desc": "上线第一周使用率很好看，第三周开始掉，第二个月没人提了。这不是产品变差了，是期望在结账。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-ai-discount.html",
@@ -1664,7 +1846,8 @@ window.COURSE = {
        "seo": "为什么标注了 AI 生成的内容会被打折？AI 标签效应",
        "desc": "一个让人不舒服但反复被验证的现象。它直接影响你的方案、你的报告、以及你自己的专业形象。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-offload.html",
@@ -1674,9 +1857,11 @@ window.COURSE = {
        "seo": "用 AI 会不会让人的能力退化？认知卸载与专业感",
        "desc": "这是一种真实的焦虑，而且不该被安慰掉——因为它指向的风险是真的。这一节讲怎么处理它，也讲怎么处理你自己的那份。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 9
     },
     {
      "title": "收官：反馈与上线前清单",
@@ -1689,7 +1874,8 @@ window.COURSE = {
        "seo": "为什么用户不给 AI 反馈？反馈设计与真实信号",
        "desc": "你在界面上放了「有帮助 / 没帮助」，一个月收到三条反馈，两条是测试时自己点的。这一节讲为什么，以及怎么拿到真信号。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "psy-checklist.html",
@@ -1699,11 +1885,14 @@ window.COURSE = {
        "seo": "HR 的 AI 产品上线前检查清单：十二个心理设计问题",
        "desc": "这一章讲的十来个效应，压成一张能在会议室里过一遍的清单。点头之前，逐条问自己。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     }
-   ]
+   ],
+   "min": 45
   },
   {
    "id": "p-9",
@@ -1724,7 +1913,8 @@ window.COURSE = {
        "seo": "AI 时代为什么审美变得更重要？执行门槛消失之后",
        "desc": "这一章的前提是一句你已经在这门课里听过好几遍的话，只是这次落在感官层面。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-ai-flavor.html",
@@ -1734,9 +1924,11 @@ window.COURSE = {
        "seo": "为什么 AI 做的东西一眼就能被认出来？AI 味儿的成因",
        "desc": "你的方案被人一眼认出是 AI 做的——不是因为内容，是因为几个非常具体、可以逐条消除的特征。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     },
     {
      "title": "识别美的四个抓手",
@@ -1749,7 +1941,8 @@ window.COURSE = {
        "seo": "怎么让页面重点突出？视觉层级的三个手段",
        "desc": "第一个抓手，也是最重要的一个。大多数\"看起来乱\"，本质都是这一条没做到。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-whitespace.html",
@@ -1759,7 +1952,8 @@ window.COURSE = {
        "seo": "为什么排版看起来挤？留白、对齐与亲密性原则",
        "desc": "第二个抓手。它最不起眼，但改动它的投入产出比最高——因为你一个字都不用改。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-restraint.html",
@@ -1769,7 +1963,8 @@ window.COURSE = {
        "seo": "配色和字体用多少才好看？给设计做预算",
        "desc": "第三个抓手，也是最反直觉的一个：让东西变好看的方法，通常是删，不是加。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-consistency.html",
@@ -1779,9 +1974,11 @@ window.COURSE = {
        "seo": "怎么让一套材料看起来专业？一致性与设计系统",
        "desc": "第四个抓手。前三个管单页好不好看，这一个管一整套东西看起来像不像一个人做的。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 12
     },
     {
      "title": "把审美翻译给 AI 听",
@@ -1794,7 +1991,8 @@ window.COURSE = {
        "seo": "怎么把好看说清楚？给 AI 用的审美词汇表",
        "desc": "你跟 AI 说「做好看点」，它只能瞎猜。这一节给你十二个词，把感觉换成指令。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-spec.html",
@@ -1804,7 +2002,8 @@ window.COURSE = {
        "seo": "怎么给 AI 写视觉需求？从形容词到可执行规格",
        "desc": "「简洁大气」「高级感」「专业一点」——这些词 AI 听不懂，因为它们没有对应的具体做法。这一节讲怎么换算。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-hr-outputs.html",
@@ -1814,9 +2013,11 @@ window.COURSE = {
        "seo": "HR 的汇报材料、制度文档、员工通知分别该怎么做",
        "desc": "前面的原则是通用的。这一节落到你每周真正在做的三样东西上——它们的读者不同，要求也不同。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 9
     },
     {
      "title": "数据图表：HR 最容易做丑的地方",
@@ -1829,7 +2030,8 @@ window.COURSE = {
        "seo": "HR 数据用什么图表？图表选型的四个问题",
        "desc": "图表做丑是小事，图表选错是大事——它会让正确的数据传达出错误的结论。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-chart-quality.html",
@@ -1839,9 +2041,11 @@ window.COURSE = {
        "seo": "怎么让数据图表变好看？图表的减法原则",
        "desc": "选对了型之后，让图变好看的动作几乎全是删——删掉的每一样，都是在让数据本身更清楚。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     },
     {
      "title": "参考库与验收",
@@ -1854,7 +2058,8 @@ window.COURSE = {
        "seo": "怎么提高审美？建立参考库并让 AI 照着做",
        "desc": "识别美靠积累，而积累是可以刻意做的——但看的方式决定了看多少有用。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       },
       {
        "file": "taste-checklist.html",
@@ -1864,11 +2069,14 @@ window.COURSE = {
        "seo": "材料发出去之前的审美检查清单",
        "desc": "这一章的所有内容，压成一张发出去之前能用两分钟走完的清单。",
        "free": true,
-       "ready": true
+       "ready": true,
+       "min": 3
       }
-     ]
+     ],
+     "min": 6
     }
-   ]
+   ],
+   "min": 39
   }
  ]
 };

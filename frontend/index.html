@@ -342,7 +342,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 <section class="final">
   <div class="wrap">
     <h2>准备好了吗？现在就开始</h2>
-    <p>全部课程免费，每章前两节直接看，登录后即可解锁全部内容。</p>
+    <p>全部课程现在<b>不登录也能完整阅读</b>。登录功能开放后，用来同步学习进度和测评记录——不会因此挡住任何内容。</p>
     <div class="btns">
       <a class="btn pri lg" href="learn.html">进入课程</a>
       <a class="btn lg" href="quiz.html">测测掌握度</a>
@@ -412,7 +412,7 @@ function renderTopics(){
       <div class="part-h">
         <div class="part-no"><div class="k">PART</div><div class="v">${String(pi).padStart(2,'0')}</div></div>
         <div class="part-t">
-          <div class="meta"><b>${p.num}</b>${tps.length} 节</div>
+          <div class="meta"><b>${p.num}</b>${tps.length} 节 · 约 ${p.min} 分钟</div>
           <h3>${p.title}</h3>
           <p>${p.desc||''}</p>
         </div>
@@ -432,7 +432,7 @@ renderTopics();
   if(ct&&st.lessons) ct.textContent=`${st.parts} 篇章 · ${tpN} 节 · ${st.lessons} 个知识点`;
   const el=document.getElementById('statline');
   if(el&&st.lessons) el.innerHTML=
-    `${st.parts} 篇章 · <b>${tpN}</b> 节 · ${st.lessons} 个知识点`;
+    `${st.parts} 篇章 · <b>${tpN}</b> 节 · ${st.lessons} 个知识点 · 全部读完约 ${Math.round(st.minutes/60)} 小时`;
 })();
 
 renderTopics();

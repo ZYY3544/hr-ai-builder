@@ -76,7 +76,7 @@
     if (document.getElementById('xa-hint')) return;
     var h = document.createElement('div');
     h.id = 'xa-hint';
-    h.innerHTML = '🔓 这一节属于「登录后阅读」范围，登录功能开放前对所有人可见。' +
+    h.innerHTML = '🔓 全部内容现在都不登录可读。登录功能开放后用于同步进度，不会挡内容。' +
                   '<span>登录后可同步学习进度</span>';
     var hd = document.querySelector('.lesson-header');
     if (hd && hd.parentNode) hd.parentNode.insertBefore(h, hd.nextSibling);
