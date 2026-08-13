@@ -890,5 +890,9 @@
  "prompt-hr-cases.html": {
   "title": "HR 五个高频场景",
   "free": true
+ },
+ "cc-install-guide.html": {
+  "title": "安装完全手册（可对照）",
+  "free": true
  }
 }

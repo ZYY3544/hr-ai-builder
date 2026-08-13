@@ -16,16 +16,16 @@ window.COURSE = {
   },
   "stats": {
    "parts": 10,
-   "lessons": 147,
+   "lessons": 148,
    "copy": 40,
    "adapt": 20,
-   "new": 95,
-   "ready": 149,
+   "new": 96,
+   "ready": 150,
    "todo": 0,
-   "minutes": 567
+   "minutes": 575
   },
   "access": {
-   "free": 128,
+   "free": 129,
    "locked": 19,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -1271,6 +1271,17 @@ window.COURSE = {
        "min": 3
       },
       {
+       "file": "cc-install-guide.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "安装完全手册（可对照）",
+       "seo": "Claude Code 安装完全手册：Windows / Mac 分步，接国产模型，含报错对照",
+       "desc": "上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。",
+       "free": true,
+       "ready": true,
+       "min": 8
+      },
+      {
        "file": "cc-first-talk.html",
        "action": "new",
        "ksa": "S",
@@ -1282,7 +1293,7 @@ window.COURSE = {
        "min": 3
       }
      ],
-     "min": 9
+     "min": 17
     },
     {
      "title": "让它认识你的活：CLAUDE.md 与项目结构",
@@ -1452,7 +1463,7 @@ window.COURSE = {
      "min": 17
     }
    ],
-   "min": 57
+   "min": 65
   },
   {
    "id": "p-7",

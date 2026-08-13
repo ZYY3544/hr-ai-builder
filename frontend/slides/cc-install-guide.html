@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 安装完全手册：Windows / Mac 分步，接国产模型，含报错对照 · HR AI Builder</title>
+<meta name="description" content="上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="Claude Code 安装完全手册：Windows / Mac 分步，接国产模型，含报错对照">
+<meta property="og:description" content="上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+.vnote{font-size:12.5px;color:var(--sub);line-height:1.8;margin-top:-2px}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "Claude Code 安装完全手册：Windows / Mac 分步，接国产模型，含报错对照",
+ "articleSection": "第六篇章 · 先把工具装上：终端与 Claude Code",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 先把工具装上：终端与 Claude Code</div>
+    <h1>安装完全手册：照着走，不用看视频</h1>
+    <p class="subtitle">上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。</p>
+  </header>
+
+  <div class="l-callout"><b>怎么用这一节：</b>不用通读。跟着视频走的时候，卡在哪一步就翻到哪一步；视频看不了（在公司、没耳机、链接失效），就从头照着做。<b>全程约 30 分钟，其中 20 分钟是等下载。</b></div>
+
+  <div class="sec-label">开始之前：确认三件事</div>
+  <table class="htab">
+    <tr><td><b>①</b></td><td>这台电脑你能装软件吗</td><td>公司电脑装不了就换个人电脑。Windows / Mac 都行</td></tr>
+    <tr><td><b>②</b></td><td>手机号能收验证码吗</td><td>用来注册智谱账号</td></tr>
+    <tr><td><b>③</b></td><td>能微信/支付宝付款吗</td><td>订阅套餐用，人民币</td></tr>
+  </table>
+  <p><b>不需要</b>：Anthropic 账号、海外信用卡、科学上网。</p>
+
+  <div class="sec-label">第一步 · 开通智谱 GLM Coding（约 5 分钟）</div>
+  <table class="htab">
+    <tr><th>做什么</th><th>看到什么算成功</th></tr>
+    <tr><td>打开 <a href="https://bigmodel.cn/glm-coding" target="_blank" rel="noopener">bigmodel.cn/glm-coding</a>，手机号注册登录</td><td>进入控制台</td></tr>
+    <tr><td>完成实名认证</td><td>状态显示已认证</td></tr>
+    <tr><td>订阅 GLM Coding Plan。<b>先买最低档</b>——够你学完这门课，不够再升</td><td>套餐状态显示生效中</td></tr>
+    <tr><td>到「个人编程套餐 → 套餐概览」<b>新建 API Key</b></td><td>拿到一串以字母数字组成的 Key，<b>复制存好</b></td></tr>
+  </table>
+  <div class="stuck"><span class="t">三个提醒</span>① 价格和档位以官网为准，最低档在<b>几十元/月的量级</b>，比 Claude 官方订阅便宜一大截。<br>② <b>API Key 只在创建时能完整看到一次</b>，当场存进你的密码管理器，别截图丢群里。<br>③ 套餐是<b>按周期限额</b>的：用超了会等下个周期刷新，<b>不会自动扣你账户余额</b>——这点比按量付费安心，不会半夜跑出个账单。</div>
+
+  <div class="sec-label">第二步 · 装 Node.js（约 10 分钟，主要在等下载）</div>
+  <p>Claude Code 是跑在 Node.js 上的，所以要先装它。<b>去官网 <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a> 下 LTS 版本</b>（写着 LTS 的那个，别下最新版）。</p>
+  <table class="htab">
+    <tr><th></th><th>Windows</th><th>Mac</th></tr>
+    <tr><td><b>下载</b></td><td>Windows Installer (.msi)</td><td>macOS Installer (.pkg)</td></tr>
+    <tr><td><b>安装</b></td><td>双击，一路下一步，<b>不用改任何选项</b></td><td>双击，一路继续</td></tr>
+    <tr><td><b>装完</b></td><td><b>关掉所有已打开的终端窗口</b>（很重要）</td><td>同左</td></tr>
+    <tr><td><b>打开终端</b></td><td>开始菜单搜「终端」或「PowerShell」</td><td>聚焦搜索「终端 / Terminal」</td></tr>
+  </table>
+  <div class="cmd">node -v
+npm -v</div>
+  <p>两条命令各自打印出一串版本号（像 <code>v22.x.x</code>），第二步就过了。<b>报「不是内部或外部命令」/「command not found」→ 见文末报错表第 1 条。</b></p>
+
+  <div class="sec-label">第三步 · 换镜像 + 装 Claude Code（约 5 分钟）</div>
+  <div class="cmd"># 换成国内镜像（不换会很慢甚至超时，这一步别跳）
+npm config set registry https://registry.npmmirror.com
+
+# 装 Claude Code
+npm install -g @anthropic-ai/claude-code
+
+# 验证
+claude --version</div>
+  <p>最后一条打印出版本号就成了。<b>Mac 上报权限错误（EACCES）→ 见报错表第 3 条，别急着用 sudo。</b></p>
+
+  <div class="sec-label">第四步 · 告诉它用国产模型（这一步最关键）</div>
+  <p>Claude Code 默认去找 Anthropic。配两个环境变量，把它指向国内接口。<b>下面是永久生效的写法，配一次就不用管了。</b></p>
+
+  <p><b>Windows</b>（在终端里敲，注意把 <code>你的KEY</code> 换成第一步拿到的）：</p>
+  <div class="cmd">setx ANTHROPIC_BASE_URL "https://open.bigmodel.cn/api/anthropic"
+setx ANTHROPIC_AUTH_TOKEN "你的KEY"</div>
+  <p class="vnote">敲完<b>必须关掉终端重新打开</b>，setx 对当前窗口不生效。也可以走图形界面：设置 → 系统 → 系统信息 → 高级系统设置 → 环境变量 → 用户变量新建两条。</p>
+
+  <p><b>Mac</b>（macOS 默认用 zsh）：</p>
+  <div class="cmd">echo 'export ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic' >> ~/.zshrc
+echo 'export ANTHROPIC_AUTH_TOKEN=你的KEY' >> ~/.zshrc
+source ~/.zshrc</div>
+
+  <p>验证有没有生效：</p>
+  <div class="cmd">＃ Windows
+echo %ANTHROPIC_BASE_URL%
+＃ Mac
+echo $ANTHROPIC_BASE_URL</div>
+  <p>打印出那个网址就对了。<b>打印出空的或者原样输出变量名 → 没生效，重开终端再试一次。</b></p>
+
+  <div class="sec-label">第五步 · 成功长什么样</div>
+  <div class="cmd">＃ 随便建一个文件夹，进去
+claude</div>
+  <p>正常情况：它会显示欢迎信息，然后等你输入。<b>如果它跳出来让你登录 Anthropic 账号或者打开浏览器，说明第四步没生效</b>——回去检查环境变量，重开终端。</p>
+  <div class="good"><span class="t">✓ 最后一个验证</span>直接问它一句：「你现在用的是什么模型？」<br>它应该回答 GLM 系列而不是 Claude。<b>答对了，整个安装就完成了。</b></div>
+
+  <div class="sec-label">报错对照表（卡住先查这里）</div>
+  <table class="htab">
+    <tr><th>#</th><th>报错 / 现象</th><th>怎么办</th></tr>
+    <tr><td>1</td><td>「不是内部或外部命令」<br>「command not found: node」</td><td>Node 没装好，<b>或者终端没重开</b>。先关掉所有终端窗口重新打开再试；还不行就重装 Node</td></tr>
+    <tr><td>2</td><td>装的时候卡住不动 / <code>ETIMEDOUT</code></td><td>镜像没换。回第三步先跑 <code>npm config set registry</code> 那一行</td></tr>
+    <tr><td>3</td><td>Mac：<code>npm ERR! code EACCES</code></td><td>权限问题。<b>别直接用 sudo</b>（会把文件权限搞乱）。把报错整段贴给 AI，说「我在 Mac 上全局安装 npm 包遇到 EACCES，不想用 sudo，怎么办」，它会带你改 npm 目录或装 nvm</td></tr>
+    <tr><td>4</td><td>Windows：提示权限不足</td><td>右键终端 →「以管理员身份运行」，重来一次</td></tr>
+    <tr><td>5</td><td><code>claude</code> 装完了但敲了没反应</td><td>重开终端。还不行敲 <code>npm list -g</code> 看它在不在列表里</td></tr>
+    <tr><td>6</td><td>启动后要求登录 Anthropic</td><td>环境变量没生效。<code>echo</code> 一下确认，Windows 记得 setx 后要重开终端</td></tr>
+    <tr><td>7</td><td><code>401</code> / <code>invalid api key</code></td><td>Key 复制错了（前后有空格/引号），或者<b>套餐还没生效</b>。回智谱控制台确认套餐状态，重新复制 Key</td></tr>
+    <tr><td>8</td><td>提示模型不存在 / 无权限</td><td>你的套餐档位不含那个模型。用套餐支持的模型，或者升一档</td></tr>
+    <tr><td>9</td><td>用着用着提示额度用尽</td><td>套餐是按周期限额的，等刷新即可，<b>不会偷偷扣你余额</b></td></tr>
+  </table>
+  <div class="stuck"><span class="t">表里没有的错，铁律不变</span><b>整段复制，贴给任何一个 AI，说「我按教程装 Claude Code，报了这个错」。</b>顺带把你的系统（Windows 11 / macOS）和已经做完的步骤说清楚。你一个字都不需要看懂那些报错。</div>
+
+  <div class="sec-label">想重来怎么办</div>
+  <div class="cmd">＃ 卸载 Claude Code
+npm uninstall -g @anthropic-ai/claude-code
+
+＃ 恢复默认 npm 源（一般不需要）
+npm config set registry https://registry.npmjs.org</div>
+  <p>Node.js 用系统的卸载程序删就行。<b>装坏了不用怕，全都可以卸干净重来</b>——这一步不会动你电脑上任何别的东西。</p>
+
+  <div class="try"><span class="t">今天就试</span>照着走完五步，最后问它一句「你现在用的是什么模型」。<b>它答出 GLM，你就已经跨过这门课最高的那道坎了。</b>下一节开始用它干活。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
