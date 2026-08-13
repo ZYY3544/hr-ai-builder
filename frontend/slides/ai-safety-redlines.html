@@ -158,6 +158,29 @@
 
   <div class="detail-panel paywall-locked xa-peek" id="detailPanel"></div>
 
+
+  <div class="sec-label">四条红线，各配一个真会发生的场景</div>
+  <table class="htab">
+    <tr><th>红线</th><th>会怎么破</th><th>后果</th></tr>
+    <tr><td><b>① 人事数据不出内网</b></td><td>为了让 AI 帮忙分析，把花名册整张传进外部工具</td><td><b>不可挽回</b>。这是唯一一条一次就出事的</td></tr>
+    <tr><td><b>② 涉及人的决定不自动执行</b></td><td>脚本直接输出"待淘汰名单"，被业务方当成 HR 的判断用了</td><td>员工问"为什么是我"，没人答得上来</td></tr>
+    <tr><td><b>③ 结论必须可追溯</b></td><td>agent 给了判断，但没记依据、没记当时用的规则版本</td><td>被申诉、被审计时你拿不出任何东西</td></tr>
+    <tr><td><b>④ 匿名要真匿名</b></td><td>员工调研做部门下钻，某部门只有 3 个人</td><td><b>等于实名</b>。这会毁掉之后所有调研的可信度</td></tr>
+  </table>
+
+  <div class="sec-label">第 ④ 条最容易被无意破掉</div>
+  <div class="bad"><span class="t">✕ 一个真实的破法</span>调研报告写着"匿名"，结果里做了部门×职级×司龄三层交叉。<b>三层一叠，很多格子里只剩一两个人。</b>没人是故意的，但那个人自己一看就知道说的是他。<br><b>规矩：任何分组人数少于 5 就不出数</b>，合并到上一层。这条要写进你的分析规格，不能靠临场记得。</div>
+
+  <div class="sec-label">这四条和后面章节的关系</div>
+  <table class="htab">
+    <tr><td>① 数据不出内网</td><td>第三篇章讲私有化部署、第四篇章讲沙箱、第六篇章的三道闸都是它的工程实现</td></tr>
+    <tr><td>② 不自动执行</td><td>第四篇章「评价人的活永远留给人」、第七篇章取舍节</td></tr>
+    <tr><td>③ 可追溯</td><td>第七篇章的留痕层</td></tr>
+    <tr><td>④ 真匿名</td><td>贯穿所有涉及员工数据的分析</td></tr>
+  </table>
+  <div class="l-callout">这四条不是道德要求，是<b>职业要求</b>。别的岗位用 AI 出错是效率损失，你出错影响的是具体的人的收入、机会和职业记录——<b>而他们信任你正是因为你会守住这些。</b></div>
+
+  <div class="try"><span class="t">今天就试</span>把这四条抄下来贴在你的工作区（或者写进 CLAUDE.md）。<b>它们会在你赶时间的时候救你一次。</b></div>
 </article>
 
 <script>

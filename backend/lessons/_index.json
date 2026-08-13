@@ -882,5 +882,13 @@
  "jargon-deploy.html": {
   "title": "开源、私有化部署、参数量",
   "free": true
+ },
+ "prompt-skeleton.html": {
+  "title": "一个能套的骨架",
+  "free": true
+ },
+ "prompt-hr-cases.html": {
+  "title": "HR 五个高频场景",
+  "free": true
  }
 }

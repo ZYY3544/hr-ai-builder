@@ -167,6 +167,34 @@
     <span><b>角色 = 系统预设。</b> 所有的 AI 产品，本质上都是在 System Prompt 里写了不同的角色定义。换角色，就换产品。</span>
   </div>
 
+
+  <div class="sec-label">HR 版的六个角色</div>
+  <p>上面的演示用的是通用角色。真正对你有用的是这几个——<b>同一句话，换个开头，输出的性质完全不同</b>：</p>
+  <table class="htab">
+    <tr><th>System Prompt 开头</th><th>输出会变成</th></tr>
+    <tr><td>「你是一位做过十年技术招聘的 HRBP」</td><td>会用职级、带宽、画像这些词，判断带行业经验</td></tr>
+    <tr><td>「你是一位薪酬专家，习惯用分位和带宽说话」</td><td>会主动问口径，不会拿平均值糊弄你</td></tr>
+    <tr><td>「你是一位劳动法顾问，回答必须保守」</td><td><b>会主动标出风险点</b>，拿不准时说"建议咨询法务"</td></tr>
+    <tr><td>「你是一位刚入职的员工，看不懂 HR 术语」</td><td>——这个角色最有用：<b>拿它检验你写的通知员工能不能看懂</b></td></tr>
+    <tr><td>「你是我的杠精同事，专门找我方案里的漏洞」</td><td>汇报前自查用，比自己检查有效得多</td></tr>
+    <tr><td>「你是一位组织设计顾问，只问问题不给答案」</td><td>用来理清思路，而不是替你想</td></tr>
+  </table>
+  <div class="l-callout">第四和第五个是<b>反向用法</b>——不是让它替你干活，是让它扮演你的读者或你的对手。<b>这两个角色能替你省掉大部分返工。</b></div>
+
+  <div class="sec-label">System Prompt 在哪设</div>
+  <table class="htab">
+    <tr><td><b>网页版对话</b></td><td>「自定义指令」「个性化设置」这类入口，设一次长期生效</td></tr>
+    <tr><td><b>Projects / 项目</b></td><td>给某一类工作单独设一套，比全局设更实用</td></tr>
+    <tr><td><b>Claude Code</b></td><td><b>就是 CLAUDE.md</b>——第六篇章讲的那个文件，本质是一份长期生效的 System Prompt</td></tr>
+    <tr><td><b>临时用</b></td><td>直接写在对话第一句。缺点是新开对话要重来</td></tr>
+  </table>
+
+  <div class="sec-label">三个常见错误</div>
+  <div class="bad"><span class="t">✕ 只写头衔，不写行为</span>「你是一位专业的 HR 专家」——<b>「专业」是形容词，它不知道该怎么变</b>。要写它该有什么习惯：「你习惯先问口径再算数」「你回答前会先确认岗位层级」。</div>
+  <div class="bad"><span class="t">✕ 写成一篇作文</span>System Prompt 越长，后面的指令越容易被稀释。<b>控制在十几行内，只写真正影响它行为的规则。</b></div>
+  <div class="bad"><span class="t">✕ 设完就忘</span>它在背后一直生效。你某天觉得"它怎么老是这么答"，多半是几周前设的那句话还在起作用——<b>定期回去读一遍。</b></div>
+
+  <div class="try"><span class="t">今天就试</span>设一个你最常用的角色，然后<b>用同一个问题在设之前和设之后各问一遍</b>。差别会比你预期的大。</div>
 </article>
 
 <script>

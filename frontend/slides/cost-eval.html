@@ -203,21 +203,36 @@ body{opacity:0;animation:_si .15s ease .08s forwards}
       <div class="nav-group" style="margin-top:6px">结论</div>
       <div style="background:var(--surface);border-radius:12px;border:1px solid var(--border);padding:14px 14px;font-size:13px;color:var(--sub);line-height:1.8">
         选型 = <b style="color:var(--text)">任务难度</b> × <b style="color:var(--text)">调用量</b> × <b style="color:var(--text)">容错空间</b><br>
-        <span style="font-size:12px">数据来源：<a href="https://xsct.ai" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">xsct.ai 场景化评测</a></span>
       </div>
-      <a href="https://xsct.ai" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:white;border-radius:12px;padding:13px 16px;text-decoration:none;font-weight:800;font-size:14px;transition:all .2s;margin-top:2px" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        立即查看 xsct.ai →
-      </a>
   </div>
 
   <div class="sec-label">互动演示</div>
   <div class="demo-col xa-peek" id="demoCol"></div>
+
+  <div class="sec-label">HR 怎么选：三档就够</div>
+  <table class="htab" style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px">
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border);white-space:nowrap"><b>便宜快的</b></td><td style="padding:10px;border-bottom:1px solid var(--border)">格式转换、分类打标、把一段话改成通知、批量处理简单文本——答案对错一眼看得出、量还大的活</td></tr>
+    <tr><td style="padding:10px;border-bottom:1px solid var(--border);white-space:nowrap"><b>主力的</b></td><td style="padding:10px;border-bottom:1px solid var(--border)">制度问答、简历初筛、数据分析、方案初稿——<b>你日常八成的活在这一档，别为省钱降级</b></td></tr>
+    <tr><td style="padding:10px;white-space:nowrap"><b>最强的</b></td><td style="padding:10px">复杂推理、长文档通读、多步 agent、要拿去汇报的分析——错了代价大的活</td></tr>
+  </table>
+  <div class="tip green"><b>默认策略：先全用主力档</b>，只在两种情况下调整——量大到成本明显（往下降一档跑个对比）、或者它明显做不好（往上升一档）。<b>一上来就纠结选型，是在优化一个还不存在的问题。</b></div>
+
+  <div class="sec-label">榜单分数为什么帮不了你</div>
+  <p>各种模型排行榜测的都是通用题，<b>没有一道是你们公司的制度、你们的岗位、你们的口径</b>。榜单第一名在你的场景里可能不如第三名。</p>
+  <p>正确的选型动作是：拿<b>你自己的 20~30 个真实问题</b>（脱敏），在两三个候选模型上各跑一遍，你自己看结果。半小时的事，比读十篇评测有用——第三篇章讲过同一件事：<b>你需要的是 Eval，不是 benchmark。</b></p>
+
+  <div class="sec-label">三个隐性成本</div>
+  <p><b>返工成本</b>：便宜模型答得差你改三遍，省下的钱远不如你的时间贵。<br>
+  <b>切换成本</b>：换模型意味着 prompt 和评测都要重跑，所以别频繁换。<br>
+  <b>合规成本</b>：敏感数据场景可选范围直接被红线圈死，这时候成本根本不是第一考虑。</p>
+
+  <div class="tip green"><b>今天就试：</b>攒 20 个你真实问过的问题存成一个文件。<b>以后每次换模型、每次改 prompt 都能用</b>——它就是你自己的评测集雏形。</div>
+
 </article>
 <script>
 
 /* ─────── 数据 ─────── */
-// 按 xsct.ai 实际数据（文本能力 xsct-l，输出价格 $/1M）
+// 按公开评测的量级（输出价格 $/1M）
 const MODELS = [
   {name:'qwen3.5-flash',    short:'Qwen Flash',  output:0.29,  overall:84.3, daily:86.2, pro:83.9, extreme:82.8, color:'#0066ff'},
   {name:'qwen3.5-plus',     short:'Qwen Plus',   output:0.70,  overall:86.3, daily:88.3, pro:86.1, extreme:84.5, color:'#0066ff'},
@@ -236,7 +251,7 @@ function demo0() {
   return `
   <div class="demo-heading">
     <h3>更贵的模型，一定更好？</h3>
-    <p>横轴是<b>输出价格（$/1M Token）</b>，纵轴是<b>xsct.ai 综合评分</b>。<br>
+    <p>横轴是<b>输出价格（$/1M Token）</b>，纵轴是<b>公开评测综合评分</b>。<br>
        看清楚：<b style="color:var(--orange)">价格翻 50 倍，能力只差 6 分</b>。</p>
   </div>
   <div class="demo-body">
@@ -309,7 +324,7 @@ function demo2() {
         <div class="cmp-col good">
           <div class="cmp-head">日常场景（客服/问答）</div>
           <div class="cmp-body">
-            <b>xsct-l daily 维度</b> 排名靠前：<br>
+            <b>日常任务</b>上表现接近：<br>
             qwen3.5-flash <b style="color:var(--green)">86.2 分</b>，输出仅 $0.29/1M<br>
             qwen3.6-plus <b style="color:var(--green)">89.8 分</b>，输出仅 $1.75/1M<br>
             <span style="font-size:12px;color:var(--muted)">→ 日常难题，便宜模型足够胜任</span>
@@ -318,7 +333,7 @@ function demo2() {
         <div class="cmp-col bad">
           <div class="cmp-head">极限场景（复杂推理/代码）</div>
           <div class="cmp-body">
-            <b>xsct-l extreme 维度</b> 差距拉大：<br>
+            <b>复杂任务</b>上差距拉大：<br>
             Claude Sonnet 4.6 <b style="color:var(--red)">89.8 分</b>，$15/1M<br>
             qwen3.5-flash <b style="color:var(--red)">82.8 分</b>（差 7 分）<br>
             <span style="font-size:12px;color:var(--muted)">→ 极限任务，7 分差距代表真实失败率</span>
@@ -349,10 +364,6 @@ function demo2() {
     <div class="tip green">
       <b>决策框架：</b>① 先定场景难度 → ② 看对应维度评分 → ③ 用月费估算工具确认预算 → ④ 小流量 A/B 验证后全量。
     </div>
-    <a href="https://xsct.ai" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:white;border-radius:11px;padding:11px 18px;text-decoration:none;font-weight:800;font-size:14px;transition:all .2s;flex-shrink:0" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      在 xsct.ai 查看完整模型排行榜 →
-    </a>
   </div>`;
 }
 

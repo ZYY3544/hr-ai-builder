@@ -16,15 +16,15 @@ window.COURSE = {
   },
   "stats": {
    "parts": 10,
-   "lessons": 145,
+   "lessons": 147,
    "copy": 40,
    "adapt": 20,
-   "new": 93,
-   "ready": 147,
+   "new": 95,
+   "ready": 149,
    "todo": 0
   },
   "access": {
-   "free": 126,
+   "free": 128,
    "locked": 19,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -480,6 +480,26 @@ window.COURSE = {
        "title": "System Prompt：你说什么，它就变什么",
        "seo": "System Prompt 是什么？一句话改变 AI 的全部行为",
        "desc": "",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "prompt-skeleton.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "一个能套的骨架",
+       "seo": "怎么写好一个 Prompt？五件套骨架与 HR 完整实例",
+       "desc": "「万能公式」听起来像口号，但它确实能套。这一节把五件套拆开，每一件配一个 HR 的实例，最后给一个能整段抄走的完整模板。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "prompt-hr-cases.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "HR 五个高频场景",
+       "seo": "HR 常用的 Prompt 模板：JD、面试题、绩效反馈、政策问答",
+       "desc": "上一节是骨架，这一节是填好的成品。每一段都可以整段抄走改改就用。",
        "free": true,
        "ready": true
       },

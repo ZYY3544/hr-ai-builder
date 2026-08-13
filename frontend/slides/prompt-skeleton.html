@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么写好一个 Prompt？五件套骨架与 HR 完整实例 · HR AI Builder</title>
+<meta name="description" content="「万能公式」听起来像口号，但它确实能套。这一节把五件套拆开，每一件配一个 HR 的实例，最后给一个能整段抄走的完整模板。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么写好一个 Prompt？五件套骨架与 HR 完整实例">
+<meta property="og:description" content="「万能公式」听起来像口号，但它确实能套。这一节把五件套拆开，每一件配一个 HR 的实例，最后给一个能整段抄走的完整模板。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么写好一个 Prompt？五件套骨架与 HR 完整实例",
+ "articleSection": "第二篇章 · Prompt 工程：怎么把话说对",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第二篇章 · Prompt 工程：怎么把话说对</div>
+    <h1>五件套：一个能一直套用的骨架</h1>
+    <p class="subtitle">「万能公式」听起来像口号，但它确实能套。这一节把五件套拆开，每一件配一个 HR 的实例，最后给一个能整段抄走的完整模板。</p>
+  </header>
+
+  <div class="sec-label">五件套</div>
+  <table class="htab">
+    <tr><th>件</th><th>回答什么</th><th>不写会怎样</th></tr>
+    <tr><td><b>① 角色</b></td><td>你希望它以谁的身份说话</td><td>它用最通用的口吻答，什么行业的味道都没有</td></tr>
+    <tr><td><b>② 上下文</b></td><td>它需要知道的背景和材料</td><td><b>它会自己编一个背景</b>——这是最高频的翻车原因</td></tr>
+    <tr><td><b>③ 任务</b></td><td>具体让它做什么，一次一件</td><td>它做一个笼统的"帮你看看"</td></tr>
+    <tr><td><b>④ 格式</b></td><td>输出长什么样，最好给一行示例</td><td>给你一大段散文，你还要自己整理</td></tr>
+    <tr><td><b>⑤ 约束</b></td><td>不许做什么、拿不准怎么办</td><td>它在你没规定的地方自由发挥，而且不告诉你</td></tr>
+  </table>
+  <div class="l-callout">第 ⑤ 件最容易被漏，也最值钱。<b>AI 的默认行为是"尽量满足你"——包括在它其实不知道的时候编一个。</b>约束就是给它一条诚实的退路。</div>
+
+  <div class="sec-label">一个完整实例：起草一份 JD</div>
+  <div class="say">【角色】你是一位做过十年技术招聘的 HRBP，熟悉互联网公司的岗位分层。
+
+【上下文】
+- 岗位：数据分析工程师，隶属人力资源部下的人力数据组
+- 团队现状：3 人，目前主要做月度人效报表和临时取数，正在往自助分析平台转
+- 这个岗位要解决的真问题：现在所有取数都靠人工，业务方等三天
+- 我们能给的：P6~P7 职级，薪资带宽 30-50 万，可远程两天
+
+【任务】起草这个岗位的 JD 初稿。
+
+【格式】
+- 岗位职责：4~6 条，每条以动词开头
+- 任职要求：分「必须」和「加分」两组
+- 每条不超过 30 字
+
+【约束】
+- 不要写"抗压能力强""责任心强"这类没法验证的词
+- 不要编我没告诉你的信息（比如具体技术栈、汇报关系）
+- 有你觉得必须知道但我没说的，先列出来问我，不要自己假设</div>
+
+  <div class="sec-label">对比一下不写会怎样</div>
+  <div class="bad"><span class="t">✕「帮我写个数据分析工程师的 JD」</span>它会给你一份网上随处可见的模板：精通 SQL/Python、有良好的沟通能力、抗压能力强、责任心强。<b>这份 JD 换任何一家公司都成立——所以它对任何一个候选人都没有吸引力。</b></div>
+  <div class="good"><span class="t">✓ 五件套之后</span>它写出来的东西里会有「支撑业务自助取数，把当前平均 3 天的响应压到当天」这类<b>只有你们公司才写得出来的句子</b>——因为那来自你给的上下文。</div>
+
+  <div class="sec-label">五件套之外的两个习惯</div>
+  <table class="htab">
+    <tr><td><b>一次一件事</b></td><td>「顺便再帮我写个面试问题」——别顺便。它对前一件事的理解会被后一件污染</td></tr>
+    <tr><td><b>让它先复述</b></td><td>复杂任务在动手前加一句「先用你的话说一遍你打算怎么做，我确认后再写」。<b>30 秒，把理解偏差从事后提前到事前</b></td></tr>
+  </table>
+
+  <div class="try"><span class="t">今天就试</span>挑一件你这周要写的东西（JD、通知、方案提纲都行），照五件套写一遍。<b>写「上下文」那一栏时你会卡住——卡住的地方就是你平时默认别人知道、其实没说过的东西。</b></div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

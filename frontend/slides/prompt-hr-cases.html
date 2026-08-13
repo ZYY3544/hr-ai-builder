@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR 常用的 Prompt 模板：JD、面试题、绩效反馈、政策问答 · HR AI Builder</title>
+<meta name="description" content="上一节是骨架，这一节是填好的成品。每一段都可以整段抄走改改就用。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="HR 常用的 Prompt 模板：JD、面试题、绩效反馈、政策问答">
+<meta property="og:description" content="上一节是骨架，这一节是填好的成品。每一段都可以整段抄走改改就用。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "HR 常用的 Prompt 模板：JD、面试题、绩效反馈、政策问答",
+ "articleSection": "第二篇章 · Prompt 工程：怎么把话说对",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第二篇章 · Prompt 工程：怎么把话说对</div>
+    <h1>五个高频场景，五段可抄的话</h1>
+    <p class="subtitle">上一节是骨架，这一节是填好的成品。每一段都可以整段抄走改改就用。</p>
+  </header>
+
+  <div class="sec-label">① 设计面试问题</div>
+  <div class="say">【角色】你是一位擅长行为面试（BEI）的面试官。
+
+【上下文】岗位是 HRBP（P6），我们最看重的三件事：
+1. 能不能跟业务负责人平等对话，不是传声筒
+2. 遇到制度和业务需求冲突时，怎么处理
+3. 有没有从零搭过什么（不一定是大项目）
+
+【任务】针对这三点，各设计 2 个行为面试问题。
+
+【格式】每个问题给出：
+- 问题原话
+- 想考察什么
+- 什么样的回答算好，什么样的算敷衍（各举一句）
+
+【约束】
+- 只问过去发生过的事，不要问"如果……你会怎么办"
+- 不要出现"谈谈你的优缺点"这类可以背答案的问题</div>
+  <p>最后那条约束是关键：<b>假设性问题考不出东西</b>，因为候选人可以现编一个理想答案。</p>
+
+  <div class="sec-label">② 起草绩效反馈</div>
+  <div class="say">【角色】你是一位带过团队的直线经理。
+【上下文】下属这半年的三个事实（我提供，不要添加）：
+1. 独立完成了 A 项目，按期交付，业务方满意
+2. 两次跨部门协作中，对方反馈"推不动"
+3. 主动学了 B 技能，但还没用在工作里
+绩效结果：符合预期（B）。
+【任务】起草一段绩效反馈的谈话稿，我会自己改。
+【格式】三段：做得好的 / 需要改进的 / 下一步建议。每段 100 字内。
+【约束】
+- 只能用我给的三个事实，不许推断或补充任何事实
+- 不要用"有待提高""继续努力"这类空话，每条改进都要对应具体行为
+- 语气是同事之间的坦诚，不是上级评价下级</div>
+  <div class="stuck"><span class="t">这一类必须你自己改最后一遍</span>第八篇章讲过 AI 标签折扣：<b>越是情感浓度高的场合，越要看得出人参与过。</b>绩效反馈是全年最重要的一次对话，一段读起来像模板的反馈，比不给反馈更伤。</div>
+
+  <div class="sec-label">③ 政策问答（给员工的）</div>
+  <div class="say">【角色】你是公司 HR 助理，回答员工的制度咨询。
+【上下文】下面是《员工手册》第 4 章原文：（粘贴）
+【任务】回答员工的问题。
+【格式】
+1. 先给结论（能/不能/需要什么条件）
+2. 再给依据，必须引用原文的原句，并注明第几条
+3. 最后一句：如有特殊情况请联系 HRBP
+【约束】
+- 只能依据我给的原文回答，原文里没有的一律说"制度里没有明确规定，建议咨询 HRBP"
+- 不许根据常见做法推测
+- 不许改写原文的措辞</div>
+  <p>这一段的三条约束合起来做的是同一件事：<b>把"编"这条路堵死。</b>第一篇章讲的「只引用不概括」，在这里变成三句可执行的话。</p>
+
+  <div class="sec-label">④ 会前准备：把一堆材料读成几个问题</div>
+  <div class="say">【角色】你是我的会前助理。
+【上下文】下面是某部门的人员数据和上季度的组织盘点结论：（粘贴）
+【任务】我明天要和这个部门负责人谈人才盘点。
+帮我准备 5 个应该问他的问题。
+【格式】每个问题给：问题原话 + 为什么值得问（一句）
+【约束】
+- 问题要基于数据里的异常，不要问通用问题
+- 数据里看不出来但值得确认的，单独列成「需要现场确认」
+- 不要给我建议，只给我问题</div>
+  <p>最后一句「只给我问题，不要给建议」值得学。<b>让 AI 帮你想问题，比让它帮你下结论安全得多</b>——问题错了你当场就发现，结论错了你可能照着做了。</p>
+
+  <div class="sec-label">⑤ 把一段乱七八糟的需求变成清单</div>
+  <div class="say">【角色】你是一位擅长把模糊需求结构化的顾问。
+【上下文】下面是业务负责人在群里发的一段话：（粘贴原话，不要修饰）
+【任务】把它拆成：明确的需求 / 隐含的假设 / 需要跟他确认的问题
+【格式】三个列表
+【约束】
+- 「隐含的假设」里只写他没说但显然在假设的东西，不要替他决定
+- 「需要确认的问题」按重要性排序，最多 5 个</div>
+
+  <div class="l-callout">看这五段的共同点：<b>上下文都是你给的真实材料，约束里都有"不许编"，格式里都给了结构。</b>五件套一旦成为习惯，你写任何 prompt 都是这个样子。</div>
+
+  <div class="try"><span class="t">今天就试</span>挑跟你这周工作最相关的那一段，换成你的真实材料跑一遍。<b>然后把它存进一个文档</b>——这个文档会越攒越值钱，第六篇章会告诉你它最后住在哪。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
