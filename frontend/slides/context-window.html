@@ -169,6 +169,26 @@ input[type=range]{width:100%;accent-color:var(--amber);height:24px;cursor:pointe
       <span><b>窗口是有限资源。</b> 用了就要付钱，超了就会截断。下一页看溢出时的三种处理策略。</span>
     </div>
   </section>
+
+  <div class="sec-label">换算成 HR 的日常</div>
+  <table class="htab">
+    <tr><th>你手上的东西</th><th>大概占多少</th></tr>
+    <tr><td>一份简历</td><td>1~2 千 token</td></tr>
+    <tr><td>一章员工手册（十来页）</td><td>1 万上下</td></tr>
+    <tr><td>整本员工手册</td><td>几万到十几万</td></tr>
+    <tr><td>一张 500 行的花名册（贴成文本）</td><td><b>几万，而且这么用很浪费</b>——第四篇章讲为什么该传文件让代码读</td></tr>
+    <tr><td>一轮长对话改方案（二三十轮）</td><td>累积几万到几十万</td></tr>
+  </table>
+  <div class="l-callout">所以主流模型那种「20 万字」「80 万字」的窗口，<b>对你日常的活是绰绰有余的</b>——除非你干两件事：把大表格贴进去、或者在一个对话里从早聊到晚。</div>
+
+  <div class="sec-label">窗口大，不等于放满了效果好</div>
+  <div class="bad"><span class="t">✕ 一个常见的错觉</span>「窗口有 100 万，那我把所有制度都贴进去它就全懂了」——<b>实际上塞得越满，它抓重点的能力越差</b>，关键信息会被淹没在里面。<br>而且每一轮都要重读一遍，越来越贵、越来越慢。</div>
+  <div class="good"><span class="t">✓ 正确的姿势</span><b>只给这次任务需要的那部分。</b>问年假就贴年假那一章，不要贴整本手册。<br>这也解释了 RAG 存在的意义（第三篇章）：它做的正是"每次只把相关的那几段捞出来"。</div>
+
+  <div class="sec-label">一条能立刻用的规矩</div>
+  <p><b>一个活一个对话。</b>干完这件事就新开一个，不要在同一个对话里从招聘聊到薪酬再聊到组织盘点。理由有三个：不会互相污染（上一节讲的）、不会越来越贵、它抓重点更准。</p>
+
+  <div class="try"><span class="t">今天就试</span>看一眼你最长的那个对话有多少轮了。<b>如果超过二十轮而且话题已经飘了，那它现在给你的答案质量，多半比第一轮差。</b></div>
 </article>
 <script src="i18n.js?v=20260808"></script>
 <script>

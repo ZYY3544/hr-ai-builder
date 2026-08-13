@@ -149,6 +149,25 @@
       <span class="hint" id="ctrlHint"></span>
     </div>
   </section>
+
+  <div class="sec-label">这三种策略，你其实每天都在被动使用</div>
+  <p>你用的 AI 产品早就替你选好了策略——多数是<b>摘要压缩</b>：对话变长时它会把前面的内容压成摘要。这解释了一个你可能遇到过的现象：<b>聊到后面，它对前面细节的记忆变得模糊了。</b>不是它忘了，是那部分已经被压成一句话了。</p>
+
+  <div class="sec-label">对 HR 来说，真正该做的是主动管理</div>
+  <table class="htab">
+    <tr><th>与其</th><th>不如</th></tr>
+    <tr><td>在一个对话里聊到溢出，指望它压缩得好</td><td><b>一个活一个对话</b>，干完就开新的</td></tr>
+    <tr><td>把长文档整个贴进去</td><td>只贴相关章节；文档多就用 RAG（第三篇章）</td></tr>
+    <tr><td>指望它记住你说过的规则</td><td><b>写进文档</b>——CLAUDE.md 或规格文件（第六篇章）</td></tr>
+    <tr><td>让它一次处理三十份材料</td><td>一份一个独立任务（第七篇章讲子 agent 时会回来说这件事）</td></tr>
+  </table>
+  <div class="l-callout">看这四条的共同点：<b>都是把"该长期存在的东西"从对话里搬到文件里。</b>对话是工作记忆，文件是长期记忆——这个区分会在第七篇章变成一整个设计模式。</div>
+
+  <div class="sec-label">一个判断它是不是快溢出了的土办法</div>
+  <div class="good"><span class="t">✓ 问它一句</span>「我们最开始定的那几条规则是什么？原样复述一遍。」<br>复述得准 → 还在窗口里。<br>复述得含糊或者漏了 → <b>已经被压缩或截断了，该开新对话并把规则重新给一遍。</b></div>
+  <p>这一招在长时间改方案时特别有用——你以为它还记得你两小时前定的调子，其实早就没了。</p>
+
+  <div class="try"><span class="t">今天就试</span>在你当前最长的那个对话里问那一句，看它复述得准不准。<b>这是这一节唯一需要你动手的事，十秒钟。</b></div>
 </article>
 <script src="i18n.js?v=20260808"></script>
 <script src="lesson.js"></script>

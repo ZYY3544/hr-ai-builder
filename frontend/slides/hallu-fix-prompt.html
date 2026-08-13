@@ -210,7 +210,7 @@
   <header class="lesson-header">
     <div class="kicker">第一篇章 · 幻觉的四种应对</div>
     <h1>Prompt 工程：用指令约束幻觉</h1>
-    <p class="subtitle">PM 视角：写需求文档、对接 AI 接口时，如何通过 System Prompt 减少模型编造。</p>
+    <p class="subtitle">HR 视角：把约束写进 System Prompt，是成本最低的一道闸——不需要任何技术投入。</p>
     <div class="badge" style="margin-top:12px;">手段 01 / 04 · 预防</div>
   </header>
 
@@ -238,7 +238,7 @@
       </div>
 
       <div class="pm-tip" id="pmTip">
-        <div class="pm-tip-title">PM 操作要点</div>
+        <div class="pm-tip-title">落地要点</div>
         <p id="pmTipContent">加载中…</p>
       </div>
     </div>
@@ -346,7 +346,7 @@
             </div>
             <div style="width:1px;background:rgba(229,62,62,0.12);flex-shrink:0;"></div>
             <div style="flex:1;">
-              <div style="font-size:14px;color:var(--text-main);font-weight:700;margin-bottom:4px;">PM 应对策略</div>
+              <div style="font-size:14px;color:var(--text-main);font-weight:700;margin-bottom:4px;">应对策略</div>
               <div style="font-size:13px;color:var(--text-sub);line-height:1.7;">
                 对于「模型高度自信但可能出错」的领域，Prompt 约束不够，<br>
                 → 需要搭配 <span style="color:var(--accent);font-weight:600;">RAG（注入真实知识）</span> 或 <span style="color:var(--amber);font-weight:600;">人工审核兜底</span>
@@ -374,7 +374,7 @@ const SCENES = [
     ],
     verdictBad: '✗ 模型编造了「定制商品也可退」，实际上不行，可能引发客诉纠纷。',
     verdictGood: '✓ 回答了已知部分，主动承认未知部分，引导到安全路径。',
-    pmTip: '在需求文档中，<b>System Prompt 属于产品配置项</b>，不是研发决定的。PM 需要明确写出：哪些话题可以回答、哪些必须转人工、遇到不确定时的兜底话术。',
+    pmTip: '在需求文档中，<b>System Prompt 是业务规则，不是技术细节</b>——该由懂业务的人来定。你需要明确写出：哪些话题可以回答、哪些必须转人工、遇到不确定时的兜底话术。',
     prompt: `# 智能客服 System Prompt 模板
 
 你是 [公司名] 的智能客服助手。
@@ -408,7 +408,7 @@ const SCENES = [
     ],
     verdictBad: '✗ 模型捏造了具体数字和报告来源，发出去会造成信息失实，严重时引发法律风险。',
     verdictGood: '✓ 生成结构框架，主动标注缺口，避免了虚假数据流出。',
-    pmTip: '写作场景的核心风险是<b>数字幻觉</b>。PM 需要在 Prompt 中明确：遇到需要数据时，模型应留空白并标注「需核实」，禁止自行编造。这是<b>产品安全规范</b>，需要写入 PRD。',
+    pmTip: '写作场景的核心风险是<b>数字幻觉</b>。你需要在 Prompt 中明确：遇到需要数据时，模型应留空白并标注「需核实」，禁止自行编造。这是<b>不可退让的底线</b>，需要写入 PRD。',
     prompt: `# AI 写作助手 System Prompt 模板
 
 你是专业写作助手，帮用户生成高质量文案。
@@ -441,7 +441,7 @@ const SCENES = [
     ],
     verdictBad: '✗ 模型用行业通用数据替代了公司真实政策，员工据此报销会被驳回，信任崩塌。',
     verdictGood: '✓ 承认知识边界，引导到正确渠道，不乱说一句话。',
-    pmTip: '企业知识库场景中，<b>「不知道就引导」比「知道但说错」好 10 倍</b>。PM 要在 System Prompt 中明确知识边界，并设计好兜底引导路径（联系谁、看哪个文档）。这是<b>信息准确性 SLA</b> 的一部分。',
+    pmTip: '企业知识库场景中，<b>「不知道就引导」比「知道但说错」好 10 倍</b>。你要在 System Prompt 中明确知识边界，并设计好兜底引导路径（联系谁、看哪个文档）。这是<b>信息准确性 SLA</b> 的一部分。',
     prompt: `# 企业知识库问答 System Prompt 模板
 
 你是 [公司名] 内部知识库助手。

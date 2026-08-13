@@ -225,11 +225,11 @@
   <header class="lesson-header">
     <div class="kicker">第一篇章 · 幻觉的四种应对</div>
     <h1>应对 4：评测 + 人工审核</h1>
-    <p class="subtitle">PM 视角：如何量化幻觉风险、设计分级审核流程、让「人在回路中」成为产品安全网。手段 04 / 04 · 检测 + 纠正。</p>
+    <p class="subtitle">HR 视角：怎么量化它编的概率、按风险分级审核、让人始终在回路里。手段 04 / 04 · 检测 + 纠正。</p>
   </header>
 
   <section>
-    <div class="sec-label">PM 需要设计的三个环节</div>
+    <div class="sec-label">你要设计的三个环节</div>
     <div class="phase-grid">
           <div class="phase-card active" onclick="selectPhase(0)">
             <div class="phase-tag">环节 1 · 上线前</div>
@@ -254,20 +254,41 @@
   </section>
 
   <section class="paywall-locked">
-    <div class="sec-label">PM 核心认知</div>
+    <div class="sec-label">核心认知</div>
     <div class="insight-box">
-        <div class="insight-title">PM 核心认知</div>
+        <div class="insight-title">核心认知</div>
         <div class="insight-item">
-          <b>幻觉率 ≠ 0</b>：所有 LLM 都有幻觉，PM 的目标是把它控制在<b>业务可接受的阈值内</b>，追求消灭并不现实。
+          <b>幻觉率 ≠ 0</b>：所有 LLM 都有幻觉，你的目标是把它控制在<b>业务可接受的阈值内</b>，追求消灭并不现实。
         </div>
         <div class="insight-item">
           <b>高风险 = 人工兜底</b>：医疗、法律、金融场景，AI 只做初稿，<b>最终确认必须有人签字</b>。
         </div>
         <div class="insight-item">
-          <b>指标要写进 PRD</b>：「幻觉率 &lt; 3%」要像「加载时间 &lt; 2s」一样，成为可量化的验收标准。
+          <b>指标要写进验收标准</b>：「它编造的比例低于 3%」要像「三天内出结果」一样，是可以被检查的承诺，不是感觉。
         </div>
     </div>
   </section>
+
+  <div class="sec-label">对 HR 来说，这三个环节具体是什么</div>
+  <table class="htab">
+    <tr><th>环节</th><th>你要做的最小动作</th></tr>
+    <tr><td><b>上线前：攒一套题</b></td><td>拿 20~30 个<b>你真实被问过的问题</b>，自己标好正确答案。它跑一遍，你逐题对。<b>这就是你的评测集</b>，不需要任何工具</td></tr>
+    <tr><td><b>上线后：按风险分流</b></td><td>不是所有输出都同等对待。<b>「查制度」可以直接给员工看，「判断人」必须先过人</b>——分流规则要写死，不能靠临场判断</td></tr>
+    <tr><td><b>持续：把错案存起来</b></td><td>每次发现它答错，记一条：问了什么、它答了什么、正确的是什么、为什么错。<b>攒三十条，这就是你独有的资产</b>（第七篇章会讲它住在哪）</td></tr>
+  </table>
+
+  <div class="sec-label">最重要的一个数：它编的比例是多少</div>
+  <div class="good"><span class="t">✓ 但要分开数两种错</span><b>「查不到就说不知道」的错</b>——可以接受，只是能力不够。<br><b>「查不到但编了一个」的错</b>——在 HR 场景不能接受，因为它会拿着一个不存在的制度条款回答员工。<br><br>同样是 10% 的错误率，这两种的风险差着量级。<b>所以报数的时候一定要分开报。</b></div>
+
+  <div class="sec-label">「人在回路里」在 HR 场景的三条线</div>
+  <table class="htab">
+    <tr><td><b>它只做召回，不做判定</b></td><td>把可能相关的捞出来，谁行谁不行由人定</td></tr>
+    <tr><td><b>它给的每个结论都要能回溯到原文</b></td><td>「这句话在制度第几条」——查不到就是编的</td></tr>
+    <tr><td><b>拿不准时它必须说拿不准</b></td><td>而不是给一个模糊但听起来完整的答案</td></tr>
+  </table>
+  <div class="l-callout">这三条会在后面反复出现：第一篇章下一节讲召回与判定的闸、第二篇章讲怎么写进 prompt、第七篇章讲怎么变成系统的固定环节。<b>但从今天起你就可以用第三条</b>——在任何一个 prompt 末尾加一句「不确定就说不确定，不要猜」，成本为零。</div>
+
+  <div class="try"><span class="t">今天就试</span>开始攒那 20 个问题。<b>不用一次攒完</b>，以后每次你问它一个工作上的真问题，就顺手记下来。一个月就够了。</div>
 </article>
 
 <script>
@@ -400,7 +421,7 @@ const WHY_HTML = `
           </div>
           <div style="width:1px;background:rgba(229,62,62,0.12);flex-shrink:0;"></div>
           <div style="flex:1;">
-            <div style="font-size:14px;color:#111827;font-weight:700;margin-bottom:4px;">PM 应对策略</div>
+            <div style="font-size:14px;color:#111827;font-weight:700;margin-bottom:4px;">应对策略</div>
             <div style="font-size:13px;color:#6b7280;line-height:1.7;">
               HITL 积累的审核数据应转化为<span style="color:#2563eb;font-weight:600;">评测集持续扩充</span>与<span style="color:#15803d;font-weight:600;">模型微调训练</span>，让人工成本随时间递减，避免线性增长
             </div>
@@ -522,7 +543,7 @@ function renderPhase() {
           `).join('<div style="text-align:center;font-size:18px;color:var(--text-sub);">↓</div>')}
         </div>
         <div style="background:rgba(22,163,106,0.04);border:1px solid rgba(22,163,106,0.15);border-radius:12px;padding:16px 20px;">
-          <div style="font-size:13px;font-weight:800;color:var(--success);margin-bottom:8px;">PM 指标看板：Bad Case 闭环效率</div>
+          <div style="font-size:13px;font-weight:800;color:var(--success);margin-bottom:8px;">关键指标看板：Bad Case 闭环效率</div>
           <div class="fb-kpis">
             <div style="font-size:14px;color:var(--text-sub);">发现→修复平均周期：<b style="color:var(--text-main);">3.2天</b></div>
             <div style="font-size:14px;color:var(--text-sub);">本周新增 bad case：<b style="color:var(--danger);">12条</b></div>
