@@ -221,7 +221,11 @@ function renderPick(){
   }).join('');
   $('#pick').innerHTML=cards+
     `<div class="pk all" data-ch="__all"><div class="n">全部篇章 · 完整测评</div>
-     <div class="m"><span>${ALL.length} 题</span>${badges(ksaOf(ALL))}<span style="color:var(--faint)">考试模式约 25 分钟</span></div></div>`;
+     <div class="m"><span>${ALL.length} 题</span>${badges(ksaOf(ALL))}<span style="color:var(--faint)">考试模式约 25 分钟</span></div></div>`
+    +`<div style="grid-column:1/-1;margin-top:6px;font-size:12px;color:var(--faint);line-height:1.8">
+        题库随课程持续补齐：<b>第零篇章</b>（入门）与<b>第九篇章</b>（审美工程）尚未出题，
+        第三、四、八篇章覆盖偏薄。测出来的分只代表已出题的部分。
+      </div>`;
   $('#pick').querySelectorAll('.pk').forEach(el=>el.onclick=()=>{
     $('#pick').querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));
     el.classList.add('on'); sel=el.dataset.ch; syncStart();
