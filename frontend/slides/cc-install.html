@@ -78,12 +78,13 @@
   </table>
   <div class="stuck"><span class="t">明确一下不需要什么</span><b>不需要 Anthropic 账号 · 不需要海外信用卡 · 不需要科学上网。</b><br>如果你之前听说"用 Claude Code 得先解决网络"，那说的是接官方 API 的走法。接国产模型这条路没有这个问题。</div>
 
-  <div class="sec-label">四步，每步都能验证</div>
+  <div class="sec-label">五个阶段，心里有个数</div>
   <table class="htab">
-    <tr><td><b>1</b></td><td><b>装 Node.js</b></td><td>官网下安装包，一路下一步。装完敲 <code>node -v</code>，能打印版本号就成了</td></tr>
-    <tr><td><b>2</b></td><td><b>换国内镜像</b></td><td>不换会很慢甚至超时。<b>这一步几乎决定成败</b>，但只有一行</td></tr>
-    <tr><td><b>3</b></td><td><b>装 Claude Code</b></td><td>一行命令</td></tr>
-    <tr><td><b>4</b></td><td><b>指向国产模型</b></td><td>配两个环境变量，告诉它去哪儿找模型</td></tr>
+    <tr><td><b>一</b></td><td><b>开通智谱</b></td><td>手机号注册 → 实名 → 订阅 → 拿 API Key（<b>Key 只完整显示一次，当场存好</b>）</td></tr>
+    <tr><td><b>二</b></td><td><b>装 Cursor</b></td><td>一个带内置终端的编辑器。<b>在正常软件窗口里操作，比对着漆黑的终端心理压力小得多</b></td></tr>
+    <tr><td><b>三</b></td><td><b>装 Node.js 和 CC</b></td><td>含换国内镜像那一行——<b>不换会超时，这一步别跳</b></td></tr>
+    <tr><td><b>四</b></td><td><b>接到 GLM 上</b></td><td>配两个环境变量。做完就不需要海外账号和网络了</td></tr>
+    <tr><td><b>五</b></td><td><b>确认成功</b></td><td>问它「你用的什么模型」，答 GLM 就通了</td></tr>
   </table>
   <div class="cmd"># 2. 换国内镜像（不换会很慢）
 npm config set registry https://registry.npmmirror.com
@@ -100,8 +101,9 @@ claude</div>
   <p>第 4 步这两行是关键：<b>它们让 CC 不再去找 Anthropic，而是去找国内的接口</b>——所以既不用登录海外账号，流量也不出境。想让它永久生效（不用每次敲），让 AI 教你写进配置文件，一句话的事。</p>
 
   <div class="l-callout" style="border-color:rgba(101,163,13,.35);background:rgba(101,163,13,.06)">
-    <b>📄 看不了视频？下一节是完整的文字手册。</b><br>
-    <a href="learn.html#cc-install-guide.html" target="_top"><b>《安装完全手册（可对照）》</b></a>——Windows 和 Mac 分开写，每步都标了「看到什么算成功」，末尾有一张 9 条的报错对照表。<b>卡住先查那张表。</b>
+    <b>📄 下一节是逐步手册，跟视频配套用。</b><br>
+    <a href="learn.html#cc-install-guide.html" target="_top"><b>《安装完全手册 · 15 步》</b></a>——从下载 Cursor 到接上 GLM，<b>全程 15 个编号步骤</b>，每步都标了「看到这个就算过了」，末尾 10 条报错对照。<br>
+    看视频的时候卡在哪一步，就翻到手册对应的第几步；<b>视频看不了（在公司、没耳机、链接失效），照着手册也能独立走完。</b>
   </div>
 
   <div class="sec-label">别自己查教程，让 AI 带你装</div>

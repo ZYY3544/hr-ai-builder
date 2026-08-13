@@ -22,7 +22,7 @@ window.COURSE = {
    "new": 96,
    "ready": 150,
    "todo": 0,
-   "minutes": 575
+   "minutes": 579
   },
   "access": {
    "free": 129,
@@ -1274,12 +1274,12 @@ window.COURSE = {
        "file": "cc-install-guide.html",
        "action": "new",
        "ksa": "S",
-       "title": "安装完全手册（可对照）",
-       "seo": "Claude Code 安装完全手册：Windows / Mac 分步，接国产模型，含报错对照",
+       "title": "安装完全手册 · 15 步",
+       "seo": "Claude Code 安装完全手册：15 步从 Cursor 到 GLM（Windows / Mac）",
        "desc": "上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。",
        "free": true,
        "ready": true,
-       "min": 8
+       "min": 12
       },
       {
        "file": "cc-first-talk.html",
@@ -1293,7 +1293,7 @@ window.COURSE = {
        "min": 3
       }
      ],
-     "min": 17
+     "min": 21
     },
     {
      "title": "让它认识你的活：CLAUDE.md 与项目结构",
@@ -1463,7 +1463,7 @@ window.COURSE = {
      "min": 17
     }
    ],
-   "min": 65
+   "min": 69
   },
   {
    "id": "p-7",
