@@ -15,7 +15,7 @@ window.COURSE = {
    "license": "AGPL-3.0"
   },
   "stats": {
-   "parts": 11,
+   "parts": 10,
    "lessons": 138,
    "copy": 40,
    "adapt": 20,
@@ -26,17 +26,17 @@ window.COURSE = {
   "access": {
    "free": 119,
    "locked": 19,
-   "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
+   "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
    "method": "Google Flexible Sampling —— 正文始终在 HTML 里可被索引，客户端遮挡 + JSON-LD 声明 isAccessibleForFree"
   }
  },
  "parts": [
   {
-   "id": "p-start",
-   "num": "开篇",
-   "title": "开始之前",
-   "desc": "先搞清楚你在哪、怎么学，以及为什么 HR 也值得花时间弄懂原理。",
+   "id": "p-zero",
+   "num": "第零篇章",
+   "title": "写给第一次接触 AI 的 HR",
+   "desc": "零基础也能从这里开始：先定位自己在哪一段，再补上原理直觉——为什么它会编、怎么跟它说话、什么能放心交给它。整章免费，不登录也能读。",
    "freeWhole": true,
    "topics": [
     {
@@ -74,17 +74,7 @@ window.COURSE = {
        "ready": true
       }
      ]
-    }
-   ],
-   "color": "#64748B"
-  },
-  {
-   "id": "p-zero",
-   "num": "第零篇章",
-   "title": "写给第一次接触 AI 的 HR",
-   "desc": "零基础到会用。读完这一章，你就能拿 AI 干活了。全章免费，不预设你懂任何术语。",
-   "freeWhole": true,
-   "topics": [
+    },
     {
      "title": "AI 是个什么东西",
      "desc": "先看它的能力，再看穿它的底牌",
