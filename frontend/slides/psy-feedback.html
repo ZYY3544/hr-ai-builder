@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>为什么用户不给 AI 反馈？反馈设计与真实信号 · HR AI Builder</title>
+<meta name="description" content="你在界面上放了「有帮助 / 没帮助」，一个月收到三条反馈，两条是测试时自己点的。这一节讲为什么，以及怎么拿到真信号。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="为什么用户不给 AI 反馈？反馈设计与真实信号">
+<meta property="og:description" content="你在界面上放了「有帮助 / 没帮助」，一个月收到三条反馈，两条是测试时自己点的。这一节讲为什么，以及怎么拿到真信号。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "为什么用户不给 AI 反馈？反馈设计与真实信号",
+ "articleSection": "第八篇章 · 收官：反馈与上线前清单",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 收官：反馈与上线前清单</div>
+    <h1>没人点踩，不等于没有问题</h1>
+    <p class="subtitle">你在界面上放了「有帮助 / 没帮助」，一个月收到三条反馈，两条是测试时自己点的。这一节讲为什么，以及怎么拿到真信号。</p>
+  </header>
+
+      <div class="sec-label">他为什么不点</div>
+      <table class="htab">
+        <tr><th>原因</th><th>说明</th></tr>
+        <tr><td><b>没好处</b></td><td>点了会怎样？不知道。<b>付出确定，收益不确定，理性人不点</b></td></tr>
+        <tr><td><b>怕被认出来</b></td><td>内部系统里，「这是谁点的踩」是查得到的——尤其当它是 HR 的东西</td></tr>
+        <tr><td><b>说不清哪儿不对</b></td><td>他知道不对，但让他描述"哪里不对"需要动脑，成本太高</td></tr>
+        <tr><td><b>已经放弃了</b></td><td><b>最糟的一种</b>：真正不满意的人早就不用了，留下来点赞的是那些恰好满意的</td></tr>
+      </table>
+      <div class="l-callout">最后一条是致命的：<b>反馈渠道收到的是幸存者的声音。</b>你越依赖它，越听不到你最需要听的那批人。</div>
+
+      <div class="sec-label">让点踩变便宜：给选项，不要给输入框</div>
+      <div class="bad"><span class="t">✕ 「请描述遇到的问题」＋一个空白输入框</span>要求用户组织语言。绝大多数人直接关掉。</div>
+      <div class="good"><span class="t">✓ 三到四个具体选项，点一下就完事</span>「哪里不对？<b>□ 引用的制度条款不对 · □ 用了别人的数据 · □ 答非所问 · □ 说得太笼统</b>」<br>——选项本身还替他把问题分了类，你拿到的是<b>已经结构化的反馈</b>。</div>
+
+      <div class="sec-label">三个比点踩靠谱得多的信号</div>
+      <table class="htab">
+        <tr><td><b>① 重问率</b></td><td>同一个人换个说法又问一遍 → <b>上一次没答好</b>。这个信号完全不需要用户配合</td></tr>
+        <tr><td><b>② 转人工率</b></td><td>用完还是来找 HR → 它没解决问题</td></tr>
+        <tr><td><b>③ 采纳率</b></td><td>它给的名单/建议，最后被人改了多少 —— <b>这就是第七篇章说的人工推翻率</b>，是你的 agent 到底有没有用的硬指标</td></tr>
+      </table>
+      <div class="l-callout"><b>行为信号永远比态度信号可信。</b>问卷和点赞是态度，重问和推翻是行为——而人会在问卷上客气，不会在行为上客气。</div>
+
+      <div class="sec-label">收到反馈之后必须做的一件事</div>
+      <p><b>告诉他你改了。</b>「你上次提的『引用条款不对』，已经修好了」——这一句是反馈闭环的全部意义。<br>不做这一步，第二次就不会有人点了；做了这一步，你会培养出一小批愿意持续给你真话的人，<b>而这批人是无价的</b>。</p>
+
+      <div class="try"><span class="t">今天就试</span>把你的反馈入口从输入框改成四个选项。同时开始记一个数：<b>重问率。</b>这个数不需要任何人配合，而且它一开始就会告诉你真相。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

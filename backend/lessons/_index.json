@@ -583,38 +583,6 @@
   "spine": true,
   "ksa": "A"
  },
- "perm-levels.html": {
-  "free": true,
-  "title": "AI 该有多大的自由",
-  "seo": "AI Agent 该有多大权限？它能不能自己发拒信",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
- "perm-confirm.html": {
-  "free": true,
-  "title": "弹窗太多没人用，不弹又不安全",
-  "seo": "AI 的确认弹窗怎么设计才不烦人又安全",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "perm-audit.html": {
-  "free": false,
-  "title": "它干了什么你知道吗：留痕与可申诉",
-  "seo": "AI 参与人事决策必须留痕且可申诉",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-persuade.html": {
-  "free": true,
-  "title": "怎么跟老板讲清楚「它有 8% 会错」",
-  "seo": "AI 有 8% 会出错，怎么跟老板汇报才通得过",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
  "hr-rollout.html": {
   "free": true,
   "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
@@ -630,22 +598,6 @@
   "ready": true,
   "spine": false,
   "ksa": "K"
- },
- "hr-org-1.html": {
-  "free": true,
-  "title": "把岗位拆开重组：它接管之后这个岗位还剩什么",
-  "seo": "AI 接管之后，HR 岗位该怎么重新设计？",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-org-2.html": {
-  "free": true,
-  "title": "你会的哪些东西正在被模型吃掉",
-  "seo": "HR 的哪些技能正在被 AI 取代？哪些反而更值钱",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
  },
  "hr-org-3.html": {
   "free": false,
@@ -805,6 +757,66 @@
  },
  "harness-closing.html": {
   "title": "回到原点：这一层到底是什么",
+  "free": true
+ },
+ "psy-captive.html": {
+  "title": "内部用户没得选",
+  "free": true
+ },
+ "psy-perceived.html": {
+  "title": "感知性能：它明明不慢",
+  "free": true
+ },
+ "psy-waiting.html": {
+  "title": "等待心理学",
+  "free": true
+ },
+ "psy-labor.html": {
+  "title": "劳动错觉：把过程演出来",
+  "free": true
+ },
+ "psy-peak-end.html": {
+  "title": "峰终定律：这是 HR 的主场",
+  "free": true
+ },
+ "psy-aversion.html": {
+  "title": "算法厌恶：犯一次错就被拉黑",
+  "free": true
+ },
+ "psy-error-comms.html": {
+  "title": "怎么讲清楚「它有 8% 会错」",
+  "free": true
+ },
+ "psy-trust-calib.html": {
+  "title": "信任校准：半信半疑最好",
+  "free": true
+ },
+ "psy-defense.html": {
+  "title": "防御心理：不是不会，是不敢",
+  "free": true
+ },
+ "psy-mental-model.html": {
+  "title": "心智模型：拿错了说明书",
+  "free": true
+ },
+ "psy-honeymoon.html": {
+  "title": "蜜月悬崖：期望是要还的",
+  "free": true
+ },
+ "psy-ai-discount.html": {
+  "title": "AI 标签折扣",
+  "free": true
+ },
+ "psy-offload.html": {
+  "title": "认知卸载：一边用一边怕废掉",
+  "free": true
+ },
+ "psy-feedback.html": {
+  "title": "为什么没人点踩",
+  "free": true
+ },
+ "psy-checklist.html": {
+  "title": "上线前过一遍",
   "free": true
  }
 }

@@ -16,15 +16,15 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 118,
+   "lessons": 127,
    "copy": 40,
    "adapt": 20,
-   "new": 58,
-   "ready": 118,
+   "new": 73,
+   "ready": 128,
    "todo": 0
   },
   "access": {
-   "free": 99,
+   "free": 108,
    "locked": 19,
    "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -764,6 +764,16 @@ window.COURSE = {
        "desc": "往简历堆里埋假简历",
        "free": false,
        "ready": true
+      },
+      {
+       "file": "hr-rollout.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
+       "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制",
+       "desc": "",
+       "free": true,
+       "ready": true
       }
      ]
     }
@@ -1198,6 +1208,41 @@ window.COURSE = {
      ]
     },
     {
+     "title": "选对活：先把部门的活盘一遍",
+     "lessons": [
+      {
+       "file": "hr-inventory-1.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "把一个部门的活拆成任务清单",
+       "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "hr-inventory-2.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "每条标：它能干 / 干不了 / 干了得有人兜",
+       "seo": "AI 场景盘点怎么打标？三类任务的判断标准",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "hr-inventory-3.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "算账：省多少、风险多大、第一刀切哪",
+       "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里",
+       "desc": "简历初筛为什么是好的第一刀",
+       "free": false,
+       "ready": true
+      }
+     ]
+    },
+    {
      "title": "做出你的作品：从选题到讲清楚",
      "lessons": [
       {
@@ -1316,6 +1361,16 @@ window.COURSE = {
      "title": "HR 专有的两层：权限留痕与自动验收",
      "lessons": [
       {
+       "file": "hr-compliance.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "它算错了，谁负责：内网 · n 阈值 · 可申诉",
+       "seo": "AI 做错了人事决策谁负责？合规的四条红线",
+       "desc": "",
+       "free": false,
+       "ready": true
+      },
+      {
        "file": "harness-audit.html",
        "action": "new",
        "ksa": "A",
@@ -1351,6 +1406,16 @@ window.COURSE = {
        "ready": true
       },
       {
+       "file": "hr-org-3.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "哪些能力反而更值钱了",
+       "seo": "AI 时代 HR 哪些能力在升值？按 KSA 拆开看",
+       "desc": "接能力词典",
+       "free": false,
+       "ready": true
+      },
+      {
        "file": "harness-closing.html",
        "action": "new",
        "ksa": "A",
@@ -1367,156 +1432,192 @@ window.COURSE = {
   {
    "id": "p-8",
    "num": "第八篇章",
-   "title": "从 Demo 到落地：让它在组织里活下来",
-   "desc": "做出来 ≠ 被采用。这一层决定你的天花板。三步走：盘 → 推 → 改。",
-   "freeWhole": false,
+   "title": "HR 产品心理学：让内部同事真的用起来",
+   "desc": "你做的东西上线了，没人用——或者用了，但骂声一片。这不是工程问题，是心理问题，而心理是可以设计的。这一章的前提是：你的内部同事就是你的用户，而且他们比 C 端用户更难伺候，因为他们没得选。",
+   "freeWhole": true,
+   "color": "#D97706",
    "topics": [
     {
-     "title": "场景盘点：哪些活能交给它",
-     "desc": "不是讲观点，是给可执行的动作",
+     "title": "你的用户没得选：内部产品的特殊处境",
      "lessons": [
       {
-       "file": "hr-inventory-1.html",
+       "file": "psy-captive.html",
        "action": "new",
        "ksa": "A",
-       "title": "把一个部门的活拆成任务清单",
-       "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单",
-       "desc": "",
+       "title": "内部用户没得选",
+       "seo": "HR 内部产品的用户心理跟 C 端有什么不一样？",
+       "desc": "C 端产品做得烂，用户卸载走人。HR 做的东西做得烂，用户走不掉——这一条差别，决定了这一整章。",
        "free": true,
        "ready": true
       },
       {
-       "file": "hr-inventory-2.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "每条标：它能干 / 干不了 / 干了得有人兜",
-       "seo": "AI 场景盘点怎么打标？三类任务的判断标准",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "hr-inventory-3.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "算账：省多少、风险多大、第一刀切哪",
-       "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里",
-       "desc": "简历初筛为什么是好的第一刀",
-       "free": false,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "Agent 权限设计：给它多大自由",
-     "desc": "",
-     "lessons": [
-      {
-       "file": "perm-levels.html",
-       "action": "adapt",
-       "ksa": "A",
-       "title": "AI 该有多大的自由",
-       "seo": "AI Agent 该有多大权限？它能不能自己发拒信",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "perm-confirm.html",
-       "action": "adapt",
-       "ksa": "A",
-       "title": "弹窗太多没人用，不弹又不安全",
-       "seo": "AI 的确认弹窗怎么设计才不烦人又安全",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "perm-audit.html",
-       "action": "adapt",
-       "ksa": "A",
-       "title": "它干了什么你知道吗：留痕与可申诉",
-       "seo": "AI 参与人事决策必须留痕且可申诉",
-       "desc": "",
-       "free": false,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "从试点到铺开",
-     "desc": "",
-     "lessons": [
-      {
-       "file": "hr-persuade.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "怎么跟老板讲清楚「它有 8% 会错」",
-       "seo": "AI 有 8% 会出错，怎么跟老板汇报才通得过",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "hr-rollout.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
-       "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "hr-compliance.html",
+       "file": "psy-perceived.html",
        "action": "new",
        "ksa": "K",
-       "title": "它算错了，谁负责：内网 · n 阈值 · 可申诉",
-       "seo": "AI 做错了人事决策谁负责？合规的四条红线",
-       "desc": "",
-       "free": false,
+       "title": "感知性能：它明明不慢",
+       "seo": "系统响应明明很快，用户为什么还是觉得慢？感知性能设计",
+       "desc": "用户的秒表和服务器的秒表走得不一样。这一节讲清楚差在哪，以及怎么在不优化一行代码的前提下让它「变快」。",
+       "free": true,
        "ready": true
       }
      ]
     },
     {
-     "title": "人机分工：组织会变成什么样",
-     "desc": "AI 接管之后，岗位和能力会怎么变",
+     "title": "等待与过程：难受的不是那几秒",
      "lessons": [
       {
-       "file": "hr-org-1.html",
+       "file": "psy-waiting.html",
        "action": "new",
-       "ksa": "A",
-       "title": "把岗位拆开重组：它接管之后这个岗位还剩什么",
-       "seo": "AI 接管之后，HR 岗位该怎么重新设计？",
-       "desc": "",
+       "ksa": "K",
+       "title": "等待心理学",
+       "seo": "让员工等待的时候，怎么让等待不那么难熬",
+       "desc": "等待的痛苦几乎跟时长无关，跟别的四件事有关。这四件事你全都控制得了。",
        "free": true,
        "ready": true
       },
       {
-       "file": "hr-org-2.html",
+       "file": "psy-labor.html",
        "action": "new",
-       "ksa": "A",
-       "title": "你会的哪些东西正在被模型吃掉",
-       "seo": "HR 的哪些技能正在被 AI 取代？哪些反而更值钱",
-       "desc": "",
+       "ksa": "S",
+       "title": "劳动错觉：把过程演出来",
+       "seo": "为什么 AI 答得太快反而没人信？劳动错觉与过程可见性",
+       "desc": "一个反直觉的现象：同样的答案，立刻给出来的那个，用户觉得更不可信、更不值钱。",
        "free": true,
        "ready": true
       },
       {
-       "file": "hr-org-3.html",
+       "file": "psy-peak-end.html",
        "action": "new",
        "ksa": "A",
-       "title": "哪些能力反而更值钱了",
-       "seo": "AI 时代 HR 哪些能力在升值？按 KSA 拆开看",
-       "desc": "接能力词典",
-       "free": false,
+       "title": "峰终定律：这是 HR 的主场",
+       "seo": "峰终定律怎么用在员工体验和 HR 产品设计上",
+       "desc": "这一条你可能已经在员工旅程设计里用过了。这一节讲怎么把同一把尺子，用到你做的 AI 产品上。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "算法厌恶：它犯一次错就被永久拉黑",
+     "lessons": [
+      {
+       "file": "psy-aversion.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "算法厌恶：犯一次错就被拉黑",
+       "seo": "算法厌恶是什么？为什么 AI 犯一次错人们就再也不用了",
+       "desc": "这是这一整章里对 HR 最要命的一条。它有扎实的实验支撑，也有明确的解法——而解法便宜得让人意外。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "psy-error-comms.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "怎么讲清楚「它有 8% 会错」",
+       "seo": "怎么跟老板和同事说清楚 AI 的错误率而不被否决",
+       "desc": "你知道它会错，你也知道错误率比人低。但这句话说不好，项目当场就死。这一节讲怎么说。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "信任与防御：不是不会用，是不敢用",
+     "lessons": [
+      {
+       "file": "psy-trust-calib.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "信任校准：半信半疑最好",
+       "seo": "怎么让用户对 AI 的信任刚刚好？信任校准设计",
+       "desc": "用户对你的 AI 信任太低不用，信任太高不查。这两头都出事，而且第二头更安静。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "psy-defense.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "防御心理：不是不会，是不敢",
+       "seo": "员工为什么不敢用 HR 的 AI 工具？防御心理与心理安全",
+       "desc": "你以为要做培训，其实要做的是让他放心。尤其当这个工具属于 HR——一个天然让人紧张的部门。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "psy-mental-model.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "心智模型：拿错了说明书",
+       "seo": "用户为什么用错 AI？心智模型与预期管理",
+       "desc": "用户会用他熟悉的东西来理解你的新东西。他套错了模板，后面所有的困惑都从这里来。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "长期使用的三个坑",
+     "lessons": [
+      {
+       "file": "psy-honeymoon.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "蜜月悬崖：期望是要还的",
+       "seo": "AI 产品上线后为什么用着用着就没人用了？蜜月悬崖",
+       "desc": "上线第一周使用率很好看，第三周开始掉，第二个月没人提了。这不是产品变差了，是期望在结账。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "psy-ai-discount.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "AI 标签折扣",
+       "seo": "为什么标注了 AI 生成的内容会被打折？AI 标签效应",
+       "desc": "一个让人不舒服但反复被验证的现象。它直接影响你的方案、你的报告、以及你自己的专业形象。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "psy-offload.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "认知卸载：一边用一边怕废掉",
+       "seo": "用 AI 会不会让人的能力退化？认知卸载与专业感",
+       "desc": "这是一种真实的焦虑，而且不该被安慰掉——因为它指向的风险是真的。这一节讲怎么处理它，也讲怎么处理你自己的那份。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "收官：反馈与上线前清单",
+     "lessons": [
+      {
+       "file": "psy-feedback.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "为什么没人点踩",
+       "seo": "为什么用户不给 AI 反馈？反馈设计与真实信号",
+       "desc": "你在界面上放了「有帮助 / 没帮助」，一个月收到三条反馈，两条是测试时自己点的。这一节讲为什么，以及怎么拿到真信号。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "psy-checklist.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "上线前过一遍",
+       "seo": "HR 的 AI 产品上线前检查清单：十二个心理设计问题",
+       "desc": "这一章讲的十来个效应，压成一张能在会议室里过一遍的清单。点头之前，逐条问自己。",
+       "free": true,
        "ready": true
       }
      ]
     }
-   ],
-   "color": "#D97706"
+   ]
   },
   {
    "id": "p-oss",

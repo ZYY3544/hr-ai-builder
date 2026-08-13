@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>为什么 AI 答得太快反而没人信？劳动错觉与过程可见性 · HR AI Builder</title>
+<meta name="description" content="一个反直觉的现象：同样的答案，立刻给出来的那个，用户觉得更不可信、更不值钱。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="为什么 AI 答得太快反而没人信？劳动错觉与过程可见性">
+<meta property="og:description" content="一个反直觉的现象：同样的答案，立刻给出来的那个，用户觉得更不可信、更不值钱。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "为什么 AI 答得太快反而没人信？劳动错觉与过程可见性",
+ "articleSection": "第八篇章 · 等待与过程：难受的不是那几秒",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 等待与过程：难受的不是那几秒</div>
+    <h1>劳动错觉：秒回的答案，没人信</h1>
+    <p class="subtitle">一个反直觉的现象：同样的答案，立刻给出来的那个，用户觉得更不可信、更不值钱。</p>
+  </header>
+
+  <div class="sec-label">先看现象</div>
+  <div class="bad"><span class="t">✕ 秒回</span>员工问：「我这种情况年假能休几天？」<br>AI 立刻回：「你可以休 10 天。」<br>员工心里：<b>「它认真算了吗？」</b>——然后还是来问你一遍。</div>
+  <div class="good"><span class="t">✓ 把过程显出来</span>「正在查你的入职日期…（2021-03，司龄 5 年）<br>正在查适用条款…（《员工手册》第 4.2 条，司龄满 5 年不满 10 年）<br>正在核对今年已休…（已休 2 天）<br>→ 你今年还可以休 8 天。」<br>员工心里：<b>「哦，是这么算的。」</b>——不再来问。</div>
+  <p>两者答案可以完全一样。差别在于第二个<b>让人看见了推理过程</b>，于是它从「一个断言」变成了「一个可以检查的推导」。</p>
+
+  <div class="sec-label">这不是演戏，这有两个真实收益</div>
+  <table class="htab">
+    <tr><td><b>① 可验证</b></td><td>员工能自己看出来「它用的是我的入职日期吗」——<b>这跟第一篇章说的「只引用不概括」是同一件事</b>，只是从防幻觉变成了建信任</td></tr>
+    <tr><td><b>② 出错时可定位</b></td><td>如果它算错了，员工能指出错在哪一步（「我 2020 年就入职了」），而不是笼统地说「不对」。<b>这让纠错变得可能</b></td></tr>
+  </table>
+
+  <div class="sec-label">但有个度，过了就恶心</div>
+  <div class="stuck"><span class="t">别为了显得努力而假装忙</span>硬加进度条、故意延迟、编造「正在深度分析…」这类没有实质的步骤——用户识别得出来，一旦识破，信任的损失比直接秒回还大。<br><b>判据很简单：每一个显示出来的步骤，必须对应一个真实发生的动作。</b>这一条在第五篇章讲过（过程条每段对应真实事件），这里是它的心理学依据。</div>
+
+  <div class="sec-label">HR 场景的一个特殊用法</div>
+  <p>把过程显出来，还能顺带解决一个老问题：<b>员工不知道 HR 在忙什么。</b>「HR 就是发发通知」这种印象，很大程度来自你的工作过程是完全不可见的。让 agent 把它替你做的那部分显出来，等于顺带把这份工作的复杂度显出来了。</p>
+
+  <div class="try"><span class="t">今天就试</span>拿你的政策问答或者任何一个 agent，让它在给结论之前先输出「我查了哪几条、用了你的哪些信息」。<b>对比一下前后，员工的追问会不会变少。</b></div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

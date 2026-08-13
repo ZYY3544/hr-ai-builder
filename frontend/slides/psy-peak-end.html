@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>峰终定律怎么用在员工体验和 HR 产品设计上 · HR AI Builder</title>
+<meta name="description" content="这一条你可能已经在员工旅程设计里用过了。这一节讲怎么把同一把尺子，用到你做的 AI 产品上。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="峰终定律怎么用在员工体验和 HR 产品设计上">
+<meta property="og:description" content="这一条你可能已经在员工旅程设计里用过了。这一节讲怎么把同一把尺子，用到你做的 AI 产品上。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "峰终定律怎么用在员工体验和 HR 产品设计上",
+ "articleSection": "第八篇章 · 等待与过程：难受的不是那几秒",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 等待与过程：难受的不是那几秒</div>
+    <h1>峰终定律：用户只记得峰值和结尾</h1>
+    <p class="subtitle">这一条你可能已经在员工旅程设计里用过了。这一节讲怎么把同一把尺子，用到你做的 AI 产品上。</p>
+  </header>
+
+  <div class="sec-label">规律本身</div>
+  <div class="l-callout">人对一段经历的评价，几乎完全由<b>最强烈的那个瞬间（峰）</b>和<b>结束时的感受（终）</b>决定，而跟过程的长短、平均体验关系很小。这是 Kahneman 等人研究出的稳定现象。</div>
+  <p>这对 HR 来说不是新东西——<b>员工旅程设计本来就在用它</b>：入职第一天、晋升宣布那一刻、离职最后一天，这几个点的投入产出比远高于中间那些日常。</p>
+
+  <div class="sec-label">用到你做的 AI 产品上</div>
+  <table class="htab">
+    <tr><th>问自己</th><th>HR 场景的答案通常是</th></tr>
+    <tr><td><b>峰在哪？</b></td><td>它第一次真的帮上忙的那一刻（「哦，这个真省事」），<b>或者第一次出错让人尴尬的那一刻</b></td></tr>
+    <tr><td><b>终在哪？</b></td><td>拿到结果之后的那一下——而这一下,大多数产品是空的：结果一出，页面就没了</td></tr>
+  </table>
+  <div class="bad"><span class="t">✕ 常见的坏结尾</span>agent 给完结果，对话就结束了。用户拿着一个答案，不知道对不对、不知道接下来干嘛、不知道有问题找谁。<b>这段体验的最后一个感受是「悬着」。</b></div>
+  <div class="good"><span class="t">✓ 便宜的好结尾</span>结果之后补三句：<b>这个结论基于什么 · 哪些情况它可能不准 · 有疑问找谁。</b><br>成本几乎为零，但它把结尾从「悬着」变成了「踏实」。</div>
+
+  <div class="sec-label">负向的峰更值得管</div>
+  <p>坏的峰比好的峰记得牢。所以对 HR 的 AI 产品来说，<b>第一优先不是制造惊喜，是消灭尴尬瞬间</b>：</p>
+  <table class="htab">
+    <tr><td>它把员工的名字搞错了</td><td>这是个小 bug，但它就是那个峰</td></tr>
+    <tr><td>它给了一个明显违反常识的结论</td><td>之后这个人再也不信它</td></tr>
+    <tr><td>它在公开场合（群里、会上）出了洋相</td><td><b>一次就够，而且会被传播</b></td></tr>
+  </table>
+  <div class="l-callout">这条跟下一节的算法厌恶接得上：<b>AI 犯错的成本不是「这次错了」，是「从此以后」。</b>所以宁可让它在不确定时说「这个我不确定，建议找 HR 确认」——一次示弱，好过一次翻车。</div>
+
+  <div class="try"><span class="t">今天就试</span>找一个你做的东西（agent、表单、流程都行），画出它的峰和终。<b>然后只做一件事：把结尾补上三句。</b>这是这一章里投入产出比最高的一个动作。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

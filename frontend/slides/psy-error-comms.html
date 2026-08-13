@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么跟老板和同事说清楚 AI 的错误率而不被否决 · HR AI Builder</title>
+<meta name="description" content="你知道它会错，你也知道错误率比人低。但这句话说不好，项目当场就死。这一节讲怎么说。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么跟老板和同事说清楚 AI 的错误率而不被否决">
+<meta property="og:description" content="你知道它会错，你也知道错误率比人低。但这句话说不好，项目当场就死。这一节讲怎么说。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么跟老板和同事说清楚 AI 的错误率而不被否决",
+ "articleSection": "第八篇章 · 算法厌恶：它犯一次错就被永久拉黑",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 算法厌恶：它犯一次错就被永久拉黑</div>
+    <h1>怎么把「它有 8% 会错」说出口</h1>
+    <p class="subtitle">你知道它会错，你也知道错误率比人低。但这句话说不好，项目当场就死。这一节讲怎么说。</p>
+  </header>
+
+      <div class="sec-label">先看两种说法的下场</div>
+      <div class="bad"><span class="t">✕「它的准确率是 92%」</span>老板听到的是：<b>「有 8% 的员工会被搞错。」</b><br>接下来的问题一定是「那 8% 怎么办？」——而你如果答「人工复核」，他会问「那还不如全人工」。<b>对话到此结束。</b></div>
+      <div class="good"><span class="t">✓「现在人工初筛的漏检率大概是 15%，它是 8%，而且它漏的那些我们能查出来是哪几类」</span>老板听到的是：<b>比现状好，而且可控。</b><br>这不是话术技巧，是把<b>比较基准从「完美」换成了「现状」</b>。</div>
+      <p>算法厌恶的核心是<b>拿 AI 跟完美比，拿人跟人比</b>。你要做的第一件事，就是把这个双标摆到桌面上——但不是去指责它，是给出现状的数字。</p>
+
+      <div class="sec-label">四句话的说法</div>
+      <table class="htab">
+        <tr><td><b>① 给基准</b></td><td>「现在我们人工做，漏检大概是 X%」——<b>没有这一句，8% 就是凭空的坏消息</b></td></tr>
+        <tr><td><b>② 说错的性质</b></td><td>「它漏的主要是跨行业转岗的人，因为关键词对不上」——可描述的错误比未知的错误好接受十倍</td></tr>
+        <tr><td><b>③ 说兜底</b></td><td>「所有它判'不符'的，都进人工复核池，不直接淘汰」</td></tr>
+        <tr><td><b>④ 说怎么知道它变坏了</b></td><td>「每月跑一次评测，掉 3 分就停下来查」——<b>这一句是最能打消疑虑的</b>，因为它证明这不是一次性赌博</td></tr>
+      </table>
+      <div class="l-callout">第 ④ 句你已经有了——第三篇章的评测集、第七篇章焊进循环的自动评测，就是这句话的底气。<b>没有那些东西，这句话说出来是空的。</b></div>
+
+      <div class="sec-label">一个绝对不要做的事</div>
+      <div class="stuck"><span class="t">✕ 不要藏错误率</span>「基本没什么问题」「准确率很高」——这类模糊表述在第一次出错时会加倍反噬：<b>你不只错了，你还骗了人。</b><br>而且 HR 场景一定会出错被发现，因为受影响的是活人，他们会说话。<br><b>主动说出错误率，是你在出错那天唯一的护身符。</b></div>
+
+      <div class="sec-label">对员工要换一套说法</div>
+      <p>对老板讲的是投入产出，对员工讲的是<b>「这件事对你意味着什么」</b>：</p>
+      <div class="good"><span class="t">✓ 对员工的版本</span>「简历初筛这一步现在有 AI 帮着捞人，它的作用是<b>把可能相关的都捞出来，不做淘汰决定</b>。最终看简历的还是招聘同事。如果你觉得自己被漏了，这里可以直接申诉。」<br>——三件事：<b>它干什么、它不干什么、你有什么权利。</b></div>
+
+      <div class="try"><span class="t">今天就试</span>把你手上任何一个 AI 应用，按那四句话写一遍说明。<b>写不出第 ① 句（现状基准）的，说明你还不知道人工做得怎么样</b>——那才是你真正该先补的东西。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

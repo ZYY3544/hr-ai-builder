@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR 内部产品的用户心理跟 C 端有什么不一样？ · HR AI Builder</title>
+<meta name="description" content="C 端产品做得烂，用户卸载走人。HR 做的东西做得烂，用户走不掉——这一条差别，决定了这一整章。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="HR 内部产品的用户心理跟 C 端有什么不一样？">
+<meta property="og:description" content="C 端产品做得烂，用户卸载走人。HR 做的东西做得烂，用户走不掉——这一条差别，决定了这一整章。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "HR 内部产品的用户心理跟 C 端有什么不一样？",
+ "articleSection": "第八篇章 · 你的用户没得选：内部产品的特殊处境",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 你的用户没得选：内部产品的特殊处境</div>
+    <h1>你的用户没得选，这改变了一切</h1>
+    <p class="subtitle">C 端产品做得烂，用户卸载走人。HR 做的东西做得烂，用户走不掉——这一条差别，决定了这一整章。</p>
+  </header>
+
+  <div class="sec-label">走不掉的用户，会变成什么</div>
+  <table class="htab">
+    <tr><th></th><th>C 端用户</th><th>你的内部用户</th></tr>
+    <tr><td><b>不满意时</b></td><td>卸载，你在数据上看得见</td><td><b>继续用，但心里记着</b>——你在任何数据上都看不见</td></tr>
+    <tr><td><b>反馈</b></td><td>会给差评，因为跟你没关系</td><td>当面说「挺好的」，转头跟同事说「HR 又搞这些」</td></tr>
+    <tr><td><b>抵抗形式</b></td><td>流失</td><td><b>消极合规</b>：填了，但乱填；用了，但绕过；开会点头，回去照旧</td></tr>
+    <tr><td><b>你的指标</b></td><td>留存率会诚实地告诉你</td><td>使用率可能很好看，因为是强制的</td></tr>
+  </table>
+  <div class="l-callout"><b>这是 HR 产品最危险的地方：坏消息不会自己找上门。</b>C 端产品做砸了三天内就知道，HR 的东西做砸了可能半年后才在敬业度调研里冒出来一句「流程越来越形式主义」。</div>
+
+  <div class="sec-label">所以你要主动去找那些看不见的信号</div>
+  <table class="htab">
+    <tr><td><b>绕过率</b></td><td>有多少人还在用旧办法、私下发 Excel 给你？这个数比使用率诚实</td></tr>
+    <tr><td><b>填写质量</b></td><td>字段填满了，但内容是「见附件」「同上」「无」——<b>这是消极抵抗的指纹</b></td></tr>
+    <tr><td><b>二次询问</b></td><td>用完还是来问你同一个问题，说明它没真解决问题，只是多了一道手续</td></tr>
+    <tr><td><b>谁在替谁用</b></td><td>一个部门永远是助理在操作——说明真正的目标用户没接受它</td></tr>
+  </table>
+
+  <div class="sec-label">一个反直觉的推论</div>
+  <div class="l-callout">正因为他们走不掉，<b>你反而要比 C 端产品更在意体验，而不是更不在意。</b>C 端的坏体验会流失掉，损失一次结清；组织内的坏体验会沉淀成怨气，一次次叠加到「HR 这帮人不干正事」这个总账上——而那个总账，会在你下次推任何事情的时候拿出来结。</div>
+  <p>这一章讲的十几个心理效应，本质上都在回答同一个问题：<b>怎么让一个没得选的人，愿意真的用。</b></p>
+
+  <div class="try"><span class="t">今天就试</span>挑一个你们已经上线的 HR 系统或流程，别看使用率，去查那四个信号：有没有人绕过、填写质量怎么样、还有没有人来问同样的问题、是不是助理在替老板用。<b>你多半会发现一个跟报表完全不同的真相。</b></div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

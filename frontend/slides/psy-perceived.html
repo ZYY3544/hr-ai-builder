@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>系统响应明明很快，用户为什么还是觉得慢？感知性能设计 · HR AI Builder</title>
+<meta name="description" content="用户的秒表和服务器的秒表走得不一样。这一节讲清楚差在哪，以及怎么在不优化一行代码的前提下让它「变快」。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="系统响应明明很快，用户为什么还是觉得慢？感知性能设计">
+<meta property="og:description" content="用户的秒表和服务器的秒表走得不一样。这一节讲清楚差在哪，以及怎么在不优化一行代码的前提下让它「变快」。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "系统响应明明很快，用户为什么还是觉得慢？感知性能设计",
+ "articleSection": "第八篇章 · 你的用户没得选：内部产品的特殊处境",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 你的用户没得选：内部产品的特殊处境</div>
+    <h1>工程指标及格了，为什么还有人骂慢</h1>
+    <p class="subtitle">用户的秒表和服务器的秒表走得不一样。这一节讲清楚差在哪，以及怎么在不优化一行代码的前提下让它「变快」。</p>
+  </header>
+
+  <div class="sec-label">同样 5 秒，两种体感</div>
+  <div class="bad"><span class="t">✕ 转圈 5 秒</span>点提交 → 一个转圈的图标 → 5 秒 → 出结果。<br>用户体感：<b>「卡了吧？」「是不是没点上？」</b>——很多人会在第 3 秒重复点击。</div>
+  <div class="good"><span class="t">✓ 有进展的 5 秒</span>点提交 →「正在读取你的考勤记录…」→「正在比对制度条款…」→「正在生成说明…」→ 出结果。<br>同样 5 秒，体感明显更短，而且<b>没人会重复点击</b>。</div>
+  <p>差别不在速度，在<b>不确定性</b>。转圈提供的信息是零：不知道到哪一步了、不知道还要多久、不知道是不是坏了。而人对不确定的等待的忍耐度，远低于对确定的等待。</p>
+
+  <div class="sec-label">三个不用改性能的提速手段</div>
+  <table class="htab">
+    <tr><td><b>① 显示进度而不是显示忙</b></td><td>把过程拆成几步报给用户。哪怕步骤是估的，也比转圈强</td></tr>
+    <tr><td><b>② 先出一部分</b></td><td>能先给的先给。查政策问答时，先把找到的原文段落显示出来，再慢慢生成解释</td></tr>
+    <tr><td><b>③ 把等待填满</b></td><td>等待时展示跟这次任务有关的信息（「本次将检查 3 项制度」），而不是无关的动画</td></tr>
+  </table>
+
+  <div class="sec-label">HR 场景里最该改的那个地方</div>
+  <div class="l-callout"><b>不是系统页面，是你自己的回复。</b><br>员工发消息问一个政策问题，你在查——对他来说这就是「加载中」，而且是一个<b>没有任何进度提示的加载中</b>。<br>回一句「我查一下制度，大概十分钟给你」，感知等待时间直接减半，成本是零。</div>
+  <p>这一条推广开来就是：<b>凡是让人等的地方，都适用感知性能。</b>审批走到哪一步了、offer 在谁那儿卡着、调薪什么时候能定——HR 的工作里到处都是「转圈」，而它们几乎都可以变成有进度的等待。</p>
+
+  <div class="try"><span class="t">今天就试</span>找出你们流程里最长的那个等待（审批、背调、offer 审批都行），问一句：<b>等的人现在能看到进度吗？</b>看不到的话，最小成本的改法是什么——不一定要改系统，一条自动通知可能就够了。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

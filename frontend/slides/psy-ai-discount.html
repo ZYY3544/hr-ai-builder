@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>为什么标注了 AI 生成的内容会被打折？AI 标签效应 · HR AI Builder</title>
+<meta name="description" content="一个让人不舒服但反复被验证的现象。它直接影响你的方案、你的报告、以及你自己的专业形象。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="为什么标注了 AI 生成的内容会被打折？AI 标签效应">
+<meta property="og:description" content="一个让人不舒服但反复被验证的现象。它直接影响你的方案、你的报告、以及你自己的专业形象。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "为什么标注了 AI 生成的内容会被打折？AI 标签效应",
+ "articleSection": "第八篇章 · 长期使用的三个坑",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第八篇章 · 长期使用的三个坑</div>
+    <h1>同样的内容，标上「AI 生成」就掉价</h1>
+    <p class="subtitle">一个让人不舒服但反复被验证的现象。它直接影响你的方案、你的报告、以及你自己的专业形象。</p>
+  </header>
+
+      <div class="sec-label">现象</div>
+      <p>同一份内容，标注「AI 生成」的那一份，在评价上通常低于未标注的那一份——即使内容一模一样。人们会觉得它<b>更不用心、更不可信、更没有价值</b>。</p>
+      <div class="l-callout">这跟内容质量无关，跟<b>归因</b>有关：人们认为价值来自投入的心力，而「AI 做的」意味着「没花心思」。</div>
+
+      <div class="sec-label">对 HR 来说，这有三个具体后果</div>
+      <table class="htab">
+        <tr><th>场景</th><th>后果</th></tr>
+        <tr><td>你的方案被认出是 AI 写的</td><td>业务方觉得「HR 没认真想」，方案本身的说服力打折</td></tr>
+        <tr><td>员工收到的通知像 AI 写的</td><td><b>「公司连给我们发个通知都懒得自己写」</b>——这是情感伤害，比效率损失严重</td></tr>
+        <tr><td>拒信、绩效反馈像 AI 写的</td><td>最糟的一类。<b>在人最在意的时刻，让他觉得自己不值得一个人来写</b></td></tr>
+      </table>
+
+      <div class="sec-label">不是让你藏起来</div>
+      <div class="stuck"><span class="t">藏是错的解</span>被发现的代价远大于标注的代价，而且在 HR 场景里被发现的概率很高——<b>格式化的措辞、过于工整的排比、没有具体细节，人都认得出来。</b>更别说这里面还有合规问题：涉及人事决定的，本来就该披露 AI 参与。</div>
+
+      <div class="sec-label">正确的三个做法</div>
+      <table class="htab">
+        <tr><td><b>① 分场景决定用不用</b></td><td><b>越是情感浓度高的场合，越要人写</b>：拒信、绩效谈话、慰问、致谢。AI 可以帮你打草稿，但最后那一遍必须你改，而且要改进具体细节</td></tr>
+        <tr><td><b>② 标注的方式很重要</b></td><td>「本文由 AI 生成」= 折扣。<br>「本报告的数据处理由脚本完成，结论由 XXX 判断和撰写」= <b>反而增加可信度</b>——因为它说清了人在哪里</td></tr>
+        <tr><td><b>③ 留下人的指纹</b></td><td>具体的细节、只有你知道的上下文、一句带判断的话——<b>这些是 AI 写不出来的，也是读者认「这是人写的」的依据</b></td></tr>
+      </table>
+      <div class="l-callout">第 ② 条值得记住：<b>折扣打的不是「用了 AI」，是「人没参与」。</b>把人的参与说清楚，标注反而变成加分项。这跟第四篇章的两段架构是同一件事——数字归代码，判断归你，而你要把这个分工讲出来。</div>
+
+      <div class="try"><span class="t">今天就试</span>翻一下你们最近发出去的员工通知，问一句：<b>这里面有没有一句话是只有我们公司会说的？</b>一句都没有，那它读起来就是 AI 写的——不管它是不是。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
