@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么把好看说清楚？给 AI 用的审美词汇表 · HR AI Builder</title>
+<meta name="description" content="你跟 AI 说「做好看点」，它只能瞎猜。这一节给你十二个词，把感觉换成指令。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么把好看说清楚？给 AI 用的审美词汇表">
+<meta property="og:description" content="你跟 AI 说「做好看点」，它只能瞎猜。这一节给你十二个词，把感觉换成指令。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么把好看说清楚？给 AI 用的审美词汇表",
+ "articleSection": "第九篇章 · 把审美翻译给 AI 听",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第九篇章 · 把审美翻译给 AI 听</div>
+    <h1>「好看」的十二种具体说法</h1>
+    <p class="subtitle">你跟 AI 说「做好看点」，它只能瞎猜。这一节给你十二个词，把感觉换成指令。</p>
+  </header>
+
+      <div class="sec-label">十二个词，够用了</div>
+      <table class="htab">
+        <tr><th>词</th><th>意思</th><th>不对时你会觉得</th></tr>
+        <tr><td><b>信息密度</b></td><td>单位面积承载的有效信息量</td><td>太空 / 太挤</td></tr>
+        <tr><td><b>视觉噪音</b></td><td>不承载信息的装饰元素</td><td>太乱、太花</td></tr>
+        <tr><td><b>呼吸感</b></td><td>内容之间的空隙是否充足</td><td>压抑、透不过气</td></tr>
+        <tr><td><b>视觉层级</b></td><td>元素之间的重要程度差异</td><td>重点不突出</td></tr>
+        <tr><td><b>视觉重量</b></td><td>某个元素抢注意力的能力</td><td>眼睛被不重要的东西勾走</td></tr>
+        <tr><td><b>亲密性</b></td><td>相关元素靠得够不够近</td><td>看不出哪些是一组的</td></tr>
+        <tr><td><b>对比度</b></td><td>文字和背景的明暗差</td><td>看不清（浅灰字是重灾区）</td></tr>
+        <tr><td><b>对齐</b></td><td>元素边缘是否落在同一条线上</td><td>歪歪扭扭说不上哪儿</td></tr>
+        <tr><td><b>色相/明度/饱和度</b></td><td>颜色的三个独立维度</td><td>颜色太扎眼 / 灰扑扑</td></tr>
+        <tr><td><b>有序变量</b></td><td>能表达大小顺序的视觉属性（深浅、大小）</td><td>图表里看不出高低</td></tr>
+        <tr><td><b>一致性</b></td><td>同类元素是否用同一套样式</td><td>不专业、拼凑感</td></tr>
+        <tr><td><b>眯眼测试</b></td><td>眯眼看还剩什么突出</td><td>——这是检验方法，不是问题</td></tr>
+      </table>
+
+      <div class="sec-label">从抱怨到指令的翻译表</div>
+      <table class="htab">
+        <tr><th>你（或老板）会说</th><th>翻译成</th><th>发给 AI 的话</th></tr>
+        <tr><td>「太乱了」</td><td>视觉噪音高 / 层级缺失</td><td>「装饰元素砍掉一半，整页只保留一个视觉重点」</td></tr>
+        <tr><td>「重点不突出」</td><td>层级差距不够</td><td>「主标题字号提到正文的 1.8 倍，其余加粗全部去掉」</td></tr>
+        <tr><td>「显得廉价」</td><td>配色超预算</td><td>「颜色收到一个主色加两档灰，去掉所有渐变和阴影」</td></tr>
+        <tr><td>「太挤了」</td><td>留白不足 / 信息密度过高</td><td>「加大页边距和行高，组间距拉到组内距的 4 倍」</td></tr>
+        <tr><td>「看着不专业」</td><td>一致性缺失</td><td>「统一字号档位到四档，表格样式全篇统一」</td></tr>
+        <tr><td>「看不清」</td><td>对比度不足</td><td>「正文颜色加深，浅灰字一律改为深灰」</td></tr>
+      </table>
+      <div class="l-callout"><b>右边那一列的共同点：全是可执行的、带数字的、能验收的。</b>「做好看点」没法验收，「组间距是组内距的 4 倍」一眼能验。这跟第四篇章「把口径写成规格」是同一个动作——<b>把模糊的判断变成可执行的规格。</b></div>
+
+      <div class="sec-label">最值钱的用法：反过来用</div>
+      <p>这套词真正的价值不是给 AI 下指令，是<b>让你能说出自己为什么不满意</b>。以前你只能说「我觉得不太对但说不上来」，现在你能说「层级不够，而且强调色用了三次」。</p>
+      <div class="good"><span class="t">✓ 说得出来，才改得动</span>说不出来的时候，你只能让 AI 重做一版，然后碰运气。<br>说得出来的时候，你能<b>定向地改一处</b>——而且改完你知道好在哪。</div>
+
+      <div class="try"><span class="t">今天就试</span>拿这张表，去说你上一节做眯眼测试那一页的问题。<b>逼自己用表里的词，不许说"就是感觉不太好"。</b></div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

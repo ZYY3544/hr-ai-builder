@@ -16,15 +16,15 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 127,
+   "lessons": 138,
    "copy": 40,
    "adapt": 20,
-   "new": 73,
-   "ready": 128,
+   "new": 86,
+   "ready": 139,
    "todo": 0
   },
   "access": {
-   "free": 108,
+   "free": 119,
    "locked": 19,
    "rule": "开篇与第零篇章全免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -1620,40 +1620,169 @@ window.COURSE = {
    ]
   },
   {
-   "id": "p-oss",
-   "num": "专题",
-   "title": "别忘了这两件事",
-   "desc": "HR 数据不出内网是硬约束 —— 所以本地部署对 HR 是真问题，不是极客爱好。",
-   "freeWhole": false,
+   "id": "p-9",
+   "num": "第九篇章",
+   "title": "审美工程：让 AI 做出拿得出手的东西",
+   "desc": "AI 把执行门槛打掉之后，人人十分钟能做出「能用」的东西，能用本身开始贬值，品味成了新的分水岭。天赋型的「创造美」教不了，但「看出哪里不对」和「说清要什么」，练了就会。",
+   "freeWhole": true,
+   "color": "#0F766E",
    "topics": [
     {
-     "title": "本地部署",
-     "desc": "",
+     "title": "品味成了新瓶颈",
      "lessons": [
       {
-       "file": "oss-local-size.html",
-       "action": "copy",
-       "ksa": "K",
-       "title": "你的电脑能跑多大的模型",
-       "seo": "普通电脑能跑多大的大模型？",
-       "desc": "",
+       "file": "taste-bottleneck.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "执行免费了，判断力涨价",
+       "seo": "AI 时代为什么审美变得更重要？执行门槛消失之后",
+       "desc": "这一章的前提是一句你已经在这门课里听过好几遍的话，只是这次落在感官层面。",
        "free": true,
        "ready": true
       },
       {
-       "file": "oss-local-tools.html",
-       "action": "copy",
+       "file": "taste-ai-flavor.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "「AI 味儿」是怎么来的",
+       "seo": "为什么 AI 做的东西一眼就能被认出来？AI 味儿的成因",
+       "desc": "你的方案被人一眼认出是 AI 做的——不是因为内容，是因为几个非常具体、可以逐条消除的特征。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "识别美的四个抓手",
+     "lessons": [
+      {
+       "file": "taste-hierarchy.html",
+       "action": "new",
        "ksa": "S",
-       "title": "Ollama 与 LM Studio 怎么上手",
-       "seo": "Ollama 和 LM Studio 怎么用？本地跑大模型入门",
-       "desc": "",
+       "title": "层级：一屏只有一个主角",
+       "seo": "怎么让页面重点突出？视觉层级的三个手段",
+       "desc": "第一个抓手，也是最重要的一个。大多数\"看起来乱\"，本质都是这一条没做到。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-whitespace.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "留白与对齐",
+       "seo": "为什么排版看起来挤？留白、对齐与亲密性原则",
+       "desc": "第二个抓手。它最不起眼，但改动它的投入产出比最高——因为你一个字都不用改。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-restraint.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "克制：给颜色和字体做预算",
+       "seo": "配色和字体用多少才好看？给设计做预算",
+       "desc": "第三个抓手，也是最反直觉的一个：让东西变好看的方法，通常是删，不是加。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-consistency.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "一致性：系统感从哪来",
+       "seo": "怎么让一套材料看起来专业？一致性与设计系统",
+       "desc": "第四个抓手。前三个管单页好不好看，这一个管一整套东西看起来像不像一个人做的。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "把审美翻译给 AI 听",
+     "lessons": [
+      {
+       "file": "taste-vocab.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "「好看」的具体说法",
+       "seo": "怎么把好看说清楚？给 AI 用的审美词汇表",
+       "desc": "你跟 AI 说「做好看点」，它只能瞎猜。这一节给你十二个词，把感觉换成指令。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-spec.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "从形容词到规格书",
+       "seo": "怎么给 AI 写视觉需求？从形容词到可执行规格",
+       "desc": "「简洁大气」「高级感」「专业一点」——这些词 AI 听不懂，因为它们没有对应的具体做法。这一节讲怎么换算。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-hr-outputs.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "HR 三类产出的具体要求",
+       "seo": "HR 的汇报材料、制度文档、员工通知分别该怎么做",
+       "desc": "前面的原则是通用的。这一节落到你每周真正在做的三样东西上——它们的读者不同，要求也不同。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "数据图表：HR 最容易做丑的地方",
+     "lessons": [
+      {
+       "file": "taste-chart-type.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "图表选型：什么数据配什么图",
+       "seo": "HR 数据用什么图表？图表选型的四个问题",
+       "desc": "图表做丑是小事，图表选错是大事——它会让正确的数据传达出错误的结论。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-chart-quality.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "图表的审美判据",
+       "seo": "怎么让数据图表变好看？图表的减法原则",
+       "desc": "选对了型之后，让图变好看的动作几乎全是删——删掉的每一样，都是在让数据本身更清楚。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "参考库与验收",
+     "lessons": [
+      {
+       "file": "taste-reference.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "建立自己的参考库",
+       "seo": "怎么提高审美？建立参考库并让 AI 照着做",
+       "desc": "识别美靠积累，而积累是可以刻意做的——但看的方式决定了看多少有用。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "taste-checklist.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "验收清单",
+       "seo": "材料发出去之前的审美检查清单",
+       "desc": "这一章的所有内容，压成一张发出去之前能用两分钟走完的清单。",
        "free": true,
        "ready": true
       }
      ]
     }
-   ],
-   "color": "#475569"
+   ]
   }
  ]
 };

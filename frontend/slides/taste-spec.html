@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么给 AI 写视觉需求？从形容词到可执行规格 · HR AI Builder</title>
+<meta name="description" content="「简洁大气」「高级感」「专业一点」——这些词 AI 听不懂，因为它们没有对应的具体做法。这一节讲怎么换算。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么给 AI 写视觉需求？从形容词到可执行规格">
+<meta property="og:description" content="「简洁大气」「高级感」「专业一点」——这些词 AI 听不懂，因为它们没有对应的具体做法。这一节讲怎么换算。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么给 AI 写视觉需求？从形容词到可执行规格",
+ "articleSection": "第九篇章 · 把审美翻译给 AI 听",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第九篇章 · 把审美翻译给 AI 听</div>
+    <h1>从形容词到规格书</h1>
+    <p class="subtitle">「简洁大气」「高级感」「专业一点」——这些词 AI 听不懂，因为它们没有对应的具体做法。这一节讲怎么换算。</p>
+  </header>
+
+      <div class="sec-label">形容词换算表</div>
+      <table class="htab">
+        <tr><th>你想要</th><th>实际是在要求</th></tr>
+        <tr><td><b>简洁</b></td><td>元素少、颜色少、装饰少。<b>不是内容少</b></td></tr>
+        <tr><td><b>大气</b></td><td>留白多、字号档位拉开、少而大的元素</td></tr>
+        <tr><td><b>高级 / 不廉价</b></td><td>低饱和配色、无渐变无阴影、字体统一、间距充足</td></tr>
+        <tr><td><b>专业</b></td><td>一致性强、对齐严格、用词统一</td></tr>
+        <tr><td><b>清晰</b></td><td>层级明显、分组清楚、对比度够</td></tr>
+        <tr><td><b>有活力</b></td><td>强调色更饱和、元素大小对比更强 —— <b>但注意这跟"高级"是打架的</b>，先想清楚要哪个</td></tr>
+      </table>
+      <div class="stuck"><span class="t">最后一行值得停一下</span>形容词经常互相冲突。「既要专业稳重又要活泼有设计感」——这是最常见的需求自相矛盾，而 AI 会试图两个都满足，结果两个都不像。<b>换算成具体规格之后，冲突会立刻暴露出来</b>，这本身就是换算的价值。</div>
+
+      <div class="sec-label">一份能直接用的规格模板</div>
+      <div class="say">帮我做一页给管理层的汇报，按以下规格执行：
+
+【内容】
+主结论一句：技术序列 P25 连续两季低于同城，流失风险集中在 3-5 年
+支撑数据：分序列的 P25/P50/P75 三档
+建议动作：两条
+
+【层级】
+- 整页只有一个视觉主角：最上面那句结论
+- 结论字号 = 正文的 2 倍，正文以下全部中性灰
+- 数据表降级为证据，不要占据主视觉
+
+【颜色】
+- 主色 #1677FF，文字用深灰 #0F172A 和中灰 #64748B
+- 强调色 #D97706，整页只允许出现一次，用在最需要看的那个数上
+- 不要渐变、不要阴影、不要彩色底纹
+
+【间距与对齐】
+- 组内间距 8，组间距 32
+- 所有内容左对齐到同一条线
+- 页边距不小于 48
+
+【禁止】
+- 不要装饰性图标
+- 不要把表格加满边框和隔行底色
+- 不要在结尾加总结性升华的句子</div>
+
+      <div class="sec-label">规格书的三段结构</div>
+      <p>看上面那份的结构，它永远是三段：<b>要什么（内容与层级）→ 用什么（颜色、间距的具体值）→ 不要什么（禁止清单）。</b></p>
+      <div class="l-callout"><b>第三段最容易被忽略，但它最有效。</b>因为 AI 的默认行为就是加东西——不明确禁止，它就会加。你的"禁止清单"其实就是上一节那六条 AI 味儿的反面。</div>
+
+      <div class="try"><span class="t">今天就试</span>把你常做的那类材料（汇报页/周报/方案封面都行）写一份规格书，存起来。<b>下次直接改内容那一段，其余照抄</b>——这份规格书就是你自己的设计系统。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

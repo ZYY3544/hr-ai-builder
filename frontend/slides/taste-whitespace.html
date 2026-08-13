@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>为什么排版看起来挤？留白、对齐与亲密性原则 · HR AI Builder</title>
+<meta name="description" content="第二个抓手。它最不起眼，但改动它的投入产出比最高——因为你一个字都不用改。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="为什么排版看起来挤？留白、对齐与亲密性原则">
+<meta property="og:description" content="第二个抓手。它最不起眼，但改动它的投入产出比最高——因为你一个字都不用改。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "为什么排版看起来挤？留白、对齐与亲密性原则",
+ "articleSection": "第九篇章 · 识别美的四个抓手",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第九篇章 · 识别美的四个抓手</div>
+    <h1>大多数丑，都丑在间距上</h1>
+    <p class="subtitle">第二个抓手。它最不起眼，但改动它的投入产出比最高——因为你一个字都不用改。</p>
+  </header>
+
+      <div class="sec-label">间距在传递信息，不只是好看</div>
+      <div class="l-callout"><b>靠得近的东西，人会自动认为它们是一伙的。</b>这条规律叫亲密性，它在你意识到之前就生效了。<br>所以间距不是装饰，<b>它是在告诉读者哪些内容属于同一组</b>——间距错了，等于分组错了。</div>
+      <div class="bad"><span class="t">✕ 最常见的错误：间距均匀</span>标题和正文之间 20px，正文各段之间 20px，段落和下一个标题之间也是 20px。<br>结果：<b>读者看不出哪个标题管哪几段</b>，只看到一堆等距的文字块。</div>
+      <div class="good"><span class="t">✓ 正确的间距是不均匀的</span>标题和它管的正文<b>靠近</b>（比如 8px），一组内容和下一组<b>拉开</b>（比如 32px）。<br>——同一组的靠近，不同组的拉开。这一条改完，文档的结构会突然"浮"出来。</div>
+
+      <div class="sec-label">留白：不是浪费，是呼吸</div>
+      <p>HR 的材料普遍偏挤，原因很实在：<b>信息多，又想一页放下。</b>但塞满的代价是没人读得进去。</p>
+      <table class="htab">
+        <tr><th>症状</th><th>改法</th></tr>
+        <tr><td>四边顶到页边</td><td>加大页边距。<b>宁可分两页</b></td></tr>
+        <tr><td>表格行挨着行</td><td>加行高，让每行有呼吸空间</td></tr>
+        <tr><td>文字块占满整行</td><td>限制行宽。中文一行 <b>25-35 个字</b>最舒服，一行五十个字没人读得下去</td></tr>
+      </table>
+
+      <div class="sec-label">对齐：一条看不见的线</div>
+      <p>页面上应该有<b>尽可能少的对齐线</b>。所有内容左边缘对齐在同一条线上，比"有的居中有的左对齐有的缩进"整洁得多——哪怕后者每个元素单独看都没问题。</p>
+      <div class="stuck"><span class="t">一个屡试不爽的检验</span>拿一把尺子（或者屏幕上拉一条辅助线）贴着你的内容左边缘往下走。<b>如果它需要挪好几次，你的页面就是乱的。</b></div>
+
+      <div class="say">这一页间距有问题，按这个改：
+- 间距不要均匀：标题和它下面的内容靠近，组与组之间明显拉开
+- 加大页边距，四周留出足够空白
+- 正文行宽限制在一行 30 个中文字左右
+- 所有内容统一左对齐到同一条线，不要混用居中和缩进
+- 表格加大行高</div>
+
+      <div class="try"><span class="t">今天就试</span>拿你最挤的那一页，<b>只调间距，一个字都别改。</b>改完前后对比一下——大多数人会惊讶于差别有多大。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

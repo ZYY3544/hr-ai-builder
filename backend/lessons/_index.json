@@ -607,22 +607,6 @@
   "spine": false,
   "ksa": "A"
  },
- "oss-local-size.html": {
-  "free": true,
-  "title": "你的电脑能跑多大的模型",
-  "seo": "普通电脑能跑多大的大模型？",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "oss-local-tools.html": {
-  "free": true,
-  "title": "Ollama 与 LM Studio 怎么上手",
-  "seo": "Ollama 和 LM Studio 怎么用？本地跑大模型入门",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
  "data-gen-vs-exec.html": {
   "title": "同一张表问三遍出三个数",
   "free": true
@@ -817,6 +801,58 @@
  },
  "psy-checklist.html": {
   "title": "上线前过一遍",
+  "free": true
+ },
+ "taste-bottleneck.html": {
+  "title": "执行免费了，判断力涨价",
+  "free": true
+ },
+ "taste-ai-flavor.html": {
+  "title": "「AI 味儿」是怎么来的",
+  "free": true
+ },
+ "taste-hierarchy.html": {
+  "title": "层级：一屏只有一个主角",
+  "free": true
+ },
+ "taste-whitespace.html": {
+  "title": "留白与对齐",
+  "free": true
+ },
+ "taste-restraint.html": {
+  "title": "克制：给颜色和字体做预算",
+  "free": true
+ },
+ "taste-consistency.html": {
+  "title": "一致性：系统感从哪来",
+  "free": true
+ },
+ "taste-vocab.html": {
+  "title": "「好看」的具体说法",
+  "free": true
+ },
+ "taste-spec.html": {
+  "title": "从形容词到规格书",
+  "free": true
+ },
+ "taste-hr-outputs.html": {
+  "title": "HR 三类产出的具体要求",
+  "free": true
+ },
+ "taste-chart-type.html": {
+  "title": "图表选型：什么数据配什么图",
+  "free": true
+ },
+ "taste-chart-quality.html": {
+  "title": "图表的审美判据",
+  "free": true
+ },
+ "taste-reference.html": {
+  "title": "建立自己的参考库",
+  "free": true
+ },
+ "taste-checklist.html": {
+  "title": "验收清单",
   "free": true
  }
 }

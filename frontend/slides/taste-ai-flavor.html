@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>为什么 AI 做的东西一眼就能被认出来？AI 味儿的成因 · HR AI Builder</title>
+<meta name="description" content="你的方案被人一眼认出是 AI 做的——不是因为内容，是因为几个非常具体、可以逐条消除的特征。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="为什么 AI 做的东西一眼就能被认出来？AI 味儿的成因">
+<meta property="og:description" content="你的方案被人一眼认出是 AI 做的——不是因为内容，是因为几个非常具体、可以逐条消除的特征。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "为什么 AI 做的东西一眼就能被认出来？AI 味儿的成因",
+ "articleSection": "第九篇章 · 品味成了新瓶颈",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第九篇章 · 品味成了新瓶颈</div>
+    <h1>「AI 味儿」是怎么来的</h1>
+    <p class="subtitle">你的方案被人一眼认出是 AI 做的——不是因为内容，是因为几个非常具体、可以逐条消除的特征。</p>
+  </header>
+
+  <div class="sec-label">视觉上的 AI 味儿</div>
+  <table class="htab">
+    <tr><th>特征</th><th>为什么会这样</th></tr>
+    <tr><td><b>什么都想强调</b></td><td>加粗、颜色、图标、边框全用上——因为你说的是「重点突出」，它就把所有它认为的重点都突出了。<b>结果是没有重点</b></td></tr>
+    <tr><td><b>元素都很"完整"</b></td><td>每个卡片都有图标+标题+副标题+按钮，整整齐齐但毫无节奏，像填空题填满了</td></tr>
+    <tr><td><b>渐变和阴影过量</b></td><td>模型见过的"好看"样例里这些多，它就堆</td></tr>
+    <tr><td><b>用色太多太饱和</b></td><td>没给它颜色预算，它就一个概念配一个颜色</td></tr>
+    <tr><td><b>间距均匀</b></td><td>所有间隔一样大 → <b>看不出哪些内容是一伙的</b></td></tr>
+  </table>
+
+  <div class="sec-label">文字上的 AI 味儿（HR 更常被这个坑）</div>
+  <table class="htab">
+    <tr><td><b>排比工整</b></td><td>「既要…又要…还要…」三段式排得过于整齐，人写不出这么齐</td></tr>
+    <tr><td><b>抽象名词堆叠</b></td><td>「赋能」「抓手」「闭环」「体系化」连用——<b>信息量为零但看着很忙</b></td></tr>
+    <tr><td><b>没有具体细节</b></td><td>通篇没有一个数字、一个人名、一个只有你们公司才有的事。<b>这是最强的识别特征</b></td></tr>
+    <tr><td><b>结尾必升华</b></td><td>「让我们共同努力，开创新局面」</td></tr>
+  </table>
+  <div class="l-callout">第三条最关键，也最容易改：<b>AI 写不出你公司的细节，因为它不知道。</b>所以只要文档里有一句「上季度技术序列走了 8 个人，其中 5 个是 2023 年那批校招」——这一句就把整篇的可信度拉回来了。<br>这跟第八篇章的 AI 标签折扣是同一件事：<b>读者认的不是"你用没用 AI"，是"人有没有参与"。</b></div>
+
+  <div class="sec-label">怎么消除：把话反着说</div>
+  <div class="say">这一版有几个问题，逐条改：
+1. 强调的东西太多。整页只保留一个视觉重点，其余全部降级为正文
+2. 颜色只允许用两种：一个主色 + 一个中性灰。删掉其余所有颜色
+3. 去掉所有渐变和阴影
+4. 间距不要均匀：同一组的元素靠近，不同组的拉开
+5. 删掉所有"赋能/抓手/闭环"这类词，换成具体说法
+6. 结尾不要升华，最后一句必须是一个具体的下一步动作</div>
+  <p>注意这段话的形态：<b>全是"删"和"限量"，几乎没有"加"。</b>这不是巧合——AI 的默认倾向是加，所以你的活儿主要是减。下一节的"克制"讲的就是这个。</p>
+
+  <div class="try"><span class="t">今天就试</span>拿一份 AI 帮你做的材料，用上面六条逐条过一遍。<b>你会发现改完之后它明显不像 AI 做的了，而你一个字的内容都没改。</b></div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

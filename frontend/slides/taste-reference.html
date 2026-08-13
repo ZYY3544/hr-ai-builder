@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>怎么提高审美？建立参考库并让 AI 照着做 · HR AI Builder</title>
+<meta name="description" content="识别美靠积累，而积累是可以刻意做的——但看的方式决定了看多少有用。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="怎么提高审美？建立参考库并让 AI 照着做">
+<meta property="og:description" content="识别美靠积累，而积累是可以刻意做的——但看的方式决定了看多少有用。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "怎么提高审美？建立参考库并让 AI 照着做",
+ "articleSection": "第九篇章 · 参考库与验收",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第九篇章 · 参考库与验收</div>
+    <h1>参考库：会看，然后让 AI 照着出活</h1>
+    <p class="subtitle">识别美靠积累，而积累是可以刻意做的——但看的方式决定了看多少有用。</p>
+  </header>
+
+      <div class="sec-label">大多数人的"看设计"是无效的</div>
+      <div class="bad"><span class="t">✕ 无效的看</span>刷到一个好看的页面，心想「哇挺好看」，然后划走。<br><b>三个月后你的审美一点没变</b>，因为你只完成了"感觉"，没完成"分析"。</div>
+      <div class="good"><span class="t">✓ 有效的看：三个问题</span>看到一个你觉得好的东西，停下来问三句：<br><b>① 它的视觉主角是谁？</b>（用眯眼测试）<br><b>② 它用了几种颜色、几种字号？</b>（数一下，通常比你以为的少得多）<br><b>③ 它的间距怎么分组的？</b>（哪些靠得近，哪些拉开了）<br><br>三句答完，你就把"感觉好"变成了三条可复用的信息。</div>
+
+      <div class="sec-label">存下来的方式很重要</div>
+      <table class="htab">
+        <tr><th>只存图</th><th>存图 + 三句话</th></tr>
+        <tr><td>下次翻出来还是只会说"这个好看"</td><td>下次能直接把那三句话变成给 AI 的规格</td></tr>
+      </table>
+      <p>建一个文件夹，每张参考图配一行字：<b>「主角是顶部的大数字；两色（深蓝+灰）；卡片间距是卡片内间距的 3 倍」</b>。攒三十张，你的审美就有了骨架。</p>
+
+      <div class="sec-label">怎么把参考喂给 AI</div>
+      <p>两种方式，效果差很多：</p>
+      <div class="bad"><span class="t">✕「照着这张图的风格做」</span>它会模仿表面：也用蓝色、也放卡片。但你要的往往不是那些表面特征。</div>
+      <div class="good"><span class="t">✓ 把参考翻译成规格再给它</span>「参考这个思路：<b>整页只有一个大数字当主角，其余全部中性灰；只用两种颜色；卡片之间的间距明显大于卡片内部的间距。</b>按这个做我的内容。」<br><br>——你给的是<b>结构</b>，不是外观。所以出来的东西会像那份参考"一样好"，而不是"长得一样"。</div>
+      <div class="l-callout">这正是这一章能教、而"创造美"不能教的原因：<b>好设计的结构是可以被描述的，而描述出来的东西 AI 就能执行。</b>你不需要会画，你需要会看和会说。</div>
+
+      <div class="sec-label">对 HR 的一个具体建议</div>
+      <p>别只存 UI 设计。<b>存那些你见过的、做得好的 HR 材料</b>：某次让你眼前一亮的组织汇报、某家公司写得特别清楚的员工手册、某个你觉得"这个通知写得真舒服"的邮件。<b>这类参考对你的价值远高于 Dribbble 上的漂亮界面</b>，因为它们的约束条件跟你一样。</p>
+
+      <div class="try"><span class="t">今天就试</span>建那个文件夹，先存三张。<b>存的时候必须写那三句话</b>——写不出来的，说明你还没真的看进去，那张先别存。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
