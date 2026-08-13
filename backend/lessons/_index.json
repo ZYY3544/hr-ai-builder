@@ -854,5 +854,33 @@
  "taste-checklist.html": {
   "title": "验收清单",
   "free": true
+ },
+ "jargon-why.html": {
+  "title": "术语为什么唬人",
+  "free": true
+ },
+ "jargon-rag.html": {
+  "title": "RAG：让它答之前先查资料",
+  "free": true
+ },
+ "jargon-training.html": {
+  "title": "微调、蒸馏、预训练",
+  "free": true
+ },
+ "jargon-tools.html": {
+  "title": "工具、MCP、Skill",
+  "free": true
+ },
+ "jargon-eval.html": {
+  "title": "Eval 与 benchmark",
+  "free": true
+ },
+ "jargon-table.html": {
+  "title": "一张表和一份问话清单",
+  "free": true
+ },
+ "jargon-deploy.html": {
+  "title": "开源、私有化部署、参数量",
+  "free": true
  }
 }

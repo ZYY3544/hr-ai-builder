@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>私有化部署是什么？开源模型和参数量对 HR 意味着什么 · HR AI Builder</title>
+<meta name="description" content="「私有化部署」是 HR SaaS 采购里最高频的一个词，也是最容易被含糊过去的一个。这一节把它拆开。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="私有化部署是什么？开源模型和参数量对 HR 意味着什么">
+<meta property="og:description" content="「私有化部署」是 HR SaaS 采购里最高频的一个词，也是最容易被含糊过去的一个。这一节把它拆开。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "私有化部署是什么？开源模型和参数量对 HR 意味着什么",
+ "articleSection": "第三篇章 · 训练、部署与工具：微调、蒸馏、私有化、MCP",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第三篇章 · 训练、部署与工具：微调、蒸馏、私有化、MCP</div>
+    <h1>开源与私有化部署：数据不出内网那条路</h1>
+    <p class="subtitle">「私有化部署」是 HR SaaS 采购里最高频的一个词，也是最容易被含糊过去的一个。这一节把它拆开。</p>
+  </header>
+
+  <div class="sec-label">三个词，先分清</div>
+  <table class="htab">
+    <tr><td><b>闭源模型</b></td><td>Claude、GPT、豆包这类。你通过网络调用，模型在对方手里</td></tr>
+    <tr><td><b>开源模型</b></td><td>DeepSeek、Qwen 这类把模型文件公开的。<b>你可以下载下来，装在自己的机器上跑</b></td></tr>
+    <tr><td><b>私有化部署</b></td><td>把模型装在你们公司自己的服务器上。<b>数据全程不出内网</b></td></tr>
+  </table>
+  <div class="l-callout">注意一个常被混淆的点：<b>私有化部署 ≠ 微调。</b>前者是"装在哪儿"，后者是"改不改模型"。供应商说「我们支持私有化部署」时，模型本身通常一点没改。</div>
+
+  <div class="sec-label">参数量：7B、70B 是什么意思</div>
+  <p>B = billion，十亿。7B 就是七十亿个参数。<b>粗略说：参数越多越聪明，但也越吃硬件。</b></p>
+  <table class="htab">
+    <tr><th>规模</th><th>大概能干什么</th><th>要什么硬件</th></tr>
+    <tr><td><b>7B 左右</b></td><td>格式转换、简单问答、分类打标</td><td>一台配置好点的电脑就能跑</td></tr>
+    <tr><td><b>30B~70B</b></td><td>能做像样的制度问答、文档理解</td><td>专业显卡，几万到几十万</td></tr>
+    <tr><td><b>顶级闭源模型</b></td><td>复杂推理、长文档、多步任务</td><td>买不到，只能调 API</td></tr>
+  </table>
+  <div class="stuck"><span class="t">你要接受的一个现实</span><b>能私有化部署的模型，能力明显低于你在网页上用的那个。</b>这不是供应商坑你，是物理限制——顶级模型的硬件成本不是一家公司扛得住的。<br>所以真正的问题不是"能不能私有化"，是<b>"降级之后还够不够用"</b>。</div>
+
+  <div class="sec-label">HR 该怎么选：先分数据，不是先分场景</div>
+  <table class="htab">
+    <tr><th>数据</th><th>走哪条路</th></tr>
+    <tr><td>员工花名册、薪酬、绩效、身份信息</td><td><b>只能私有化或本地</b>，这是第四篇章那条红线</td></tr>
+    <tr><td>公开制度、通用问答、你自己写的方案草稿</td><td>直接用闭源模型，能力更强</td></tr>
+    <tr><td>脱敏后的数据</td><td>都行，看效果和成本</td></tr>
+  </table>
+  <div class="good"><span class="t">✓ 一个很多人没想到的组合</span><b>敏感数据用私有化模型处理，处理完的结论用强模型分析。</b><br>比如：本地模型把花名册清洗、脱敏、算出分位；把这些<b>不含个人信息的统计结果</b>拿给强模型做分析和写报告。<br>——这跟第四篇章的两段架构是同一个思路：<b>数据留在里面，判断借外面的脑子。</b></div>
+
+  <div class="sec-label">听到「私有化部署」，反问这四句</div>
+  <div class="say">1. 部署的是哪个模型？多大参数？跟我们现在用的那个比，
+   能力差多少？有没有在我们场景上的对比数据？
+2. 硬件谁出？一次性投入多少？谁来维护？
+3. 模型要不要定期更新？更新的时候数据会出内网吗？
+4. 除了模型本身，日志、向量库、缓存这些也都在内网吗？
+   ——有些方案只把模型放进来，检索还在云上</div>
+  <p>第 4 句最容易被含糊过去，也最要命：<b>「模型私有化」不等于「数据不出网」</b>，中间还有一堆环节。</p>
+
+  <div class="try"><span class="t">今天就试</span>如果你们正在谈任何一个"私有化部署"的方案，把第 1 句和第 4 句发过去。<b>这两句问完，方案的成色基本就清楚了。</b></div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

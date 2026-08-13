@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 术语为什么听起来那么难？三种用途与一个通用判据 · HR AI Builder</title>
+<meta name="description" content="在开始逐个拆词之前，先给你一把尺子——它比这一章任何一个具体定义都有用。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI 术语为什么听起来那么难？三种用途与一个通用判据">
+<meta property="og:description" content="在开始逐个拆词之前，先给你一把尺子——它比这一章任何一个具体定义都有用。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI 术语为什么听起来那么难？三种用途与一个通用判据",
+ "articleSection": "第三篇章 · 怎么听懂这些词",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第三篇章 · 怎么听懂这些词</div>
+    <h1>术语的三种用途，只有一种是为了讲清楚</h1>
+    <p class="subtitle">在开始逐个拆词之前，先给你一把尺子——它比这一章任何一个具体定义都有用。</p>
+  </header>
+
+  <div class="sec-label">同一个词，三种用途</div>
+  <table class="htab">
+    <tr><th>用途</th><th>长什么样</th><th>你该怎么反应</th></tr>
+    <tr><td><b>① 精确沟通</b></td><td>「这个场景要走 RAG，因为制度文档每月都变，写进 prompt 维护不动」</td><td>正常交流，跟着聊</td></tr>
+    <tr><td><b>② 圈层信号</b></td><td>一句话里塞五个英文缩写，但每个都没说清解决什么问题</td><td>不用怕，多半他也是刚学的</td></tr>
+    <tr><td><b>③ 抬价</b></td><td>「我们用了向量化语义检索和多模态融合的智能体架构」</td><td><b>这是这一章要教你拆的</b></td></tr>
+  </table>
+  <div class="l-callout">HR 是全公司最常被第 ③ 种打的岗位之一——<b>因为你要采购 HR SaaS，而卖方知道你不懂技术。</b>看不穿的代价不是丢面子，是买错东西、签错合同、上线半年才发现它做不到当初演示的那些。</div>
+
+  <div class="sec-label">一把通用的尺子</div>
+  <div class="good"><span class="t">✓ 对任何一个术语，问三句</span><b>① 它解决什么问题？</b>（不是"它是什么"，是"没有它会怎样"）<br><b>② 什么情况下不需要它？</b><br><b>③ 在我们这个场景里，它具体会带来什么变化？</b></div>
+  <p>第 ② 句是杀手锏。<b>真懂的人能立刻说出边界</b>——「文档少的时候不需要 RAG」「数据几千条以下不用微调」。答不上来、或者回答是「都需要」的，基本可以判断他也不懂，或者在卖东西。</p>
+  <div class="stuck"><span class="t">这不是抬杠，是你的本职</span>你不需要懂技术细节，但你必须能判断对方懂不懂。<b>这跟你面试候选人时判断他是不是真做过，是同一种能力</b>——问边界、问例外、问失败的时候怎么办。你在招聘里练了很多年的东西，在这里同样管用。</p></div>
+
+  <div class="sec-label">这一章怎么读</div>
+  <table class="htab">
+    <tr><td><b>每个词只讲三件事</b></td><td>人话是什么 · <b>你需不需要</b> · 供应商这么说时该反问什么</td></tr>
+    <tr><td><b>不讲怎么做</b></td><td>真需要的那几个，后面章节有完整的实操。这一章的任务是让你不再被词吓住</td></tr>
+    <tr><td><b>结论先说</b></td><td>下面这些词里，<b>大部分你这辈子都用不上</b>；用得上的那几个，比你想的简单得多</td></tr>
+  </table>
+
+  <div class="try"><span class="t">今天就试</span>回想最近一次有人跟你讲 AI 方案。<b>他有没有主动说过任何一句「什么情况下这个不适用」？</b>一句都没有的话，你现在知道该怎么看那次会了。</div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

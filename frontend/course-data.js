@@ -16,15 +16,15 @@ window.COURSE = {
   },
   "stats": {
    "parts": 10,
-   "lessons": 138,
+   "lessons": 145,
    "copy": 40,
    "adapt": 20,
-   "new": 86,
-   "ready": 139,
+   "new": 93,
+   "ready": 147,
    "todo": 0
   },
   "access": {
-   "free": 119,
+   "free": 126,
    "locked": 19,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -492,6 +492,16 @@ window.COURSE = {
        "desc": "",
        "free": true,
        "ready": true
+      },
+      {
+       "file": "hr-elicitation-3.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "从规则到 Prompt：判断链怎么落地",
+       "seo": "把萃取出来的判断规则写成 Prompt 的具体做法",
+       "desc": "",
+       "free": false,
+       "ready": true
       }
      ]
     },
@@ -619,83 +629,36 @@ window.COURSE = {
   {
    "id": "p-3",
    "num": "第三篇章",
-   "title": "RAG 与 Eval：怎么让它干你这家公司的活",
-   "desc": "通用 AI 谁都能用。想让它干你这家公司的活，得把你的判断和你的数据喂进去，再验证它有没有学对。这是这个角色真正的护城河。",
-   "freeWhole": false,
+   "title": "术语祛魅：这些词到底是什么，你需不需要",
+   "desc": "RAG、微调、MCP、Eval、向量数据库……这些词听起来门槛很高，其实大部分你这辈子都用不上，用得上的那几个也比你想的简单。这一章只回答两件事：它是什么，你需不需要——怎么做留在后面各章。顺带教你在供应商用这些词唬你的时候，该反问什么。",
+   "freeWhole": true,
+   "color": "#EA580C",
    "topics": [
     {
-     "title": "从「会用」到「担责」",
-     "desc": "腔调换挡点：前面主语是「它」，从这里开始是「你」",
+     "title": "怎么听懂这些词",
      "lessons": [
       {
-       "file": "hr-bridge.html",
+       "file": "jargon-why.html",
        "action": "new",
        "ksa": "A",
-       "title": "你已经会用了，接下来的问题不一样了",
-       "seo": "会用 AI 之后呢？从「它靠不靠谱」到「你担什么责」",
-       "desc": "",
+       "title": "术语为什么唬人",
+       "seo": "AI 术语为什么听起来那么难？三种用途与一个通用判据",
+       "desc": "在开始逐个拆词之前，先给你一把尺子——它比这一章任何一个具体定义都有用。",
        "free": true,
        "ready": true
       }
      ]
     },
     {
-     "title": "知识萃取：把判断变成它能执行的规则",
-     "desc": "把老法师脑子里的东西掏出来",
+     "title": "喂知识给它：RAG、向量、切片",
      "lessons": [
       {
-       "file": "hr-elicitation-1.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "隐性知识显性化：老法师那一眼在看什么",
-       "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "hr-elicitation-2.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "拆到哪一层为止：哪些永远进不了 Prompt",
-       "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "hr-elicitation-3.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "从规则到 Prompt：判断链怎么落地",
-       "seo": "把萃取出来的判断规则写成 Prompt 的具体做法",
-       "desc": "",
-       "free": false,
-       "ready": true
-      }
-     ]
-    },
-    {
-     "title": "RAG 与知识库：把公司的东西喂给它",
-     "desc": "所有 HR 数据项目翻车的第一现场",
-     "lessons": [
-      {
-       "file": "hr-caliber-1.html",
+       "file": "jargon-rag.html",
        "action": "new",
        "ksa": "K",
-       "title": "知识库的原料：三个系统、五种口径、人名对不上",
-       "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场",
-       "desc": "薪酬/花名册",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "hr-caliber-2.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "Garbage in：口径不确认，它算出来的全是假的",
-       "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的",
-       "desc": "",
+       "title": "RAG：让它答之前先查资料",
+       "seo": "RAG 是什么？什么时候需要，什么时候完全不需要",
+       "desc": "这是最常被神化的一个词。它的原理一句话能说完，而且大多数 HR 场景其实不需要它。",
        "free": true,
        "ready": true
       },
@@ -712,63 +675,66 @@ window.COURSE = {
      ]
     },
     {
-     "title": "Eval：怎么知道它真学会了",
-     "desc": "不评测就是在裸奔",
+     "title": "训练、部署与工具：微调、蒸馏、私有化、MCP",
      "lessons": [
       {
-       "file": "eval-why.html",
-       "action": "adapt",
-       "ksa": "S",
-       "title": "为什么评测比调 prompt 重要",
-       "seo": "为什么 AI 评测比调 Prompt 更重要？",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "eval-graders.html",
-       "action": "adapt",
-       "ksa": "S",
-       "title": "三种 Grader：代码判、模型判、人工判",
-       "seo": "AI 输出怎么打分？代码判、模型判、人工判三种方式",
-       "desc": "",
-       "free": true,
-       "ready": true
-      },
-      {
-       "file": "eval-pitfalls.html",
-       "action": "adapt",
-       "ksa": "S",
-       "title": "Eval 的坑：噪音、作弊与退化",
-       "seo": "做 AI 评测最容易踩的三个坑",
-       "desc": "",
-       "free": false,
-       "ready": true
-      },
-      {
-       "file": "hr-eval-negative.html",
+       "file": "jargon-training.html",
        "action": "new",
-       "ksa": "S",
-       "title": "阴性对照：先注入已知的错，看它抓不抓得住",
-       "seo": "怎么验证你的 AI 评测本身是有效的？先做阴性对照",
-       "desc": "往简历堆里埋假简历",
-       "free": false,
+       "ksa": "K",
+       "title": "微调、蒸馏、预训练",
+       "seo": "微调和蒸馏是什么？HR 需要训练自己的大模型吗",
+       "desc": "「我们给您训练一个专属大模型」——这句话是本章最该警惕的一句。这一节讲清楚它背后的三个词，以及为什么你不需要。",
+       "free": true,
        "ready": true
       },
       {
-       "file": "hr-rollout.html",
+       "file": "jargon-deploy.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "开源、私有化部署、参数量",
+       "seo": "私有化部署是什么？开源模型和参数量对 HR 意味着什么",
+       "desc": "「私有化部署」是 HR SaaS 采购里最高频的一个词，也是最容易被含糊过去的一个。这一节把它拆开。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "jargon-tools.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "工具、MCP、Skill",
+       "seo": "MCP 是什么？Skill 和插件的本质是什么",
+       "desc": "这一组词讲的是同一件事的不同层次——怎么让 AI 不只是说话，而是真的能干活。",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
+     "title": "验收与提问：Eval、benchmark、问话清单",
+     "lessons": [
+      {
+       "file": "jargon-eval.html",
        "action": "new",
        "ksa": "A",
-       "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
-       "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制",
-       "desc": "",
+       "title": "Eval 与 benchmark",
+       "seo": "AI 的准确率怎么看？供应商报的分数为什么不能信",
+       "desc": "这一节可能是这一章里最省钱的一节——它教你怎么看穿一个数字，以及怎么要到一个真正有意义的数字。",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "jargon-table.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "一张表和一份问话清单",
+       "seo": "AI 术语速查表与采购问话清单",
+       "desc": "这一章的全部内容，压成一张你可以随时翻的表，和一份可以直接带进会议室的问话清单。",
        "free": true,
        "ready": true
       }
      ]
     }
-   ],
-   "color": "#7C3AED"
+   ]
   },
   {
    "id": "p-4",
@@ -778,6 +744,21 @@ window.COURSE = {
    "freeWhole": true,
    "color": "#65A30D",
    "topics": [
+    {
+     "title": "两种上下文：判断与数据",
+     "lessons": [
+      {
+       "file": "hr-bridge.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "你已经会用了，接下来的问题不一样了",
+       "seo": "会用 AI 之后呢？从「它靠不靠谱」到「你担什么责」",
+       "desc": "",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
     {
      "title": "生成 vs 执行：它给的数是算的还是猜的",
      "lessons": [
@@ -861,6 +842,26 @@ window.COURSE = {
     {
      "title": "需求规格：把口径写成它能执行的东西",
      "lessons": [
+      {
+       "file": "hr-caliber-1.html",
+       "action": "new",
+       "ksa": "K",
+       "title": "知识库的原料：三个系统、五种口径、人名对不上",
+       "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场",
+       "desc": "薪酬/花名册",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "hr-caliber-2.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "Garbage in：口径不确认，它算出来的全是假的",
+       "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
       {
        "file": "data-spec-four.html",
        "action": "new",
@@ -1141,6 +1142,16 @@ window.COURSE = {
      "title": "让它认识你的活：CLAUDE.md 与项目结构",
      "lessons": [
       {
+       "file": "hr-elicitation-1.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "隐性知识显性化：老法师那一眼在看什么",
+       "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
+      {
        "file": "cc-claude-md.html",
        "action": "new",
        "ksa": "S",
@@ -1348,6 +1359,61 @@ window.COURSE = {
      ]
     },
     {
+     "title": "Eval：怎么知道它真的行",
+     "lessons": [
+      {
+       "file": "eval-why.html",
+       "action": "adapt",
+       "ksa": "S",
+       "title": "为什么评测比调 prompt 重要",
+       "seo": "为什么 AI 评测比调 Prompt 更重要？",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "eval-graders.html",
+       "action": "adapt",
+       "ksa": "S",
+       "title": "三种 Grader：代码判、模型判、人工判",
+       "seo": "AI 输出怎么打分？代码判、模型判、人工判三种方式",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
+      {
+       "file": "eval-pitfalls.html",
+       "action": "adapt",
+       "ksa": "S",
+       "title": "Eval 的坑：噪音、作弊与退化",
+       "seo": "做 AI 评测最容易踩的三个坑",
+       "desc": "",
+       "free": false,
+       "ready": true
+      },
+      {
+       "file": "hr-eval-negative.html",
+       "action": "new",
+       "ksa": "S",
+       "title": "阴性对照：先注入已知的错，看它抓不抓得住",
+       "seo": "怎么验证你的 AI 评测本身是有效的？先做阴性对照",
+       "desc": "往简历堆里埋假简历",
+       "free": false,
+       "ready": true
+      },
+      {
+       "file": "hr-rollout.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
+       "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制",
+       "desc": "",
+       "free": true,
+       "ready": true
+      }
+     ]
+    },
+    {
      "title": "HR 专有的两层：权限留痕与自动验收",
      "lessons": [
       {
@@ -1385,6 +1451,16 @@ window.COURSE = {
     {
      "title": "取舍：哪些 harness 值得造",
      "lessons": [
+      {
+       "file": "hr-elicitation-2.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "拆到哪一层为止：哪些永远进不了 Prompt",
+       "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI",
+       "desc": "",
+       "free": true,
+       "ready": true
+      },
       {
        "file": "harness-tradeoff.html",
        "action": "new",

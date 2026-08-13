@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 术语速查表与采购问话清单 · HR AI Builder</title>
+<meta name="description" content="这一章的全部内容，压成一张你可以随时翻的表，和一份可以直接带进会议室的问话清单。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI 术语速查表与采购问话清单">
+<meta property="og:description" content="这一章的全部内容，压成一张你可以随时翻的表，和一份可以直接带进会议室的问话清单。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI 术语速查表与采购问话清单",
+ "articleSection": "第三篇章 · 验收与提问：Eval、benchmark、问话清单",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第三篇章 · 验收与提问：Eval、benchmark、问话清单</div>
+    <h1>收官：一张表，一份清单</h1>
+    <p class="subtitle">这一章的全部内容，压成一张你可以随时翻的表，和一份可以直接带进会议室的问话清单。</p>
+  </header>
+
+      <div class="sec-label">术语速查表</div>
+      <table class="htab">
+        <tr><th>词</th><th>一句话</th><th>你需要吗</th></tr>
+        <tr><td><b>RAG</b></td><td>让它答之前先查你的资料</td><td>文档多或常变时需要；<b>几十页以内直接贴，不需要</b></td></tr>
+        <tr><td><b>向量 / Embedding</b></td><td>把文字变成数字，好算意思接近</td><td>❌ 不用懂</td></tr>
+        <tr><td><b>向量数据库</b></td><td>存那些数字的地方</td><td>❌ 不用自己搭</td></tr>
+        <tr><td><b>切片 / Chunking</b></td><td>把长文档切成小块</td><td>✅ <b>要懂</b>，RAG 效果八成看这个</td></tr>
+        <tr><td><b>预训练</b></td><td>从零养出一个模型</td><td>❌ 跟你无关</td></tr>
+        <tr><td><b>微调 Fine-tune</b></td><td>用你的数据再调教已有模型</td><td>❌ <b>几乎肯定不需要</b>，而且不可追溯</td></tr>
+        <tr><td><b>蒸馏</b></td><td>大模型教出小模型</td><td>❌ 跟你无关（注意：≠ 知识萃取）</td></tr>
+        <tr><td><b>工具调用</b></td><td>让模型能真的干活，不只是说话</td><td>✅ 核心概念</td></tr>
+        <tr><td><b>Code Interpreter</b></td><td>模型写代码、代码跑出结果</td><td>✅ <b>最实用的一个</b>，第四篇章</td></tr>
+        <tr><td><b>MCP</b></td><td>连接外部系统的统一插座</td><td>⏳ 以后需要，不是第一步</td></tr>
+        <tr><td><b>Skill / 插件 / 模板</b></td><td>打包好的提示词（可能配工具）</td><td>⏳ 看它背后跑不跑代码</td></tr>
+        <tr><td><b>Agent</b></td><td>目标你定，路线它自己走</td><td>✅ 要懂，但 HR 多数场景该用 workflow</td></tr>
+        <tr><td><b>Workflow</b></td><td>路线你定死</td><td>✅ <b>HR 的默认选择</b></td></tr>
+        <tr><td><b>私有化部署</b></td><td>模型装在你们自己的服务器上</td><td>⚠️ 敏感数据场景需要，但<b>能力会降级</b></td></tr>
+        <tr><td><b>开源模型</b></td><td>模型文件公开，可以自己下载来跑</td><td>⚠️ 私有化的前提</td></tr>
+        <tr><td><b>参数量 7B/70B</b></td><td>模型有多少个参数，越多越强也越吃硬件</td><td>⚠️ 选私有化时要看</td></tr>
+        <tr><td><b>Eval</b></td><td>你自己出题测你自己的场景</td><td>✅ <b>最被低估的一个</b>，第七篇章</td></tr>
+        <tr><td><b>Benchmark</b></td><td>公开题库，横向比模型</td><td>❌ 跟你的场景没关系</td></tr>
+        <tr><td><b>幻觉</b></td><td>它一本正经地编</td><td>✅ 第一篇章</td></tr>
+        <tr><td><b>上下文窗口</b></td><td>它一次能看多少内容</td><td>✅ 第一篇章</td></tr>
+        <tr><td><b>Token</b></td><td>文本被切成的小块，也是计费单位</td><td>✅ 第二、四篇章</td></tr>
+      </table>
+      <div class="l-callout">数一下：<b>21 个词里，明确"跟你无关"的有 5 个，"看情况/以后再说"的有 5 个。</b>真正现在就要懂的不到十个，而且每一个都能用一句话说清。<b>这就是这一章想让你拿到的那个感觉——没那么高深。</b></div>
+
+      <div class="sec-label">采购问话清单</div>
+      <div class="say">【关于能力边界】
+1. 什么情况下这个方案不适用？
+2. 它答不上来的时候会怎么表现——说不知道，还是编一个？
+
+【关于知识库】
+3. 我们的制度更新后多久生效？旧版本怎么下线？
+4. 我能看到它是根据哪一段回答的吗？能定位到原文吗？
+
+【关于准确率】
+5. 你们报的分数，分母是什么？简单题占多少？
+6. 如果一个什么都不做的系统去跑这套题，能得多少分？
+7. 能不能用我们自己的 30 个真实问题跑一遍？
+8. 它答错的时候，错的性质是什么——没查到、理解错、还是编的？
+
+【关于数据】
+9. 我们的员工数据存在哪？出不出我们的网？
+10. 会不会被用于训练你们的模型？合同里怎么写？
+
+【关于可追溯】
+11. 涉及人的判断，能留痕吗？被员工申诉时我拿什么解释？
+12. 你们改了模型或提示词，我们会知道吗？</div>
+      <p>这十二句你不需要懂任何技术就能问出口，<b>而它们能筛掉绝大部分不靠谱的方案。</b>第 6 句和第 11 句尤其有效——前者拆穿数字游戏，后者直接决定这东西能不能用在 HR 场景。</p>
+
+      <div class="l-callout" style="margin-top:26px">
+        <b>第三篇章到此收束。</b>你现在不会再被这些词吓住了。<b>接下来三章是真正动手的部分</b>：让它算得准（第四篇章）、跟它协作写东西（第五篇章）、搭出你自己的 agent（第六篇章）。<br>那几章里出现的每一个术语，你在这一章都已经见过了。
+      </div>
+
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

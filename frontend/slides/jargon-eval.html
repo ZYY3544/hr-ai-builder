@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 的准确率怎么看？供应商报的分数为什么不能信 · HR AI Builder</title>
+<meta name="description" content="这一节可能是这一章里最省钱的一节——它教你怎么看穿一个数字，以及怎么要到一个真正有意义的数字。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="AI 的准确率怎么看？供应商报的分数为什么不能信">
+<meta property="og:description" content="这一节可能是这一章里最省钱的一节——它教你怎么看穿一个数字，以及怎么要到一个真正有意义的数字。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "AI 的准确率怎么看？供应商报的分数为什么不能信",
+ "articleSection": "第三篇章 · 验收与提问：Eval、benchmark、问话清单",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第三篇章 · 验收与提问：Eval、benchmark、问话清单</div>
+    <h1>Eval：别人报的分数，跟你没关系</h1>
+    <p class="subtitle">这一节可能是这一章里最省钱的一节——它教你怎么看穿一个数字，以及怎么要到一个真正有意义的数字。</p>
+  </header>
+
+      <div class="sec-label">两个词的区别</div>
+      <table class="htab">
+        <tr><td><b>Benchmark 基准测试</b></td><td>公开的标准题库，所有模型考同一套题。<b>用来横向比模型</b></td></tr>
+        <tr><td><b>Eval 评测</b></td><td>你自己出的题，测你自己的场景。<b>用来判断这东西在你这儿行不行</b></td></tr>
+      </table>
+      <div class="l-callout"><b>供应商报的数字几乎全是第一种，而你需要的是第二种。</b><br>「我们在 XX 榜单上准确率 95%」——这句话对你的价值接近于零，因为那套题里没有一道是你们公司的制度、你们的岗位、你们的口径。</div>
+
+      <div class="sec-label">为什么公开分数不能信</div>
+      <table class="htab">
+        <tr><th>问题</th><th>说明</th></tr>
+        <tr><td><b>题目可能被模型见过</b></td><td>公开题库大概率在训练数据里。<b>模型越强，越可能是在回忆而不是在解题</b></td></tr>
+        <tr><td><b>场景不是你的</b></td><td>通用问答 95%，到你们的制度问答可能只有 60%——因为你们的制度它一个字都没见过</td></tr>
+        <tr><td><b>口径不明</b></td><td>95% 的分母是什么？简单题占多少？<b>不说清分母的百分比都是修辞</b></td></tr>
+        <tr><td><b>没有基线</b></td><td>你们现在人工做的准确率是多少？<b>不知道基线，95% 既可能是巨大提升，也可能是倒退</b></td></tr>
+      </table>
+
+      <div class="sec-label">你该要求的东西</div>
+      <div class="say">我不看公开榜单的分数。请做这件事：
+
+1. 我们提供 30 个真实问题（脱敏），涵盖常见的和边界的
+2. 我们自己标好正确答案
+3. 你们的产品跑一遍，我们逐题对
+4. 同时告诉我：它答错的那些，是错在没查到，
+   还是查到了但理解错，还是它编了一个
+
+第 4 条最重要——我要知道它错的性质，不是错的比例。</div>
+      <p>第 4 条为什么重要：<b>「查不到就说不知道」的错误可以接受，「编一个」的错误在 HR 场景不能接受。</b>同样是 10% 的错误率，这两种的风险完全不同。</p>
+
+      <div class="sec-label">一个几乎没人提的检验：阴性对照</div>
+      <div class="good"><span class="t">✓ 问一句：如果它什么都不做，能得多少分</span>假设你有 30 个问题，其中 26 个答案是"符合制度"。<b>那么一个永远回答"符合"的傻瓜系统，就能得 87 分。</b><br>这时候供应商报的 90 分，意味着它比"什么都不干"强了 3 分。<br><br>这一招叫阴性对照，第七篇章有完整的方法。<b>但光是问出这一句，就足够让大部分演示现原形。</b></div>
+
+      <div class="sec-label">对内也一样</div>
+      <p>这一节讲的不只是采购。<b>你自己做的东西，也要用同一把尺子量。</b>你跟老板说「准确率 92%」，他会问同样的问题——而你最好在他问之前就知道答案：基线是多少、错的性质是什么、阴性对照过了没有。</p>
+
+      <div class="try"><span class="t">今天就试</span>找出你手上任何一份 AI 产品的宣传材料，看它报的准确率<b>有没有说分母、有没有给基线</b>。两个都没有的话，那个数字就是个装饰。</div>
+    
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>
