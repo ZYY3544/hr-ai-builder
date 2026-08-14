@@ -79,7 +79,8 @@ main{padding:8px 0 70px}
 .opt.right{border-color:var(--green-d);background:var(--green-s)}
 .opt.wrong{border-color:var(--danger);background:#FEF2F2}
 .opt.miss{border-color:var(--green-d);border-style:dashed}
-.expl{margin-top:13px;padding:13px 16px;background:var(--bg);border-left:3px solid var(--pri);
+.ansline{margin-top:11px;font-size:13px;color:var(--ink);line-height:1.8}
+.expl{margin-top:9px;padding:13px 16px;background:var(--bg);border-left:3px solid var(--pri);
   border-radius:0 9px 9px 0;font-size:13px;line-height:1.85}
 .expl b{color:var(--ink)}
 .vd{font-size:12px;font-weight:600;margin-top:10px}
@@ -223,8 +224,8 @@ function renderPick(){
     `<div class="pk all" data-ch="__all"><div class="n">全部篇章 · 完整测评</div>
      <div class="m"><span>${ALL.length} 题</span>${badges(ksaOf(ALL))}<span style="color:var(--faint)">考试模式约 25 分钟</span></div></div>`
     +`<div style="grid-column:1/-1;margin-top:6px;font-size:12px;color:var(--faint);line-height:1.8">
-        题库随课程持续补齐：<b>第零篇章</b>（入门）与<b>第九篇章</b>（审美工程）尚未出题，
-        第三、四、八篇章覆盖偏薄。测出来的分只代表已出题的部分。
+        题库覆盖全部十个篇章，每章不少于 20 题，按 <b>K 知识 / S 技能 / A 判断</b> 三类分层出题。
+        <b>不给总分</b>——三类补起来的代价完全不同，合并成一个数会把最重要的信息抹平。
       </div>`;
   $('#pick').querySelectorAll('.pk').forEach(el=>el.onclick=()=>{
     $('#pick').querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));
@@ -354,6 +355,7 @@ function paint(qid,d){
   if(!el.querySelector('.expl')){
     el.querySelector('.rpwrap').insertAdjacentHTML('beforebegin',
       `<div class="vd ${d.correct?'ok':'no'}">${d.correct?'✓ 答对了':'✗ 答错了'}</div>
+       <div class="ansline">正确答案：${ansDisp.map(j=>'「'+el.querySelectorAll('.opt')[j].textContent.trim()+'」').join('　')}</div>
        <div class="expl">${d.exp}</div>
        <span class="rp" data-q="${qid}">这道题有问题？点这里报错</span>`);
     el.querySelector('.rp').onclick=()=>openReport(qid);
