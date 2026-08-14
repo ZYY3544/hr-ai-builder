@@ -2089,5 +2089,194 @@ window.COURSE = {
    ],
    "min": 39
   }
+ ],
+ "paths": [
+  {
+   "id": "monthly",
+   "name": "把月报自动化",
+   "goal": "第 7 晚，你手上有一个能重复跑的月报流程，和一份写下来的口径。",
+   "who": "每月都要合几张表做人力报表、现在全靠 Excel 手工做的人。",
+   "nights": [
+    {
+     "n": 1,
+     "t": "先知道它会怎么骗你",
+     "do": "读 2 节。今晚不动手。",
+     "why": "不建立这个警惕，后面所有产出你都不知道该不该信。",
+     "les": [
+      "hallu-first-scene.html",
+      "hr-recall-vs-judge.html"
+     ],
+     "min": 9,
+     "items": [
+      {
+       "file": "hallu-first-scene.html",
+       "num": "第一篇章",
+       "title": "它会编：筛简历现场",
+       "min": 5
+      },
+      {
+       "file": "hr-recall-vs-judge.html",
+       "num": "第一篇章",
+       "title": "召回 vs 判定：它编的理由你验不出来",
+       "min": 4
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "t": "看清「算」和「猜」的区别",
+     "do": "读 2 节，并亲手跑一遍那个对照实验。",
+     "why": "这一晚决定了你以后看到任何 AI 给的数字，会不会先问一句「这是算的还是猜的」。",
+     "les": [
+      "data-gen-vs-exec.html",
+      "data-when-code.html"
+     ],
+     "min": 8,
+     "items": [
+      {
+       "file": "data-gen-vs-exec.html",
+       "num": "第四篇章",
+       "title": "同一张表问三遍出三个数",
+       "min": 4
+      },
+      {
+       "file": "data-when-code.html",
+       "num": "第四篇章",
+       "title": "三问判据：什么时候必须走代码",
+       "min": 4
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "t": "第一次让它替你干活",
+     "do": "读 2 节，跑通「五分钟揪重名」。<b>今晚会有第一次成功。</b>",
+     "why": "先在你核得动的地方建立信任，再拿它去核不动的地方干活。",
+     "les": [
+      "data-ci-how.html",
+      "data-ci-first.html"
+     ],
+     "min": 10,
+     "items": [
+      {
+       "file": "data-ci-how.html",
+       "num": "第四篇章",
+       "title": "工具调用怎么发生的",
+       "min": 5
+      },
+      {
+       "file": "data-ci-first.html",
+       "num": "第四篇章",
+       "title": "第一次工具调用：五分钟揪重名",
+       "min": 5
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "t": "下载数据，把活说清楚",
+     "do": "<b>下载三张练习表</b>，读 2 节，照四要素写一份规格。",
+     "why": "写到「规则」卡住的地方，就是你从没跟任何人说清楚过的口径。",
+     "les": [
+      "data-spec-four.html",
+      "data-spec-cleaning.html"
+     ],
+     "data": true,
+     "min": 10,
+     "items": [
+      {
+       "file": "data-spec-four.html",
+       "num": "第四篇章",
+       "title": "四要素模板",
+       "min": 5
+      },
+      {
+       "file": "data-spec-cleaning.html",
+       "num": "第四篇章",
+       "title": "清洗规则必须逐条写",
+       "min": 5
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "t": "跑起来，然后验它",
+     "do": "读 2 节，跑全量 + 三招验收。<b>跑完对答案卡。</b>",
+     "why": "这一晚你大概率会撞上至少两个坑。撞上是对的——你要练的就是发现它们。",
+     "les": [
+      "data-check-three.html",
+      "data-check-canary.html"
+     ],
+     "answer": true,
+     "min": 8,
+     "items": [
+      {
+       "file": "data-check-three.html",
+       "num": "第四篇章",
+       "title": "小样、抽查、对总数",
+       "min": 4
+      },
+      {
+       "file": "data-check-canary.html",
+       "num": "第四篇章",
+       "title": "埋雷：给脚本做阴性对照",
+       "min": 4
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "t": "让它按你的方式说话",
+     "do": "读 3 节，把你看数的顺序写下来，让它照着写一段分析。",
+     "why": "数字算准只是及格。真正拿得出手的是那段分析——而它只能来自你的判断。",
+     "les": [
+      "data-two-stage.html",
+      "data-pattern.html",
+      "data-output.html"
+     ],
+     "min": 15,
+     "items": [
+      {
+       "file": "data-two-stage.html",
+       "num": "第四篇章",
+       "title": "两段架构：数据干净之后",
+       "min": 5
+      },
+      {
+       "file": "data-pattern.html",
+       "num": "第四篇章",
+       "title": "把你的分析模式写下来",
+       "min": 5
+      },
+      {
+       "file": "data-output.html",
+       "num": "第四篇章",
+       "title": "从数字到观点",
+       "min": 5
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "t": "固化，然后交接",
+     "do": "读 1 节，把口径写进注释，整理成下个月能直接跑的样子。",
+     "why": "做完的标志不是「能跑」，是「别人能接」。",
+     "les": [
+      "data-monthly.html"
+     ],
+     "min": 6,
+     "items": [
+      {
+       "file": "data-monthly.html",
+       "num": "第四篇章",
+       "title": "月报改造全程",
+       "min": 6
+      }
+     ]
+    }
+   ],
+   "total_read": 66,
+   "total_les": 14
+  }
  ]
 };

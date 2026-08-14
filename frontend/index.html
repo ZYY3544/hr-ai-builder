@@ -77,8 +77,10 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .hero .lede b{color:var(--ink);font-weight:500}
 .hero .lede .hl{font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.entries{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:46px auto 0;max-width:1180px;text-align:left}
+.entries{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:46px auto 0;max-width:1180px;text-align:left}
 @media(max-width:860px){.entries{grid-template-columns:1fr;max-width:460px}}
+.entry.hot{border-color:rgba(0,168,138,.45);background:linear-gradient(180deg,rgba(0,168,138,.05),#fff)}
+.entry.hot .ic{background:var(--grad-r);color:#fff}
 .entry{position:relative;border:1px solid var(--line);border-radius:var(--r-l);padding:19px 21px;
   background:#fff;transition:.2s;overflow:hidden}
 .entry:hover{border-color:rgba(0,168,138,.35);transform:translateY(-3px);
@@ -120,6 +122,21 @@ section{scroll-margin-top:64px}
 
 .who{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
 @media(max-width:920px){.who{grid-template-columns:1fr}}
+.night{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:12px}
+.night .nh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.night .nn{font-size:12px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--grad-r);padding:3px 10px;border-radius:20px;flex:0 0 auto}
+.night .nh b{font-size:17px;letter-spacing:-.01em}
+.night .nm{font-size:12px;color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums}
+.night .nd{font-size:14.5px;color:var(--body);margin-top:10px;line-height:1.9}
+.night .nw{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.85;padding-left:11px;border-left:2px solid var(--line)}
+.night .nl{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.night .nl a{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;text-decoration:none;color:var(--body);
+  background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 11px;transition:.15s}
+.night .nl a:hover{border-color:var(--pri);color:var(--pri)}
+.night .nl a i{font-style:normal;font-size:11px;color:var(--faint)}
+.night .nl a em{font-style:normal;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+.night .nl a.dl{background:rgba(0,168,138,.08);border-color:rgba(0,168,138,.3);color:var(--pri-d);font-weight:600}
+@media(max-width:760px){.night{padding:16px 16px}.night .nm{margin-left:0;width:100%}}
 .wcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 30px 26px;
   text-decoration:none;color:inherit;
   display:flex;flex-direction:column;transition:.18s}
@@ -263,9 +280,14 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="statline" id="statline"></div>
 
     <div class="entries">
+      <a class="entry hot" href="#path">
+        <div class="ic">◆</div>
+        <div class="n">7 个晚上，把月报自动化 <span class="ar">→</span></div>
+        <div class="d">一条排好的线：读哪几节、第几晚下载数据、第几晚对答案。<b>终点是一个能跑的东西，不是「你学完了」</b></div>
+      </a>
       <a class="entry" href="learn.html">
         <div class="ic">◈</div>
-        <div class="n">课程大纲 <span class="ar">→</span></div>
+        <div class="n">完整课程 <span class="ar">→</span></div>
         <div class="d">从 AI 底层逻辑到组织落地，全部从 HR 场景倒着写</div>
       </a>
       <a class="entry" href="quiz.html">
@@ -279,6 +301,16 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
         <div class="d">真实在招岗位逐条对照能力要求与知识点</div>
       </a>
     </div>
+  </div>
+</section>
+
+<!-- ========== 学习路径 ========== -->
+<section class="band" id="path">
+  <div class="wrap">
+    <div class="eyebrow">Path</div>
+    <h2 id="pathTitle"></h2>
+    <p class="desc" id="pathDesc"></p>
+    <div id="pathBody"></div>
   </div>
 </section>
 
@@ -330,10 +362,10 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   <div class="wrap">
     <div class="eyebrow">Community</div>
     <h2>欢迎交流与关注</h2>
-    <p class="desc">学到卡住的时候，别一个人耗着——下面几个入口都能找到人。</p>
+    <p class="desc">下面是这个站目前能给你的东西。<b>交流群还在筹备，暂时找不到人</b>——这一条我们不装。</p>
     <div class="contact">
       <div class="cc"><div class="ic">💬</div><div class="n">交流群</div><div class="d">筹备中，入口很快放出<br>聊课程、聊作品、互相看方案</div></div>
-      <div class="cc"><div class="ic">📖</div><div class="n">公众号 · 张大仙儿</div><div class="d">课程更新与拆解文章<br>AI Native 组织观察</div></div>
+      <div class="cc"><div class="ic">📖</div><div class="n">公众号 · 张大仙儿</div><div class="d">课程更新与拆解文章<br><b>搜「张大仙儿」可关注</b></div></div>
       <a class="cc" href="data/2026-08/README.md" target="_blank"><div class="ic">📦</div><div class="n">练习数据集</div><div class="d">花名册 / 考勤 / 业绩三张表<br>埋了 8 类真实脏数据，附答案卡</div></a>
     </div>
   </div>
@@ -388,6 +420,23 @@ const CO = window.COURSE || {parts:[],meta:{stats:{}}};
 
 const AC={copy:['沿用','ac-c'],adapt:['改写','ac-a'],new:['原创','ac-n']};
 const GLYPH=['◈','◎','◇','▣','◐','⬡','✦','◑','⬢','✧','◧','⊙'];
+function renderPath(){
+  const P=(CO.paths||[])[0]; if(!P) return;
+  document.getElementById('pathTitle').textContent=P.name;
+  document.getElementById('pathDesc').innerHTML=
+    `${P.who}<br><b>${P.goal}</b><br><span style="color:var(--faint)">共 ${P.total_les} 节 · ${P.total_read} 分钟阅读 · 加上动手约 7 个晚上</span>`;
+  document.getElementById('pathBody').innerHTML=P.nights.map(n=>`
+    <div class="night">
+      <div class="nh"><span class="nn">第 ${n.n} 晚</span><b>${n.t}</b><span class="nm">${n.min} 分钟阅读</span></div>
+      <div class="nd">${n.do}</div>
+      <div class="nw">${n.why}</div>
+      <div class="nl">${n.items.map(x=>`<a href="learn.html#${x.file}"><i>${x.num}</i>${x.title}<em>${x.min}′</em></a>`).join('')}
+        ${n.data?'<a class="dl" href="data/2026-08/README.md" target="_blank">📦 下载三张练习表</a>':''}
+        ${n.answer?'<a class="dl" href="data/2026-08/答案卡.md" target="_blank">✓ 答案卡（做完再看）</a>':''}
+      </div>
+    </div>`).join('');
+}
+
 function renderTopics(){
   const acc=CO.meta.access||{};
   $('#sortnote').textContent=`按学习顺序排列 · 点任一主题进入课程阅读器 · ${acc.free||0} 节免费直读，${acc.locked||0} 节登录后读`;
@@ -422,7 +471,7 @@ function renderTopics(){
     </section>`;
   }).join('');
 }
-renderTopics();
+renderPath(); renderTopics();
 
 
 /* 首屏统计数字改用真实课程数据 */

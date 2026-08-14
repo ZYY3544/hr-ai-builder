@@ -195,7 +195,7 @@ function renderTree(filter){
         <div class="tp-l">${ls.map(l=>{
           if(!l.ready) return `<div class="ls off"><span class="dot"></span><span>${l.title} · 待写</span></div>`;
           return `<a class="ls ${l.file===f?'on':''} ${done.has(l.file)?'done':''}" href="#${encodeURIComponent(l.file)}">
-            <span class="dot"></span><span>${l.title}${l.free?'':'<span class="lk">🔒</span>'}<span class="mn">${l.min}′</span></span></a>`;
+            <span class="dot"></span><span>${l.title}<span class="mn">${l.min}′</span></span></a>`;
         }).join('')}</div></div>`;
     });
     if(ptHtml) html+=`<div class="pt"><div class="num">${p.num}</div><div class="ti">${p.title}</div></div>${ptHtml}`;
