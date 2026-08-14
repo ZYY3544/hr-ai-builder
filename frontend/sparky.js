@@ -8,13 +8,71 @@
   var HKEY = 'sparky_hist', MAX_H = 40;
   var PAGE = (location.pathname.split('/').pop() || 'index.html').replace('.html', '');
 
+
+  /* ---------------- 像素小猫（逐像素移植自 meansights PixelCat.tsx，SMIL 动画）---------------- */
+  var CAT_C = { P: '#CA7C5E', D: '#a8604a', W: '#FFFFFF', E: '#3d2c24' };
+  var CAT_STATIC = [[0,2,'P'],[0,9,'P'],[1,1,'P'],[1,2,'D'],[1,3,'P'],[1,8,'P'],[1,9,'D'],[1,10,'P'],
+    [2,1,'P'],[2,2,'P'],[2,3,'P'],[2,4,'P'],[2,5,'P'],[2,6,'P'],[2,7,'P'],[2,8,'P'],[2,9,'P'],[2,10,'P'],
+    [3,0,'P'],[3,1,'P'],[3,2,'P'],[3,3,'P'],[3,4,'P'],[3,5,'P'],[3,6,'P'],[3,7,'P'],[3,8,'P'],[3,9,'P'],[3,10,'P'],[3,11,'P'],
+    [4,0,'P'],[4,1,'P'],[4,4,'P'],[4,5,'P'],[4,6,'P'],[4,7,'P'],[4,10,'P'],[4,11,'P'],
+    [5,0,'P'],[5,1,'P'],[5,4,'P'],[5,5,'P'],[5,6,'P'],[5,7,'P'],[5,10,'P'],[5,11,'P'],
+    [6,0,'P'],[6,1,'P'],[6,2,'P'],[6,3,'P'],[6,4,'P'],[6,5,'P'],[6,6,'P'],[6,7,'P'],[6,8,'P'],[6,9,'P'],[6,10,'P'],[6,11,'P'],
+    [7,0,'P'],[7,1,'P'],[7,2,'P'],[7,3,'P'],[7,4,'P'],[7,5,'P'],[7,6,'P'],[7,7,'P'],[7,8,'P'],[7,9,'P'],[7,10,'P'],[7,11,'P'],
+    [8,0,'P'],[8,1,'P'],[8,2,'P'],[8,3,'P'],[8,4,'P'],[8,5,'P'],[8,6,'P'],[8,7,'P'],[8,8,'P'],[8,9,'P'],[8,10,'P'],[8,11,'P'],
+    [9,1,'P'],[9,2,'P'],[9,3,'P'],[9,4,'P'],[9,5,'P'],[9,6,'P'],[9,7,'P'],[9,8,'P'],[9,9,'P'],[9,10,'P'],
+    [10,2,'P'],[10,3,'P'],[10,4,'P'],[10,5,'P'],[10,6,'P'],[10,7,'P'],[10,8,'P'],[10,9,'P']];
+  var CAT_EYES = [[4,2],[4,3],[5,2],[5,3],[4,8],[4,9],[5,8],[5,9]];
+  var CAT_LEG_L = [[11,2,'P'],[11,3,'P'],[12,2,'P'],[12,3,'P'],[13,2,'D'],[13,3,'D']];
+  var CAT_LEG_R = [[11,8,'P'],[11,9,'P'],[12,8,'P'],[12,9,'P'],[13,8,'D'],[13,9,'D']];
+
+  function catSVG(size, mode) {
+    var cell = size / 14, offX = (size - 12 * cell) / 2, offY = 0;
+    var lift = Math.max(1, Math.round(cell * 0.9));
+    var anim = mode !== 'still';
+    var ph = { blink: -(Math.random() * 6).toFixed(2), dart: -(Math.random() * 9).toFixed(2),
+               walk: -(Math.random() * 0.44).toFixed(2) };
+    function rect(r, c, k) {
+      return '<rect x="' + (c * cell + offX) + '" y="' + (r * cell + offY) + '" width="' + cell +
+             '" height="' + cell + '" fill="' + CAT_C[k] + '"/>';
+    }
+    var px = CAT_STATIC.map(function (p) { return rect(p[0], p[1], p[2]); }).join('') +
+             CAT_EYES.map(function (p) { return rect(p[0], p[1], 'W'); }).join('');
+    var bo = '1;1;0;0;1;1', bc = '0;0;1;1;0;0', bt = '0;0.94;0.95;0.98;0.99;1';
+    var blink = anim ? '<animate attributeName="opacity" values="' + bo + '" keyTimes="' + bt +
+      '" dur="6s" repeatCount="indefinite" begin="' + ph.blink + 's"/>' : '';
+    var dart = anim ? '<animateTransform attributeName="transform" type="translate" values="0,0; ' +
+      (-cell) + ',0; 0,0; 0,' + (-cell) + '; 0,0; ' + (-cell) + ',' + (-cell) +
+      '; 0,0" keyTimes="0;0.16;0.3;0.46;0.6;0.78;1" dur="9s" repeatCount="indefinite" calcMode="discrete" begin="' +
+      ph.dart + 's"/>' : '';
+    function pupil(x) {
+      return '<rect x="' + (x * cell + offX) + '" y="' + (5 * cell + offY) + '" width="' + cell +
+             '" height="' + cell + '" fill="' + CAT_C.E + '">' + blink + '</rect>';
+    }
+    var lineH = Math.max(1, Math.round(cell * .5)), lineY = 5 * cell + offY - lineH / 2;
+    function closed(x) {
+      return anim ? '<rect x="' + (x * cell + offX) + '" y="' + lineY + '" width="' + (2 * cell) +
+        '" height="' + lineH + '" fill="' + CAT_C.E + '" opacity="0">' +
+        '<animate attributeName="opacity" values="' + bc + '" keyTimes="' + bt +
+        '" dur="6s" repeatCount="indefinite" begin="' + ph.blink + 's"/></rect>' : '';
+    }
+    function leg(pxs, first) {
+      var a = mode === 'walk' ? '<animateTransform attributeName="transform" type="translate" values="' +
+        (first ? '0,' + (-lift) + ';0,0' : '0,0;0,' + (-lift)) +
+        '" keyTimes="0;0.5" dur="0.44s" repeatCount="indefinite" calcMode="discrete" begin="' + ph.walk + 's"/>' : '';
+      return '<g>' + a + pxs.map(function (p) { return rect(p[0], p[1], p[2]); }).join('') + '</g>';
+    }
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size +
+      '" style="overflow:visible">' + px +
+      '<g>' + dart + pupil(3) + pupil(9) + '</g>' + closed(2) + closed(8) +
+      leg(CAT_LEG_L, true) + leg(CAT_LEG_R, false) + '</svg>';
+  }
+
   /* ---------------- DOM ---------------- */
   var css = [
-    '#spk-ball{position:fixed;right:22px;bottom:22px;width:54px;height:54px;border-radius:50%;',
-    ' background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;font-size:24px;border:none;cursor:pointer;',
-    ' box-shadow:0 6px 20px rgba(8,145,178,.35);z-index:9998;display:flex;align-items:center;justify-content:center;',
-    ' transition:transform .15s}',
-    '#spk-ball:hover{transform:scale(1.08)}',
+    '#spk-ball{position:fixed;right:22px;bottom:20px;width:64px;height:64px;background:none;border:none;',
+    ' cursor:pointer;z-index:9998;display:flex;align-items:flex-end;justify-content:center;padding:0;',
+    ' transition:transform .15s;filter:drop-shadow(0 5px 10px rgba(15,23,42,.28))}',
+    '#spk-ball:hover{transform:scale(1.1)}',
     '#spk-panel{position:fixed;right:0;top:0;bottom:0;width:390px;max-width:100vw;background:#fff;z-index:9999;',
     ' box-shadow:-8px 0 32px rgba(15,23,42,.14);display:flex;flex-direction:column;',
     ' transform:translateX(105%);transition:transform .22s ease}',
@@ -57,11 +115,14 @@
 
   var ball = document.createElement('button');
   ball.id = 'spk-ball'; ball.title = 'Sparky · 伴学助手';
-  ball.innerHTML = '<img src="sparky-cat.png" alt="Sparky" style="width:38px;height:38px;border-radius:8px">';
+  ball.innerHTML = catSVG(52, 'idle');
+  // hover 时小猫原地踏步（与 meansights 同款交互）
+  ball.onmouseenter = function () { ball.innerHTML = catSVG(52, 'walk'); };
+  ball.onmouseleave = function () { ball.innerHTML = catSVG(52, 'idle'); };
   var panel = document.createElement('div');
   panel.id = 'spk-panel';
   panel.innerHTML =
-    '<div id="spk-head"><img src="sparky-cat.png" alt="" style="width:28px;height:28px;border-radius:7px">' +
+    '<div id="spk-head"><span id="spk-avatar" style="display:flex">' + catSVG(30, 'idle') + '</span>' +
     '<div><div class="t">Sparky</div><div class="s">帮你找到该读哪儿 · 不替课本讲课</div></div>' +
     '<button id="spk-x">×</button></div>' +
     '<div id="spk-log"></div>' +
@@ -153,6 +214,8 @@
     var typing = document.createElement('div');
     typing.className = 'spk-typing'; typing.textContent = 'Sparky 正在想…';
     log.appendChild(typing); scroll();
+    var av = panel.querySelector('#spk-avatar');
+    if (av) av.innerHTML = catSVG(30, 'walk');
 
     var reply = '', replyEl = null, refs = [];
 
@@ -166,8 +229,10 @@
     }).then(function (r) {
       if (!r.ok) {
         return r.json().then(function (j) {
-          throw new Error((j && j.detail) || '连不上');
-        }, function () { throw new Error('连不上'); });
+          var e = new Error((j && j.detail) || '');
+          e.human = !!(j && j.detail);   // 服务端 detail 本身就是人话，才可直出
+          throw e;
+        }, function () { throw new Error(''); });
       }
       var rd = r.body.getReader(), dec = new TextDecoder(), buf = '';
       function pump() {
@@ -199,8 +264,13 @@
       if (reply) { hist.push({ role: 'assistant', content: reply, refs: refs }); save(); }
     }).catch(function (e) {
       if (typing.parentNode) typing.remove();
-      bubble('assistant', String(e.message || '我这会儿连不上了。你可以直接翻目录，或者过会儿再来。'), 'err');
-    }).then(function () { busy = false; send.disabled = false; ta.focus(); });
+      bubble('assistant', e.human && e.message ? e.message
+        : '我这会儿连不上了。你可以直接翻目录，或者过会儿再来。', 'err');
+    }).then(function () {
+      busy = false; send.disabled = false; ta.focus();
+      var av2 = panel.querySelector('#spk-avatar');
+      if (av2) av2.innerHTML = catSVG(30, 'idle');
+    });
   }
 
   send.onclick = submit;
