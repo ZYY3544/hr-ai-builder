@@ -1,898 +1,1641 @@
 {
  "start-dunning-kruger.html": {
-  "free": true,
   "title": "我们在哪里？达克效应",
-  "seo": "AI 学习者的达克曲线：你现在在哪一段？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "入门与定位",
+  "seo": "AI 学习者的达克曲线：你现在在哪一段？"
  },
  "start-how-to-learn.html": {
-  "free": true,
   "title": "怎样学，知识才能过脑子",
-  "seo": "看完 ≠ 学到：AI 课程怎么学才真的过脑子",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "入门与定位",
+  "seo": "看完 ≠ 学到：AI 课程怎么学才真的过脑子"
  },
  "start-why-principles.html": {
-  "free": true,
   "title": "为什么 HR 也要弄懂原理",
-  "seo": "HR 学 AI 需要懂原理吗？——原理决定你能不能判断它什么时候会错",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "入门与定位",
+  "seo": "HR 学 AI 需要懂原理吗？——原理决定你能不能判断它什么时候会错"
  },
  "zero-0.html": {
-  "free": true,
   "title": "AI 能干哪些神奇的活",
-  "seo": "AI 到底能干什么？先看它的能力清单",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "AI 是个什么东西",
+  "seo": "AI 到底能干什么？先看它的能力清单"
  },
  "zero-1.html": {
-  "free": true,
   "title": "它其实在玩「接话茬」",
-  "seo": "AI 是怎么工作的？它其实在玩接话茬",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 5,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "AI 是个什么东西",
+  "seo": "AI 是怎么工作的？它其实在玩接话茬"
  },
  "zero-2.html": {
-  "free": true,
   "title": "它不是搜索引擎",
-  "seo": "AI 和搜索引擎有什么区别？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "AI 是个什么东西",
+  "seo": "AI 和搜索引擎有什么区别？"
  },
  "zero-3.html": {
-  "free": true,
   "title": "它会一本正经地胡说",
-  "seo": "AI 为什么会一本正经地胡说八道？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "AI 是个什么东西",
+  "seo": "AI 为什么会一本正经地胡说八道？"
  },
  "zero-4.html": {
-  "free": true,
   "title": "把它当不了解你的新同事",
-  "seo": "AI 提示词怎么写？把它当不了解你的新同事",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "怎么和它说话",
+  "seo": "AI 提示词怎么写？把它当不了解你的新同事"
  },
  "zero-5.html": {
-  "free": true,
   "title": "万能开场白：先问我几个问题",
-  "seo": "一句万能开场白，让 AI 主动问你需求",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "怎么和它说话",
+  "seo": "一句万能开场白，让 AI 主动问你需求"
  },
  "zero-q-prompt.html": {
-  "free": true,
   "title": "提示词到底怎么写才好？",
-  "seo": "提示词到底怎么写才好？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 4,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "提示词到底怎么写才好？"
  },
  "zero-q-prompt-engineering.html": {
-  "free": true,
   "title": "「提示词工程」有什么意义？",
-  "seo": "提示词工程是什么，对普通人有意义吗？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "提示词工程是什么，对普通人有意义吗？"
  },
  "zero-q-model-agent-app.html": {
-  "free": true,
   "title": "模型、Agent、应用是什么关系？",
-  "seo": "大模型、Agent、AI 应用是什么关系？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "大模型、Agent、AI 应用是什么关系？"
  },
  "zero-q-agent.html": {
-  "free": true,
   "title": "Agent 到底强在哪？",
-  "seo": "AI Agent 到底强在哪里？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "AI Agent 到底强在哪里？"
  },
  "zero-q-skill.html": {
-  "free": true,
   "title": "最近很火的 Skill 是什么？",
-  "seo": "AI 的 Skill 是什么？和插件有什么区别？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "AI 的 Skill 是什么？和插件有什么区别？"
  },
  "zero-q-china-models.html": {
-  "free": true,
   "title": "国产大模型有哪些？该怎么选？",
-  "seo": "国产大模型有哪些？企业该怎么选？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "国产大模型有哪些？企业该怎么选？"
  },
  "zero-q-companies.html": {
-  "free": true,
   "title": "还有哪些重要的 AI 公司？",
-  "seo": "除了 OpenAI，还有哪些重要的 AI 公司？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "HR 三千问",
+  "seo": "除了 OpenAI，还有哪些重要的 AI 公司？"
  },
  "ai-tips-boundary.html": {
-  "free": true,
   "title": "人机知识边界：四象限策略",
-  "seo": "什么该问 AI，什么该问人？一张四象限图",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "A"
+  "ksa": "A",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "日常用它的手感",
+  "seo": "什么该问 AI，什么该问人？一张四象限图"
  },
  "ai-tips-context.html": {
-  "free": true,
   "title": "好提问 vs 坏提问",
-  "seo": "同一个问题，怎么问 AI 才给得出好答案",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "日常用它的手感",
+  "seo": "同一个问题，怎么问 AI 才给得出好答案"
  },
  "ai-tips-verify.html": {
-  "free": true,
   "title": "AI 说的能信吗？找出幻觉",
-  "seo": "AI 说的话怎么验证？三步找出幻觉",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "日常用它的手感",
+  "seo": "AI 说的话怎么验证？三步找出幻觉"
  },
  "ai-tips-iterate.html": {
-  "free": true,
   "title": "迭代的艺术：知道何时收手",
-  "seo": "跟 AI 来回改了十轮还不满意，什么时候该收手",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "A"
+  "ksa": "A",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "日常用它的手感",
+  "seo": "跟 AI 来回改了十轮还不满意，什么时候该收手"
  },
  "ai-tips-scenarios.html": {
-  "free": true,
   "title": "场景速查：什么时候放心用",
-  "seo": "哪些场景可以放心用 AI，哪些必须人工复核",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "A"
+  "ksa": "A",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "日常用它的手感",
+  "seo": "哪些场景可以放心用 AI，哪些必须人工复核"
  },
  "zero-6.html": {
-  "free": true,
   "title": "放心用，还是要核实？",
-  "seo": "什么活能放心交给 AI？一套三秒判断法",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "A"
+  "ksa": "A",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "什么能放心交给它",
+  "seo": "什么活能放心交给 AI？一套三秒判断法"
  },
  "zero-final.html": {
-  "free": true,
   "title": "你的下一步",
-  "seo": "零基础学完 AI 之后，下一步该学什么",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第零篇章",
+  "part_title": "写给第一次接触 AI 的 HR",
+  "topic": "什么能放心交给它",
+  "seo": "零基础学完 AI 之后，下一步该学什么"
  },
  "training-data.html": {
-  "free": true,
   "title": "AI 的食物：训练数据",
-  "seo": "大模型的训练数据是什么？为什么它决定了 AI 会说什么",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "生成 vs 检索：它为什么会编",
+  "seo": "大模型的训练数据是什么？为什么它决定了 AI 会说什么"
  },
  "train-vs-infer.html": {
-  "free": true,
   "title": "训练 vs 推理：两个不同的过程",
-  "seo": "大模型训练和推理有什么区别？",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "生成 vs 检索：它为什么会编",
+  "seo": "大模型训练和推理有什么区别？"
  },
  "hallu-fake-chat.html": {
-  "free": false,
   "title": "它为什么像在聊天：伪造聊天记录",
-  "seo": "大模型的本质是补全，不是理解——伪造一段聊天记录就看懂了",
+  "free": false,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "生成 vs 检索：它为什么会编",
+  "seo": "大模型的本质是补全，不是理解——伪造一段聊天记录就看懂了"
  },
  "hallu-first-scene.html": {
-  "free": true,
   "title": "它会编：筛简历现场",
-  "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场",
+  "free": true,
   "ready": true,
-  "spine": true,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 5,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "幻觉的四种应对",
+  "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场"
  },
  "hallu-fix-prompt.html": {
-  "free": true,
   "title": "应对 1：把约束写进 Prompt",
-  "seo": "怎么用 Prompt 减少 AI 幻觉？",
+  "free": true,
   "ready": true,
-  "spine": true,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "幻觉的四种应对",
+  "seo": "怎么用 Prompt 减少 AI 幻觉？"
  },
  "hallu-fix-rag.html": {
-  "free": false,
   "title": "应对 2：RAG——让它只答制度里有的",
-  "seo": "RAG 是什么？让 AI 只回答公司制度里写过的内容",
+  "free": false,
   "ready": true,
-  "spine": false,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "幻觉的四种应对",
+  "seo": "RAG 是什么？让 AI 只回答公司制度里写过的内容"
  },
  "hallu-fix-temp.html": {
-  "free": false,
   "title": "应对 3：它为什么每次都不一样",
-  "seo": "Temperature 是什么？为什么同一个问题 AI 每次答得都不同",
+  "free": false,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "幻觉的四种应对",
+  "seo": "Temperature 是什么？为什么同一个问题 AI 每次答得都不同"
  },
  "hallu-fix-eval.html": {
-  "free": false,
   "title": "应对 4：评测 + 人工审核",
-  "seo": "怎么评测 AI 的输出质量？评测加人工复核的组合拳",
+  "free": false,
   "ready": true,
-  "spine": true,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 5,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "幻觉的四种应对",
+  "seo": "怎么评测 AI 的输出质量？评测加人工复核的组合拳"
  },
  "context-window.html": {
-  "free": true,
   "title": "上下文窗口：它的工作记忆",
-  "seo": "什么是上下文窗口？AI 的工作记忆有多大",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "上下文窗口：它为什么会忘",
+  "seo": "什么是上下文窗口？AI 的工作记忆有多大"
  },
  "context-overflow.html": {
-  "free": true,
   "title": "上下文溢出：三种处理策略",
-  "seo": "对话太长 AI 就失忆？上下文溢出的三种处理办法",
+  "free": true,
   "ready": true,
-  "spine": false,
-  "ksa": "K"
+  "ksa": "K",
+  "min": 3,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "上下文窗口：它为什么会忘",
+  "seo": "对话太长 AI 就失忆？上下文溢出的三种处理办法"
  },
  "hr-recall-vs-judge.html": {
-  "free": true,
   "title": "召回 vs 判定：它编的理由你验不出来",
-  "seo": "AI 筛简历给的理由是编的怎么办？召回与判定必须拆开",
+  "free": true,
   "ready": true,
-  "spine": true,
-  "ksa": "A"
+  "ksa": "A",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "召回 vs 判定：HR 必须设的那道闸",
+  "seo": "AI 筛简历给的理由是编的怎么办？召回与判定必须拆开"
  },
  "hr-cite-not-summarize.html": {
-  "free": true,
   "title": "怎么让它只引用、不概括",
-  "seo": "怎么让 AI 引用原文而不是自己概括？一个可执行的 Prompt 约束",
+  "free": true,
   "ready": true,
-  "spine": true,
-  "ksa": "S"
+  "ksa": "S",
+  "min": 4,
+  "part": "第一篇章",
+  "part_title": "幻觉与边界：它靠不靠得住",
+  "topic": "召回 vs 判定：HR 必须设的那道闸",
+  "seo": "怎么让 AI 引用原文而不是自己概括？一个可执行的 Prompt 约束"
  },
  "prompt-system.html": {
-  "free": true,
   "title": "System Prompt：你说什么，它就变什么",
-  "seo": "System Prompt 是什么？一句话改变 AI 的全部行为",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "prompt-advanced.html": {
   "free": true,
-  "title": "Prompt 进阶技巧",
-  "seo": "AI 提示词进阶技巧：角色、示例、约束、格式",
   "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "prompt-attack.html": {
-  "free": true,
-  "title": "指令和数据走同一个通道",
-  "seo": "什么是 Prompt Injection？为什么 AI 分不清指令和数据",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "hr-resume-injection.html": {
-  "free": true,
-  "title": "简历里的白色字体：HR 场景的注入攻击",
-  "seo": "候选人在简历里藏白色字体骗过 AI 筛选，怎么防？",
-  "ready": true,
-  "spine": true,
-  "ksa": "K"
- },
- "prompt-defense.html": {
-  "free": false,
-  "title": "三层拦截：清洗、隔离、兜底",
-  "seo": "Prompt Injection 怎么防？清洗、隔离、兜底三层拦截",
-  "ready": true,
-  "spine": true,
-  "ksa": "S"
- },
- "ai-safety-redlines.html": {
-  "free": false,
-  "title": "AI 红线：HR 版四条底线",
-  "seo": "HR 用 AI 的四条安全底线",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "agent-what.html": {
-  "free": true,
-  "title": "Agent：能干活的 AI",
-  "seo": "AI Agent 是什么？和普通聊天有什么不同",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "agent-vs-workflow.html": {
-  "free": true,
-  "title": "Workflow vs Agent：HR 大多不该给自主权",
-  "seo": "Workflow 和 Agent 怎么选？HR 场景为什么大多不该给自主权",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "agent-react.html": {
-  "free": false,
-  "title": "ReAct 循环：思考 → 行动 → 观察",
-  "seo": "ReAct 是什么？Agent 的思考-行动-观察循环",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "agent-stuck.html": {
-  "free": false,
-  "title": "Agent 卡死的 5 种模式",
-  "seo": "AI Agent 为什么会卡死？五种典型失败模式",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "token-cost.html": {
-  "free": true,
-  "title": "多轮对话为什么越来越贵",
-  "seo": "AI 多轮对话为什么越聊越贵？Token 是怎么算钱的",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "cost-eval.html": {
-  "free": true,
-  "title": "模型选型：能力 vs 成本",
-  "seo": "AI 模型怎么选？能力和成本怎么权衡",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "hr-bridge.html": {
-  "free": true,
-  "title": "你已经会用了，接下来的问题不一样了",
-  "seo": "会用 AI 之后呢？从「它靠不靠谱」到「你担什么责」",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
- "hr-elicitation-1.html": {
-  "free": true,
-  "title": "隐性知识显性化：老法师那一眼在看什么",
-  "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
- "hr-elicitation-2.html": {
-  "free": true,
-  "title": "拆到哪一层为止：哪些永远进不了 Prompt",
-  "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-elicitation-3.html": {
-  "free": false,
-  "title": "从规则到 Prompt：判断链怎么落地",
-  "seo": "把萃取出来的判断规则写成 Prompt 的具体做法",
-  "ready": true,
-  "spine": true,
-  "ksa": "S"
- },
- "hr-caliber-1.html": {
-  "free": true,
-  "title": "知识库的原料：三个系统、五种口径、人名对不上",
-  "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "hr-caliber-2.html": {
-  "free": true,
-  "title": "Garbage in：口径不确认，它算出来的全是假的",
-  "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-caliber-3.html": {
-  "free": false,
-  "title": "切片与清洗：喂进 RAG 之前要做什么",
-  "seo": "文档怎么切片、数据怎么清洗，才能喂进 RAG",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "eval-why.html": {
-  "free": true,
-  "title": "为什么评测比调 prompt 重要",
-  "seo": "为什么 AI 评测比调 Prompt 更重要？",
-  "ready": true,
-  "spine": true,
-  "ksa": "S"
- },
- "eval-graders.html": {
-  "free": true,
-  "title": "三种 Grader：代码判、模型判、人工判",
-  "seo": "AI 输出怎么打分？代码判、模型判、人工判三种方式",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "eval-pitfalls.html": {
-  "free": false,
-  "title": "Eval 的坑：噪音、作弊与退化",
-  "seo": "做 AI 评测最容易踩的三个坑",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "hr-eval-negative.html": {
-  "free": false,
-  "title": "阴性对照：先注入已知的错，看它抓不抓得住",
-  "seo": "怎么验证你的 AI 评测本身是有效的？先做阴性对照",
-  "ready": true,
-  "spine": true,
-  "ksa": "S"
- },
- "vibe-rules.html": {
-  "free": true,
-  "title": "为什么要给 AI 立规矩",
-  "seo": "用 AI 写代码为什么要先立规矩？",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-workflow.html": {
-  "free": true,
-  "title": "四步流程：复述、PRD、确认、编码",
-  "seo": "不会写代码怎么指挥 AI 做东西？四步协作流程",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-debug.html": {
-  "free": true,
-  "title": "调试铁律：先 Log 再改码",
-  "seo": "AI 写的代码出错了怎么调？先看日志再改代码",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-complete.html": {
-  "free": false,
-  "title": "不接受分期交付",
-  "seo": "让 AI 一次交付完整功能，不接受半成品",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-safety.html": {
-  "free": true,
-  "title": "破坏性操作的三道闸",
-  "seo": "怎么防止 AI 误删数据？破坏性操作的三道闸",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-env.html": {
-  "free": true,
-  "title": "把环境事实写进 Rule",
-  "seo": "为什么要把环境信息写进 AI 的规则文件",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-docs.html": {
-  "free": true,
-  "title": "三份文档与方法论沉淀",
-  "seo": "跟 AI 协作要维护哪三份文档",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "vibe-final.html": {
-  "free": true,
-  "title": "规则的价值：每条都解决一个真实问题",
-  "seo": "为什么每条 AI 协作规则都对应一次真实踩坑",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-project-pick.html": {
-  "free": true,
-  "title": "选题：什么样的第一个作品站得住",
-  "seo": "HR 做 AI 作品选什么题？六个能站住的选题",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
- "hr-project-data.html": {
-  "free": true,
-  "title": "数据：真数据碰不得，合成数据怎么造得像",
-  "seo": "做 HR AI 作品没有数据怎么办？合成数据怎么造得像真的",
-  "ready": true,
-  "spine": false,
-  "ksa": "S"
- },
- "hr-project-build.html": {
-  "free": false,
-  "title": "一周做出能点的原型：从想法到 demo",
-  "seo": "一周内把一个 HR 场景做成能演示的原型",
-  "ready": true,
-  "spine": true,
-  "ksa": "S"
- },
- "hr-project-tell.html": {
-  "free": false,
-  "title": "作品怎么讲：别人在追问什么",
-  "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
- "hr-inventory-1.html": {
-  "free": true,
-  "title": "把一个部门的活拆成任务清单",
-  "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-inventory-2.html": {
-  "free": true,
-  "title": "每条标：它能干 / 干不了 / 干了得有人兜",
-  "seo": "AI 场景盘点怎么打标？三类任务的判断标准",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-inventory-3.html": {
-  "free": false,
-  "title": "算账：省多少、风险多大、第一刀切哪",
-  "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里",
-  "ready": true,
-  "spine": true,
-  "ksa": "A"
- },
- "hr-rollout.html": {
-  "free": true,
-  "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
-  "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "hr-compliance.html": {
-  "free": false,
-  "title": "它算错了，谁负责：内网 · n 阈值 · 可申诉",
-  "seo": "AI 做错了人事决策谁负责？合规的四条红线",
-  "ready": true,
-  "spine": false,
-  "ksa": "K"
- },
- "hr-org-3.html": {
-  "free": false,
-  "title": "哪些能力反而更值钱了",
-  "seo": "AI 时代 HR 哪些能力在升值？按 KSA 拆开看",
-  "ready": true,
-  "spine": false,
-  "ksa": "A"
- },
- "data-gen-vs-exec.html": {
-  "title": "同一张表问三遍出三个数",
-  "free": true
- },
- "data-token.html": {
-  "title": "它在预测 token，不在做运算",
-  "free": true
- },
- "data-when-code.html": {
-  "title": "三问判据：什么时候必须走代码",
-  "free": true
- },
- "data-ci-how.html": {
-  "title": "工具调用怎么发生的",
-  "free": true
- },
- "data-ci-first.html": {
-  "title": "第一次工具调用：五分钟揪重名",
-  "free": true
- },
- "data-ci-sandbox.html": {
-  "title": "沙箱：你的数据去了哪",
-  "free": true
- },
- "data-ci-where.html": {
-  "title": "三条路：代码在哪跑",
-  "free": true
- },
- "data-spec-four.html": {
-  "title": "四要素模板",
-  "free": true
- },
- "data-spec-cleaning.html": {
-  "title": "清洗规则必须逐条写",
-  "free": true
- },
- "data-check-three.html": {
-  "title": "小样、抽查、对总数",
-  "free": true
- },
- "data-check-canary.html": {
-  "title": "埋雷：给脚本做阴性对照",
-  "free": true
- },
- "data-two-stage.html": {
-  "title": "两段架构：数据干净之后",
-  "free": true
- },
- "data-pattern.html": {
-  "title": "把你的分析模式写下来",
-  "free": true
- },
- "data-output.html": {
-  "title": "从数字到观点",
-  "free": true
- },
- "data-monthly.html": {
-  "title": "月报改造全程",
-  "free": true
- },
- "data-auto-three.html": {
-  "title": "固化三问",
-  "free": true
- },
- "data-human.html": {
-  "title": "评价人的活永远留给人",
-  "free": true
- },
- "cc-why-terminal.html": {
-  "title": "为什么是终端里的 CC",
-  "free": true
- },
- "cc-install.html": {
-  "title": "三十分钟装好",
-  "free": true
- },
- "cc-first-talk.html": {
-  "title": "第一次对话：它能看见什么",
-  "free": true
- },
- "cc-claude-md.html": {
-  "title": "CLAUDE.md：让它记住你的口径",
-  "free": true
- },
- "cc-project-layout.html": {
-  "title": "文件夹怎么摆",
-  "free": true
- },
- "cc-tools.html": {
-  "title": "它的手和眼睛：工具",
-  "free": true
- },
- "cc-permissions.html": {
-  "title": "权限：HR 场景的三道闸",
-  "free": true
- },
- "cc-first-agent.html": {
-  "title": "第一个真活跑通",
-  "free": true
- },
- "harness-what.html": {
-  "title": "Harness 是什么",
-  "free": true
- },
- "harness-why-unstable.html": {
-  "title": "你的 agent 为什么不稳",
-  "free": true
- },
- "harness-loop.html": {
-  "title": "模式一：让它自己检查自己",
-  "free": true
- },
- "harness-memory.html": {
-  "title": "模式二：文件系统当记忆",
-  "free": true
- },
- "harness-subagent.html": {
-  "title": "模式三：分身与后台任务",
-  "free": true
- },
- "harness-audit.html": {
-  "title": "留痕层：它凭什么这么判",
-  "free": true
- },
- "harness-eval-loop.html": {
-  "title": "把评测焊进循环",
-  "free": true
- },
- "harness-tradeoff.html": {
-  "title": "哪些 harness 值得造",
-  "free": true
- },
- "harness-closing.html": {
-  "title": "回到原点：这一层到底是什么",
-  "free": true
- },
- "psy-captive.html": {
-  "title": "内部用户没得选",
-  "free": true
- },
- "psy-perceived.html": {
-  "title": "感知性能：它明明不慢",
-  "free": true
- },
- "psy-waiting.html": {
-  "title": "等待心理学",
-  "free": true
- },
- "psy-labor.html": {
-  "title": "劳动错觉：把过程演出来",
-  "free": true
- },
- "psy-peak-end.html": {
-  "title": "峰终定律：这是 HR 的主场",
-  "free": true
- },
- "psy-aversion.html": {
-  "title": "算法厌恶：犯一次错就被拉黑",
-  "free": true
- },
- "psy-error-comms.html": {
-  "title": "怎么讲清楚「它有 8% 会错」",
-  "free": true
- },
- "psy-trust-calib.html": {
-  "title": "信任校准：半信半疑最好",
-  "free": true
- },
- "psy-defense.html": {
-  "title": "防御心理：不是不会，是不敢",
-  "free": true
- },
- "psy-mental-model.html": {
-  "title": "心智模型：拿错了说明书",
-  "free": true
- },
- "psy-honeymoon.html": {
-  "title": "蜜月悬崖：期望是要还的",
-  "free": true
- },
- "psy-ai-discount.html": {
-  "title": "AI 标签折扣",
-  "free": true
- },
- "psy-offload.html": {
-  "title": "认知卸载：一边用一边怕废掉",
-  "free": true
- },
- "psy-feedback.html": {
-  "title": "为什么没人点踩",
-  "free": true
- },
- "psy-checklist.html": {
-  "title": "上线前过一遍",
-  "free": true
- },
- "taste-bottleneck.html": {
-  "title": "执行免费了，判断力涨价",
-  "free": true
- },
- "taste-ai-flavor.html": {
-  "title": "「AI 味儿」是怎么来的",
-  "free": true
- },
- "taste-hierarchy.html": {
-  "title": "层级：一屏只有一个主角",
-  "free": true
- },
- "taste-whitespace.html": {
-  "title": "留白与对齐",
-  "free": true
- },
- "taste-restraint.html": {
-  "title": "克制：给颜色和字体做预算",
-  "free": true
- },
- "taste-consistency.html": {
-  "title": "一致性：系统感从哪来",
-  "free": true
- },
- "taste-vocab.html": {
-  "title": "「好看」的具体说法",
-  "free": true
- },
- "taste-spec.html": {
-  "title": "从形容词到规格书",
-  "free": true
- },
- "taste-hr-outputs.html": {
-  "title": "HR 三类产出的具体要求",
-  "free": true
- },
- "taste-chart-type.html": {
-  "title": "图表选型：什么数据配什么图",
-  "free": true
- },
- "taste-chart-quality.html": {
-  "title": "图表的审美判据",
-  "free": true
- },
- "taste-reference.html": {
-  "title": "建立自己的参考库",
-  "free": true
- },
- "taste-checklist.html": {
-  "title": "验收清单",
-  "free": true
- },
- "jargon-why.html": {
-  "title": "术语为什么唬人",
-  "free": true
- },
- "jargon-rag.html": {
-  "title": "RAG：让它答之前先查资料",
-  "free": true
- },
- "jargon-training.html": {
-  "title": "微调、蒸馏、预训练",
-  "free": true
- },
- "jargon-tools.html": {
-  "title": "工具、MCP、Skill",
-  "free": true
- },
- "jargon-eval.html": {
-  "title": "Eval 与 benchmark",
-  "free": true
- },
- "jargon-table.html": {
-  "title": "一张表和一份问话清单",
-  "free": true
- },
- "jargon-deploy.html": {
-  "title": "开源、私有化部署、参数量",
-  "free": true
+  "ksa": "S",
+  "min": 5,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt 工程：怎么把话说对",
+  "seo": "System Prompt 是什么？一句话改变 AI 的全部行为"
  },
  "prompt-skeleton.html": {
   "title": "一个能套的骨架",
-  "free": true
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt 工程：怎么把话说对",
+  "seo": "怎么写好一个 Prompt？五件套骨架与 HR 完整实例"
  },
  "prompt-hr-cases.html": {
   "title": "HR 五个高频场景",
-  "free": true
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt 工程：怎么把话说对",
+  "seo": "HR 常用的 Prompt 模板：JD、面试题、绩效反馈、政策问答"
+ },
+ "prompt-advanced.html": {
+  "title": "Prompt 进阶技巧",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt 工程：怎么把话说对",
+  "seo": "AI 提示词进阶技巧：角色、示例、约束、格式"
+ },
+ "hr-elicitation-3.html": {
+  "title": "从规则到 Prompt：判断链怎么落地",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt 工程：怎么把话说对",
+  "seo": "把萃取出来的判断规则写成 Prompt 的具体做法"
+ },
+ "prompt-attack.html": {
+  "title": "指令和数据走同一个通道",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt Injection：它会听谁的话",
+  "seo": "什么是 Prompt Injection？为什么 AI 分不清指令和数据"
+ },
+ "hr-resume-injection.html": {
+  "title": "简历里的白色字体：HR 场景的注入攻击",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt Injection：它会听谁的话",
+  "seo": "候选人在简历里藏白色字体骗过 AI 筛选，怎么防？"
+ },
+ "prompt-defense.html": {
+  "title": "三层拦截：清洗、隔离、兜底",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 6,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt Injection：它会听谁的话",
+  "seo": "Prompt Injection 怎么防？清洗、隔离、兜底三层拦截"
+ },
+ "ai-safety-redlines.html": {
+  "title": "AI 红线：HR 版四条底线",
+  "free": false,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Prompt Injection：它会听谁的话",
+  "seo": "HR 用 AI 的四条安全底线"
+ },
+ "agent-what.html": {
+  "title": "Agent：能干活的 AI",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Agent 与 Workflow：它能自己干活吗",
+  "seo": "AI Agent 是什么？和普通聊天有什么不同"
+ },
+ "agent-vs-workflow.html": {
+  "title": "Workflow vs Agent：HR 大多不该给自主权",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 5,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Agent 与 Workflow：它能自己干活吗",
+  "seo": "Workflow 和 Agent 怎么选？HR 场景为什么大多不该给自主权"
+ },
+ "agent-react.html": {
+  "title": "ReAct 循环：思考 → 行动 → 观察",
+  "free": false,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Agent 与 Workflow：它能自己干活吗",
+  "seo": "ReAct 是什么？Agent 的思考-行动-观察循环"
+ },
+ "agent-stuck.html": {
+  "title": "Agent 卡死的 5 种模式",
+  "free": false,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Agent 与 Workflow：它能自己干活吗",
+  "seo": "AI Agent 为什么会卡死？五种典型失败模式"
+ },
+ "token-cost.html": {
+  "title": "多轮对话为什么越来越贵",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Token 与成本：它花你多少钱",
+  "seo": "AI 多轮对话为什么越聊越贵？Token 是怎么算钱的"
+ },
+ "cost-eval.html": {
+  "title": "模型选型：能力 vs 成本",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第二篇章",
+  "part_title": "Prompt 与 Agent：怎么指挥它",
+  "topic": "Token 与成本：它花你多少钱",
+  "seo": "AI 模型怎么选？能力和成本怎么权衡"
+ },
+ "jargon-why.html": {
+  "title": "术语为什么唬人",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "怎么听懂这些词",
+  "seo": "AI 术语为什么听起来那么难？三种用途与一个通用判据"
+ },
+ "jargon-rag.html": {
+  "title": "RAG：让它答之前先查资料",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "喂知识给它：RAG、向量、切片",
+  "seo": "RAG 是什么？什么时候需要，什么时候完全不需要"
+ },
+ "hr-caliber-3.html": {
+  "title": "切片与清洗：喂进 RAG 之前要做什么",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "喂知识给它：RAG、向量、切片",
+  "seo": "文档怎么切片、数据怎么清洗，才能喂进 RAG"
+ },
+ "jargon-training.html": {
+  "title": "微调、蒸馏、预训练",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "训练、部署与工具：微调、蒸馏、私有化、MCP",
+  "seo": "微调和蒸馏是什么？HR 需要训练自己的大模型吗"
+ },
+ "jargon-deploy.html": {
+  "title": "开源、私有化部署、参数量",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "训练、部署与工具：微调、蒸馏、私有化、MCP",
+  "seo": "私有化部署是什么？开源模型和参数量对 HR 意味着什么"
+ },
+ "jargon-tools.html": {
+  "title": "工具、MCP、Skill",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "训练、部署与工具：微调、蒸馏、私有化、MCP",
+  "seo": "MCP 是什么？Skill 和插件的本质是什么"
+ },
+ "jargon-eval.html": {
+  "title": "Eval 与 benchmark",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "验收与提问：Eval、benchmark、问话清单",
+  "seo": "AI 的准确率怎么看？供应商报的分数为什么不能信"
+ },
+ "jargon-table.html": {
+  "title": "一张表和一份问话清单",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第三篇章",
+  "part_title": "术语祛魅：哪些你真需要，哪些只是在唬你",
+  "topic": "验收与提问：Eval、benchmark、问话清单",
+  "seo": "AI 术语速查表与采购问话清单"
+ },
+ "hr-bridge.html": {
+  "title": "你已经会用了，接下来的问题不一样了",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "两种上下文：判断与数据",
+  "seo": "会用 AI 之后呢？从「它靠不靠谱」到「你担什么责」"
+ },
+ "data-gen-vs-exec.html": {
+  "title": "同一张表问三遍出三个数",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "生成 vs 执行：它给的数是算的还是猜的",
+  "seo": "把表格贴给 AI 算数，为什么每次结果都不一样？"
+ },
+ "data-token.html": {
+  "title": "它在预测 token，不在做运算",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "生成 vs 执行：它给的数是算的还是猜的",
+  "seo": "大模型为什么算不准数学？因为它在预测 token 而不是计算"
+ },
+ "data-when-code.html": {
+  "title": "三问判据：什么时候必须走代码",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "生成 vs 执行：它给的数是算的还是猜的",
+  "seo": "什么时候可以直接问 AI，什么时候必须让它写代码？三个判据"
+ },
+ "data-ci-how.html": {
+  "title": "工具调用怎么发生的",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+  "seo": "Code Interpreter 是什么？AI 写代码算数据的完整机制"
+ },
+ "data-ci-first.html": {
+  "title": "第一次工具调用：五分钟揪重名",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+  "seo": "第一次让 AI 写代码处理数据：五分钟揪出花名册里的重名"
+ },
+ "data-ci-sandbox.html": {
+  "title": "沙箱：你的数据去了哪",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+  "seo": "把员工数据上传给 AI 安全吗？沙箱机制与 HR 的数据红线"
+ },
+ "data-ci-where.html": {
+  "title": "三条路：代码在哪跑",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "Code Interpreter 与沙箱：代码在哪跑，数据去哪了",
+  "seo": "公司电脑装不了软件，AI 写的代码在哪运行？三条路"
+ },
+ "hr-caliber-1.html": {
+  "title": "知识库的原料：三个系统、五种口径、人名对不上",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "需求规格：把口径写成它能执行的东西",
+  "seo": "HR 数据为什么这么脏？三个系统五种口径的真实现场"
+ },
+ "hr-caliber-2.html": {
+  "title": "Garbage in：口径不确认，它算出来的全是假的",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "需求规格：把口径写成它能执行的东西",
+  "seo": "口径没对齐，AI 算出来的数字全是假的——而且假得很像真的"
+ },
+ "data-spec-four.html": {
+  "title": "四要素模板",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "需求规格：把口径写成它能执行的东西",
+  "seo": "怎么向 AI 描述一个数据处理需求？四要素模板"
+ },
+ "data-spec-cleaning.html": {
+  "title": "清洗规则必须逐条写",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "需求规格：把口径写成它能执行的东西",
+  "seo": "AI 做数据清洗为什么最危险？静默错误与逐条写规则"
+ },
+ "data-check-three.html": {
+  "title": "小样、抽查、对总数",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "验收与对账：怎么知道它算对了",
+  "seo": "AI 写的脚本跑通了怎么验证算得对？验收三招"
+ },
+ "data-check-canary.html": {
+  "title": "埋雷：给脚本做阴性对照",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "验收与对账：怎么知道它算对了",
+  "seo": "怎么验证你的数据脚本本身有效？往里埋一条已知的错"
+ },
+ "data-two-stage.html": {
+  "title": "两段架构：数据干净之后",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "分析模式：让它按你的方式看数",
+  "seo": "数据干净之后 AI 该干什么？数据活的两段架构"
+ },
+ "data-pattern.html": {
+  "title": "把你的分析模式写下来",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "分析模式：让它按你的方式看数",
+  "seo": "怎么把自己的数据分析思路写成 AI 能用的规格？"
+ },
+ "data-output.html": {
+  "title": "从数字到观点",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "分析模式：让它按你的方式看数",
+  "seo": "怎么让 AI 输出判断而不是复述数字？分析输出的纪律"
+ },
+ "data-monthly.html": {
+  "title": "月报改造全程",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 6,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "分析模式：让它按你的方式看数",
+  "seo": "一份经营月报的完整 AI 改造：从口径到一键运行"
+ },
+ "data-auto-three.html": {
+  "title": "固化三问",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "自动化边界：什么该固化，什么留给人",
+  "seo": "哪些数据活值得固化成脚本？三个问题"
+ },
+ "data-human.html": {
+  "title": "评价人的活永远留给人",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 5,
+  "part": "第四篇章",
+  "part_title": "Code Interpreter 与分析模式：让 AI 算得准，也说得对",
+  "topic": "自动化边界：什么该固化，什么留给人",
+  "seo": "哪些 HR 数据判断绝对不能自动化？边界与 Skill 判据"
+ },
+ "vibe-rules.html": {
+  "title": "为什么要给 AI 立规矩",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "先立规矩",
+  "seo": "用 AI 写代码为什么要先立规矩？"
+ },
+ "vibe-workflow.html": {
+  "title": "四步流程：复述、PRD、确认、编码",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "怎么跟它协作",
+  "seo": "不会写代码怎么指挥 AI 做东西？四步协作流程"
+ },
+ "vibe-debug.html": {
+  "title": "调试铁律：先 Log 再改码",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "怎么跟它协作",
+  "seo": "AI 写的代码出错了怎么调？先看日志再改代码"
+ },
+ "vibe-complete.html": {
+  "title": "不接受分期交付",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "怎么跟它协作",
+  "seo": "让 AI 一次交付完整功能，不接受半成品"
+ },
+ "vibe-safety.html": {
+  "title": "破坏性操作的三道闸",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 7,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "别让它把你搞砸",
+  "seo": "怎么防止 AI 误删数据？破坏性操作的三道闸"
+ },
+ "vibe-env.html": {
+  "title": "把环境事实写进 Rule",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 9,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "别让它把你搞砸",
+  "seo": "为什么要把环境信息写进 AI 的规则文件"
+ },
+ "vibe-docs.html": {
+  "title": "三份文档与方法论沉淀",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 8,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "沉淀下来",
+  "seo": "跟 AI 协作要维护哪三份文档"
+ },
+ "vibe-final.html": {
+  "title": "规则的价值：每条都解决一个真实问题",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 6,
+  "part": "第五篇章",
+  "part_title": "Vibe Coding 方法论：让 AI 写得快，也写得稳",
+  "topic": "沉淀下来",
+  "seo": "为什么每条 AI 协作规则都对应一次真实踩坑"
+ },
+ "cc-why-terminal.html": {
+  "title": "为什么是终端里的 CC",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "先把工具装上：终端与 Claude Code",
+  "seo": "HR 学 AI 为什么要用 Claude Code？和拖拽平台的区别在哪"
+ },
+ "cc-install.html": {
+  "title": "三十分钟装好",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "先把工具装上：终端与 Claude Code",
+  "seo": "Claude Code 怎么安装？零基础从终端开始的完整步骤"
  },
  "cc-install-guide.html": {
-  "title": "安装完全手册（可对照）",
-  "free": true
+  "title": "安装完全手册 · 13 步",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 12,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "先把工具装上：终端与 Claude Code",
+  "seo": "Claude Code 安装完全手册：13 步从 Cursor 到 GLM（Windows / Mac）"
+ },
+ "cc-first-talk.html": {
+  "title": "第一次对话：它能看见什么",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "先把工具装上：终端与 Claude Code",
+  "seo": "Claude Code 第一次怎么用？理解它和网页版聊天的根本区别"
+ },
+ "cc-data-path.html": {
+  "title": "你的数据到底走了哪条线",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 5,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "先把工具装上：终端与 Claude Code",
+  "seo": "Claude Code 本地运行时数据会外传吗？HR 用它处理员工数据的合规路径"
+ },
+ "hr-elicitation-1.html": {
+  "title": "隐性知识显性化：老法师那一眼在看什么",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "让它认识你的活：CLAUDE.md 与项目结构",
+  "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？"
+ },
+ "cc-claude-md.html": {
+  "title": "CLAUDE.md：让它记住你的口径",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "让它认识你的活：CLAUDE.md 与项目结构",
+  "seo": "CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径"
+ },
+ "cc-project-layout.html": {
+  "title": "文件夹怎么摆",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "让它认识你的活：CLAUDE.md 与项目结构",
+  "seo": "AI agent 的项目结构怎么组织？HR 工作区的目录设计"
+ },
+ "cc-tools.html": {
+  "title": "它的手和眼睛：工具",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "给它手和眼睛：工具、权限与第一个真活",
+  "seo": "AI agent 的工具是什么？Claude Code 有哪些能力边界"
+ },
+ "cc-permissions.html": {
+  "title": "权限：HR 场景的三道闸",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "给它手和眼睛：工具、权限与第一个真活",
+  "seo": "让 AI 操作 HR 数据怎么设权限？三道闸与留痕"
+ },
+ "cc-first-agent.html": {
+  "title": "第一个真活跑通",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "给它手和眼睛：工具、权限与第一个真活",
+  "seo": "用 Claude Code 做第一个 HR agent：从零到跑通一个真活"
+ },
+ "hr-inventory-1.html": {
+  "title": "把一个部门的活拆成任务清单",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "选对活：先把部门的活盘一遍",
+  "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单"
+ },
+ "hr-inventory-2.html": {
+  "title": "每条标：它能干 / 干不了 / 干了得有人兜",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "选对活：先把部门的活盘一遍",
+  "seo": "AI 场景盘点怎么打标？三类任务的判断标准"
+ },
+ "hr-inventory-3.html": {
+  "title": "算账：省多少、风险多大、第一刀切哪",
+  "free": false,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "选对活：先把部门的活盘一遍",
+  "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里"
+ },
+ "hr-project-pick.html": {
+  "title": "选题：什么样的第一个作品站得住",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "做出你的作品：从选题到讲清楚",
+  "seo": "HR 做 AI 作品选什么题？六个能站住的选题"
+ },
+ "hr-project-data.html": {
+  "title": "数据：真数据碰不得，合成数据怎么造得像",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 5,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "做出你的作品：从选题到讲清楚",
+  "seo": "做 HR AI 作品没有数据怎么办？合成数据怎么造得像真的"
+ },
+ "hr-project-build.html": {
+  "title": "一周做出能点的原型：从想法到 demo",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "做出你的作品：从选题到讲清楚",
+  "seo": "一周内把一个 HR 场景做成能演示的原型"
+ },
+ "hr-project-tell.html": {
+  "title": "作品怎么讲：别人在追问什么",
+  "free": false,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第六篇章",
+  "part_title": "用 Claude Code 搭出你的第一个 agent",
+  "topic": "做出你的作品：从选题到讲清楚",
+  "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题"
+ },
+ "harness-what.html": {
+  "title": "Harness 是什么",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Harness 是什么：agent 真正的分水岭",
+  "seo": "什么是 AI Harness？为什么说 agent 拼的是 harness 而不是模型"
+ },
+ "harness-why-unstable.html": {
+  "title": "你的 agent 为什么不稳",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Harness 是什么：agent 真正的分水岭",
+  "seo": "AI agent 不稳定的四种典型症状与对应的 harness 缺失"
+ },
+ "harness-loop.html": {
+  "title": "模式一：让它自己检查自己",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "三大设计模式：循环、记忆、分身",
+  "seo": "AI agent 工作流循环设计：让它做完自己检查"
+ },
+ "harness-memory.html": {
+  "title": "模式二：文件系统当记忆",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "三大设计模式：循环、记忆、分身",
+  "seo": "AI agent 的长期记忆怎么做？文件系统作为持久记忆"
+ },
+ "harness-subagent.html": {
+  "title": "模式三：分身与后台任务",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "三大设计模式：循环、记忆、分身",
+  "seo": "AI agent 什么时候该拆成多个子 agent？"
+ },
+ "eval-why.html": {
+  "title": "为什么评测比调 prompt 重要",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 6,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Eval：怎么知道它真的行",
+  "seo": "为什么 AI 评测比调 Prompt 更重要？"
+ },
+ "eval-graders.html": {
+  "title": "三种 Grader：代码判、模型判、人工判",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 7,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Eval：怎么知道它真的行",
+  "seo": "AI 输出怎么打分？代码判、模型判、人工判三种方式"
+ },
+ "eval-pitfalls.html": {
+  "title": "Eval 的坑：噪音、作弊与退化",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 7,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Eval：怎么知道它真的行",
+  "seo": "做 AI 评测最容易踩的三个坑"
+ },
+ "hr-eval-negative.html": {
+  "title": "阴性对照：先注入已知的错，看它抓不抓得住",
+  "free": false,
+  "ready": true,
+  "ksa": "S",
+  "min": 4,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Eval：怎么知道它真的行",
+  "seo": "怎么验证你的 AI 评测本身是有效的？先做阴性对照"
+ },
+ "hr-rollout.html": {
+  "title": "换个团队它就不准了：AI 为什么不像软件那样可复制",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "Eval：怎么知道它真的行",
+  "seo": "AI 试点成功后推广就失败？为什么它不像软件那样可复制"
+ },
+ "hr-compliance.html": {
+  "title": "它算错了，谁负责：内网 · n 阈值 · 可申诉",
+  "free": false,
+  "ready": true,
+  "ksa": "K",
+  "min": 4,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "HR 专有的两层：权限留痕与自动验收",
+  "seo": "AI 做错了人事决策谁负责？合规的四条红线"
+ },
+ "harness-audit.html": {
+  "title": "留痕层：它凭什么这么判",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "HR 专有的两层：权限留痕与自动验收",
+  "seo": "HR 场景的 AI agent 必须留痕：可追溯与可申诉的工程实现"
+ },
+ "harness-eval-loop.html": {
+  "title": "把评测焊进循环",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "HR 专有的两层：权限留痕与自动验收",
+  "seo": "怎么把 AI 评测变成 agent 的自动环节而不是上线前跑一次"
+ },
+ "hr-elicitation-2.html": {
+  "title": "拆到哪一层为止：哪些永远进不了 Prompt",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 4,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "取舍：哪些 harness 值得造",
+  "seo": "知识萃取拆到什么程度为止？哪些判断永远无法交给 AI"
+ },
+ "harness-tradeoff.html": {
+  "title": "哪些 harness 值得造",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "取舍：哪些 harness 值得造",
+  "seo": "Harness 值不值得做？一个判据：模型升级后它还需要吗"
+ },
+ "hr-org-3.html": {
+  "title": "哪些能力反而更值钱了",
+  "free": false,
+  "ready": true,
+  "ksa": "A",
+  "min": 5,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "取舍：哪些 harness 值得造",
+  "seo": "AI 时代 HR 哪些能力在升值？按 KSA 拆开看"
+ },
+ "harness-closing.html": {
+  "title": "回到原点：这一层到底是什么",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第七篇章",
+  "part_title": "Harness：模型之外，你造的一切",
+  "topic": "取舍：哪些 harness 值得造",
+  "seo": "Harness 的第一性原理：你给它的上下文，够它做好这件事吗"
+ },
+ "psy-captive.html": {
+  "title": "内部用户没得选",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "你的用户没得选：内部产品的特殊处境",
+  "seo": "HR 内部产品的用户心理跟 C 端有什么不一样？"
+ },
+ "psy-perceived.html": {
+  "title": "感知性能：它明明不慢",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "你的用户没得选：内部产品的特殊处境",
+  "seo": "系统响应明明很快，用户为什么还是觉得慢？感知性能设计"
+ },
+ "psy-waiting.html": {
+  "title": "等待心理学",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "等待与过程：难受的不是那几秒",
+  "seo": "让员工等待的时候，怎么让等待不那么难熬"
+ },
+ "psy-labor.html": {
+  "title": "劳动错觉：把过程演出来",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "等待与过程：难受的不是那几秒",
+  "seo": "为什么 AI 答得太快反而没人信？劳动错觉与过程可见性"
+ },
+ "psy-peak-end.html": {
+  "title": "峰终定律：这是 HR 的主场",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "等待与过程：难受的不是那几秒",
+  "seo": "峰终定律怎么用在员工体验和 HR 产品设计上"
+ },
+ "psy-aversion.html": {
+  "title": "算法厌恶：犯一次错就被拉黑",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "算法厌恶：它犯一次错就被永久拉黑",
+  "seo": "算法厌恶是什么？为什么 AI 犯一次错人们就再也不用了"
+ },
+ "psy-error-comms.html": {
+  "title": "怎么讲清楚「它有 8% 会错」",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "算法厌恶：它犯一次错就被永久拉黑",
+  "seo": "怎么跟老板和同事说清楚 AI 的错误率而不被否决"
+ },
+ "psy-trust-calib.html": {
+  "title": "信任校准：半信半疑最好",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "信任与防御：不是不会用，是不敢用",
+  "seo": "怎么让用户对 AI 的信任刚刚好？信任校准设计"
+ },
+ "psy-defense.html": {
+  "title": "防御心理：不是不会，是不敢",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "信任与防御：不是不会用，是不敢用",
+  "seo": "员工为什么不敢用 HR 的 AI 工具？防御心理与心理安全"
+ },
+ "psy-mental-model.html": {
+  "title": "心智模型：拿错了说明书",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "信任与防御：不是不会用，是不敢用",
+  "seo": "用户为什么用错 AI？心智模型与预期管理"
+ },
+ "psy-honeymoon.html": {
+  "title": "蜜月悬崖：期望是要还的",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "长期使用的三个坑",
+  "seo": "AI 产品上线后为什么用着用着就没人用了？蜜月悬崖"
+ },
+ "psy-ai-discount.html": {
+  "title": "AI 标签折扣",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "长期使用的三个坑",
+  "seo": "为什么标注了 AI 生成的内容会被打折？AI 标签效应"
+ },
+ "psy-offload.html": {
+  "title": "认知卸载：一边用一边怕废掉",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "长期使用的三个坑",
+  "seo": "用 AI 会不会让人的能力退化？认知卸载与专业感"
+ },
+ "psy-feedback.html": {
+  "title": "为什么没人点踩",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "收官：反馈与上线前清单",
+  "seo": "为什么用户不给 AI 反馈？反馈设计与真实信号"
+ },
+ "psy-checklist.html": {
+  "title": "上线前过一遍",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第八篇章",
+  "part_title": "HR 产品心理学：让内部同事真的用起来",
+  "topic": "收官：反馈与上线前清单",
+  "seo": "HR 的 AI 产品上线前检查清单：十二个心理设计问题"
+ },
+ "taste-bottleneck.html": {
+  "title": "执行免费了，判断力涨价",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "品味成了新瓶颈",
+  "seo": "AI 时代为什么审美变得更重要？执行门槛消失之后"
+ },
+ "taste-ai-flavor.html": {
+  "title": "「AI 味儿」是怎么来的",
+  "free": true,
+  "ready": true,
+  "ksa": "K",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "品味成了新瓶颈",
+  "seo": "为什么 AI 做的东西一眼就能被认出来？AI 味儿的成因"
+ },
+ "taste-hierarchy.html": {
+  "title": "层级：一屏只有一个主角",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "识别美的四个抓手",
+  "seo": "怎么让页面重点突出？视觉层级的三个手段"
+ },
+ "taste-whitespace.html": {
+  "title": "留白与对齐",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "识别美的四个抓手",
+  "seo": "为什么排版看起来挤？留白、对齐与亲密性原则"
+ },
+ "taste-restraint.html": {
+  "title": "克制：给颜色和字体做预算",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "识别美的四个抓手",
+  "seo": "配色和字体用多少才好看？给设计做预算"
+ },
+ "taste-consistency.html": {
+  "title": "一致性：系统感从哪来",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "识别美的四个抓手",
+  "seo": "怎么让一套材料看起来专业？一致性与设计系统"
+ },
+ "taste-vocab.html": {
+  "title": "「好看」的具体说法",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "把审美翻译给 AI 听",
+  "seo": "怎么把好看说清楚？给 AI 用的审美词汇表"
+ },
+ "taste-spec.html": {
+  "title": "从形容词到规格书",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "把审美翻译给 AI 听",
+  "seo": "怎么给 AI 写视觉需求？从形容词到可执行规格"
+ },
+ "taste-hr-outputs.html": {
+  "title": "HR 三类产出的具体要求",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "把审美翻译给 AI 听",
+  "seo": "HR 的汇报材料、制度文档、员工通知分别该怎么做"
+ },
+ "taste-chart-type.html": {
+  "title": "图表选型：什么数据配什么图",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "数据图表：HR 最容易做丑的地方",
+  "seo": "HR 数据用什么图表？图表选型的四个问题"
+ },
+ "taste-chart-quality.html": {
+  "title": "图表的审美判据",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "数据图表：HR 最容易做丑的地方",
+  "seo": "怎么让数据图表变好看？图表的减法原则"
+ },
+ "taste-reference.html": {
+  "title": "建立自己的参考库",
+  "free": true,
+  "ready": true,
+  "ksa": "S",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "参考库与验收",
+  "seo": "怎么提高审美？建立参考库并让 AI 照着做"
+ },
+ "taste-checklist.html": {
+  "title": "验收清单",
+  "free": true,
+  "ready": true,
+  "ksa": "A",
+  "min": 3,
+  "part": "第九篇章",
+  "part_title": "审美工程：让 AI 做出拿得出手的东西",
+  "topic": "参考库与验收",
+  "seo": "材料发出去之前的审美检查清单"
  }
 }

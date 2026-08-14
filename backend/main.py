@@ -441,6 +441,10 @@ from pathlib import Path
 _LESSON_DIR = Path(__file__).parent / "lessons"
 _LESSON_IDX = _json.loads((_LESSON_DIR / "_index.json").read_text("utf-8"))
 
+# ── Sparky（分诊 + 陪走）────────────────────────────────────────────
+import sparky as _sparky
+app.include_router(_sparky.make_router(TERMS, JOBS, TERM_LESSONS, _LESSON_IDX))
+
 # 登录闸开关。微信登录尚未配通前默认 off——否则受保护章节会变成谁都打不开。
 # 登录跑通后在 Render 面板把 CONTENT_GATE 拨成 on 即可，代码零改动。
 def _gate_on() -> bool:

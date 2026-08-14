@@ -173,6 +173,19 @@ def check(fe=FE, sl=SL):
                 if t not in all_terms:
                     FAIL('后端映射', f'岗位引用了不存在的能力词条: {t}')
 
+    # ── 5c. 后端课程索引与真相源同步（Sparky 的封闭集合）──────
+    bidx = os.path.join(ROOT, 'backend', 'lessons', '_index.json')
+    if os.path.exists(bidx):
+        bi = json.loads(open(bidx, encoding='utf-8').read())
+        for f in sorted(dset - set(bi)):
+            FAIL('后端索引', f'course-data 有但 _index.json 缺: {f}（跑 scripts/sync_backend_index.py）')
+        for f in sorted(set(bi) - dset):
+            FAIL('后端索引', f'_index.json 有但目录里已不存在: {f}（跑 scripts/sync_backend_index.py）')
+        for l, p, t in lessons:
+            v = bi.get(l['file'])
+            if v and v.get('title') != l['title']:
+                FAIL('后端索引', f"{l['file']} 标题不同步: 后端「{v.get('title')}」前端「{l['title']}」")
+
     # ── 6. 质量红线 ────────────────────────────────────────
     for fn in sorted(on_disk):
         s = open(os.path.join(sl, fn), encoding='utf-8').read()
