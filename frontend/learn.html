@@ -33,6 +33,7 @@ a{color:inherit;text-decoration:none}
 .crumb .c1{color:var(--pri);font-weight:500;white-space:nowrap}
 .crumb .sep{color:var(--line)}
 .crumb .c2{color:var(--ink);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb .t-p{background:rgba(0,168,138,.1);color:var(--pri-d);text-decoration:none;font-weight:600}
 .crumb .tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;flex:0 0 auto}
 .t-l{background:#FEF3C7;color:#92400E}
 .prog{display:flex;align-items:center;gap:9px;flex:0 0 auto}
@@ -130,6 +131,7 @@ body.dragging iframe{pointer-events:none}
     <div class="pbar"><i id="pbar" style="width:0"></i></div>
     <span class="n" id="pnum">0 / 0</span>
   </div>
+  <a class="tbtn" href="index.html#path" id="pathBtn" title="7 个晚上把月报自动化">📍 学习路径</a>
   <a class="tbtn pri" href="index.html#login" id="loginBtn">登录</a>
 </div>
 
@@ -238,6 +240,13 @@ function load(){
     saveDone(); renderTree($('#q').value); renderProgress(); load(); };
 
   renderTree($('#q').value); renderProgress();
+  // 当前节若在学习路径里，在面包屑后面标出第几晚
+  const P=(CO.paths||[])[0];
+  if(P){
+    const nt=P.nights.find(n=>n.items.some(x=>x.file===l.file));
+    if(nt) $('#crumb').insertAdjacentHTML('beforeend',
+      `<a class="tag t-p" href="index.html#path" title="${P.name}">📍 第 ${nt.n} 晚 · ${nt.t}</a>`);
+  }
   const on=$('#tree .ls.on'); if(on) on.scrollIntoView({block:'nearest'});
   $('#side').classList.remove('show');
 }
