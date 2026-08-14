@@ -145,6 +145,14 @@ section{scroll-margin-top:64px}
 .ptab .pn{font-size:16px;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:block}
 .ptab .pw{font-size:12.5px;color:var(--muted);line-height:1.75;margin-top:5px;display:block}
 .ptab .pu{font-size:11.5px;color:var(--faint);margin-top:7px;display:block;font-variant-numeric:tabular-nums}
+.contact button.cc{font-family:inherit;text-align:center;cursor:pointer}
+.cc.solo{display:block;max-width:520px;margin:14px auto 0}
+.bizbox{max-width:640px;margin:16px auto 0;background:#fff;border:1.5px solid var(--pri);
+  border-radius:14px;padding:20px 24px;text-align:left;font-size:14px;line-height:1.9}
+.bizbox b{color:var(--pri-d)}
+.bizbox .row{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.bizbox .row:last-child{border-bottom:0}
+.bizbox .row span:first-child{flex:0 0 76px;color:var(--muted);font-size:13px}
 .night .nout{font-size:13px;color:var(--pri-d);background:rgba(0,168,138,.07);border-radius:9px;
   padding:9px 13px;margin-top:12px;line-height:1.8}
 .wcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 30px 26px;
@@ -267,7 +275,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       <a href="jobs.html">学完能去哪</a>
     </div>
     <div class="right">
-      <a class="btn" href="#contact">交流群</a>
+      <a class="btn" href="#contact">联系</a>
       <a class="btn pri" href="#" id="loginBtn">登录</a>
     </div>
   </div>
@@ -373,12 +381,14 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   <div class="wrap">
     <div class="eyebrow">Community</div>
     <h2>欢迎交流与关注</h2>
-    <p class="desc">下面是这个站目前能给你的东西。<b>交流群还在筹备，暂时找不到人</b>——这一条我们不装。</p>
+    <p class="desc">课是免费的，也不打算卖。<b>但如果你要评供应商、要给老板一个说法、或者想让这套东西真的落进你们公司</b>——下面能找到人。</p>
     <div class="contact">
-      <div class="cc"><div class="ic">💬</div><div class="n">交流群</div><div class="d">筹备中，入口很快放出<br>聊课程、聊作品、互相看方案</div></div>
       <div class="cc"><div class="ic">📖</div><div class="n">公众号 · 张大仙儿</div><div class="d">课程更新与拆解文章<br><b>搜「张大仙儿」可关注</b></div></div>
-      <a class="cc" href="data/2026-08/README.md" target="_blank"><div class="ic">📦</div><div class="n">练习数据集</div><div class="d">花名册 / 考勤 / 业绩三张表<br>埋了 8 类真实脏数据，附答案卡</div></a>
+      <div class="cc"><div class="ic">💬</div><div class="n">交流群</div><div class="d">聊课程、聊作品、互相看方案<br><b id="grpNo">群号待填</b></div></div>
+      <button class="cc" id="bizCard" type="button"><div class="ic">🤝</div><div class="n">聊具体的事</div><div class="d">供应商评估陪审 / 团队内训 / 落地咨询<br><b>点开看联系方式 →</b></div></button>
     </div>
+    <div id="bizBox" class="bizbox" hidden></div>
+    <a class="cc solo" href="data/2026-08/README.md" target="_blank"><div class="ic">📦</div><div class="n">练习数据集</div><div class="d">花名册 / 考勤 / 业绩三张表，埋了 8 类真实脏数据，附答案卡</div></a>
   </div>
 </section>
 
@@ -391,7 +401,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       <a class="btn pri lg" href="learn.html">进入课程</a>
       <a class="btn lg" href="quiz.html">测测掌握度</a>
       <a class="btn lg" href="jobs.html">看在招岗位</a>
-      <a class="btn lg" href="#contact">加入交流群</a>
+      <a class="btn lg" href="#contact">找人聊聊</a>
     </div>
   </div>
 </section>
@@ -463,6 +473,24 @@ function renderPath(){
   draw(0);
 }
 
+const BIZ={
+  wechat:'待填',            // 手机号（同微信）—— 待用户提供
+  note:'加微信请备注「HR AI Builder + 公司 + 你要聊的事」，否则大概率不通过。'
+};
+function initBiz(){
+  const btn=document.getElementById('bizCard'), box=document.getElementById('bizBox');
+  if(!btn||!box) return;
+  btn.onclick=()=>{
+    if(!box.hidden){box.hidden=true;return;}
+    box.innerHTML=`
+      <div class="row"><span>微信</span><span><b>${BIZ.wechat}</b>（手机号同号）</span></div>
+      <div class="row"><span>能聊什么</span><span>见供应商之前帮你把方案过一遍、给 HR 团队做半天内训、
+        或者你们已经在做的事卡住了想找个人对一对。<b>课本身永远免费，这几件是另一回事。</b></span></div>
+      <div class="row"><span>先说清楚</span><span>${BIZ.note}</span></div>`;
+    box.hidden=false;
+    box.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+}
 function renderTopics(){
   const acc=CO.meta.access||{};
   const GATED=(acc.gate==='on');
@@ -500,7 +528,7 @@ function renderTopics(){
     </section>`;
   }).join('');
 }
-renderPath(); renderTopics();
+renderPath(); initBiz(); renderTopics();
 
 
 /* 首屏统计数字改用真实课程数据 */
