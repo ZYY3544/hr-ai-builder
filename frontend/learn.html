@@ -131,7 +131,6 @@ body.dragging iframe{pointer-events:none}
     <div class="pbar"><i id="pbar" style="width:0"></i></div>
     <span class="n" id="pnum">0 / 0</span>
   </div>
-  <a class="tbtn" href="index.html#path" id="pathBtn" title="两条排好的线：动手做一个 / 见供应商之前">📍 学习路径</a>
   <a class="tbtn pri" href="index.html#login" id="loginBtn">登录</a>
 </div>
 
@@ -240,12 +239,6 @@ function load(){
     saveDone(); renderTree($('#q').value); renderProgress(); load(); };
 
   renderTree($('#q').value); renderProgress();
-  // 当前节若在学习路径里，在面包屑后面标出第几晚
-  (CO.paths||[]).forEach(P=>{
-    const nt=P.nights.find(n=>n.items.some(x=>x.file===l.file));
-    if(nt) $('#crumb').insertAdjacentHTML('beforeend',
-      `<a class="tag t-p" href="index.html#path" title="${P.name} · 第 ${nt.n} 晚：${nt.t}">📍 ${P.name} 第 ${nt.n} 晚</a>`);
-  });
   const on=$('#tree .ls.on'); if(on) on.scrollIntoView({block:'nearest'});
   $('#side').classList.remove('show');
 }

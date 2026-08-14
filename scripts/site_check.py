@@ -112,7 +112,7 @@ def check(fe=FE, sl=SL):
             if n >= len(CO['parts']):
                 FAIL('引用', f"{l['file']} 引用了不存在的第{m.group(1)}篇章")
 
-    # ── 4. 学习路径完整性 ───────────────────────────────────
+    # ── 4. 学习路径完整性（当前无 paths；保留能力，将来若再引入自动生效）──
     for P in CO.get('paths', []):
         files, mins, cnt = [], 0, 0
         for n in P['nights']:
