@@ -52,12 +52,12 @@
 <main class="lesson">
   <header class="lesson-header">
     <div class="kicker">第六篇章 · 先把工具装上：终端与 Claude Code</div>
-    <h1>安装完全手册：15 步，从 Cursor 到 GLM</h1>
-    <p class="subtitle">上一节是思路，这一节是手册。全程 15 步、5 个阶段，每步都标了「看到这个就算过了」——看不到就停下来查报错表，别硬往下做。</p>
+    <h1>安装完全手册：13 步，从 Cursor 到 GLM</h1>
+    <p class="subtitle">上一节是思路，这一节是手册。全程 13 步、5 个阶段，每步都标了「看到这个就算过了」——看不到就停下来查报错表，别硬往下做。</p>
   </header>
 
   <div class="l-callout">
-    <b>全程 15 步，分 5 个阶段，约 40 分钟</b>（其中一半是等下载）。<br>
+    <b>全程 13 步，分 5 个阶段，约 30 分钟</b>（其中一半是等下载）。<br>
     每一步都有一行 <b>✓ 看到这个就算过了</b>——看到了就往下走，没看到就停在原地查报错表，<b>别硬着头皮往下做</b>。
   </div>
 
@@ -66,9 +66,9 @@
     <tr><th>阶段</th><th>做什么</th><th>步</th><th>约需</th></tr>
     <tr><td><b>一</b></td><td>开通智谱账号，拿到 API Key</td><td>1–4</td><td>5 分钟</td></tr>
     <tr><td><b>二</b></td><td>装 Cursor（一个带内置终端的编辑器）</td><td>5–7</td><td>10 分钟</td></tr>
-    <tr><td><b>三</b></td><td>装 Node.js 和 Claude Code</td><td>8–11</td><td>15 分钟</td></tr>
-    <tr><td><b>四</b></td><td>把 Claude Code 接到 GLM 上</td><td>12–14</td><td>5 分钟</td></tr>
-    <tr><td><b>五</b></td><td>确认真的成功了</td><td>15</td><td>1 分钟</td></tr>
+    <tr><td><b>三</b></td><td>装 Claude Code（<b>一行命令</b>）</td><td>8–9</td><td>5 分钟</td></tr>
+    <tr><td><b>四</b></td><td>把 Claude Code 接到 GLM 上</td><td>10–12</td><td>5 分钟</td></tr>
+    <tr><td><b>五</b></td><td>确认真的成功了</td><td>13</td><td>2 分钟</td></tr>
   </table>
   <p><b>为什么要装 Cursor？</b>它本质是个带图形界面的编辑器，里面自带一个终端窗口。对没用过命令行的人来说，<b>在一个正常的软件窗口里操作，比对着一个漆黑的终端心理压力小得多</b>。而且后面写 CLAUDE.md、看它改了什么文件，都在同一个窗口里完成。<br>
   <span class="vnote">（如果你已经装过 VS Code，可以直接用 VS Code，它的内置终端是一样的，跳过阶段二。）</span></p>
@@ -113,35 +113,35 @@
   <div class="stuck"><span class="t">先适应两秒</span>这个区域就是"终端"。它看起来吓人，但你要做的只有一件事：<b>把命令复制进去，按回车，看结果。</b>敲错了不会弄坏电脑，最多是报个错。</div>
 
   <!-- ─────────── 阶段三 ─────────── -->
-  <div class="sec-label">阶段三 · 装 Node.js 和 Claude Code（第 8–11 步）</div>
+  <div class="sec-label">阶段三 · 装 Claude Code（第 8–9 步）</div>
+  <p>这一段以前要装 Node.js、换镜像、再用 npm 装，前后十五分钟。<b>现在官方给了一行命令的装法，Node 完全用不上了</b>——如果你在别处看到"先装 Node"的教程，那是旧的。</p>
 
-  <p><b>第 8 步 · 先看看有没有装过 Node</b><br>
-  在终端里粘贴这一行，回车：</p>
-  <div class="cmd">node -v</div>
-  <div class="good"><span class="t">✓ 两种结果都正常</span><b>打印出 <code>v20.x.x</code> 之类的版本号</b> → 已经有了，<b>直接跳到第 10 步</b>。<br><b>报「不是内部或外部命令」或「command not found」</b> → 没装，继续第 9 步。</div>
+  <p><b>第 8 步 · 一行命令装好</b><br>
+  在终端里粘贴对应你系统的那一行，回车，然后等它跑完。</p>
+  <p><b>Windows（PowerShell）：</b></p>
+  <div class="cmd">irm https://claude.ai/install.ps1 | iex</div>
+  <p><b>Mac：</b></p>
+  <div class="cmd">curl -fsSL https://claude.ai/install.sh | bash</div>
+  <div class="good"><span class="t">✓ 看到这个就算过了</span>刷完一屏字之后停下来，最后几行告诉你装好了、装在哪。<b>中间那些看不懂的输出都不用管。</b></div>
+  <div class="stuck"><span class="t">Windows 用户先认一眼你在哪个窗口</span>Cursor 的终端可能是 PowerShell，也可能是 CMD，<b>两者命令不通用</b>。看提示符最前面：<br>
+  · 有 <code>PS</code>（像 <code>PS C:\Users\你的名字></code>）→ <b>PowerShell</b>，用上面那行 <code>irm</code>。<br>
+  · 没有 <code>PS</code>（像 <code>C:\Users\你的名字></code>）→ <b>CMD</b>，改用这一行：<br>
+  <code>curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</code><br><br>
+  认错了会报错，但报错本身就在告诉你答案：报 <b><code>'irm' 不是内部或外部命令</code></b> 说明你在 CMD；报 <b><code>token '&amp;&amp;' 不是有效的语句分隔符</code></b> 说明你在 PowerShell。<b>换另一行重来即可，装不坏。</b></div>
 
-  <p><b>第 9 步 · 装 Node.js</b><br>
-  打开 <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>，下载<b>标着 LTS 的那个版本</b>（不要下最新版）。Windows 选 .msi，Mac 选 .pkg，双击一路下一步，<b>不用改任何选项</b>。</p>
-  <div class="bad"><span class="t">✕ 装完必须做这件事</span><b>完全关掉 Cursor 再重新打开</b>，然后重新按 <code>Ctrl + `</code> 开终端。<br>不重开的话，终端还认不出新装的 Node——这是第 8 步之后最高频的卡点。</div>
-  <div class="good"><span class="t">✓ 看到这个就算过了</span>重开终端后再敲一次 <code>node -v</code>，这次打印出版本号了。</div>
-
-  <p><b>第 10 步 · 换成国内镜像</b><br>
-  这一步<b>别跳</b>。不换的话下一步会非常慢，甚至直接超时失败。</p>
-  <div class="cmd">npm config set registry https://registry.npmmirror.com</div>
-  <div class="good"><span class="t">✓ 看到这个就算过了</span>命令跑完<b>没有任何输出</b>就是成功了（这类命令成功时是静默的）。想确认可以敲 <code>npm config get registry</code>，应该打印出那个 npmmirror 地址。</div>
-
-  <p><b>第 11 步 · 装 Claude Code</b></p>
-  <div class="cmd">npm install -g @anthropic-ai/claude-code</div>
-  <p>会滚动一堆日志，等它停下来。然后验证：</p>
+  <p><b>第 9 步 · 确认装上了</b><br>
+  <b>先把 Cursor 完全关掉再重新打开</b>（不是关窗口，是彻底退出），重新按 <code>Ctrl + `</code> 开终端。不重开的话终端还找不到刚装的东西——<b>这是这一阶段最高频的卡点，别跳。</b><br>
+  然后敲：</p>
   <div class="cmd">claude --version</div>
-  <div class="good"><span class="t">✓ 看到这个就算过了</span>打印出一个版本号。</div>
-  <div class="stuck"><span class="t">这一步最常见的两个错</span><b>Mac 报 <code>EACCES</code> 权限错误</b> → 见报错表第 3 条，<b>先别用 sudo</b>。<br><b>Windows 报权限不足</b> → 关掉 Cursor，右键「以管理员身份运行」重开，再来一次。</div>
+  <div class="good"><span class="t">✓ 看到这个就算过了</span>打印出一个版本号，像 <code>2.1.211 (Claude Code)</code>。<b>阶段三完成，你已经走完最费时的一段了。</b></div>
+  <div class="stuck"><span class="t">如果报「不是内部或外部命令」/「command not found」</span>九成是 Cursor 没彻底关掉。<b>完全退出 Cursor（Windows 在任务栏右键退出，Mac 用 Cmd+Q），重新打开，再敲一次。</b>还不行看报错表第 1 条。</div>
+  <div class="good"><span class="t">✓ 顺便说一句，它以后会自己更新</span>这种装法装好之后<b>会在后台自动更新</b>，你什么都不用做。这也是它比旧装法省心的地方。</div>
 
   <!-- ─────────── 阶段四 ─────────── -->
-  <div class="sec-label">阶段四 · 接到 GLM 上（第 12–14 步）</div>
+  <div class="sec-label">阶段四 · 接到 GLM 上（第 10–12 步）</div>
   <p>Claude Code 默认会去找 Anthropic。<b>这三步是把它指向国内接口</b>——做完就不需要海外账号、不需要科学上网了。</p>
 
-  <p><b>第 12 步 · 设置两个环境变量</b><br>
+  <p><b>第 10 步 · 设置两个环境变量</b><br>
   把下面的 <code>你的KEY</code> 换成第 4 步存下来的那串，然后整段粘进终端。<b>Windows 和 Mac 写法不同，认准你的系统。</b></p>
 
   <p><b>Windows：</b></p>
@@ -153,7 +153,7 @@ echo 'export ANTHROPIC_AUTH_TOKEN=你的KEY' >> ~/.zshrc
 source ~/.zshrc</div>
   <div class="good"><span class="t">✓ 看到这个就算过了</span>Windows 会打印「成功: 指定的值已得到保存」；Mac 没有输出就是成功。</div>
 
-  <p><b>第 13 步 · 重开终端，确认变量真的生效了</b><br>
+  <p><b>第 11 步 · 重开终端，确认变量真的生效了</b><br>
   <b>Windows 必须关掉 Cursor 重新打开</b>（setx 对已经开着的窗口不生效，这是最高频的"我明明配了却不管用"）。Mac 上如果跑过 <code>source</code> 就不用重开。<br>
   然后敲：</p>
   <div class="cmd">＃ Windows
@@ -161,32 +161,37 @@ echo %ANTHROPIC_BASE_URL%
 
 ＃ Mac
 echo $ANTHROPIC_BASE_URL</div>
-  <div class="good"><span class="t">✓ 看到这个就算过了</span>打印出 <code>https://open.bigmodel.cn/api/anthropic</code>。<br><b>如果打印出的是空行、或者原样吐回变量名</b> → 没生效，回第 12 步重来，Windows 记得一定要重开。</div>
+  <div class="good"><span class="t">✓ 看到这个就算过了</span>打印出 <code>https://open.bigmodel.cn/api/anthropic</code>。<br><b>如果打印出的是空行、或者原样吐回变量名</b> → 没生效，回第 10 步重来，Windows 记得一定要重开。</div>
 
-  <p><b>第 14 步 · 启动</b><br>
+  <p><b>第 12 步 · 启动</b><br>
   随便找个空文件夹（比如桌面新建一个叫 <code>hr-agent</code> 的），在 Cursor 里打开它（File → Open Folder），然后在终端敲：</p>
   <div class="cmd">claude</div>
   <div class="good"><span class="t">✓ 看到这个就算过了</span>它显示欢迎信息，然后停在那里等你输入。</div>
-  <div class="bad"><span class="t">✕ 如果它让你登录 Anthropic 账号或自动打开了浏览器</span>说明第 12 步没生效。<b>不要去注册 Anthropic 账号</b>——退出来（按 <code>Ctrl+C</code> 两次），回第 13 步检查变量。</div>
+  <div class="bad"><span class="t">✕ 如果它让你登录 Anthropic 账号或自动打开了浏览器</span>说明第 10 步没生效。<b>不要去注册 Anthropic 账号</b>——退出来（按 <code>Ctrl+C</code> 两次），回第 11 步检查变量。</div>
 
   <!-- ─────────── 阶段五 ─────────── -->
-  <div class="sec-label">阶段五 · 确认真的成功（第 15 步）</div>
-  <p><b>第 15 步 · 问它一句话</b><br>
-  在 <code>claude</code> 的输入框里直接打字：</p>
-  <div class="say">你现在用的是什么模型？请直接回答模型名称。</div>
-  <div class="good"><span class="t">✓ 全部完成</span>它回答的是 <b>GLM 系列</b>（而不是 Claude）——说明整条链路通了：Claude Code 这个工具在你电脑上跑着，背后接的是国内的模型。<br><br><b>你已经跨过这门课最高的那道坎了。</b></div>
-  <div class="stuck"><span class="t">如果它说自己是 Claude</span>那说明它还在连官方接口，环境变量没接上。回第 13 步。<br>（注意：模型有时会答不准自己的身份，如果你不确定，可以到智谱控制台看一眼这次调用有没有消耗额度——有消耗就说明确实走的是 GLM。）</div>
+  <div class="sec-label">阶段五 · 确认真的成功（第 13 步）</div>
+  <p><b>第 13 步 · 用额度消耗来验，别问它是谁</b><br>
+  很多教程让你问它「你是什么模型」。<b>别拿那个答案当判据</b>——原因下面说。真正靠得住的判据是<b>钱有没有被扣</b>：</p>
+  <table class="htab">
+    <tr><td><b>①</b></td><td>浏览器打开智谱控制台，<b>记下当前的额度消耗数字</b></td></tr>
+    <tr><td><b>②</b></td><td>回到 <code>claude</code> 里随便问一句，比如「用一句话介绍你自己」，等它答完</td></tr>
+    <tr><td><b>③</b></td><td><b>刷新智谱控制台，再看那个数字</b></td></tr>
+  </table>
+  <div class="good"><span class="t">✓ 全部完成</span>数字涨了。<b>这说明这次对话确实是智谱在算——链路通了。</b><br><br>Claude Code 跑在你电脑上，背后接的是国内的模型，全程没有 Anthropic 账号、没有海外信用卡、没有科学上网。<b>你已经跨过这门课最高的那道坎了。</b></div>
+  <div class="stuck"><span class="t">为什么不能拿"它说自己是谁"当判据</span>因为<b>它大概率会说自己是 Claude，哪怕你接的确实是 GLM——这是正常现象，不是失败。</b><br><br>原因：Claude Code 这个工具在每次对话开头都会告诉模型「你是 Claude Code」。模型读到了这句话，就照着答了。<b>它是在复述被告知的身份，不是在报自己的出身</b>——它并没有"我是谁"这种自我认知。<br><br>这正好是第一篇章那个知识点最好的一次实地演示：<b>它答得越肯定，越不代表那是真的。</b>所以我们用钱来验——<b>账单不会配合演戏。</b></div>
+  <div class="bad"><span class="t">✕ 如果数字没涨</span>那才是真没接上。<b>回第 11 步</b>用 <code>echo</code> 确认变量。<br>还可以退出 <code>claude</code>（<code>Ctrl+C</code> 按两次），在终端敲 <code>claude doctor</code>——它会直接打印安装和配置的体检结果，哪里不对会写在上面。</div>
 
   <!-- ─────────── 报错表 ─────────── -->
   <div class="sec-label">报错对照表（卡住先查这里）</div>
   <table class="htab">
     <tr><th>#</th><th>现象</th><th>怎么办</th></tr>
-    <tr><td>1</td><td>「不是内部或外部命令」<br>「command not found」</td><td>装完 Node 没重开终端，<b>或者 Cursor 没完全关掉</b>。彻底退出 Cursor 再打开，重开终端</td></tr>
-    <tr><td>2</td><td>装的时候卡住不动 / <code>ETIMEDOUT</code></td><td>第 10 步的镜像没换。跑一遍 <code>npm config set registry</code> 再重试第 11 步</td></tr>
-    <tr><td>3</td><td>Mac：<code>npm ERR! code EACCES</code></td><td>权限问题。<b>别直接加 sudo</b>（会把 npm 目录权限搞乱，以后更麻烦）。把整段报错贴给 AI，说「我在 Mac 上全局安装 npm 包遇到 EACCES，不想用 sudo，怎么办」——它会带你改 npm 前缀目录或装 nvm</td></tr>
-    <tr><td>4</td><td>Windows：拒绝访问 / 权限不足</td><td>关掉 Cursor，右键图标「以管理员身份运行」，重开终端再装</td></tr>
-    <tr><td>5</td><td>装完敲 <code>claude</code> 没反应</td><td>重开终端。还不行敲 <code>npm list -g --depth=0</code> 看列表里有没有 claude-code</td></tr>
-    <tr><td>6</td><td>启动后要求登录 Anthropic</td><td>环境变量没生效。<b>Windows：setx 之后必须重开</b>。用第 13 步的 echo 确认</td></tr>
+    <tr><td>1</td><td>敲 <code>claude</code> 报「不是内部或外部命令」<br>「command not found」</td><td><b>九成是 Cursor 没彻底关掉。</b>不是关窗口，是完全退出（Windows 任务栏右键退出，Mac 按 Cmd+Q），重新打开再敲</td></tr>
+    <tr><td>2</td><td>Windows：<code>'irm' 不是内部或外部命令</code></td><td>你在 CMD 里跑了 PowerShell 的命令。<b>换成第 8 步给 CMD 的那一行</b>，或者在 Cursor 终端右上角切换成 PowerShell</td></tr>
+    <tr><td>3</td><td>Windows：<code>token '&amp;&amp;' 不是有效的语句分隔符</code></td><td>反过来了，你在 PowerShell 里跑了 CMD 的命令。<b>换成 <code>irm ... | iex</code> 那一行</b></td></tr>
+    <tr><td>4</td><td>安装命令跑不动 / 报 <code>403</code> / <code>syntax error near unexpected token '&lt;'</code></td><td>下载没成功（网络波动或被拦）。<b>先直接重试一次</b>，多数能过。连续失败就换个网络（手机热点最快验证）</td></tr>
+    <tr><td>5</td><td>装完不确定成没成</td><td>敲 <code>claude doctor</code>。它不启动对话，直接打印安装和配置的体检结果，有问题会写在上面</td></tr>
+    <tr><td>6</td><td>启动后要求登录 Anthropic</td><td>环境变量没生效。<b>Windows：setx 之后必须重开</b>。用第 11 步的 echo 确认</td></tr>
     <tr><td>7</td><td><code>401</code> / <code>invalid api key</code></td><td>①Key 复制时带了空格或引号 ②套餐还没生效。回智谱控制台核对，重新复制 Key 再配一次</td></tr>
     <tr><td>8</td><td>提示模型不存在 / 无权限</td><td>你的套餐档位不含那个模型。换成套餐支持的，或升一档</td></tr>
     <tr><td>9</td><td>用着提示额度用尽</td><td>套餐按周期限额，等刷新即可，<b>不会扣你余额</b></td></tr>
@@ -195,14 +200,15 @@ echo $ANTHROPIC_BASE_URL</div>
   <div class="stuck"><span class="t">表里没有的错，铁律不变</span><b>整段复制报错，贴给任何一个国内 AI（豆包 / DeepSeek / Kimi），说「我按教程装 Claude Code，报了这个错」</b>，并附上你的系统和已经完成的步数。<br>你一个字都不需要看懂那些报错。</div>
 
   <div class="sec-label">想推倒重来</div>
-  <div class="cmd">＃ 卸载 Claude Code
-npm uninstall -g @anthropic-ai/claude-code
+  <p><b>Mac：</b></p>
+  <div class="cmd">rm -f ~/.local/bin/claude
+rm -rf ~/.local/share/claude</div>
+  <p><b>Windows（PowerShell）：</b></p>
+  <div class="cmd">Remove-Item -Path "$env:USERPROFILE\.local\bin\claude.exe" -Force
+Remove-Item -Path "$env:USERPROFILE\.local\share\claude" -Recurse -Force</div>
+  <p>Cursor 用系统的卸载程序删就行。<b>整个过程不会动你电脑上任何别的东西，装坏了都能卸干净重来。</b></p>
 
-＃ 恢复默认 npm 源（一般不需要）
-npm config set registry https://registry.npmjs.org</div>
-  <p>Node.js 和 Cursor 用系统的卸载程序删就行。<b>整个过程不会动你电脑上任何别的东西，装坏了都能卸干净重来。</b></p>
-
-  <div class="try"><span class="t">今天就试</span>把 15 步走完，最后问它「你现在用的是什么模型」。<b>它答出 GLM，这门课最高的那道坎就过去了。</b>下一节开始用它干活。</div>
+  <div class="try"><span class="t">今天就试</span>把 13 步走完，最后<b>用智谱控制台的额度数字验一次</b>——记下数字、问它一句话、刷新再看。<br><br><b>数字涨了，这门课最高的那道坎就过去了。</b>下一节开始用它干活。</div>
 </main>
 <script src="lesson.js"></script>
 <script src="../track.js"></script>

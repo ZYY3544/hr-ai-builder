@@ -16,17 +16,17 @@ window.COURSE = {
   },
   "stats": {
    "parts": 10,
-   "lessons": 148,
+   "lessons": 149,
    "copy": 40,
    "adapt": 20,
    "new": 96,
-   "ready": 150,
+   "ready": 149,
    "todo": 0,
-   "minutes": 579
+   "minutes": 584
   },
   "access": {
-   "free": 129,
-   "locked": 19,
+   "free": 131,
+   "locked": 18,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
    "method": "Google Flexible Sampling —— 正文始终在 HTML 里可被索引，客户端遮挡 + JSON-LD 声明 isAccessibleForFree"
@@ -1274,8 +1274,8 @@ window.COURSE = {
        "file": "cc-install-guide.html",
        "action": "new",
        "ksa": "S",
-       "title": "安装完全手册 · 15 步",
-       "seo": "Claude Code 安装完全手册：15 步从 Cursor 到 GLM（Windows / Mac）",
+       "title": "安装完全手册 · 13 步",
+       "seo": "Claude Code 安装完全手册：13 步从 Cursor 到 GLM（Windows / Mac）",
        "desc": "上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。",
        "free": true,
        "ready": true,
@@ -1291,9 +1291,20 @@ window.COURSE = {
        "free": true,
        "ready": true,
        "min": 3
+      },
+      {
+       "file": "cc-data-path.html",
+       "action": "new",
+       "ksa": "A",
+       "title": "你的数据到底走了哪条线",
+       "seo": "Claude Code 本地运行时数据会外传吗？HR 用它处理员工数据的合规路径",
+       "desc": "「跑在本地所以数据不出本地」是错的。这一节把链路拆开：文件内容到底发去了哪、三条合规的路怎么选、以及为什么提示词不是权限。",
+       "free": true,
+       "ready": true,
+       "min": 5
       }
      ],
-     "min": 21
+     "min": 26
     },
     {
      "title": "让它认识你的活：CLAUDE.md 与项目结构",
@@ -2277,6 +2288,48 @@ window.COURSE = {
    ],
    "total_read": 66,
    "total_les": 14
+  },
+  {
+   "id": "vendor",
+   "name": "见供应商之前，两个晚上",
+   "goal": "第 2 晚结束时，你手上有一份能带进会议室的问话清单，和一页写着「第一刀切哪」的纸。",
+   "who": "要评供应商、要给老板一个说法、自己不打算写代码的人。HRD、HR 负责人、分管 AI 的中层。",
+   "total_les": 11,
+   "total_read": 39,
+   "unit": "2 个晚上",
+   "nights": [
+    {
+     "n": 1, "t": "把那些唬人的词拆开",
+     "do": "读 8 节，一口气读完。今晚不用动手。",
+     "why": "供应商话术的杀伤力全来自「你不懂这个词」。词一拆开，剩下的就是常识判断。",
+     "min": 28,
+     "les": ["jargon-why.html","jargon-rag.html","hr-caliber-3.html","jargon-training.html","jargon-deploy.html","jargon-tools.html","jargon-eval.html","jargon-table.html"],
+     "items": [
+      {"file":"jargon-why.html","num":"第三篇章","title":"术语为什么唬人","min":3},
+      {"file":"jargon-rag.html","num":"第三篇章","title":"RAG：让它答之前先查资料","min":3},
+      {"file":"hr-caliber-3.html","num":"第三篇章","title":"切片与清洗：喂进 RAG 之前要做什么","min":4},
+      {"file":"jargon-training.html","num":"第三篇章","title":"微调、蒸馏、预训练","min":4},
+      {"file":"jargon-deploy.html","num":"第三篇章","title":"开源、私有化部署、参数量","min":4},
+      {"file":"jargon-tools.html","num":"第三篇章","title":"工具、MCP、Skill","min":3},
+      {"file":"jargon-eval.html","num":"第三篇章","title":"Eval 与 benchmark","min":3},
+      {"file":"jargon-table.html","num":"第三篇章","title":"一张表和一份问话清单","min":4}
+     ],
+     "out": "12 句采购问话清单。第 6 句和第 11 句单独拎出来给采购和法务。"
+    },
+    {
+     "n": 2, "t": "从「要不要买」变成「先切哪一刀」",
+     "do": "读 3 节，然后花二十分钟给你部门的候选场景打一遍分。",
+     "why": "CEO 问的是「我们的 AI 战略是什么」。你能给的最好答案不是战略，是一张排好序的表，加一句「第一刀切这里，四周见结果」。",
+     "min": 11,
+     "les": ["hr-inventory-3.html","hr-rollout.html","hr-org-3.html"],
+     "items": [
+      {"file":"hr-inventory-3.html","num":"第六篇章","title":"算账：省多少、风险多大、第一刀切哪","min":3},
+      {"file":"hr-rollout.html","num":"第七篇章","title":"换个团队它就不准了","min":3},
+      {"file":"hr-org-3.html","num":"第七篇章","title":"哪些能力反而更值钱了","min":5}
+     ],
+     "out": "一页纸：四维打分表 + 第一刀切哪 + 怎么验收（判据是「你休假两周它还在跑」）。"
+    }
+   ]
   }
  ]
 };

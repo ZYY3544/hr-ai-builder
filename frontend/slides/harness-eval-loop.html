@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>怎么把 AI 评测变成 agent 的自动环节而不是上线前跑一次 · HR AI Builder</title>
-<meta name="description" content="第三篇章教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。">
+<meta name="description" content="本章前面教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。">
 <meta property="og:site_name" content="HR AI Builder">
 <meta property="og:title" content="怎么把 AI 评测变成 agent 的自动环节而不是上线前跑一次">
-<meta property="og:description" content="第三篇章教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。">
+<meta property="og:description" content="本章前面教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。">
 <link rel="stylesheet" href="lesson.css">
 <style>
 .htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
@@ -52,12 +52,12 @@
   <header class="lesson-header">
     <div class="kicker">第七篇章 · HR 专有的两层：权限留痕与自动验收</div>
     <h1>评测：从一次性检查到常设仪表盘</h1>
-    <p class="subtitle">第三篇章教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。</p>
+    <p class="subtitle">本章前面教你建了评测集，但如果它只在上线前跑一次，它就是个摆设。这一节把它变成 harness 的常设部件。</p>
   </header>
 
       <div class="sec-label">一次性评测的问题</div>
       <div class="bad"><span class="t">✕ 典型的死法</span>上线前：跑了 50 条评测，92 分，上线。<br>三个月后：改过四次规则、换过一次模型、补过两次口径。<br><b>现在它多少分？没人知道，因为那套评测再没跑过。</b></div>
-      <p>而这三个月里，每一次改动都可能让它退步——第三篇章讲过，一个看似无害的 prompt 改动就能让整体掉几个点，而且<b>不会有任何提示</b>。</p>
+      <p>而这三个月里，每一次改动都可能让它退步——前面讲过，一个看似无害的 prompt 改动就能让整体掉几个点，而且<b>不会有任何提示</b>。</p>
 
       <div class="sec-label">焊进去：三个触发点</div>
       <table class="htab">
@@ -92,7 +92,7 @@ evals/ 目录下是评测集和阴性对照用例。
       </table>
       <p>缺评测，你不知道它在变好还是变坏；缺留痕，你没法向任何人解释。<b>HR 场景两个都不能少</b>，这也是为什么这两层被单独拎出来成为一个主题。</p>
 
-      <div class="try"><span class="t">今天就试</span>把第三篇章建的那套评测集搬进 evals/，然后加上「改完规则要提醒我跑」这一条。<b>然后故意改一条口径，看它提不提醒你。</b></div>
+      <div class="try"><span class="t">今天就试</span>把本章前面建的那套评测集搬进 evals/，然后加上「改完规则要提醒我跑」这一条。<b>然后故意改一条口径，看它提不提醒你。</b></div>
     
 </main>
 <script src="lesson.js"></script>

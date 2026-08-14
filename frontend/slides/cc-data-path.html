@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>你的数据到底走了哪条线？Claude Code 读文件时数据去了哪 · HR AI Builder</title>
+<meta name="description" content="「跑在本地所以数据不出本地」是错的。这一节把链路拆开：文件内容到底发去了哪、三条合规的路怎么选、以及为什么提示词不是权限。">
+<meta property="og:site_name" content="HR AI Builder">
+<meta property="og:title" content="你的数据到底走了哪条线？Claude Code 读文件时数据去了哪">
+<meta property="og:description" content="「跑在本地所以数据不出本地」是错的。这一节把链路拆开：文件内容到底发去了哪、三条合规的路怎么选、以及为什么提示词不是权限。">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)} .good .t{color:var(--success)}
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+.flow{background:var(--surface,#F8FAFC);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin:18px 0}
+.flow .step{display:flex;gap:12px;align-items:flex-start;padding:9px 0;font-size:13.5px;line-height:1.75}
+.flow .step+.step{border-top:1px dashed var(--border)}
+.flow .n{flex:0 0 22px;height:22px;border-radius:6px;background:#0F172A;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.flow .step.out .n{background:var(--danger,#DC2626)}
+.flow .step.out{color:var(--text)}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "你的数据到底走了哪条线？Claude Code 读文件时数据去了哪",
+ "articleSection": "第六篇章 · 先把工具装上：终端与 Claude Code",
+ "publisher": {"@type": "Organization", "name": "HR AI Builder"},
+ "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+ "isAccessibleForFree": true
+}
+</script>
+</head>
+<body>
+<main class="lesson">
+  <header class="lesson-header">
+    <div class="kicker">第六篇章 · 先把工具装上：终端与 Claude Code</div>
+    <h1>你的数据到底走了哪条线</h1>
+    <p class="subtitle">网上教 Claude Code 的内容里，有一句话被反复说，而它是错的：「跑在本地，所以数据不出本地」。这一节把链路拆开给你看，然后给你三条真能用在公司里的路。</p>
+  </header>
+
+  <div class="sec-label">先纠正一个流传很广的说法</div>
+  <div class="bad"><span class="t">✕ 「Claude Code 跑在你电脑上，所以花名册不会外传」</span>这句话前半句对，后半句错。<b>本地跑的只是那个壳。</b>模型本身不在你电脑里——它在服务商的机房里，有几百上千张显卡。<br><br>你的电脑负责：读文件、执行命令、显示结果。<b>「想」这个动作，从来不在你的电脑上发生。</b></div>
+
+  <div class="sec-label">上一节那句话，实际发生了什么</div>
+  <p>你问它「这个文件夹里有什么，每个文件多少行、列是什么」，它回答得很准。这中间的完整链路是：</p>
+  <div class="flow">
+    <div class="step"><span class="n">1</span><div>你敲下问题，回车。</div></div>
+    <div class="step"><span class="n">2</span><div>Claude Code <b>在你电脑上</b>执行了一次"列出文件"，拿到文件名。</div></div>
+    <div class="step out"><span class="n">3</span><div><b>它把文件名连同你的问题，发给了模型服务商。</b></div></div>
+    <div class="step"><span class="n">4</span><div>模型回答："我要读第一个文件。"</div></div>
+    <div class="step"><span class="n">5</span><div>Claude Code <b>在你电脑上</b>打开了那个文件。</div></div>
+    <div class="step out"><span class="n">6</span><div><b>它把文件里的内容发给了模型服务商。</b>——花名册的每一个名字、每一个工号、每一行薪酬，都在这一步出去了。</div></div>
+    <div class="step"><span class="n">7</span><div>模型读完，给出结论。Claude Code 显示在你屏幕上。</div></div>
+  </div>
+  <p>红色的那两步，就是你的数据出门的地方。<b>它去了哪儿？去了你在装的时候填的那个地址</b>——如果你按上一章配的是智谱，那就是智谱的服务器；如果你用的官方账号，那就是 Anthropic 的服务器。</p>
+
+  <div class="stuck"><span class="t">为什么这件事必须现在说</span>因为它决定了<b>你能往那个文件夹里放什么</b>。<br><br>第四篇章讲沙箱时那条红线原封不动地适用：<b>员工花名册、薪酬明细、绩效、健康、背调——这些放进 data/ 目录，等于发给了外部服务商。</b>「我是在本地跑的」不构成豁免理由，因为本地跑的不是模型。</div>
+
+  <div class="sec-label">自己验一次，别信我说的</div>
+  <p>这件事你可以在两分钟内自己看见，不用相信任何人的转述：</p>
+  <div class="cmd">cd ~/Desktop/hr-agent
+claude</div>
+  <p>先去<b>智谱控制台看一眼当前的额度消耗数字，记下来</b>。然后让它读一个稍大的文件（几百行的假考勤表最好），读完之后<b>刷新控制台再看一眼</b>。</p>
+  <div class="good"><span class="t">✓ 你会看到什么</span>token 消耗涨了，而且涨的量跟文件大小成正比——文件越大涨得越多。<br><br><b>那些 token 就是你的文件内容。</b>它按字数计费，因为它确实被送过去了。这是全课最值得你亲手做一遍的实验：不是听我说数据走了，是自己看见它走了。</div>
+
+  <div class="sec-label">那怎么办？三条路，按能不能过公司安全评审排</div>
+  <table class="htab">
+    <tr><th>路</th><th>数据发去哪</th><th>能放什么 · 适合谁</th></tr>
+    <tr><td><b>① 个人账号<br>（你现在这条）</b></td><td>你个人注册的第三方 API，几十块钱的套餐。条款按个人用户算</td><td><b>只能放假数据和脱敏后的数据。</b>适合学习、做作品集、跑不含个人信息的公开数据。<b>这门课全程按这条路教</b></td></tr>
+    <tr><td><b>② 公司统一采购的企业端点</b></td><td>公司跟服务商签了合同的账号，有 DPA、有数据处理条款、能开发票</td><td>看合同怎么签。<b>这是把这套东西搬进公司的正路</b>——你要做的是拿着方案去找 IT 和法务，而不是自己偷偷用个人 Key 跑真数据</td></tr>
+    <tr><td><b>③ 内网私有化部署</b></td><td>公司自己机房里的开源模型，数据不出内网</td><td>敏感数据可以碰。代价是能力比在线的旗舰模型弱一截、要有人维护。<b>第三篇章讲私有化那节说的就是它</b></td></tr>
+  </table>
+
+  <div class="good"><span class="t">✓ 最实用的其实是组合拳</span>第三篇章给过一个组合，在这里落地最合适：<b>本地清洗 + 外部分析。</b><br><br>让 Claude Code 先写一个脚本，<b>在你电脑上</b>把花名册里的姓名、工号、身份证号去掉，换成编号；然后只把<b>脱敏后的、聚合过的</b>数据交给模型去分析。<br><br>脚本在本地跑，不需要发给模型；发出去的只有"技术部 P7 共 15 人，薪酬中位数 X"这种不含个人信息的东西。<b>这样你既拿到了 AI 的分析能力，又没让任何一个员工的信息离开公司。</b></div>
+
+  <div class="sec-label">还有一件必须现在说清的事：提示词不是权限</div>
+  <p>下一节会教你在 CLAUDE.md 里写安全红线，比如「不许把 data/ 里的内容发到外部」。<b>那些规则有用，但你必须知道它们的性质：它们是"请求"，不是"锁"。</b></p>
+  <div class="bad"><span class="t">✕ 为什么提示词挡不住</span>第二篇章那一节的标题就是答案：<b>「指令和数据走同一个通道」</b>。你写在 CLAUDE.md 里的规则，和它读到的文件内容，最后是混在同一段文字里进模型的。<br><br>所以一份<b>带注入的简历</b>（第二篇章那个白色字体的例子）完全可以跟你的红线讲道理——它也是"指令"，凭什么你的优先级更高？只是因为你写了"最高优先级"这四个字吗？</div>
+  <div class="good"><span class="t">✓ 真正的锁在配置文件里</span>Claude Code 有一层<b>不经过模型</b>的权限配置：写在项目目录下的 <code>.claude/settings.json</code> 里。它由程序执行，模型说服不了它。<br><br>下一节会给你完整的写法。这里你只要先记住一件事：<b>凡是"绝对不能发生"的事，写进配置；凡是"希望它这么干"的事，写进 CLAUDE.md。</b>两者不能互相替代。</div>
+
+  <div class="rule">
+    <span class="lbl">这一节的三句话</span>
+    <h3>本地跑的是壳，不是脑子</h3>
+    <ol>
+      <li><b>它读文件 = 文件内容发给模型服务商。</b>「跑在本地」不等于「数据不出本地」，去控制台看一眼 token 消耗就能验证</li>
+      <li><b>个人账号只能放假数据。</b>要碰真数据，走公司采购的企业端点或内网私有化——这不是绕路，这是唯一能过安全评审的路</li>
+      <li><b>提示词是请求，配置文件才是锁。</b>绝对不能发生的事，别指望模型自觉</li>
+    </ol>
+  </div>
+
+  <div class="try"><span class="t">今天就试</span>做那个 token 实验：记下控制台数字 → 让它读一个几百行的假表 → 再看数字。<br><br><b>然后做一件更有价值的事：</b>把这条链路画成三行字，发给你们公司管信息安全的同事，问一句「如果我要用这个工具处理部门数据，走什么流程」。<br><br>这个动作的价值不在于他怎么答，在于<b>你成了那个先问的人</b>——而不是那个被发现之后才解释的人。</div>
+</main>
+<script src="lesson.js"></script>
+<script src="../track.js"></script>
+</body>
+</html>

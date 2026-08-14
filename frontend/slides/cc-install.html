@@ -82,27 +82,24 @@
   <table class="htab">
     <tr><td><b>一</b></td><td><b>开通智谱</b></td><td>手机号注册 → 实名 → 订阅 → 拿 API Key（<b>Key 只完整显示一次，当场存好</b>）</td></tr>
     <tr><td><b>二</b></td><td><b>装 Cursor</b></td><td>一个带内置终端的编辑器。<b>在正常软件窗口里操作，比对着漆黑的终端心理压力小得多</b></td></tr>
-    <tr><td><b>三</b></td><td><b>装 Node.js 和 CC</b></td><td>含换国内镜像那一行——<b>不换会超时，这一步别跳</b></td></tr>
+    <tr><td><b>三</b></td><td><b>装 Claude Code</b></td><td><b>一行命令搞定</b>，官方安装器。以前那套"先装 Node 再换镜像"已经不需要了</td></tr>
     <tr><td><b>四</b></td><td><b>接到 GLM 上</b></td><td>配两个环境变量。做完就不需要海外账号和网络了</td></tr>
-    <tr><td><b>五</b></td><td><b>确认成功</b></td><td>问它「你用的什么模型」，答 GLM 就通了</td></tr>
+    <tr><td><b>五</b></td><td><b>确认成功</b></td><td><b>看智谱控制台的额度有没有被扣</b>。别问它「你是什么模型」——它会说自己是 Claude，那是正常的，下一节解释</td></tr>
   </table>
-  <div class="cmd"># 2. 换国内镜像（不换会很慢）
-npm config set registry https://registry.npmmirror.com
+  <div class="cmd"># 1. 装 Claude Code（Mac；Windows 见下一节）
+curl -fsSL https://claude.ai/install.sh | bash
 
-# 3. 装 Claude Code
-npm install -g @anthropic-ai/claude-code
-
-# 4. 告诉它用国产模型（把 你的KEY 换成你申请到的）
+# 2. 告诉它用国产模型（把 你的KEY 换成你申请到的）
 export ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic
 export ANTHROPIC_AUTH_TOKEN=你的KEY
 
 # 启动
 claude</div>
-  <p>第 4 步这两行是关键：<b>它们让 CC 不再去找 Anthropic，而是去找国内的接口</b>——所以既不用登录海外账号，流量也不出境。想让它永久生效（不用每次敲），让 AI 教你写进配置文件，一句话的事。</p>
+  <p>第 2 步这两行是关键：<b>它们让 CC 不再去找 Anthropic，而是去找国内的接口</b>——所以既不用登录海外账号，流量也不出境。想让它永久生效（不用每次敲），下一节手册里有写法。</p>
 
   <div class="l-callout" style="border-color:rgba(101,163,13,.35);background:rgba(101,163,13,.06)">
     <b>📄 下一节是逐步手册，跟视频配套用。</b><br>
-    <a href="learn.html#cc-install-guide.html" target="_top"><b>《安装完全手册 · 15 步》</b></a>——从下载 Cursor 到接上 GLM，<b>全程 15 个编号步骤</b>，每步都标了「看到这个就算过了」，末尾 10 条报错对照。<br>
+    <a href="learn.html#cc-install-guide.html" target="_top"><b>《安装完全手册 · 13 步》</b></a>——从下载 Cursor 到接上 GLM，<b>全程 13 个编号步骤</b>，每步都标了「看到这个就算过了」，末尾 10 条报错对照。<br>
     看视频的时候卡在哪一步，就翻到手册对应的第几步；<b>视频看不了（在公司、没耳机、链接失效），照着手册也能独立走完。</b>
   </div>
 
@@ -114,21 +111,21 @@ claude</div>
 我的情况：
 - 系统：Windows 11（或 macOS，按你的实际情况改）
 - 我完全没有编程经验，从来没用过终端/命令行
-- 我不知道自己有没有装过 Node.js
+- 我要用官方的一行命令安装器装，不要用 npm，也不要装 Node.js
 
 请一步一步带我装，要求：
 1. 每一步告诉我：在哪里操作、敲什么、按什么键
 2. 每一步告诉我"看到什么就算成功了"
 3. 一次只给我一步，我做完回复你"好了"，你再给下一步
 4. 需要我做判断时，直接告诉我怎么判断，不要假设我知道
-5. npm 请用国内镜像源
+5. Windows 请先帮我确认我在 PowerShell 还是 CMD，两者命令不一样
 
 现在开始第一步。</div>
   <p>第 3 条是关键：<b>「一次只给我一步」</b>。没有这句，它会一口气给你八步，你在第三步卡住之后就不知道自己在哪了。</p>
 
   <div class="sec-label">卡住的时候</div>
   <div class="stuck"><span class="t">铁律：报错整段复制，贴回去问</span>终端里的报错又长又难看，但<b>你一个字都不需要看懂</b>。全选、复制、贴给 AI，说「我按你说的做，报了这个错」。它解决这类问题的成功率极高。<br><br>
-  两个高频坑先说在前面：<b>①「命令找不到」</b>——多半是 Node 没装好，或者要重开一次终端；<b>② Windows 提示权限不足</b>——用管理员身份重开终端再试。这两个直接告诉 AI，它知道怎么办。</div>
+  两个高频坑先说在前面：<b>①「命令找不到」</b>——九成是编辑器没彻底关掉重开；<b>② Windows 上命令报语法错</b>——多半是把 PowerShell 的命令敲进了 CMD（或反过来），下一节手册教你一眼认出自己在哪个窗口。这两个直接告诉 AI，它知道怎么办。</div>
 
   <div class="sec-label">如果你确实想接 Anthropic 官方</div>
   <p>能力上限更高，但你要自己解决三件事：Anthropic 账号、海外支付、网络。<b>这三件这门课不提供帮助</b>——不是藏私，是这条路的门槛跟这门课要教的东西无关。</p>
