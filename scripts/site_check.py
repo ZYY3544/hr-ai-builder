@@ -149,6 +149,30 @@ def check(fe=FE, sl=SL):
         if miss:
             FAIL('id体检', f'{page} 引用了脚本之前不存在的 id: {sorted(miss)}')
 
+    # ── 5b. 后端映射表对账（Sparky 分诊/面试全靠这张表指路）────
+    bp = os.path.join(ROOT, 'backend', 'main.py')
+    if os.path.exists(bp):
+        bs = open(bp, encoding='utf-8').read()
+        if 'TERM_LESSONS' in bs:
+            i = bs.index('TERM_LESSONS = {')
+            blk = bs[i:bs.index('\n}\n', i)]
+            term_ids = set()
+            for m in re.finditer(r'"(\w+)":\s*\[(.*?)\]', blk, re.S):
+                term_ids.add(m.group(1))
+                for f in re.findall(r'"([\w\-]+\.html)"', m.group(2)):
+                    if f not in dset:
+                        FAIL('后端映射', f'TERM_LESSONS[{m.group(1)}] 指向不在目录里的节: {f}')
+            # 每个 TERMS 词条都该有课程映射，否则分诊指不出路
+            for m in re.finditer(r'\{"id":\s*"(\w+)"', bs[:i]):
+                if m.group(1) not in term_ids:
+                    WARN('后端映射', f'词条 {m.group(1)} 没有对应课程（TERM_LESSONS 缺）')
+        # 岗位引用的词条必须存在
+        all_terms = set(re.findall(r'\{"id":\s*"(\w+)"', bs))
+        for m in re.finditer(r'"(?:must|plus)":\s*\[(.*?)\]', bs, re.S):
+            for t in re.findall(r'"(\w+)"', m.group(1)):
+                if t not in all_terms:
+                    FAIL('后端映射', f'岗位引用了不存在的能力词条: {t}')
+
     # ── 6. 质量红线 ────────────────────────────────────────
     for fn in sorted(on_disk):
         s = open(os.path.join(sl, fn), encoding='utf-8').read()
@@ -164,7 +188,7 @@ def check(fe=FE, sl=SL):
 
 
 def negative_control():
-    """阴性对照：往副本里注入 5 类已知错，量具必须全抓到。"""
+    """阴性对照：往副本里注入 6 类已知错，量具必须全抓到。"""
     tmp = tempfile.mkdtemp(prefix='sitecheck_nc_')
     fe2 = os.path.join(tmp, 'frontend')
     shutil.copytree(FE, fe2)
@@ -187,13 +211,21 @@ def negative_control():
     t = t.replace('</main>', '<p>参考 xsct 那个站</p></main>', 1)
     open(p, 'w', encoding='utf-8').write(t)
 
+    # ⑥ 后端映射表死链（Sparky 指路的地基）
+    bp2 = os.path.join(tmp, 'backend'); shutil.copytree(os.path.join(ROOT,'backend'), bp2)
+    t = open(os.path.join(bp2,'main.py'), encoding='utf-8').read().replace(
+        '"eval":           ["eval-why.html"', '"eval":           ["ZZZ-gone.html"', 1)
+    open(os.path.join(bp2,'main.py'),'w',encoding='utf-8').write(t)
+
     global fails, warns
     fails, warns = [], []
+    _root_bak = globals()['ROOT']; globals()['ROOT'] = tmp
     check(fe2, sl2)
+    globals()['ROOT'] = _root_bak
     shutil.rmtree(tmp)
 
     cats = {c for c, _ in fails}
-    expect = {'统计', '对账', 'kicker', '红线'}
+    expect = {'统计', '对账', 'kicker', '红线', '后端映射'}
     print('══ 阴性对照（先验刀）══')
     for c, m in fails:
         print(f'   抓到 [{c}] {m[:88]}')
