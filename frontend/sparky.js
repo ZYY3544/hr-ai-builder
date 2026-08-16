@@ -106,6 +106,13 @@
     ' padding:0 16px;font-size:13.5px;cursor:pointer;font-weight:600}',
     '#spk-send:disabled{opacity:.45;cursor:default}',
     '.spk-typing{color:#94A3B8;font-size:12px;padding:2px 0 10px}',
+    '#spk-bubble{position:fixed;right:24px;bottom:92px;max-width:240px;background:#fff;border:1px solid #E2E8F0;',
+    ' border-radius:14px;border-bottom-right-radius:4px;padding:11px 30px 11px 14px;font-size:13px;line-height:1.7;',
+    ' color:#0F172A;box-shadow:0 8px 28px rgba(15,23,42,.16);z-index:9998;cursor:pointer;',
+    ' opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}',
+    '#spk-bubble.on{opacity:1;transform:none;pointer-events:auto}',
+    '#spk-bubble b{color:#00795F}',
+    '#spk-bubble .bx{position:absolute;top:4px;right:7px;color:#94A3B8;font-size:15px;padding:2px 5px;cursor:pointer}',
     '@media(max-width:480px){#spk-panel{width:100vw}}',
     '@media print{#spk-ball,#spk-panel{display:none}}'
   ].join('\n');
@@ -128,7 +135,8 @@
     '<div id="spk-log"></div>' +
     '<div id="spk-inp"><textarea rows="1" placeholder="说说你想拿 AI 干什么…"></textarea>' +
     '<button id="spk-send">发送</button></div>';
-  document.body.appendChild(ball); document.body.appendChild(panel);
+  var bub = document.createElement('div'); bub.id = 'spk-bubble';
+  document.body.appendChild(ball); document.body.appendChild(panel); document.body.appendChild(bub);
 
   var log = panel.querySelector('#spk-log'),
       ta = panel.querySelector('textarea'),
@@ -161,6 +169,164 @@
     log.appendChild(w); scroll();
   }
 
+  /* ---------------- 行为采集（全部本地，只在点开气泡时才把摘要发给后端） ---------------- */
+  var DBG = localStorage.getItem('spk_debug') === '1';
+  var TK = DBG ? 0.02 : 1;                       // debug 模式阈值缩到 2%
+  var LMAP = {};                                  // file -> {title,min,topic}
+  try { if (typeof CO !== 'undefined') CO.parts.forEach(function (p) {
+    p.topics.forEach(function (t) { t.lessons.forEach(function (l) {
+      LMAP[l.file] = { title: l.title, min: l.min || 0, topic: t.title,
+                       sibs: t.lessons.map(function (x) { return x.file; }) };
+    }); });
+  }); } catch (e) {}
+
+  var trail = [];                                 // [{f, t0, d(秒)}]
+  var hidT0 = null;
+  function trailNow() { return trail.length ? trail[trail.length - 1] : null; }
+  function trailSettle() {
+    var c = trailNow();
+    if (c) c.d = Math.round((Date.now() - c.t0) / 1000 - (c.pause || 0));
+  }
+  function trailPush(f) {
+    trailSettle();
+    trail.push({ f: f, t0: Date.now(), pause: 0 });
+    if (trail.length > 20) trail.shift();
+  }
+  function trailSummary() {
+    trailSettle();
+    return trail.slice(-5).map(function (x) {
+      var t = (LMAP[x.f] || {}).title || x.f;
+      return '《' + t + '》停留' + (x.d >= 60 ? Math.round(x.d / 60) + '分' : (x.d || 0) + '秒');
+    }).join(' → ') || '（无浏览记录）';
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { hidT0 = Date.now(); }
+    else if (hidT0) { var c = trailNow(); if (c) c.pause = (c.pause || 0) + (Date.now() - hidT0) / 1000; hidT0 = null; }
+  });
+  if (PAGE === 'learn') {
+    var f0 = decodeURIComponent(location.hash.slice(1) || '');
+    if (f0) trailPush(f0);
+    window.addEventListener('hashchange', function () {
+      var f = decodeURIComponent(location.hash.slice(1) || '');
+      if (f && (!trailNow() || trailNow().f !== f)) { trailPush(f); trigSkim(); }
+    });
+  }
+  // 心跳：给"回访"触发器留下上次足迹
+  setInterval(function () {
+    try { localStorage.setItem('spk_last', JSON.stringify({
+      t: Date.now(), lesson: PAGE === 'learn' ? (trailNow() || {}).f : null })); } catch (e) {}
+  }, 10000);
+
+  /* ---------------- 触发引擎：宁可错过，不可打扰 ---------------- */
+  function fired() { return +(sessionStorage.getItem('spk_fired') || 0); }
+  function canFire(id, coolH) {
+    if ((document.hidden && !DBG) || panel.classList.contains('on') || busy) return false;
+    if (+(sessionStorage.getItem('spk_x') || 0) >= 2) return false;          // 连按两次×→全程闭嘴
+    if (fired() >= 2) return false;                                          // 每次访问最多2泡
+    var last = +(sessionStorage.getItem('spk_bt') || 0);
+    if (Date.now() - last < 5 * 60000 * TK) return false;                    // 两泡间隔≥5分钟
+    var cool = {}; try { cool = JSON.parse(localStorage.getItem('spk_cool') || '{}'); } catch (e) {}
+    if (cool[id] && Date.now() - cool[id] < coolH * 3600000 * TK) return false;
+    return true;
+  }
+  var bubTimer = null, bubTrig = null;
+  function fire(id, coolH, text, note) {
+    if (!canFire(id, coolH)) return;
+    var cool = {}; try { cool = JSON.parse(localStorage.getItem('spk_cool') || '{}'); } catch (e) {}
+    cool[id] = Date.now();
+    try { localStorage.setItem('spk_cool', JSON.stringify(cool)); } catch (e) {}
+    sessionStorage.setItem('spk_fired', fired() + 1);
+    sessionStorage.setItem('spk_bt', Date.now());
+    bubTrig = { id: id, note: note };
+    bub.innerHTML = md(text) + '<span class="bx">×</span>';
+    bub.classList.add('on');
+    bub.querySelector('.bx').onclick = function (e) {
+      e.stopPropagation(); hideBub();
+      sessionStorage.setItem('spk_x', +(sessionStorage.getItem('spk_x') || 0) + 1);
+    };
+    clearTimeout(bubTimer);
+    bubTimer = setTimeout(hideBub, 45000);                                   // 45秒没人理自己缩回
+  }
+  function hideBub() { bub.classList.remove('on'); clearTimeout(bubTimer); }
+  bub.onclick = function () {
+    var tg = bubTrig; hideBub();
+    openPanel();
+    if (tg) autoAsk(tg.id, tg.note);
+  };
+
+  // ① 卡住：同一节停留超过声明时长3倍（至少5分钟）
+  if (PAGE === 'learn') setInterval(function () {
+    var c = trailNow(); if (!c || (document.hidden && !DBG)) return;
+    var min = (LMAP[c.f] || {}).min || 3;
+    var th = Math.max(300, min * 60 * 3) * TK;
+    var dwell = (Date.now() - c.t0) / 1000 - (c.pause || 0);
+    if (dwell > th) fire('stuck', 6, '这一节停了挺久——**卡住了？**',
+      '用户在《' + ((LMAP[c.f] || {}).title || c.f) + '》停留了 ' + Math.round(dwell / 60) + ' 分钟（声明阅读时长 ' + min + ' 分钟），可能卡住了');
+  }, 20000 * TK);
+
+  // ② 乱翻：5分钟内翻≥5节、每节<40秒
+  function trigSkim() {
+    var recent = trail.slice(-6, -1);
+    if (recent.length < 5) return;
+    var fast = recent.every(function (x) { return (x.d || 0) < Math.max(40 * TK, 4); });
+    var span = (Date.now() - recent[0].t0) / 1000 < Math.max(300 * TK, 20);
+    if (fast && span) fire('skim', 12, '翻了好几节都没停下来。**在找什么？**',
+      '用户快速翻过多节都没细读：' + trailSummary() + '——像是在找某个具体的东西没找到');
+  }
+
+  // ③ 回访：隔天回来、上次有在读的节
+  try {
+    var lastRec = JSON.parse(localStorage.getItem('spk_last') || 'null');
+    if (lastRec && lastRec.lesson && Date.now() - lastRec.t > 20 * 3600000 * TK) {
+      var lt = (LMAP[lastRec.lesson] || {}).title || lastRec.lesson;
+      setTimeout(function () {
+        fire('comeback', 20, '回来了。上次停在**《' + lt + '》**。',
+          '用户隔了至少一天回来了，上次离开时停在《' + lt + '》');
+      }, 4000);
+    }
+  } catch (e) {}
+
+  // ④ 读完一组：某主题的节全部学完
+  var doneN0 = null;
+  setInterval(function () {
+    var d = []; try { d = JSON.parse(localStorage.getItem('hab_done') || '[]'); } catch (e) { return; }
+    if (doneN0 === null) { doneN0 = d.length; return; }
+    if (d.length <= doneN0) { doneN0 = d.length; return; }
+    var newest = d[d.length - 1]; doneN0 = d.length;
+    var m = LMAP[newest]; if (!m || !m.sibs) return;
+    var all = m.sibs.every(function (f) { return d.indexOf(f) >= 0; });
+    if (all) fire('topicdone', 1, '「**' + m.topic + '**」这一组读完了。',
+      '用户刚读完《' + m.title + '》，至此「' + m.topic + '」主题下的所有节都学完了。给出紧接着最值得读的下一组（按课程顺序），并肯定一句');
+  }, 2500);
+
+  // ⑤ 新客迷茫：首页90秒没点任何课
+  if (PAGE === 'index') (function () {
+    var d = []; try { d = JSON.parse(localStorage.getItem('hab_done') || '[]'); } catch (e) {}
+    if (d.length || localStorage.getItem('spk_seen_idle')) return;
+    var clicked = false;
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a[href*="learn.html"]')) clicked = true;
+    }, true);
+    setTimeout(function () {
+      if (!clicked) {
+        localStorage.setItem('spk_seen_idle', '1');
+        fire('idlefirst', 999, '**不知道从哪开始？**说说你想拿 AI 干什么。',
+          '新访客在首页停了一分半，还没点进任何课程——可能不知道从哪开始');
+      }
+    }, 90000 * TK);
+  })();
+
+  // ⑥ 下载练习表
+  document.addEventListener('click', function (e) {
+    var a2 = e.target.closest && e.target.closest('a[href*="2026-08"]');
+    if (!a2 || localStorage.getItem('spk_seen_ds')) return;
+    localStorage.setItem('spk_seen_ds', '1');
+    setTimeout(function () {
+      fire('dataset', 999, '表下好了。**做完记得对答案卡**，卡住了找我。',
+        '用户刚下载了三张练习表（花名册/考勤/业绩，埋了8类脏数据）。提醒对答案卡，说明可以带着具体的坑来问');
+    }, 2500);
+  }, true);
+
   /* ---------------- 上下文 ---------------- */
   function ctx() {
     var done = [];
@@ -170,6 +336,79 @@
       lesson = decodeURIComponent(location.hash.slice(1));
     }
     return { page: PAGE, lesson: lesson, done: done };
+  }
+
+  /* ---------------- 共享流式请求 ---------------- */
+  function streamChat(payloadCtx, onDone) {
+    var typing = document.createElement('div');
+    typing.className = 'spk-typing'; typing.textContent = 'Sparky 正在想…';
+    log.appendChild(typing); scroll();
+    var av = panel.querySelector('#spk-avatar');
+    if (av) av.innerHTML = catSVG(30, 'walk');
+    var reply = '', replyEl = null, refs = [];
+    busy = true; send.disabled = true;
+
+    fetch(API + '/api/sparky/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: hist.slice(-12).map(function (m) { return { role: m.role, content: m.content }; }),
+        ctx: payloadCtx
+      })
+    }).then(function (r) {
+      if (!r.ok) {
+        return r.json().then(function (j) {
+          var e = new Error((j && j.detail) || '');
+          e.human = !!(j && j.detail);
+          throw e;
+        }, function () { throw new Error(''); });
+      }
+      var rd = r.body.getReader(), dec = new TextDecoder(), buf = '';
+      function pump() {
+        return rd.read().then(function (x) {
+          if (x.done) return;
+          buf += dec.decode(x.value, { stream: true });
+          var lines = buf.split('\n\n'); buf = lines.pop();
+          lines.forEach(function (ln) {
+            if (ln.slice(0, 6) !== 'data: ') return;
+            var ev; try { ev = JSON.parse(ln.slice(6)); } catch (e) { return; }
+            if (ev.t === 'delta') {
+              if (typing.parentNode) typing.remove();
+              reply += ev.text;
+              if (!replyEl) replyEl = bubble('assistant', '');
+              replyEl.innerHTML = md(reply); scroll();
+            } else if (ev.t === 'refs') {
+              refs = ev.items || []; refsBlock(refs);
+            } else if (ev.t === 'err') {
+              if (typing.parentNode) typing.remove();
+              bubble('assistant', ev.msg, 'err');
+            }
+          });
+          return pump();
+        });
+      }
+      return pump();
+    }).then(function () {
+      if (typing.parentNode) typing.remove();
+      if (reply) { hist.push({ role: 'assistant', content: reply, refs: refs }); save(); }
+    }).catch(function (e) {
+      if (typing.parentNode) typing.remove();
+      bubble('assistant', e.human && e.message ? e.message
+        : '我这会儿连不上了。你可以直接翻目录，或者过会儿再来。', 'err');
+    }).then(function () {
+      busy = false; send.disabled = false;
+      var av2 = panel.querySelector('#spk-avatar');
+      if (av2) av2.innerHTML = catSVG(30, 'idle');
+      if (onDone) onDone();
+    });
+  }
+
+  /* ---------------- 主动开口（点开气泡后才请求，才花钱） ---------------- */
+  function autoAsk(trigId, note) {
+    if (busy || enabled === false) return;
+    var c = ctx();
+    c.trigger = trigId; c.trigger_note = note; c.behavior = trailSummary();
+    streamChat(c, function () { ta.focus(); });
   }
 
   /* ---------------- 开场（脚本化，零 LLM 成本） ---------------- */
@@ -207,70 +446,11 @@
       bubble('assistant', 'Sparky 还在接线中——课都能正常读，先去翻目录吧。', 'err');
       return;
     }
-    ta.value = ''; busy = true; send.disabled = true;
+    ta.value = '';
     bubble('user', q);
     hist.push({ role: 'user', content: q }); save();
-
-    var typing = document.createElement('div');
-    typing.className = 'spk-typing'; typing.textContent = 'Sparky 正在想…';
-    log.appendChild(typing); scroll();
-    var av = panel.querySelector('#spk-avatar');
-    if (av) av.innerHTML = catSVG(30, 'walk');
-
-    var reply = '', replyEl = null, refs = [];
-
-    fetch(API + '/api/sparky/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages: hist.slice(-12).map(function (m) { return { role: m.role, content: m.content }; }),
-        ctx: ctx()
-      })
-    }).then(function (r) {
-      if (!r.ok) {
-        return r.json().then(function (j) {
-          var e = new Error((j && j.detail) || '');
-          e.human = !!(j && j.detail);   // 服务端 detail 本身就是人话，才可直出
-          throw e;
-        }, function () { throw new Error(''); });
-      }
-      var rd = r.body.getReader(), dec = new TextDecoder(), buf = '';
-      function pump() {
-        return rd.read().then(function (x) {
-          if (x.done) return;
-          buf += dec.decode(x.value, { stream: true });
-          var lines = buf.split('\n\n'); buf = lines.pop();
-          lines.forEach(function (ln) {
-            if (ln.slice(0, 6) !== 'data: ') return;
-            var ev; try { ev = JSON.parse(ln.slice(6)); } catch (e) { return; }
-            if (ev.t === 'delta') {
-              if (typing.parentNode) typing.remove();
-              reply += ev.text;
-              if (!replyEl) replyEl = bubble('assistant', '');
-              replyEl.innerHTML = md(reply); scroll();
-            } else if (ev.t === 'refs') {
-              refs = ev.items || []; refsBlock(refs);
-            } else if (ev.t === 'err') {
-              if (typing.parentNode) typing.remove();
-              bubble('assistant', ev.msg, 'err');
-            }
-          });
-          return pump();
-        });
-      }
-      return pump();
-    }).then(function () {
-      if (typing.parentNode) typing.remove();
-      if (reply) { hist.push({ role: 'assistant', content: reply, refs: refs }); save(); }
-    }).catch(function (e) {
-      if (typing.parentNode) typing.remove();
-      bubble('assistant', e.human && e.message ? e.message
-        : '我这会儿连不上了。你可以直接翻目录，或者过会儿再来。', 'err');
-    }).then(function () {
-      busy = false; send.disabled = false; ta.focus();
-      var av2 = panel.querySelector('#spk-avatar');
-      if (av2) av2.innerHTML = catSVG(30, 'idle');
-    });
+    var c = ctx(); c.behavior = trailSummary();
+    streamChat(c);
   }
 
   send.onclick = submit;
@@ -280,7 +460,8 @@
 
   /* ---------------- 开合 ---------------- */
   var opened = false;
-  ball.onclick = function () {
+  function openPanel() {
+    hideBub();
     panel.classList.add('on'); ball.style.display = 'none';
     if (!opened) {
       opened = true; restore();
@@ -291,7 +472,8 @@
         }).catch(function () { enabled = null; });
     }
     ta.focus();
-  };
+  }
+  ball.onclick = openPanel;
   panel.querySelector('#spk-x').onclick = function () {
     panel.classList.remove('on'); ball.style.display = 'flex';
   };

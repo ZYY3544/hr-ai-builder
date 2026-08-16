@@ -110,6 +110,9 @@ class ChatCtx(BaseModel):
     page: Optional[str] = None          # index / learn / quiz / jobs
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
+    trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
+    trigger_note: Optional[str] = None  # 触发的一句话描述（前端规则引擎给出）
+    behavior: Optional[str] = None      # 行为轨迹摘要（最近浏览序列+停留时长）
 
 
 class ChatBody(BaseModel):
@@ -138,8 +141,18 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
             bits.append("还一节都没读过（新访客）")
         if ctx.page:
             bits.append(f"当前页面：{ctx.page}")
-        return ("\n\n## 对方的实时状态（按此调整推荐，别推荐已读完的节）\n"
-                + "\n".join(bits)) if bits else ""
+        if ctx.behavior:
+            bits.append(f"最近的行为轨迹：{str(ctx.behavior)[:600]}")
+        out = ("\n\n## 对方的实时状态（按此调整推荐，别推荐已读完的节）\n"
+               + "\n".join(bits)) if bits else ""
+        if ctx.trigger:
+            out += (f"\n\n## 本次是你主动开口（不是用户提问）\n"
+                    f"触发原因：{(ctx.trigger_note or ctx.trigger)[:200]}\n"
+                    f"要求：1-3 句话。直接说你观察到的具体事实（引用轨迹里的节名和时长，"
+                    f"这是你显得聪明的唯一方式），给一个明确的下一步；别道歉、别客套、"
+                    f"别说'我注意到'这种监控感的话，像同桌探头看了一眼那样自然。"
+                    f"REFS 最多 2 节。结尾留一个对方一句话就能答的问题。")
+        return out
 
     @router.get("/api/sparky/health")
     def health():
@@ -159,11 +172,14 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
         msgs = [{"role": m.get("role"), "content": str(m.get("content", ""))[:2000]}
                 for m in body.messages[-12:]
                 if m.get("role") in ("user", "assistant") and m.get("content")]
-        if not msgs or msgs[-1]["role"] != "user":
+        proactive = bool(body.ctx and body.ctx.trigger)
+        if not proactive and (not msgs or msgs[-1]["role"] != "user"):
             raise HTTPException(400, "last message must be from user")
         while sum(len(m["content"]) for m in msgs) > 8000 and len(msgs) > 1:
             msgs.pop(0)
 
+        if proactive and (not msgs or msgs[-1]["role"] != "user"):
+            msgs = msgs + [{"role": "user", "content": "（用户此刻没有说话，请按触发原因主动开口）"}]
         payload = {
             "model": _DS_MODEL,
             "messages": [{"role": "system",
