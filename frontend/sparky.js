@@ -103,7 +103,15 @@
   }
 
   /* 夜间：23:00–05:00 球就是睡着的。鼠标碰它才醒——这个小动作不用解释，但发生那下会让人笑 */
-  function isNight() { var h = new Date().getHours(); return h >= 23 || h < 5; }
+  function isNight() {
+    // 白天也想看看它睡着什么样：控制台敲 localStorage.spk_night='1' 刷新即可，'0' 强制醒着
+    try {
+      var f = localStorage.getItem('spk_night');
+      if (f === '1') return true;
+      if (f === '0') return false;
+    } catch (e) {}
+    var h = new Date().getHours(); return h >= 23 || h < 5;
+  }
   function ballMode(hovering) { return hovering ? 'walk' : (isNight() ? 'sleep' : 'idle'); }
 
   /* ---------------- DOM ---------------- */
