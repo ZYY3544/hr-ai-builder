@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>岗位库 · JD × 能力 × 对应课程 · HR AI Builder</title>
+<title>岗位库 · JD × 能力 × 对应课程 · meansights learning</title>
 <meta name="description" content="真实在招岗位的 JD 逐条拆解：这个岗位要哪些能力（K/S/A）、每项能力去学哪几节课。">
 <style>
 :root{
@@ -26,10 +26,10 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em}
 /* ── 顶栏 ── */
 .top{display:flex;align-items:center;gap:18px;height:56px;padding:0 20px;flex:0 0 auto;
   border-bottom:1px solid var(--line);background:#fff;z-index:20}
-.brand{display:flex;align-items:center;gap:9px;flex:0 0 auto}
-.mark{width:26px;height:26px;border-radius:7px;background:var(--grad-r);display:grid;place-items:center;
-  color:#fff;font-size:11px;font-weight:700}
-.brand .t{font-size:14px;font-weight:600;color:var(--ink)}
+.brand{display:flex;align-items:baseline;gap:6px;flex:0 0 auto}
+.mark{height:24px;width:auto;display:block;align-self:center}
+.brand .bn{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-.015em}
+.brand .bs{font-size:14px;font-weight:400;color:var(--faint);letter-spacing:.01em}
 .top .sp{flex:1}
 .stat{display:flex;gap:20px;font-size:12.5px;color:var(--muted);flex:0 0 auto}
 .stat b{color:var(--ink);font-size:15px;font-weight:600;margin-right:3px;font-variant-numeric:tabular-nums}
@@ -123,7 +123,7 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em}
 <body>
 
 <div class="top">
-  <a class="brand" href="index.html"><span class="mark">HB</span><span class="t">HR AI Builder</span></a>
+  <a class="brand" href="index.html"><img class="mark" src="logo.svg" alt=""><span class="bn">meansights</span><span class="bs">learning</span></a>
   <span style="color:var(--line)">/</span>
   <span style="font-size:13.5px;color:var(--ink);font-weight:500">岗位库 · JD × 能力 × 课程</span>
   <span class="sp"></span>
@@ -186,7 +186,7 @@ async function pick(id){
   let j;
   try{ j=await (await fetch(API+'/api/jobs/'+id)).json(); }
   catch(e){ $('#detail').innerHTML='<div class="load">读取失败</div>'; return; }
-  document.title=`${j.title} · 岗位库 · HR AI Builder`;
+  document.title=`${j.title} · 岗位库 · meansights learning`;
   renderDetail(j); renderCaps(j);
   if(window.habTrack) habTrack('job_view',{extra:{id}});
 }

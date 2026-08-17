@@ -1,15 +1,15 @@
-/* HR AI Builder 课程数据 v2 —— 单一真相源。
+/* meansights learning 课程数据 v2 —— 单一真相源。
    面向 HR 领域的 AI 课程数据，AGPL-3.0 开源。
    action: copy=沿用 / adapt=重写成 HR 场景 / new=原创
    free:   true=静态直读(SEO) / false=登录后经 API 读
    seo:    页面 title（长·含中文问句），与目录标题(短·带术语)解耦 */
 window.COURSE = {
  "meta": {
-  "title": "HR AI Builder",
+  "title": "meansights learning",
   "subtitle": "读懂 AI 的底层逻辑，做 AI Native 组织的先驱者",
   "attribution": {
    "note": "面向 HR 领域的 AI 课程，依 AGPL-3.0 开源。",
-   "author": "HR AI Builder",
+   "author": "meansights learning",
    "repo": "https://github.com/ZYY3544/hr-ai-builder",
    "site": "https://github.com/ZYY3544/hr-ai-builder",
    "license": "AGPL-3.0"
