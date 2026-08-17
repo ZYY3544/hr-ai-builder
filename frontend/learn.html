@@ -52,8 +52,10 @@ a{color:inherit;text-decoration:none}
   display:flex;flex-direction:column;min-height:0}
 .side .sch{padding:12px 14px 10px;flex:0 0 auto}
 .side input{width:100%;font:inherit;font-size:12.5px;padding:8px 12px;border:1px solid var(--line);
+  -webkit-appearance:none;appearance:none;
   border-radius:8px;background:#fff;color:var(--ink)}
 .side input:focus{outline:none;border-color:var(--pri)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
 .ls .mn{font-size:10px;color:var(--faint);margin-left:6px;font-variant-numeric:tabular-nums;opacity:.85;white-space:nowrap}
 .tree{flex:1;overflow-y:auto;padding:0 8px 30px}
 .pt{margin:14px 0 4px;padding:0 6px}
@@ -135,7 +137,7 @@ body.dragging iframe{pointer-events:none}
 
 <div class="main">
   <aside class="side" id="side">
-    <div class="sch"><input id="q" placeholder="搜索知识点…" autocomplete="off"></div>
+    <div class="sch"><input id="q" type="search" name="lesson-search" placeholder="搜索知识点…" autocomplete="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
     <div class="tree" id="tree"></div>
     <div class="foot">
       内容永久免费开放<br><a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener">GitHub</a> · AGPL-3.0 开源

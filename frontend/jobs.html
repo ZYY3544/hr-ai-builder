@@ -50,8 +50,10 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em}
 /* 左栏 */
 .srch{padding:13px 14px 10px;flex:0 0 auto}
 .srch input{width:100%;font:inherit;font-size:12.5px;padding:8px 12px;border:1px solid var(--line);
+  -webkit-appearance:none;appearance:none;
   border-radius:8px;background:#fff;color:var(--ink)}
 .srch input:focus{outline:none;border-color:var(--pri)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
 .cnt{padding:0 16px 10px;font-size:11.5px;color:var(--faint);flex:0 0 auto}
 .list{flex:1;overflow-y:auto;padding:0 8px 24px}
 .jc{padding:12px 12px;border-radius:9px;cursor:pointer;margin-bottom:2px;transition:.13s}
@@ -136,7 +138,7 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em}
 
 <div class="main">
   <aside class="col left">
-    <div class="srch"><input id="q" placeholder="搜岗位名 / 公司" autocomplete="off"></div>
+    <div class="srch"><input id="q" type="search" name="job-search" placeholder="搜岗位名 / 公司" autocomplete="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
     <div class="cnt" id="cnt"></div>
     <div class="list" id="list"></div>
   </aside>
