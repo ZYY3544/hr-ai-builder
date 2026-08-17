@@ -36,18 +36,19 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35
 /* ---------- nav ---------- */
 header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   backdrop-filter:saturate(1.8) blur(14px);border-bottom:1px solid rgba(226,232,240,.9)}
-.nav{display:flex;align-items:center;gap:24px;height:60px}
-.brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-14px}
+.nav{display:flex;align-items:center;gap:24px;height:60px;--nav-shift:5.87px}
+.brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-28px}
 .mark{height:28px;width:auto;display:block}
 /* 链接对齐字标基线，不是对齐栏的几何中心。
    字标基线在 SVG 的 viewBox y=56（viewBox 从 y=4 起、高 58.311），标记按整个 viewBox 居中
    （使用说明要求：顶部渐隐区算在内），于是基线落在距栏顶 40.97px，而居中的链接基线在 35.10px。
    下面 5.87px 是实测差值——改栏高 / 字标高 / 链接字号任何一个，都要重新量。 */
-.nav .links{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:1;
-  position:relative;top:5.87px}
+.nav .links{display:flex;align-items:center;justify-content:flex-end;gap:20px;flex:1;
+  position:relative;top:var(--nav-shift)}
 .nav .links a{font-size:14px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:var(--r-s);transition:.15s;line-height:1.2}
 .nav .links a:hover{color:var(--pri);background:var(--pri-s)}
-.nav .right{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.nav .right{display:flex;align-items:center;gap:9px;flex:0 0 auto;
+  position:relative;top:var(--nav-shift)}   /* 与三个链接同一条线，别只挪链接 */
 .btn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:var(--r-s);border:1px solid var(--line);
   color:var(--body);background:#fff;cursor:pointer;transition:.18s;display:inline-block;white-space:nowrap}
 .btn:hover{border-color:var(--pri);color:var(--pri)}
