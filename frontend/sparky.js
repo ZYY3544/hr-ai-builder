@@ -141,6 +141,7 @@
     '.spk-refs a:hover{border-color:#00A88A;background:#E8FBF6}',
     '.spk-refs a i{font-style:normal;font-size:10.5px;color:#94A3B8;flex:0 0 auto}',
     '.spk-refs a em{font-style:normal;margin-left:auto;font-size:11px;color:#94A3B8}',
+    '.spk-refs-sum{font-size:11px;color:#94A3B8;padding:2px 2px 0}',
     '.spk-chips{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 12px}',
     '.spk-chips button{border:1px solid #E2E8F0;background:#fff;border-radius:18px;padding:6px 13px;',
     ' font-size:12.5px;color:#475569;cursor:pointer}',
@@ -241,6 +242,15 @@
       return '<a href="learn.html#' + encodeURIComponent(r.file) + '"><i>' + esc(r.part || '') +
              '</i>' + esc(r.title) + '<em>' + (r.min || 0) + '′</em></a>';
     }).join('');
+    // 合计由目录真值算出。正文里已经禁止模型报分钟数和节数（它口算的会跟卡片打架），
+    // 所以这一行是这两个数字唯一的权威来源，不能省。
+    if (items.length > 1) {
+      var mins = items.reduce(function (s, r) { return s + (r.min || 0); }, 0);
+      var sum = document.createElement('div');
+      sum.className = 'spk-refs-sum';
+      sum.textContent = '共 ' + items.length + ' 节 · 约 ' + mins + ' 分钟';
+      w.appendChild(sum);
+    }
     log.appendChild(w); scroll();
   }
 
@@ -464,7 +474,18 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        messages: hist.slice(-12).map(function (m) { return { role: m.role, content: m.content }; }),
+        // 回喂历史时要把当轮真实发出的 REFS 还原回去。
+        // 不还原会出事：服务端遇到 REFS: 就停止下发，所以存下来的 content 天然不含那一行；
+        // 于是模型从第二轮起看到的"自己"全是以正文收尾、没有 REFS 的样子，
+        // 自我条件化成"我的格式就是不写 REFS"——实测第 1 轮有链接、之后连续几轮全空。
+        // 只在 refs 非空时回灌：空的那几轮正是病样本，灌回去等于把病喂回模型。
+        messages: hist.slice(-12).map(function (m) {
+          var c = m.content;
+          if (m.role === 'assistant' && m.refs && m.refs.length) {
+            c += '\nREFS: ' + JSON.stringify(m.refs.map(function (r) { return r.file; }));
+          }
+          return { role: m.role, content: c };
+        }),
         ctx: payloadCtx
       })
     }).then(function (r) {
