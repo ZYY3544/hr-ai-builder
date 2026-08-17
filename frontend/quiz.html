@@ -32,10 +32,9 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);
   backdrop-filter:saturate(1.6) blur(12px);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;gap:18px;height:56px;max-width:860px;margin:0 auto;padding:0 28px}
-.brand{display:flex;align-items:baseline;gap:6px;font-size:14px;color:var(--ink)}
-.mark{height:24px;width:auto;display:block;align-self:center}
-.brand .bn{font-weight:600;color:var(--ink);letter-spacing:-.015em}
-.brand .bs{font-weight:400;color:var(--faint);letter-spacing:.01em}
+.brand{display:flex;align-items:baseline;gap:7px}
+.mark{height:24px;width:auto;display:block;position:relative;top:2.6px}
+.brand .bs{font-size:15.5px;font-weight:400;color:var(--faint);letter-spacing:.01em}
 .nav .sp{flex:1}
 .btn{font:inherit;font-size:12.5px;padding:6.5px 14px;border-radius:6px;border:1px solid var(--line);
   background:#fff;color:var(--body);cursor:pointer;white-space:nowrap}
@@ -142,7 +141,7 @@ main{padding:8px 0 70px}
 <body>
 
 <header><div class="nav">
-  <a class="brand" href="index.html"><img class="mark" src="brand/mark.svg" alt=""><span class="bn">meansights</span><span class="bs">learning</span></a>
+  <a class="brand" href="index.html"><img class="mark" src="brand/lockup.svg" alt="meansights"><span class="bs">learning</span></a>
   <span class="sp"></span>
   <a class="btn" href="learn.html">课程</a>
   <a class="btn" href="index.html">返回首页</a>
