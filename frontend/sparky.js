@@ -24,11 +24,19 @@
   var CAT_EYES = [[4,2],[4,3],[5,2],[5,3],[4,8],[4,9],[5,8],[5,9]];
   var CAT_LEG_L = [[11,2,'P'],[11,3,'P'],[12,2,'P'],[12,3,'P'],[13,2,'D'],[13,3,'D']];
   var CAT_LEG_R = [[11,8,'P'],[11,9,'P'],[12,8,'P'],[12,9,'P'],[13,8,'D'],[13,9,'D']];
+  // 睡帽：坐在两只耳朵中间的空档里（row0 的 col3-8、row1 的 col4-7 本来就是空的），
+  // 往上支出画布外——所以耳朵一只都不挡，剪影还是猫。K=帽身 R=帽檐/绒球
+  var CAP_C = { K: '#5B6BA8', R: '#EEF2F9' };
+  var CAT_CAP = [[-2,7,'K'],[-2,8,'R'],
+                 [-1,5,'K'],[-1,6,'K'],[-1,7,'K'],
+                 [0,3,'K'],[0,4,'K'],[0,5,'K'],[0,6,'K'],[0,7,'K'],[0,8,'K'],
+                 [1,4,'R'],[1,5,'R'],[1,6,'R'],[1,7,'R']];
 
   function catSVG(size, mode) {
     var cell = size / 14, offX = (size - 12 * cell) / 2, offY = 0;
     var lift = Math.max(1, Math.round(cell * 0.9));
-    var anim = mode !== 'still';
+    var sleeping = mode === 'sleep';
+    var anim = mode !== 'still' && !sleeping;   // 睡着了就不眨眼也不转眼珠
     var ph = { blink: -(Math.random() * 6).toFixed(2), dart: -(Math.random() * 9).toFixed(2),
                walk: -(Math.random() * 0.44).toFixed(2) };
     function rect(r, c, k) {
@@ -55,21 +63,52 @@
         '<animate attributeName="opacity" values="' + bc + '" keyTimes="' + bt +
         '" dur="6s" repeatCount="indefinite" begin="' + ph.blink + 's"/></rect>' : '';
     }
+    // 睡着时眼睛就一直闭着——同一条线，只是不再跟着眨眼节奏开合
+    function shut(x) {
+      return '<rect x="' + (x * cell + offX) + '" y="' + lineY + '" width="' + (2 * cell) +
+             '" height="' + lineH + '" fill="' + CAT_C.E + '"/>';
+    }
     function leg(pxs, first) {
       var a = mode === 'walk' ? '<animateTransform attributeName="transform" type="translate" values="' +
         (first ? '0,' + (-lift) + ';0,0' : '0,0;0,' + (-lift)) +
         '" keyTimes="0;0.5" dur="0.44s" repeatCount="indefinite" calcMode="discrete" begin="' + ph.walk + 's"/>' : '';
       return '<g>' + a + pxs.map(function (p) { return rect(p[0], p[1], p[2]); }).join('') + '</g>';
     }
+    // 睡帽 + 飘起来的 z：一个字都不用说，用户就知道它困了
+    function cap() {
+      return CAT_CAP.map(function (p) {
+        return '<rect x="' + (p[1] * cell + offX) + '" y="' + (p[0] * cell + offY) + '" width="' + cell +
+               '" height="' + cell + '" fill="' + CAP_C[p[2]] + '"/>';
+      }).join('');
+    }
+    function zzz() {
+      return [[10.9, 2.9, 2.7, 0], [12.1, 1.5, 1.9, 1.3]].map(function (z) {
+        return '<text x="' + (z[0] * cell + offX) + '" y="' + (z[1] * cell) + '" font-size="' +
+          (z[2] * cell) + '" font-family="-apple-system,Segoe UI,sans-serif" font-weight="700" ' +
+          'fill="#8FA0C8" opacity="0">z' +
+          '<animate attributeName="opacity" values="0;.9;.9;0" keyTimes="0;0.25;0.6;1" ' +
+          'dur="3.2s" repeatCount="indefinite" begin="' + (-z[3]) + 's"/>' +
+          '<animateTransform attributeName="transform" type="translate" values="0,0;0,' +
+          (-1.6 * cell) + '" dur="3.2s" repeatCount="indefinite" begin="' + (-z[3]) + 's"/>' +
+          '</text>';
+      }).join('');
+    }
+    var face = sleeping
+      ? shut(2) + shut(8)
+      : '<g>' + dart + pupil(3) + pupil(9) + '</g>' + closed(2) + closed(8);
     return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size +
-      '" style="overflow:visible">' + px +
-      '<g>' + dart + pupil(3) + pupil(9) + '</g>' + closed(2) + closed(8) +
-      leg(CAT_LEG_L, true) + leg(CAT_LEG_R, false) + '</svg>';
+      '" style="overflow:visible">' + px + face +
+      leg(CAT_LEG_L, true) + leg(CAT_LEG_R, false) +
+      (sleeping ? cap() + zzz() : '') + '</svg>';
   }
+
+  /* 夜间：23:00–05:00 球就是睡着的。鼠标碰它才醒——这个小动作不用解释，但发生那下会让人笑 */
+  function isNight() { var h = new Date().getHours(); return h >= 23 || h < 5; }
+  function ballMode(hovering) { return hovering ? 'walk' : (isNight() ? 'sleep' : 'idle'); }
 
   /* ---------------- DOM ---------------- */
   var css = [
-    '#spk-ball{position:fixed;right:22px;bottom:20px;width:64px;height:64px;background:none;border:none;',
+    '#spk-ball{position:fixed;right:22px;bottom:var(--spk-bottom,20px);width:64px;height:64px;background:none;border:none;',
     ' cursor:pointer;z-index:9998;display:flex;align-items:flex-end;justify-content:center;padding:0;',
     ' transition:transform .15s;filter:drop-shadow(0 5px 10px rgba(15,23,42,.28))}',
     '#spk-ball:hover{transform:scale(1.1)}',
@@ -98,6 +137,12 @@
     '.spk-chips button{border:1px solid #E2E8F0;background:#fff;border-radius:18px;padding:6px 13px;',
     ' font-size:12.5px;color:#475569;cursor:pointer}',
     '.spk-chips button:hover{border-color:#00A88A;color:#00795F}',
+    '#spk-fb{display:none;padding:8px 14px 0;background:#fff}',
+    '#spk-fb button{border:1px dashed #CBD5E1;background:#fff;border-radius:9px;padding:5px 11px;',
+    ' font-size:12px;color:#64748B;cursor:pointer;font-family:inherit}',
+    '#spk-fb button:hover{border-color:#00A88A;color:#00795F;border-style:solid}',
+    '.spk-note{font-size:11.5px;color:#00795F;background:#E8FBF6;border-radius:8px;',
+    ' padding:6px 10px;margin:0 0 12px;max-width:86%;line-height:1.6}',
     '#spk-inp{display:flex;gap:8px;padding:12px 14px;border-top:1px solid #E2E8F0;background:#fff}',
     '#spk-inp textarea{flex:1;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px;font-size:13.5px;',
     ' font-family:inherit;resize:none;height:40px;line-height:1.6;outline:none}',
@@ -106,7 +151,7 @@
     ' padding:0 16px;font-size:13.5px;cursor:pointer;font-weight:600}',
     '#spk-send:disabled{opacity:.45;cursor:default}',
     '.spk-typing{color:#94A3B8;font-size:12px;padding:2px 0 10px}',
-    '#spk-bubble{position:fixed;right:24px;bottom:92px;max-width:240px;background:#fff;border:1px solid #E2E8F0;',
+    '#spk-bubble{position:fixed;right:24px;bottom:calc(var(--spk-bottom,20px) + 72px);max-width:240px;background:#fff;border:1px solid #E2E8F0;',
     ' border-radius:14px;border-bottom-right-radius:4px;padding:11px 30px 11px 14px;font-size:13px;line-height:1.7;',
     ' color:#0F172A;box-shadow:0 8px 28px rgba(15,23,42,.16);z-index:9998;cursor:pointer;',
     ' opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}',
@@ -120,12 +165,32 @@
   var style = document.createElement('style'); style.textContent = css;
   document.head.appendChild(style);
 
+  /* 避让页面底部的固定操作条（课程页的上一节/下一节那条），别把按钮盖住。
+     量出来而不是写死：那条的高度会随字号和换行变，写死早晚对不上。 */
+  function fitBall() {
+    var bar = document.querySelector('.pager'), pad = 20;
+    if (bar) {
+      var h = bar.getBoundingClientRect().height;
+      if (h > 0) pad = Math.round(h) + 14;
+    }
+    document.documentElement.style.setProperty('--spk-bottom', pad + 'px');
+  }
+  fitBall();
+  window.addEventListener('resize', fitBall);
+
   var ball = document.createElement('button');
   ball.id = 'spk-ball'; ball.title = 'Sparky · 伴学助手';
-  ball.innerHTML = catSVG(52, 'idle');
-  // hover 时小猫原地踏步（与 meansights 同款交互）
-  ball.onmouseenter = function () { ball.innerHTML = catSVG(52, 'walk'); };
-  ball.onmouseleave = function () { ball.innerHTML = catSVG(52, 'idle'); };
+  ball.innerHTML = catSVG(52, ballMode(false));
+  // hover 时小猫原地踏步（与 meansights 同款交互）；夜里则是被摸醒
+  ball.onmouseenter = function () { ball.innerHTML = catSVG(52, ballMode(true)); };
+  ball.onmouseleave = function () { ball.innerHTML = catSVG(52, ballMode(false)); };
+  // 跨过 23 点时不用刷新页面，球自己睡过去
+  var nightWas = isNight();
+  setInterval(function () {
+    if (isNight() === nightWas) return;
+    nightWas = isNight();
+    if (!ball.matches(':hover')) ball.innerHTML = catSVG(52, ballMode(false));
+  }, 60000);
   var panel = document.createElement('div');
   panel.id = 'spk-panel';
   panel.innerHTML =
@@ -133,6 +198,7 @@
     '<div><div class="t">Sparky</div><div class="s">帮你找到该读哪儿 · 不替课本讲课</div></div>' +
     '<button id="spk-x">×</button></div>' +
     '<div id="spk-log"></div>' +
+    '<div id="spk-fb"><button type="button">这节没看懂 / 有改进建议</button></div>' +
     '<div id="spk-inp"><textarea rows="1" placeholder="说说你想拿 AI 干什么…"></textarea>' +
     '<button id="spk-send">发送</button></div>';
   var bub = document.createElement('div'); bub.id = 'spk-bubble';
@@ -140,7 +206,8 @@
 
   var log = panel.querySelector('#spk-log'),
       ta = panel.querySelector('textarea'),
-      send = panel.querySelector('#spk-send');
+      send = panel.querySelector('#spk-send'),
+      fbBar = panel.querySelector('#spk-fb');
 
   /* ---------------- 状态 ---------------- */
   var hist = [];
@@ -190,7 +257,7 @@
   function trailPush(f) {
     trailSettle();
     trail.push({ f: f, t0: Date.now(), pause: 0 });
-    if (trail.length > 20) trail.shift();
+    if (trail.length > 40) trail.shift();   // 40 而非 20：readSec() 要靠它累计本次阅读时长
   }
   function trailSummary() {
     trailSettle();
@@ -209,6 +276,7 @@
     window.addEventListener('hashchange', function () {
       var f = decodeURIComponent(location.hash.slice(1) || '');
       if (f && (!trailNow() || trailNow().f !== f)) { trailPush(f); trigSkim(); }
+      syncFbBar();                              // 换了节，反馈条挂的节也要跟着换
     });
   }
   // 心跳：给"回访"触发器留下上次足迹
@@ -260,9 +328,30 @@
     var min = (LMAP[c.f] || {}).min || 3;
     var th = Math.max(300, min * 60 * 3) * TK;
     var dwell = (Date.now() - c.t0) / 1000 - (c.pause || 0);
-    if (dwell > th) fire('stuck', 6, '这一节停了挺久——**卡住了？**',
+    if (dwell <= th) return;
+    if (!c.sig) { c.sig = 1; sendSignal(c.f, dwell); }   // 每节每访只报一次
+    fire('stuck', 6, '这一节停了挺久——**卡住了？**',
       '用户在《' + ((LMAP[c.f] || {}).title || c.f) + '》停留了 ' + Math.round(dwell / 60) + ' 分钟（声明阅读时长 ' + min + ' 分钟），可能卡住了');
   }, 20000 * TK);
+
+  // ⑦ 夜深了：不是"到点就关怀"，是行为已经显示疲态、用时间来解释它
+  function readSec() {
+    trailSettle();
+    var t = 0; trail.forEach(function (x) { t += (x.d || 0); }); return t;
+  }
+  function tired() {                       // 最近三节都没读到声明时长的一半 = 注意力在掉
+    var s = trail.slice(-4, -1);
+    if (s.length < 3) return false;
+    return s.every(function (x) { return (x.d || 0) < ((LMAP[x.f] || {}).min || 3) * 60 * 0.5; });
+  }
+  if (PAGE === 'learn') setInterval(function () {
+    var d = new Date(), h = d.getHours() + d.getMinutes() / 60;
+    if (!DBG && !(h >= 23.5 || h < 5)) return;
+    if (readSec() < 90 * 60 * TK || !tired()) return;
+    fire('night', 10, '**这个点了。**今晚读得够多了。',
+      '现在是 ' + d.getHours() + ' 点，用户本次已经累计读了 ' + Math.round(readSec() / 60) +
+      ' 分钟，而且最近三节的停留时间都不到声明时长的一半（' + trailSummary() + '）——注意力明显在掉');
+  }, 60000 * TK);
 
   // ② 乱翻：5分钟内翻≥5节、每节<40秒
   function trigSkim() {
@@ -335,7 +424,22 @@
     if (PAGE === 'learn' && location.hash) {
       lesson = decodeURIComponent(location.hash.slice(1));
     }
-    return { page: PAGE, lesson: lesson, done: done };
+    return { page: PAGE, lesson: lesson, done: done, visitor: vid() };
+  }
+  // 复用 track.js 的匿名访客 id（随机串，不含任何个人信息），别再造一个
+  function vid() { try { return localStorage.getItem('hab_vid') || ''; } catch (e) { return ''; } }
+
+  /* 匿名难度信号：谁在哪节卡了多久。
+     刻意不走 canFire —— 防打扰规则管的是"要不要说话"，不该顺手把数据也掐了。
+     每次访问最多 2 泡，但卡住这件事发生几次就该记几次。 */
+  function sendSignal(file, dwellSec) {
+    try {
+      fetch(API + '/api/sparky/signal', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+        body: JSON.stringify({ lesson: file, dwell_s: Math.round(dwellSec),
+                               kind: 'stuck', visitor: vid() })
+      }).catch(function () {});
+    } catch (e) {}
   }
 
   /* ---------------- 共享流式请求 ---------------- */
@@ -379,6 +483,9 @@
               replyEl.innerHTML = md(reply); scroll();
             } else if (ev.t === 'refs') {
               refs = ev.items || []; refsBlock(refs);
+            } else if (ev.t === 'fb') {
+              note(ev.ok ? '已记下' + (ev.title ? '·《' + ev.title + '》' : '') + '，会拿它改课。'
+                         : '这条没存下，回头再说一次。');
             } else if (ev.t === 'err') {
               if (typing.parentNode) typing.remove();
               bubble('assistant', ev.msg, 'err');
@@ -438,14 +545,48 @@
     });
   }
 
+  /* ---------------- 课程反馈 ---------------- */
+  var fbArmed = false;      // 这一条是冲着"反馈课程"来的（决定模型挂掉时走不走直投）
+
+  function note(t) {
+    var d = document.createElement('div'); d.className = 'spk-note';
+    d.textContent = t; log.appendChild(d); scroll();
+  }
+  function syncFbBar() {
+    var f = ctx().lesson;
+    fbBar.style.display = (PAGE === 'learn' && f && LMAP[f]) ? 'block' : 'none';
+  }
+  fbBar.querySelector('button').onclick = function () {
+    var f = ctx().lesson, t = (LMAP[f] || {}).title || '';
+    fbArmed = true;
+    ta.value = '《' + t + '》这节 ';
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  };
+  /* 直投兜底：反馈的主路径走对话（模型负责问清是哪一节、卡在哪），
+     但模型会挂、会限流。反馈是这阶段最贵的东西，不能因为"Sparky 说不了话"就整条丢了。 */
+  function sendDirect(text) {
+    var f = ctx().lesson || '';
+    bubble('user', text);
+    fetch(API + '/api/sparky/feedback', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lesson: f, kind: 'hard', note: text, visitor: vid() })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      note(j && j.ok ? '已记下' + (j.title ? '·《' + j.title + '》' : '') + '。Sparky 这会儿说不了话，但你这条收到了。'
+                     : '没存下——你这条可能丢了，回头再说一次。');
+    }).catch(function () { note('没存下——你这条可能丢了，回头再说一次。'); });
+  }
+
   /* ---------------- 发送 ---------------- */
   function submit() {
     var q = ta.value.trim();
     if (!q || busy) return;
     if (enabled === false) {
+      if (fbArmed) { ta.value = ''; fbArmed = false; sendDirect(q); return; }
       bubble('assistant', 'Sparky 还在接线中——课都能正常读，先去翻目录吧。', 'err');
       return;
     }
+    fbArmed = false;
     ta.value = '';
     bubble('user', q);
     hist.push({ role: 'user', content: q }); save();
@@ -463,6 +604,7 @@
   function openPanel() {
     hideBub();
     panel.classList.add('on'); ball.style.display = 'none';
+    syncFbBar();
     if (!opened) {
       opened = true; restore();
       fetch(API + '/api/sparky/health').then(function (r) { return r.json(); })

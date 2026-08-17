@@ -22,6 +22,15 @@ services:
       # 以下为密钥，在 Render 面板手填，不入库不入仓
       - key: JWT_SECRET
         sync: false
+      - key: DEEPSEEK_API_KEY      # Sparky 的模型 key
+        sync: false
+      - key: ADMIN_CODE            # 看 /api/sparky/insights 的口令；不填=端点直接 404
+        sync: false
+      # 持久层：两个都填上才切到 Supabase，否则退回内存（重启即丢）。建表 SQL 见 docs/supabase-schema.sql
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
       - key: WX_WEB_APPID          # 开放平台「网站应用」AppID（轨道 A·优先）
         sync: false
       - key: WX_WEB_APPSECRET

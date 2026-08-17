@@ -9,8 +9,11 @@ Sparky —— 学习站的分诊 + 陪走助手。
 3. 挂了说人话：无 key / 上游超时 / 限流，全部返回给用户一句能读懂的话，
    绝不转圈装正常——这是一个教防幻觉的站，它的助手不能在故障时说谎。
 
-无状态：对话历史由客户端携带（localStorage），服务端不落库。
-等登录 + Supabase 到位后再加服务端持久化，届时本文件只加存储层不改协议。
+4. 课程反馈闭环：对方说某节难/有建议时，模型在末尾多输出一行 FB，服务端解析后
+   落进持久层——跟 REFS 同一套尾部标记机制，同一套校验（lesson 必须真实存在）。
+   反馈是改课的输入，所以它必须是结构化的数据，不能只是聊天记录里的一句话。
+
+对话历史仍由客户端携带（localStorage），服务端不落库；但反馈与难度信号落库。
 """
 import json
 import os
@@ -23,6 +26,8 @@ import requests as _rq
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+
+from store import add_feedback, add_signal, hard_lessons, store
 
 # ---------------------------------------------------------------- 配置
 _DS_BASE = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
@@ -75,11 +80,39 @@ _DISCIPLINE = """## 你的职责（只有这两件，别承诺任何别的功能
 - 每次回复**最多推荐 3 节**，按先后顺序排。全都读完约几分钟要说。
 - 数据安全问题从严：任何真实员工数据相关的问题，先提第六篇章《你的数据到底走了哪条线》。
 
+## 收集课程反馈（这个站正在靠它改课，是你的第三件正事）
+对方说某节看不懂、写得绕、例子不对、或者提改进建议时：
+- **别辩解，也别当场把那节重讲一遍**（重讲违反上面的铁律，而且掩盖了课本身写得不好这个事实）。
+- 先用一句话确认你听懂了是哪一节、卡在哪个点上——**确认的是具体位置，不是"好的收到"**。
+- 然后在末尾多输出一行 FB（格式见下）。
+- 可以说「记下来了，会改」。**绝不承诺具体时间**，不说"马上改好""今天就改"——这个站是一个人在维护，
+  兑现不了的承诺比不承诺伤得多。
+- 只在对方**真的表达了困惑或建议**时才输出 FB 行。别替对方脑补，别把"我没看懂你这句话"当成课程反馈。
+
 ## 回复格式
-正文用平实中文，可用 **加粗**，不用标题层级。
+正文用平实中文，可用 **加粗**，不用标题层级。正文里提到某节时用它的中文标题，不要出现文件名。
+如果这一轮收到了课程反馈，先输出一行（没有就整行不要）：
+FB: {"lesson":"文件名.html","kind":"hard|confusing|error|suggest","note":"一句话转述对方原意"}
 最后一行固定输出（没有推荐就写空数组）：
-REFS: ["文件名1.html","文件名2.html"]
-正文里提到某节时用它的中文标题，不要出现文件名。"""
+REFS: ["文件名1.html","文件名2.html"]"""
+
+
+_MARKERS = ("REFS:", "FB:")
+
+
+def _marker_cut(text: str, leading_nl: bool = True) -> int:
+    """正文到哪儿为止——尾部标记（FB/REFS）出现的最早位置，没有则 -1。
+
+    两个标记都可能出现，顺序不保证，所以取最小值；只取一个的话另一个会被当正文发给用户。
+    """
+    hits = []
+    for tag in _MARKERS:
+        i = text.find(("\n" + tag) if leading_nl else tag)
+        if i != -1:
+            hits.append(i)
+    if leading_nl and any(text.startswith(t) for t in _MARKERS):
+        hits.append(0)
+    return min(hits) if hits else -1
 
 
 def _catalog(idx: dict) -> str:
@@ -113,11 +146,29 @@ class ChatCtx(BaseModel):
     trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
     trigger_note: Optional[str] = None  # 触发的一句话描述（前端规则引擎给出）
     behavior: Optional[str] = None      # 行为轨迹摘要（最近浏览序列+停留时长）
+    visitor: Optional[str] = None       # 匿名访客 id（track.js 的 hab_vid，不含个人信息）
 
 
 class ChatBody(BaseModel):
     messages: list                      # [{role:'user'|'assistant', content:str}]
     ctx: Optional[ChatCtx] = None
+
+
+_FB_KINDS = {"hard", "confusing", "error", "suggest"}
+
+
+class FeedbackBody(BaseModel):
+    lesson: Optional[str] = None
+    kind: str = "hard"
+    note: str = ""
+    visitor: Optional[str] = None
+
+
+class SignalBody(BaseModel):
+    lesson: str
+    dwell_s: int = 0
+    kind: str = "stuck"
+    visitor: Optional[str] = None
 
 
 def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
@@ -152,6 +203,17 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
                     f"这是你显得聪明的唯一方式），给一个明确的下一步；别道歉、别客套、"
                     f"别说'我注意到'这种监控感的话，像同桌探头看了一眼那样自然。"
                     f"REFS 最多 2 节。结尾留一个对方一句话就能答的问题。")
+            if ctx.trigger == "stuck":
+                out += ("\n结尾那个问题**固定问这一句**，一字不改："
+                        "「是这节写得绕，还是概念本身就难？」"
+                        "——这两个答案指向完全不同的修法（重写 vs 拆节补前置），"
+                        "是我们判断该怎么改这节课的唯一依据。对方答了之后，按上面的规则输出 FB 行。")
+            if ctx.trigger == "night":
+                out += ("\n这一条是关心，不是催学。**不许说教**，不许出现'早点休息''注意身体'"
+                        "这种谁都会说的空话——那是廉价关怀，说了等于没说。"
+                        "只陈述你看到的疲态事实（读了多久、最近几节停留时间怎么变的），"
+                        "再给一句为对方省力的建议（比如明早接着读哪儿）。"
+                        "REFS 写空数组，深夜不要再塞新的课给对方。")
         return out
 
     @router.get("/api/sparky/health")
@@ -220,9 +282,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
                     if stopped:
                         continue
                     text = "".join(full)
-                    cut = text.find("\nREFS:")
-                    if cut == -1 and text.startswith("REFS:"):
-                        cut = 0
+                    cut = _marker_cut(text)
                     if cut != -1:
                         if cut > sent:
                             yield sse({"t": "delta", "text": text[sent:cut]})
@@ -236,7 +296,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
                 text = "".join(full)
                 if not stopped and len(text) > sent:
                     tail = text[sent:]
-                    cut = tail.find("REFS:")
+                    cut = _marker_cut(tail, leading_nl=False)
                     yield sse({"t": "delta", "text": tail if cut == -1 else tail[:cut]})
 
                 # ── 校验闸：REFS 里的每一节都必须真实存在 ──
@@ -255,9 +315,33 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
                         else:
                             print(f"[SPARKY] 拦下不存在的推荐: {f!r}", flush=True)
                 yield sse({"t": "refs", "items": refs})
+
+                # ── 反馈闸：FB 行落库，同样要求 lesson 真实存在 ──
+                got_fb = False
+                mf = re.search(r"FB:\s*(\{.*?\})", text, re.S)
+                if mf:
+                    try:
+                        fb = json.loads(mf.group(1))
+                    except Exception:
+                        fb = None
+                    if isinstance(fb, dict):
+                        les = fb.get("lesson") or (body.ctx.lesson if body.ctx else "")
+                        note = str(fb.get("note") or "").strip()
+                        kind = str(fb.get("kind") or "hard").strip()
+                        if les and les not in LESSON_IDX:
+                            print(f"[SPARKY] FB 里的节不存在，改挂当前节: {les!r}", flush=True)
+                            les = (body.ctx.lesson if body.ctx else "") or ""
+                        if note:
+                            got_fb = add_feedback(
+                                les, kind if kind in _FB_KINDS else "hard", note,
+                                visitor=(body.ctx.visitor if body.ctx else "") or "",
+                                source="chat")
+                            yield sse({"t": "fb", "ok": bool(got_fb),
+                                       "lesson": les,
+                                       "title": LESSON_IDX.get(les, {}).get("title", "")})
                 yield sse({"t": "done"})
-                print(f"[SPARKY] ip={ip[:12]} turns={len(msgs)} out={len(text)}ch refs={len(refs)}",
-                      flush=True)
+                print(f"[SPARKY] ip={ip[:12]} turns={len(msgs)} out={len(text)}ch "
+                      f"refs={len(refs)} fb={int(got_fb)}", flush=True)
             except _rq.exceptions.RequestException as e:
                 print(f"[SPARKY] network error: {e}", flush=True)
                 yield sse({"t": "err", "msg": "我这会儿连不上模型了。你可以先翻目录，或者过几分钟再来。"})
@@ -265,5 +349,59 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
         return StreamingResponse(gen(), media_type="text/event-stream",
                                  headers={"Cache-Control": "no-cache",
                                           "X-Accel-Buffering": "no"})
+
+    # ------------------------------------------------------------ 反馈直投
+    @router.post("/api/sparky/feedback")
+    def feedback(body: FeedbackBody, request: Request):
+        """不经模型的直投通道。
+
+        为什么单独留一条：反馈的主路径走对话（模型负责问清楚是哪一节、卡在哪），
+        但对话会被限流、模型也会挂。反馈是这个阶段最贵的东西，不能因为
+        「Sparky today 说不了话」就整条丢掉。
+        """
+        if not (body.note or "").strip():
+            raise HTTPException(400, "说点具体的——哪一节、哪句话看不懂。")
+        les = body.lesson or ""
+        if les and les not in LESSON_IDX:
+            les = ""
+        ok = add_feedback(les, body.kind if body.kind in _FB_KINDS else "hard",
+                          body.note.strip(), visitor=body.visitor or "", source="direct")
+        return {"ok": bool(ok), "lesson": les,
+                "title": LESSON_IDX.get(les, {}).get("title", "")}
+
+    # ------------------------------------------------------------ 匿名难度信号
+    _sig_hits: dict = defaultdict(lambda: deque(maxlen=60))
+
+    @router.post("/api/sparky/signal")
+    def signal(body: SignalBody, request: Request):
+        """行为侧的难度信号：谁在哪节卡了多久。不含任何用户说的话。
+
+        这半是免费的——用户一个字都不用讲，哪节最常把人卡住自己会浮出来。
+        """
+        if body.lesson not in LESSON_IDX:
+            return {"ok": False, "why": "unknown lesson"}
+        ip = (request.headers.get("x-forwarded-for") or
+              (request.client.host if request.client else "?")).split(",")[0].strip()
+        q, now = _sig_hits[ip], time.time()
+        if sum(1 for t in q if now - t < 3600) >= 40:      # 信号也得防刷
+            return {"ok": False, "why": "rate"}
+        q.append(now)
+        return {"ok": add_signal(body.lesson, body.dwell_s, body.kind or "stuck",
+                                 visitor=body.visitor or "")}
+
+    # ------------------------------------------------------------ 站主看板
+    @router.get("/api/sparky/insights")
+    def insights(code: str = ""):
+        """哪几节最难 + 最近的反馈原文。给站主看的，不对外。"""
+        admin = (os.getenv("ADMIN_CODE") or "").strip()
+        if not admin or code != admin:      # 没配就是关着的（fail closed）
+            raise HTTPException(404, "Not Found")
+        return {
+            "store_mode": store.mode,
+            "warning": None if store.mode == "supabase"
+                       else "当前是内存模式，Render 重启/休眠即清空；填 SUPABASE_URL/KEY 后自动持久化",
+            "hard_lessons": hard_lessons(LESSON_IDX, 20),
+            "recent_feedback": store.recent("hab_feedback", 60),
+        }
 
     return router
