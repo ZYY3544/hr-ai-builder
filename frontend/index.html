@@ -39,7 +39,12 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .nav{display:flex;align-items:center;gap:24px;height:60px}
 .brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-14px}
 .mark{height:28px;width:auto;display:block}
-.nav .links{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:1}
+/* 链接对齐字标基线，不是对齐栏的几何中心。
+   字标基线在 SVG 的 viewBox y=56（viewBox 从 y=4 起、高 58.311），标记按整个 viewBox 居中
+   （使用说明要求：顶部渐隐区算在内），于是基线落在距栏顶 40.97px，而居中的链接基线在 35.10px。
+   下面 5.87px 是实测差值——改栏高 / 字标高 / 链接字号任何一个，都要重新量。 */
+.nav .links{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:1;
+  position:relative;top:5.87px}
 .nav .links a{font-size:14px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:var(--r-s);transition:.15s;line-height:1.2}
 .nav .links a:hover{color:var(--pri);background:var(--pri-s)}
 .nav .right{display:flex;align-items:center;gap:9px;flex:0 0 auto}
