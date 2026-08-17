@@ -1,5 +1,9 @@
 -- meansights learning · 持久层建表
 --
+-- ✅ 已于 2026-08-17 应用到项目 meansights-learning（ref udesghhdryhchzvluoxx，
+--    新加坡 ap-southeast-1，与 Render 后端同区）。本文件保留为建表真相源：
+--    重建环境、灾后恢复、或再开一套时照跑即可。
+--
 -- 用法：Supabase 控制台 → SQL Editor → 整份粘贴 → Run。
 -- 然后把 Project Settings → API 里的 URL 和 service_role key 填进 Render 的
 -- SUPABASE_URL / SUPABASE_KEY，重启服务即自动切换（backend/store.py 会打日志确认模式）。
