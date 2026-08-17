@@ -29,11 +29,10 @@ body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang 
 a{color:inherit;text-decoration:none}
 
 /* ── 顶栏 ── */
-.top{display:flex;align-items:center;gap:18px;height:64px;padding:0 18px;flex:0 0 auto;
+.top{display:flex;align-items:center;gap:18px;height:60px;padding:0 18px;flex:0 0 auto;
   border-bottom:1px solid var(--line);background:#fff;z-index:20}
-.brand{display:flex;align-items:baseline;gap:7px;flex:0 0 auto}
-.mark{height:26px;width:auto;display:block;position:relative;top:2.81px}
-.brand .bs{font-size:15.5px;font-weight:400;color:var(--faint);letter-spacing:.01em}
+.brand{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+.mark{height:26px;width:auto;display:block}
 .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:9px;font-size:12.5px;overflow:hidden}
 .crumb .c1{color:var(--pri);font-weight:500;white-space:nowrap}
 .crumb .sep{color:var(--line)}
@@ -109,7 +108,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .sbtn{display:none;font:inherit;font-size:16px;background:none;border:0;cursor:pointer;color:var(--muted);padding:4px 8px}
 @media(max-width:860px){
   .sbtn{display:block}
-  .side{position:fixed;top:64px;left:0;bottom:0;z-index:30;transform:translateX(-100%);transition:.22s;box-shadow:0 0 40px rgba(15,23,42,.2)}
+  .side{position:fixed;top:60px;left:0;bottom:0;z-index:30;transform:translateX(-100%);transition:.22s;box-shadow:0 0 40px rgba(15,23,42,.2)}
   .side.show{transform:none}
 }
 
@@ -130,7 +129,7 @@ body.dragging iframe{pointer-events:none}
 <div class="top">
   <button class="sbtn" id="sbtn">☰</button>
   <a class="brand" href="index.html">
-    <img class="mark" src="brand/lockup.svg" alt="meansights"><span class="bs">learning</span>
+    <img class="mark" src="brand/lockup.svg" alt="meansights">
   </a>
   <div class="crumb" id="crumb"></div>
   <div class="prog">
