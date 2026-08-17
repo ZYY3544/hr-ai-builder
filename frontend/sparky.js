@@ -561,8 +561,14 @@
     d.textContent = t; log.appendChild(d); scroll();
   }
   function syncFbBar() {
-    var f = ctx().lesson;
+    var c = ctx(), f = c.lesson;
     fbBar.style.display = (PAGE === 'learn' && f && LMAP[f]) ? 'block' : 'none';
+    // 占位文案跟着场景走：老用户在读课时还问「你想拿 AI 干什么」，
+    // 跟开场白的「卡在哪儿了」自相矛盾，也把人往回推了一步
+    ta.placeholder = (PAGE === 'learn' && f && LMAP[f])
+      ? '这节哪儿卡住了？'
+      : (c.done && c.done.length ? '卡在哪儿了，还是想找下一步读什么？'
+                                 : '说说你想拿 AI 干什么…');
   }
   fbBar.querySelector('button').onclick = function () {
     var f = ctx().lesson, t = (LMAP[f] || {}).title || '';
