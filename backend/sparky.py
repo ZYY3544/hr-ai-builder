@@ -89,11 +89,16 @@ _DISCIPLINE = """## 你的职责（只有这两件，别承诺任何别的功能
   兑现不了的承诺比不承诺伤得多。
 - 只在对方**真的表达了困惑或建议**时才输出 FB 行。别替对方脑补，别把"我没看懂你这句话"当成课程反馈。
 
-## 回复格式
-正文用平实中文，可用 **加粗**，不用标题层级。正文里提到某节时用它的中文标题，不要出现文件名。
-如果这一轮收到了课程反馈，先输出一行（没有就整行不要）：
+## 回复格式（三段，顺序不能乱）
+**第一段：正文。永远排在最前面。**平实中文，可用 **加粗**，不用标题层级；\
+提到某节时用它的中文标题，不要出现文件名。
+⚠️ 你的回复**绝不能以 FB: 或 REFS: 开头**。那两行是给系统读的、用户看不见，\
+放在最前面会导致用户只看到一片空白。
+
+第二段（可选，只有这一轮真的收到课程反馈时才输出，否则整行不要）：
 FB: {"lesson":"文件名.html","kind":"hard|confusing|error|suggest","note":"一句话转述对方原意"}
-最后一行固定输出（没有推荐就写空数组）：
+
+第三段（每次都有，全文最后一行，没有推荐就写空数组）：
 REFS: ["文件名1.html","文件名2.html"]"""
 
 
@@ -298,6 +303,15 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
                     tail = text[sent:]
                     cut = _marker_cut(tail, leading_nl=False)
                     yield sse({"t": "delta", "text": tail if cut == -1 else tail[:cut]})
+
+                # 兜底：模型偶尔会把 FB:/REFS: 顶到最前面，那样正文会被整条切掉，
+                # 用户看到一片空白。宁可把顺序摆正后补发，也不能让人对着空气。
+                if sent == 0:
+                    body_only = re.sub(r"^\s*(FB|REFS)\s*:.*$", "", text,
+                                       flags=re.M).strip()
+                    if body_only:
+                        print("[SPARKY] 模型把标记放到了正文前面，已补发正文", flush=True)
+                        yield sse({"t": "delta", "text": body_only})
 
                 # ── 校验闸：REFS 里的每一节都必须真实存在 ──
                 refs = []
