@@ -152,9 +152,18 @@ def add_signal(lesson: str, dwell_s: int, kind: str = "stuck",
     })
 
 
+# 测试/探针留下的行。看板默认排除——它们是我们自己打进去的，
+# 混进"哪节最难"的排行里会直接把改课方向带偏。
+_TEST_PREFIXES = ("agenttest-", "e2e-", "probe")
+
+
+def is_test_row(r: dict) -> bool:
+    return str(r.get("visitor") or "").startswith(_TEST_PREFIXES)
+
+
 def hard_lessons(idx: dict, limit: int = 20) -> list:
     """哪几节最常把人卡住 —— 行为数据，不是意见数据，用户一个字都不用说。"""
-    rows = store.recent(SIGNAL, 2000)
+    rows = [r for r in store.recent(SIGNAL, 2000) if not is_test_row(r)]
     agg: dict = {}
     for r in rows:
         f = r.get("lesson")

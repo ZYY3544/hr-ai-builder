@@ -27,7 +27,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from store import add_feedback, add_signal, hard_lessons, store
+from store import add_feedback, add_signal, hard_lessons, is_test_row, store
 
 # ---------------------------------------------------------------- 配置
 _DS_BASE = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
@@ -529,7 +529,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
 
     # ------------------------------------------------------------ 站主看板
     @router.get("/api/sparky/insights")
-    def insights(code: str = ""):
+    def insights(code: str = "", raw: int = 0):
         """哪几节最难 + 最近的反馈原文。给站主看的，不对外。"""
         admin = (os.getenv("ADMIN_CODE") or "").strip()
         if not admin or code != admin:      # 没配就是关着的（fail closed）
@@ -539,7 +539,10 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
             "warning": None if store.mode == "supabase"
                        else "当前是内存模式，Render 重启/休眠即清空；填 SUPABASE_URL/KEY 后自动持久化",
             "hard_lessons": hard_lessons(LESSON_IDX, 20),
-            "recent_feedback": store.recent("hab_feedback", 60),
+            # 默认滤掉自测行（agenttest-/e2e-/probe 开头的 visitor）——
+            # 那是我们自己打进去的，混进来会把改课方向带偏。要看全量传 ?raw=1
+            "recent_feedback": [r for r in store.recent("hab_feedback", 80)
+                                if raw or not is_test_row(r)][:60],
         }
 
     return router
