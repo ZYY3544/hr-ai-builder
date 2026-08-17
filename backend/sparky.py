@@ -122,6 +122,12 @@ _DISCIPLINE = """## 你的职责（只有这两件，别承诺任何别的功能
 - 可以说「记下来了，会改」。**绝不承诺具体时间**，不说"马上改好""今天就改"——这个站是一个人在维护，
   兑现不了的承诺比不承诺伤得多。
 - 只在对方**真的表达了困惑或建议**时才输出 FB 行。别替对方脑补，别把"我没看懂你这句话"当成课程反馈。
+- `quote` 必须是对方**这一轮原话**里逐字抄下来的一段（系统会拿它去比对，对不上整条丢弃）。
+  引不出这样一段，就说明这轮根本没有反馈——那就别写 FB 行。
+- **对方吐的是你（Sparky）、是这个站的形式、或是你刚推荐但 ta 根本没打开的节**——
+  lesson 一律填空字符串，kind 写 site。绝不许拿最近提到的一节顶包：
+  那一节会因此被记成"写得不好"，而它是无辜的，还会把改课的方向带偏。
+- 纯导航问题（"下一节读什么""还有别的吗"）不是反馈，一个 FB 行都不要写。
 
 ## 回复格式（三段，顺序不能乱）
 **第一段：正文。永远排在最前面。**平实中文，可用 **加粗**，不用标题层级；\
@@ -130,7 +136,7 @@ _DISCIPLINE = """## 你的职责（只有这两件，别承诺任何别的功能
 放在最前面会导致用户只看到一片空白。
 
 第二段（可选，只有这一轮真的收到课程反馈时才输出，否则整行不要）：
-FB: {"lesson":"文件名.html","kind":"hard|confusing|error|suggest","note":"一句话转述对方原意"}
+FB: {"lesson":"文件名.html 或空字符串","kind":"hard|confusing|error|suggest|site","quote":"对方本轮原话里的一段，逐字复制","note":"一句话转述对方原意"}
 
 第三段（每次都有，全文最后一行）：
 REFS: ["文件名1.html","文件名2.html"]
@@ -217,7 +223,10 @@ class ChatBody(BaseModel):
     ctx: Optional[ChatCtx] = None
 
 
-_FB_KINDS = {"hard", "confusing", "error", "suggest"}
+# site = 意见是冲着整个站/助手来的，不挂任何一节课。
+# 没有这个合法值时，模型没有"空手"这个动作，只能抓最近提到的一节顶包。
+_FB_KINDS = {"hard", "confusing", "error", "suggest", "site"}
+_fb_seen: dict = {}          # (访客, 节) -> 上次记录时间，30 分钟内去重
 
 
 class FeedbackBody(BaseModel):
@@ -426,17 +435,45 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
                     except Exception:
                         fb = None
                     if isinstance(fb, dict):
-                        les = fb.get("lesson") or (body.ctx.lesson if body.ctx else "")
+                        les = str(fb.get("lesson") or "").strip()
                         note = str(fb.get("note") or "").strip()
                         kind = str(fb.get("kind") or "hard").strip()
-                        if les and les not in LESSON_IDX:
-                            print(f"[SPARKY] FB 里的节不存在，改挂当前节: {les!r}", flush=True)
-                            les = (body.ctx.lesson if body.ctx else "") or ""
-                        if note:
+                        quote = str(fb.get("quote") or "")
+                        vis = (body.ctx.visitor if body.ctx else "") or ""
+                        last_user = next((m["content"] for m in reversed(msgs)
+                                          if m["role"] == "user"), "")
+
+                        # ① 归属白名单：只允许挂在对方真的碰过的节上。
+                        #    原来 lesson 为空或非法时一律回落成"当前节"，结果对方吐槽助手本身、
+                        #    或者随口问"下一节读什么"，都会被记成某一节课"写得不好"——那节是无辜的，
+                        #    而这是改课的唯一信号源，脏一条就误导一次。
+                        allowed = set(f for f in (body.ctx.done or []) if f in LESSON_IDX) if body.ctx else set()
+                        if body.ctx and body.ctx.lesson:
+                            allowed.add(body.ctx.lesson)
+                        allowed |= {f for f, v in LESSON_IDX.items() if v["title"] in last_user}
+                        if les and les not in allowed:
+                            print(f"[SPARKY] FB 归属可疑（对方没碰过这节），降级为站级: {les!r}", flush=True)
+                            les, kind = "", "site"
+
+                        # ② grounding 闸：quote 必须真的出现在对方本轮原话里。
+                        #    模型没法从"下一节读什么"里引出抱怨片段，第一道就被拦下。
+                        def _norm(x):
+                            return re.sub(r"[\s，。！？、,.!?；;：:「」《》\"'']", "", x)
+                        grounded = bool(quote) and _norm(quote)[:12] in _norm(last_user)
+                        if not grounded:
+                            print(f"[SPARKY] FB 无原话支撑，丢弃: quote={quote[:40]!r}", flush=True)
+
+                        # ③ 同一访客同一节 30 分钟内只记一次（防同一段对话反复补记）
+                        dup_key = (vis or ip, les)
+                        fresh = (time.time() - _fb_seen.get(dup_key, 0)) > 1800
+                        if not fresh:
+                            print(f"[SPARKY] FB 30 分钟内重复，跳过: {dup_key}", flush=True)
+
+                        if note and grounded and fresh:
+                            _fb_seen[dup_key] = time.time()
                             got_fb = add_feedback(
                                 les, kind if kind in _FB_KINDS else "hard", note,
-                                visitor=(body.ctx.visitor if body.ctx else "") or "",
-                                source="chat")
+                                visitor=vis, source="chat")
                             yield sse({"t": "fb", "ok": bool(got_fb),
                                        "lesson": les,
                                        "title": LESSON_IDX.get(les, {}).get("title", "")})

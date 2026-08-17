@@ -513,8 +513,9 @@
             } else if (ev.t === 'refs') {
               refs = ev.items || []; refsBlock(refs);
             } else if (ev.t === 'fb') {
-              note(ev.ok ? '已记下' + (ev.title ? '·《' + ev.title + '》' : '') + '，会拿它改课。'
-                         : '这条没存下，回头再说一次。');
+              note(!ev.ok ? '这条没存下，回头再说一次。'
+                   : ev.title ? '已记下·《' + ev.title + '》，会拿它改课。'
+                   : '已记下——这条是对整个站的意见，没挂到具体哪一节。');
             } else if (ev.t === 'err') {
               if (typing.parentNode) typing.remove();
               bubble('assistant', ev.msg, 'err');
