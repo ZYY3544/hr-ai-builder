@@ -132,16 +132,13 @@ section{scroll-margin-top:64px}
 .bizbox .row span:first-child{flex:0 0 76px;color:var(--muted);font-size:13px}
 .night .nout{font-size:13px;color:var(--pri-d);background:rgba(0,168,138,.07);border-radius:9px;
   padding:9px 13px;margin-top:12px;line-height:1.8}
-.wcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 30px 26px;
-  text-decoration:none;color:inherit;
-  display:flex;flex-direction:column;transition:.18s}
-.wcard:hover{border-color:rgba(0,168,138,.38);box-shadow:0 14px 32px -20px rgba(0,168,138,.5)}
+.wcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;
+  display:flex;flex-direction:column}
 .wcard h3{font-size:19px;letter-spacing:-.015em}
 .wcard .p{font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.95;flex:1}
-.wcard .tags{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0 18px}
+.wcard .tags{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0 0}
 .tg{font-size:12.5px;border:1px solid rgba(51,112,255,.22);border-radius:7px;padding:4px 11px;
   color:var(--blue-d);background:var(--blue-s)}
-.wcard .go{font-size:14px;font-weight:500;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 .curmeta{font-size:13px;color:var(--faint);margin-top:30px}
 /* 板块之间的分隔：两端淡出的发丝线 —— 只给「换段了」的暗示，不把页面切块 */
@@ -308,26 +305,23 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   <div class="wrap">
     <div class="eyebrow">For Who</div>
     <h2>这门课适合谁</h2>
-    <p class="desc">不同背景有不同的学法。对号入座，从最适合你的地方切入。</p>
+    <p class="desc">不同背景有不同的学法。先对号入座；具体从哪节切入，问右下角的 Sparky。</p>
     <div class="who">
-      <a class="wcard" href="learn.html">
+      <div class="wcard">
         <h3>想补齐 AI 素养的在职 HR</h3>
         <div class="p">你已经懂业务、懂流程、懂人，缺的是把判断变成可执行系统的手艺。<b>你的优势别人补不上，你的短板你补得上。</b></div>
         <div class="tags"><span class="tg">能力边界</span><span class="tg">判断萃取</span><span class="tg">Vibe coding</span></div>
-        <div class="go">从头按序学 →</div>
-      </a>
-      <a class="wcard" href="learn.html#jargon-why.html">
+      </div>
+      <div class="wcard">
         <h3>想推动组织变革的 HRD / OD</h3>
         <div class="p">你要回答的不是「AI 能不能用」，而是<b>组织该怎么重新设计</b>。这需要你真的懂它的边界在哪，而不是听供应商讲。</div>
         <div class="tags"><span class="tg">场景选择</span><span class="tg">人机分工</span><span class="tg">采购问话清单</span></div>
-        <div class="go">先学会看穿供应商话术 →</div>
-      </a>
-      <a class="wcard" href="learn.html#start-dunning-kruger.html">
+      </div>
+      <div class="wcard">
         <h3>刚入行或准备入行的人</h3>
         <div class="p">这个领域还没有前辈，<b>没人有十年经验</b>。这意味着做出一个真能跑的东西，你就已经在前面了。</div>
         <div class="tags"><span class="tg">作品选题</span><span class="tg">从零基础起步</span><span class="tg">岗位对照</span></div>
-        <div class="go">从第零篇章开始 →</div>
-      </a>
+      </div>
     </div>
   </div>
 </section>
