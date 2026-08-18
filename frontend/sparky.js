@@ -43,8 +43,10 @@
       return '<rect x="' + (c * cell + offX) + '" y="' + (r * cell + offY) + '" width="' + cell +
              '" height="' + cell + '" fill="' + CAT_C[k] + '"/>';
     }
+    // 睡着时眼白要收掉：留着的话两条闭眼线压在白块上，看起来像"睁着眼被横杠挡住"，
+    // 而不是闭眼。闭眼就该只剩线，压在毛色上。
     var px = CAT_STATIC.map(function (p) { return rect(p[0], p[1], p[2]); }).join('') +
-             CAT_EYES.map(function (p) { return rect(p[0], p[1], 'W'); }).join('');
+             CAT_EYES.map(function (p) { return rect(p[0], p[1], sleeping ? 'P' : 'W'); }).join('');
     var bo = '1;1;0;0;1;1', bc = '0;0;1;1;0;0', bt = '0;0.94;0.95;0.98;0.99;1';
     var blink = anim ? '<animate attributeName="opacity" values="' + bo + '" keyTimes="' + bt +
       '" dur="6s" repeatCount="indefinite" begin="' + ph.blink + 's"/>' : '';
