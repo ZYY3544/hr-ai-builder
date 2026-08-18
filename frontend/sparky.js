@@ -142,10 +142,17 @@
     ' cursor:pointer;z-index:9998;display:flex;align-items:flex-end;justify-content:center;padding:0;',
     ' transition:transform .15s;filter:drop-shadow(0 5px 10px rgba(15,23,42,.28))}',
     '#spk-ball:hover{transform:scale(1.1)}',
-    '#spk-panel{position:fixed;right:0;top:0;bottom:0;width:390px;max-width:100vw;background:#fff;z-index:9999;',
-    ' box-shadow:-8px 0 32px rgba(15,23,42,.14);display:flex;flex-direction:column;',
-    ' transform:translateX(105%);transition:transform .22s ease}',
-    '#spk-panel.on{transform:none}',
+    // 悬浮圆角面板，不贴边、不通顶。bottom 跟悬浮球共用 --spk-bottom，
+    // 这样在课程页会自动避开底部翻页条（跟球一个避让逻辑，改一处两处都对）。
+    '#spk-panel{position:fixed;right:20px;bottom:var(--spk-bottom,20px);width:390px;',
+    ' max-width:calc(100vw - 32px);height:min(660px,calc(100vh - var(--spk-bottom,20px) - 28px));',
+    ' background:#fff;z-index:9999;border-radius:18px;overflow:hidden;',
+    ' border:1px solid rgba(226,232,240,.9);',
+    ' box-shadow:0 18px 48px -12px rgba(15,23,42,.26),0 4px 14px rgba(15,23,42,.07);',
+    ' display:flex;flex-direction:column;transform-origin:100% 100%;',
+    ' transform:translateY(14px) scale(.97);opacity:0;pointer-events:none;',
+    ' transition:transform .2s cubic-bezier(.2,.8,.3,1),opacity .18s ease}',
+    '#spk-panel.on{transform:none;opacity:1;pointer-events:auto}',
     '#spk-head{padding:14px 18px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:10px}',
     '#spk-head .t{font-weight:700;color:#0F172A;font-size:15px}',
     '#spk-head .s{font-size:11.5px;color:#94A3B8}',
@@ -189,7 +196,7 @@
     '#spk-bubble.on{opacity:1;transform:none;pointer-events:auto}',
     '#spk-bubble b{color:#00795F}',
     '#spk-bubble .bx{position:absolute;top:4px;right:7px;color:#94A3B8;font-size:15px;padding:2px 5px;cursor:pointer}',
-    '@media(max-width:480px){#spk-panel{width:100vw}}',
+    '@media(max-width:560px){#spk-panel{left:12px;right:12px;width:auto;max-width:none}}',
     '@media print{#spk-ball,#spk-panel{display:none}}'
   ].join('\n');
 
