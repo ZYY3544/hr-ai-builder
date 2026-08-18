@@ -24,13 +24,17 @@
   var CAT_EYES = [[4,2],[4,3],[5,2],[5,3],[4,8],[4,9],[5,8],[5,9]];
   var CAT_LEG_L = [[11,2,'P'],[11,3,'P'],[12,2,'P'],[12,3,'P'],[13,2,'D'],[13,3,'D']];
   var CAT_LEG_R = [[11,8,'P'],[11,9,'P'],[12,8,'P'],[12,9,'P'],[13,8,'D'],[13,9,'D']];
-  // 睡帽：坐在两只耳朵中间的空档里（row0 的 col3-8、row1 的 col4-7 本来就是空的），
-  // 往上支出画布外——所以耳朵一只都不挡，剪影还是猫。K=帽身 R=帽檐/绒球
+  // 睡帽：帽檐横跨 row1（原本耳朵根部那一行），把耳朵位置整个占掉——睡着时耳朵不画，
+  // 由帽子接管头顶轮廓。帽身往上支出画布外，往右倾，绒球在尖上。K=帽身 R=帽檐/绒球
   var CAP_C = { K: '#5B6BA8', R: '#EEF2F9' };
-  var CAT_CAP = [[-2,7,'K'],[-2,8,'R'],
-                 [-1,5,'K'],[-1,6,'K'],[-1,7,'K'],
-                 [0,3,'K'],[0,4,'K'],[0,5,'K'],[0,6,'K'],[0,7,'K'],[0,8,'K'],
-                 [1,4,'R'],[1,5,'R'],[1,6,'R'],[1,7,'R']];
+  var CAT_CAP = [[-3,8,'R'],[-3,9,'R'],
+                 [-2,6,'K'],[-2,7,'K'],[-2,8,'K'],
+                 [-1,4,'K'],[-1,5,'K'],[-1,6,'K'],[-1,7,'K'],[-1,8,'K'],
+                 [0,2,'K'],[0,3,'K'],[0,4,'K'],[0,5,'K'],[0,6,'K'],[0,7,'K'],[0,8,'K'],[0,9,'K'],
+                 [1,1,'R'],[1,2,'R'],[1,3,'R'],[1,4,'R'],[1,5,'R'],[1,6,'R'],[1,7,'R'],
+                 [1,8,'R'],[1,9,'R'],[1,10,'R']];
+  // 收起来的爪子：睡着时不画站立的腿，只留两截爪尖缩在身子底下，轮廓更圆
+  var CAT_PAWS = [[11,3,'D'],[11,4,'D'],[11,7,'D'],[11,8,'D']];
 
   function catSVG(size, mode) {
     var cell = size / 14, offX = (size - 12 * cell) / 2, offY = 0;
@@ -45,7 +49,10 @@
     }
     // 睡着时眼白要收掉：留着的话两条闭眼线压在白块上，看起来像"睁着眼被横杠挡住"，
     // 而不是闭眼。闭眼就该只剩线，压在毛色上。
-    var px = CAT_STATIC.map(function (p) { return rect(p[0], p[1], p[2]); }).join('') +
+    // 睡着时：不画耳朵（CAT_STATIC 的 row0/row1 就是那两只耳朵，交给帽子接管），
+    // 眼白也收掉——留着的话闭眼线压在白块上，看起来像睁着眼被横杠挡住。
+    var body = sleeping ? CAT_STATIC.filter(function (p) { return p[0] > 1; }) : CAT_STATIC;
+    var px = body.map(function (p) { return rect(p[0], p[1], p[2]); }).join('') +
              CAT_EYES.map(function (p) { return rect(p[0], p[1], sleeping ? 'P' : 'W'); }).join('');
     var bo = '1;1;0;0;1;1', bc = '0;0;1;1;0;0', bt = '0;0.94;0.95;0.98;0.99;1';
     var blink = anim ? '<animate attributeName="opacity" values="' + bo + '" keyTimes="' + bt +
@@ -98,9 +105,11 @@
     var face = sleeping
       ? shut(2) + shut(8)
       : '<g>' + dart + pupil(3) + pupil(9) + '</g>' + closed(2) + closed(8);
+    var feet = sleeping
+      ? CAT_PAWS.map(function (p) { return rect(p[0], p[1], p[2]); }).join('')
+      : leg(CAT_LEG_L, true) + leg(CAT_LEG_R, false);
     return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size +
-      '" style="overflow:visible">' + px + face +
-      leg(CAT_LEG_L, true) + leg(CAT_LEG_R, false) +
+      '" style="overflow:visible">' + px + face + feet +
       (sleeping ? cap() + zzz() : '') + '</svg>';
   }
 
@@ -114,7 +123,18 @@
     } catch (e) {}
     var h = new Date().getHours(); return h >= 23 || h < 5;
   }
-  function ballMode(hovering) { return hovering ? 'walk' : (isNight() ? 'sleep' : 'idle'); }
+  /* 被摸醒之后不立刻睡回去。
+     秒睡的话，那就只是个 hover 特效；隔几分钟才睡，它才像个活物。
+     而且中间要有一档「醒着但没在走」——鼠标移开直接从走路跳回睡觉，动作是断的。
+     所以三档：walk（正被摸） → idle（醒着、会眨眼） → sleep（睡回去）。 */
+  var wakeUntil = 0;
+  function wakeMs() {
+    try { if (localStorage.getItem('spk_debug') === '1') return 8000; } catch (e) {}
+    return 3 * 60 * 1000;
+  }
+  function stayAwake() { wakeUntil = Date.now() + wakeMs(); }
+  function asleep() { return isNight() && Date.now() >= wakeUntil; }
+  function ballMode(hovering) { return hovering ? 'walk' : (asleep() ? 'sleep' : 'idle'); }
 
   /* ---------------- DOM ---------------- */
   var css = [
@@ -193,14 +213,27 @@
   ball.id = 'spk-ball'; ball.title = 'Sparky · 伴学助手';
   ball.innerHTML = catSVG(52, ballMode(false));
   // hover 时小猫原地踏步（与 meansights 同款交互）；夜里则是被摸醒
-  ball.onmouseenter = function () { ball.innerHTML = catSVG(52, ballMode(true)); };
-  ball.onmouseleave = function () { ball.innerHTML = catSVG(52, ballMode(false)); };
+  var dozeTimer = null;
+  function renderBall() {
+    if (!ball.matches(':hover')) ball.innerHTML = catSVG(52, ballMode(false));
+  }
+  ball.onmouseenter = function () {
+    stayAwake();
+    clearTimeout(dozeTimer);
+    ball.innerHTML = catSVG(52, ballMode(true));
+  };
+  ball.onmouseleave = function () {
+    stayAwake();                       // 从这一刻开始重新计时
+    ball.innerHTML = catSVG(52, ballMode(false));   // 先停下来，眼睛还睁着
+    clearTimeout(dozeTimer);
+    dozeTimer = setTimeout(renderBall, wakeMs() + 200);   // 到点了才睡回去
+  };
   // 跨过 23 点时不用刷新页面，球自己睡过去
   var nightWas = isNight();
   setInterval(function () {
     if (isNight() === nightWas) return;
     nightWas = isNight();
-    if (!ball.matches(':hover')) ball.innerHTML = catSVG(52, ballMode(false));
+    renderBall();
   }, 60000);
   var panel = document.createElement('div');
   panel.id = 'spk-panel';
@@ -659,5 +692,10 @@
   ball.onclick = openPanel;
   panel.querySelector('#spk-x').onclick = function () {
     panel.classList.remove('on'); ball.style.display = 'flex';
+    // 刚聊完就秒睡回去很出戏——按跟 hover 同一套规则续上清醒时间
+    stayAwake();
+    ball.innerHTML = catSVG(52, ballMode(false));
+    clearTimeout(dozeTimer);
+    dozeTimer = setTimeout(renderBall, wakeMs() + 200);
   };
 })();
