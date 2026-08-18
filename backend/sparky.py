@@ -70,11 +70,12 @@ _DISCIPLINE = """## 你的职责（只有这两件，别承诺任何别的功能
 ## 铁律
 - **指路，不讲课**：有人问"RAG 是什么"，你不解释 RAG，你说哪一节讲这个、读完能做成什么，\
 让 ta 去读。课是校验过的，你的现场复述不是。只有"跨节怎么串"这类课里没有的关联，你才自己讲。
-- **你没读过课文**：你手上只有目录里的标题和一句简介。所以——不许描述课的内部结构\
-（"开头那段""最后那张表""里面有现成模板""第三条是…"），不许给方法名加引号，\
-不许说出简介里没有的方法名、步骤数、术语。**也不许断言课里"没有"某样东西**：\
-编造课里有什么，对方翻开就发现了；编造课里没有什么，对方根本不会去翻——后者更毒。\
-拿不准就说"具体怎么写的你翻一下那节"。
+- **你对每节课的了解分三档，说话不许超出你手上那一档**：\
+①全部 149 节 = 标题 + 一句话讲什么（课程目录）②全部 149 节 = 小节名 + 表头（骨架）\
+③只有对方正开着的、以及 ta 这轮点名的那一两节 = 正文原文。\
+在①②档只报名字和位置，**不展开、不解释、不自己补第 N+1 项**；到③档才可以答具体内容。\
+**任何一档都查不到的，说"我这儿看不到，你翻一下那节"——绝不许猜，也绝不许断言课里"没有"某样东西**：\
+编造课里有什么，对方翻开就发现了；编造课里没有什么，对方根本不会去翻，后者更毒。
 - **只推荐目录里真实存在的节**，用下面目录里的确切文件名。宁可说"这个站不教这个"，\
 也不编，更不许拿一节沾边的课去顶。这个站不教的（比如企业级部署运维、跟 HR 无关的编程），直说没有。
 - **绝不在对话里给要敲的命令**（不写 ``` 代码块，也不写反引号——它们会原样显示成怪符号）。\
@@ -197,6 +198,32 @@ def _catalog(idx: dict) -> str:
             + "\n".join(lines))
 
 
+def _skeleton_block(skel: dict, idx: dict) -> str:
+    """全量骨架：每节分哪几块、有哪些表。
+
+    为什么是骨架而不是全文：全量正文 ≈ 13.2 万 token，是上下文窗口的 2.1 倍，塞不进去；
+    骨架只有约 8.8k token，装得下。有了它，"这节讲哪几块""有没有表""表里比什么"
+    这类结构级提问就不必再靠猜——实测没有它时模型会编出课里根本没有的段落和表格。
+    """
+    if not skel:
+        return ""
+    lines = []
+    for f, v in skel.items():
+        if f not in idx:
+            continue
+        bits = "·".join(v.get("secs") or [])
+        tabs = "；".join("/".join(t) for t in (v.get("tables") or []))
+        row = f"{f}|{bits}"
+        if tabs:
+            row += f"|表:{tabs}"
+        lines.append(row)
+    return ("## 每节的骨架（文件名|小节名依次·|表:表头）\n"
+            "这是你对课**内部结构**知道的全部：分哪几块、有没有表、表比的是哪几列。\n"
+            "被问到具体内容时：骨架里有的，**把名字原样报给对方并指出在哪一块**，不展开、不解释、"
+            "不自己补第 N+1 项；骨架里没有的，说\"我这儿看不到，你翻一下那节\"——"
+            "**不许说\"课里没有\"**。\n" + "\n".join(lines))
+
+
 def _extras(terms: list, jobs: list, term_lessons: dict) -> str:
     t = "\n".join(f"- {x['id']}({x['name']}/{x['ksa']}): {x['generic']}" for x in terms)
     j = "\n".join(f"- {x['company']} {x['title']}（{x['type']}）核心要求:"
@@ -243,17 +270,51 @@ class SignalBody(BaseModel):
     visitor: Optional[str] = None
 
 
-def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
+def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
+                LESSON_SKEL=None, LESSON_TEXT=None) -> APIRouter:
     router = APIRouter()
     # 标题→文件名反查，给回补闸用。149 个标题已验证全站唯一。
     # 按长度倒序：先匹配长标题，避免短标题是长标题子串时把位置认错。
     TITLE2FILE = {v["title"]: f for f, v in
                   sorted(LESSON_IDX.items(), key=lambda kv: -len(kv[1]["title"]))}
 
+    SKEL = LESSON_SKEL or {}
+    TEXT = LESSON_TEXT or {}
     system_static = (_PERSONA + "\n\n" + _DISCIPLINE + "\n\n"
                      + _catalog(LESSON_IDX) + "\n\n"
+                     + _skeleton_block(SKEL, LESSON_IDX) + "\n\n"
                      + _extras(TERMS, JOBS, TERM_LESSONS)
                      + _FORMAT_TAIL)
+    print(f"[SPARKY] system prompt {len(system_static):,} 字符"
+          f"（目录+骨架 {len(SKEL)} 节，正文库 {len(TEXT)} 节按需注入）", flush=True)
+
+    # 第三层：按需注入正文。全量正文塞不下（2.1 倍窗口），但单节平均只有约 890 token，
+    # 所以"用到哪节给哪节"——对方正开着的那节，加上 ta 在这轮话里点名的节。
+    # 有了它，"第三条具体是什么""那张表第二列写的啥"才答得准；没有它只能靠骨架报个名字。
+    MAX_INJECT = 2                      # 最多两节，约 1.8k token，够用且不挤占对话空间
+    TEXT_CAP = 4000                     # 单节封顶字符数（最长一节 5.8k，截断比撑爆好）
+
+    def _fulltext_block(ctx: Optional[ChatCtx], last_user: str) -> str:
+        if not TEXT:
+            return ""
+        want = []
+        if ctx and ctx.lesson and ctx.lesson in TEXT:
+            want.append(ctx.lesson)
+        for title, f in TITLE2FILE.items():          # 已按标题长度倒序，先匹配长的
+            if len(want) >= MAX_INJECT:
+                break
+            if f not in want and f in TEXT and title in last_user:
+                want.append(f)
+        if not want:
+            return ""
+        out = []
+        for f in want[:MAX_INJECT]:
+            t = TEXT[f][:TEXT_CAP]
+            out.append(f"### 《{LESSON_IDX[f]['title']}》正文\n{t}")
+        return ("\n\n## 这几节的正文（只有这几节你读得到，其余仍然只有骨架）\n"
+                "答具体问题时以这里的原文为准；**不许把这段原文整段复述给对方**——"
+                "你的活是把 ta 引到课里对应的位置，不是替课把内容念一遍。\n"
+                + "\n\n".join(out))
 
     def _ctx_block(ctx: Optional[ChatCtx]) -> str:
         if not ctx:
@@ -325,12 +386,17 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX) -> APIRouter:
 
         if proactive and (not msgs or msgs[-1]["role"] != "user"):
             msgs = msgs + [{"role": "user", "content": "（用户此刻没有说话，请按触发原因主动开口）"}]
+        _last_user = next((m["content"] for m in reversed(msgs)
+                           if m["role"] == "user"), "")
         payload = {
             "model": _DS_MODEL,
             "messages": [{"role": "system",
-                          "content": system_static + _ctx_block(body.ctx)}] + msgs,
+                          "content": system_static + _ctx_block(body.ctx)
+                          + _fulltext_block(body.ctx, _last_user)}] + msgs,
             "stream": True,
-            "max_tokens": 900,
+            # 1200 而非 900：REFS 是全文最后一行，正文一长就可能在它写出来之前被截断，
+            # 而截断了系统这边完全无感——用户就拿到零个可点入口。
+            "max_tokens": 1200,
             "temperature": 0.6,
         }
 

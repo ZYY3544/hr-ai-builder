@@ -186,6 +186,36 @@ def check(fe=FE, sl=SL):
             if v and v.get('title') != l['title']:
                 FAIL('后端索引', f"{l['file']} 标题不同步: 后端「{v.get('title')}」前端「{l['title']}」")
 
+    # ── 5d. 骨架层与正文层同步（Sparky 的第二、三档知识）──────
+    #    课件改了但没重跑同步脚本，Sparky 会拿着旧结构跟用户描述课的内容——
+    #    这类错用户翻开课才发现，最伤信任，所以必须是 FAIL 不是提醒。
+    for name, label in (('_skeleton.json', '骨架'), ('_text.json', '正文')):
+        path = os.path.join(ROOT, 'backend', 'lessons', name)
+        if not os.path.exists(path):
+            FAIL('后端知识层', f'缺 {name}（跑 scripts/sync_backend_index.py）')
+            continue
+        data = json.loads(open(path, encoding='utf-8').read())
+        miss = sorted(dset - set(data))
+        extra = sorted(set(data) - dset)
+        if miss:
+            FAIL('后端知识层', f'{len(miss)} 节没有{label}: {miss[:4]}（跑 scripts/sync_backend_index.py）')
+        if extra:
+            FAIL('后端知识层', f'{name} 残留已删的节: {extra[:4]}（跑 scripts/sync_backend_index.py）')
+        # 内容漂移：课件改了正文但没重抽，长度会对不上
+        if name == '_text.json':
+            for fn in sorted(dset & set(data)):
+                p2 = os.path.join(sl, fn)
+                if not os.path.exists(p2):
+                    continue
+                cur = len(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', re.sub(
+                    r'<script.*?</script>|<style.*?</style>', ' ',
+                    open(p2, encoding='utf-8').read(), flags=re.S))).strip())
+                # 抽取管线细节不同会有偏差，只抓"明显改过"（差 15% 以上）
+                if data[fn] and abs(cur - len(data[fn])) / max(cur, 1) > 0.15:
+                    FAIL('后端知识层',
+                         f'{fn} 正文已改但没重抽（课件 {cur} 字 vs 缓存 {len(data[fn])} 字）'
+                         f'——跑 scripts/sync_backend_index.py')
+
     # ── 6. 质量红线 ────────────────────────────────────────
     for fn in sorted(on_disk):
         s = open(os.path.join(sl, fn), encoding='utf-8').read()

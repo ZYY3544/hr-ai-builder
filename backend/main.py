@@ -442,8 +442,23 @@ _LESSON_DIR = Path(__file__).parent / "lessons"
 _LESSON_IDX = _json.loads((_LESSON_DIR / "_index.json").read_text("utf-8"))
 
 # ── Sparky（分诊 + 陪走）────────────────────────────────────────────
+# 课程知识三层：目录(全量) / 骨架(全量) / 正文(按需)。都由 scripts/sync_backend_index.py
+# 从 frontend/slides 生成——后端在 Render 上读不到 frontend/，必须提交时抽好。
+def _load_layer(name: str) -> dict:
+    p = _LESSON_DIR / name
+    if not p.exists():                       # 缺文件不能让整个服务起不来
+        print(f"[SPARKY] 缺少 {name}，该层降级为空（跑一次 scripts/sync_backend_index.py）",
+              flush=True)
+        return {}
+    return _json.loads(p.read_text("utf-8"))
+
+
+_LESSON_SKEL = _load_layer("_skeleton.json")
+_LESSON_TEXT = _load_layer("_text.json")
+
 import sparky as _sparky
-app.include_router(_sparky.make_router(TERMS, JOBS, TERM_LESSONS, _LESSON_IDX))
+app.include_router(_sparky.make_router(TERMS, JOBS, TERM_LESSONS, _LESSON_IDX,
+                                       _LESSON_SKEL, _LESSON_TEXT))
 
 # 登录闸开关。微信登录尚未配通前默认 off——否则受保护章节会变成谁都打不开。
 # 登录跑通后在 Render 面板把 CONTENT_GATE 拨成 on 即可，代码零改动。
