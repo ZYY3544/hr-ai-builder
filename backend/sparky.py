@@ -593,6 +593,11 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
             return {"ok": False, "why": "unknown lesson"}
         ip = (request.headers.get("x-forwarded-for") or
               (request.client.host if request.client else "?")).split(",")[0].strip()
+        # 服务端兜底：正常模式下"卡住"至少要 300 秒才触发，低于这个值的只可能来自
+        # debug 模式或伪造。前端已经拦了一道，这里是第二道——数据质量不能只靠客户端自觉。
+        if body.dwell_s < 120:
+            print(f"[SPARKY] 信号时长异常({body.dwell_s}s)，拒收: {body.lesson}", flush=True)
+            return {"ok": False, "why": "dwell too short"}
         q, now = _sig_hits[ip], time.time()
         if sum(1 for t in q if now - t < 3600) >= 40:      # 信号也得防刷
             return {"ok": False, "why": "rate"}

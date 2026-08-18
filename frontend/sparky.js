@@ -451,6 +451,9 @@
      刻意不走 canFire —— 防打扰规则管的是"要不要说话"，不该顺手把数据也掐了。
      每次访问最多 2 泡，但卡住这件事发生几次就该记几次。 */
   function sendSignal(file, dwellSec) {
+    // debug 模式把阈值缩到 2%，此时的"卡住"只有十几秒——那不是真卡住，
+    // 是我们自己在测触发。放进去会污染"哪节最难"的排行，而排行是用来决定改哪节课的。
+    if (DBG) { console.log('[spk] debug 模式，信号不上报:', file, Math.round(dwellSec) + 's'); return; }
     try {
       fetch(API + '/api/sparky/signal', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
