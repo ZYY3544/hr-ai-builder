@@ -38,6 +38,11 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   backdrop-filter:saturate(1.8) blur(14px);border-bottom:1px solid rgba(226,232,240,.9)}
 .nav{display:flex;align-items:center;gap:24px;height:60px;--nav-shift:5.87px}
 .brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-28px}
+/* 竖线划开公司与产品：左边是谁做的，右边是这是什么。
+   架构主要写在子域名里（learn.meansights.com），导航栏只需说清"我在哪儿"。 */
+.brand .bdiv{width:1px;height:16px;background:var(--line);margin:0 11px;align-self:center}
+.brand .bdesc{font-size:13px;color:var(--faint);letter-spacing:.01em;align-self:center;white-space:nowrap}
+@media(max-width:900px){.brand .bdiv,.brand .bdesc{display:none}}
 .mark{height:28px;width:auto;display:block}
 /* 链接对齐字标基线，不是对齐栏的几何中心。
    字标基线在 SVG 的 viewBox y=56（viewBox 从 y=4 起、高 58.311），标记按整个 viewBox 居中
@@ -130,6 +135,19 @@ section{scroll-margin-top:72px}
 .band .desc{font-size:16px;color:var(--muted);max-width:44em;margin-top:18px;line-height:2.05}
 .band .desc b{color:var(--ink);font-weight:500}
 
+.spk-band{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-x);padding:32px 34px;margin-top:40px}
+.spk-band .cat{width:64px;height:auto;display:block;flex:0 0 auto}
+.spk-band h3{font-size:20px;letter-spacing:-.02em}
+.spk-band .lead{font-size:14.5px;color:var(--muted);line-height:1.95;margin-top:9px;max-width:52em}
+.spk-band .lead b{color:var(--ink);font-weight:500}
+.spk-band ul{list-style:none;margin-top:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px 26px}
+.spk-band li{font-size:13.5px;color:var(--body);line-height:1.75;padding-left:16px;position:relative}
+.spk-band li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
+.spk-band li b{color:var(--ink);font-weight:600}
+.spk-band .hint{font-size:12.5px;color:var(--faint);margin-top:16px}
+@media(max-width:760px){.spk-band{grid-template-columns:1fr;padding:26px 22px}
+  .spk-band ul{grid-template-columns:1fr}}
 .who{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
 @media(max-width:920px){.who{grid-template-columns:1fr}}
 .night .nout{font-size:13px;color:var(--pri-d);background:rgba(0,168,138,.07);border-radius:9px;
@@ -248,7 +266,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 
 <header>
   <div class="wrap nav">
-    <div class="brand"><img class="mark" src="brand/lockup.svg" alt="meansights"></div>
+    <div class="brand"><img class="mark" src="brand/lockup.svg" alt="meansights"><span class="bdiv"></span><span class="bdesc">HR AI Learning Agent</span></div>
     <div class="links">
       <a href="#curriculum">课程内容</a>
       <a href="jobs.html">岗位机会</a>
@@ -297,6 +315,29 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
         <div class="n">学完能去哪 <span class="ar">→</span></div>
         <div class="d">真实在招岗位逐条对照能力要求与知识点</div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Sparky ========== -->
+<section class="band" id="sparky">
+  <div class="wrap">
+    <div class="eyebrow">Agent</div>
+    <h2>它不是右下角那个聊天框</h2>
+    <p class="desc">这个站带一个叫 Sparky 的助手。<b>它读过这里的每一节课</b>，所以它能把你放到具体的位置，而不是跟你聊 AI。</p>
+    <div class="spk-band">
+      <img class="cat" src="logo-cat.svg" alt="Sparky">
+      <div>
+        <h3>它知道的和它不说的</h3>
+        <div class="lead">大部分网站的助手只会把你的问题丢给大模型。Sparky 手上有这个站的<b>全部课程结构</b>——哪节讲什么、分哪几块、有没有表、表比的是哪几列。所以它给的答案能落到具体某一节的具体某一段。</div>
+        <ul>
+          <li><b>指路，不讲课。</b>问它「RAG 是什么」，它不解释，它告诉你哪节讲这个——课是校验过的，它的现场复述不是。</li>
+          <li><b>你卡住时它先开口。</b>某一节你停留超过声明时长的三倍，它会问一句，并且说得出你卡在哪一节、停了多久。</li>
+          <li><b>查不到就说查不到。</b>这个站没讲的东西，它直说没有，不拿一节沾边的课来顶。</li>
+          <li><b>你说这节写得绕，它会记下来。</b>反馈直接进改课清单，但它不会承诺什么时候改——这站一个人维护。</li>
+        </ul>
+        <div class="hint">右下角那只猫就是它。深夜会自己睡着，鼠标碰一下会醒。</div>
+      </div>
     </div>
   </div>
 </section>
