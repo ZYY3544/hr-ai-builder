@@ -460,7 +460,7 @@ renderTopics();
 const API = (location.hostname==='localhost'||location.protocol==='file:')
   ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
 const TK='hab_token';
-let poll=null;
+let poll=null; let ssoWin=null;
 
 function setUser(u){
   const b=$('#loginBtn'); if(!b) return;
@@ -503,7 +503,12 @@ async function openLogin(e){
   if(d.mode==='oauth'){
     $('#loginSub').textContent='点击下方按钮，用微信扫码授权';
     body.innerHTML=`<button class="wxbtn" id="wxGo">用微信登录</button>`;
-    $('#wxGo').onclick=()=>window.location.href=d.oauth_url;
+    $('#wxGo').onclick=()=>{
+      // 小窗扫码；登录走服务端 scene 轮询，跟这个窗口无关，authed 后我们主动关掉它
+      ssoWin=window.open(d.oauth_url,'wxlogin',
+        'width=420,height=580,left='+Math.round((screen.width-420)/2)+',top=120');
+      $('#loginSub').textContent='在弹出的窗口里用微信扫码';
+    };
   }else{
     $('#loginSub').textContent='用微信扫描下方小程序码';
     body.innerHTML=`<div class="qrbox"><img src="${API}/api/wx/qrcode?scene=${encodeURIComponent(d.scene)}" alt="小程序码" onerror="this.parentNode.innerHTML='<div class=&quot;st&quot;>二维码生成失败<br>请稍后重试</div>'"></div>`;
@@ -514,6 +519,7 @@ async function openLogin(e){
       const r=await fetch(API+'/api/wx/login-status?scene='+encodeURIComponent(d.scene));
       const s=await r.json();
       if(s.status==='authed'){ clearInterval(poll); poll=null;
+        if(ssoWin){ try{ssoWin.close()}catch(e){} ssoWin=null; }
         localStorage.setItem(TK,s.token); setUser(s.user); closeLogin(); }
       else if(s.status==='expired'){ clearInterval(poll); poll=null;
         $('#loginBody').innerHTML='<div class="qrbox"><div class="st">二维码已过期<br>关闭后重新点登录</div></div>'; }

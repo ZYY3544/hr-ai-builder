@@ -12,6 +12,7 @@ from typing import List, Literal, Optional
 from urllib.parse import quote
 import os
 
+import requests as _rq
 import wechat as wx
 import auth
 
@@ -330,18 +331,36 @@ def _front_base() -> str:
     return (os.getenv("FRONTEND_URL") or "https://hr-ai-builder-web.onrender.com").rstrip("/")
 
 
+# ── SSO 委托：登录复用 meansights 的微信登录 ─────────────────────────
+# 为什么不走自有轨道：微信开放平台的授权回调域是严格同域校验，铭曦的网站应用配的
+# 是 selarin.com，本站的 onrender.com 域挂不进去；小程序轨道的合法域名又要求备案。
+# 而扫码、建号、发 token 在铭曦侧本来就是闭环——本站只需要当一个 HTTP 客户端：
+# 拿扫码地址、轮询结果、用铭曦 token 换用户资料、签自己的 JWT。铭曦零改动。
+# 附带的产品收益：两边账号天然互通（同一套 unionid 建号），漏斗不会断在注册这一步。
+_MS_API = os.getenv("MS_SSO_BASE", "https://meansights-backend.onrender.com").rstrip("/")
+_SSO_PREFIX = "ms:"          # scene 带此前缀 = 会话在铭曦侧，轮询走代理分支
+
+
 @app.post("/api/wx/login-session")
 def wx_login_session():
-    """建一个登录会话。两轨都没配 → 503，前端据此隐藏微信入口。
-    开放平台可用时额外返回 oauth_url（扫完直接有真实昵称头像）。"""
-    if not wx.is_any_configured():
-        raise HTTPException(503, "wx_not_configured")
-    scene = wx.new_scene()
-    out = {"scene": scene, "mode": "miniprogram"}
-    if wx.web_is_configured():
-        out["oauth_url"] = wx.web_authorize_url(wx.web_callback_url(), scene)
-        out["mode"] = "oauth"
-    return out
+    """建一个登录会话。自有轨道配置了走自有；没配则委托 meansights SSO。"""
+    if wx.is_any_configured():
+        scene = wx.new_scene()
+        out = {"scene": scene, "mode": "miniprogram"}
+        if wx.web_is_configured():
+            out["oauth_url"] = wx.web_authorize_url(wx.web_callback_url(), scene)
+            out["mode"] = "oauth"
+        return out
+    try:
+        r = _rq.post(f"{_MS_API}/api/wx/oauth/url", timeout=10)
+        if r.status_code == 200:
+            d = r.json()
+            return {"scene": _SSO_PREFIX + d["scene"], "mode": "oauth",
+                    "oauth_url": d["url"]}
+        print(f"[SSO] 铭曦 oauth/url -> {r.status_code} {r.text[:120]}", flush=True)
+    except Exception as e:
+        print(f"[SSO] 铭曦不可达: {e}", flush=True)
+    raise HTTPException(503, "wx_not_configured")
 
 
 @app.get("/api/wx/qrcode")
@@ -409,6 +428,8 @@ def wx_oauth_callback(code: str = "", state: str = ""):
 @app.get("/api/wx/login-status")
 def wx_login_status(scene: str):
     """网页轮询。authed 后返回 token，并让 scene 一次性失效。"""
+    if scene.startswith(_SSO_PREFIX):
+        return _sso_poll(scene[len(_SSO_PREFIX):])
     st = wx.get_scene(scene)
     if not st:
         return {"status": "expired"}
@@ -416,6 +437,36 @@ def wx_login_status(scene: str):
         wx.set_scene_authed(scene, "", None)   # 一次性：取走即作废
         return {"status": "authed", "token": st["token"], "user": st.get("user")}
     return {"status": "pending"}
+
+
+def _sso_poll(ms_scene: str):
+    """代理轮询铭曦。authed 时用铭曦 token 换用户资料，签发本站 JWT。"""
+    try:
+        r = _rq.get(f"{_MS_API}/api/wx/login-status",
+                    params={"scene": ms_scene}, timeout=10)
+        st = r.json()
+    except Exception as e:
+        print(f"[SSO] 轮询铭曦失败: {e}", flush=True)
+        return {"status": "pending"}          # 网络抖动别把会话判死，下轮再试
+    if st.get("status") != "authed":
+        return {"status": st.get("status", "pending")}
+    ms_token = st.get("token") or ""
+    try:
+        me = _rq.get(f"{_MS_API}/api/auth/me",
+                     headers={"Authorization": f"Bearer {ms_token}"},
+                     timeout=10).json()
+        u = (me.get("user") or {})
+    except Exception as e:
+        print(f"[SSO] 换用户资料失败: {e}", flush=True)
+        return {"status": "expired"}
+    if not u.get("id"):
+        return {"status": "expired"}
+    user = {"nickname": (u.get("display_name") or "微信用户")[:64],
+            "avatar": (u.get("avatar_url") or "")[:512]}
+    token = auth.issue(openid=f"ms:{u['id']}", nickname=user["nickname"],
+                       avatar=user["avatar"], source="ms-sso")
+    print(f"[SSO] 登录成功 ms_user={u['id']}", flush=True)
+    return {"status": "authed", "token": token, "user": user}
 
 
 @app.get("/api/auth/config")
