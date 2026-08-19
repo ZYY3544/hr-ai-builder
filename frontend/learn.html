@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none}
 .mark{height:25px;width:auto;display:block}
 .t-l{background:#FEF3C7;color:#92400E}
 .prog{display:flex;align-items:center;gap:9px;padding:12px 16px 0}
-.pbar{width:120px;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.pbar{flex:1;min-width:56px;max-width:120px;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
 .pbar i{display:block;height:100%;background:var(--grad-r);border-radius:3px;transition:width .3s}
 .prog .n{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .tbtn{font:inherit;font-size:12.5px;padding:6px 13px;border-radius:6px;border:1px solid var(--line);
@@ -85,15 +85,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 /* ── 内容区 ── */
 .pane{flex:1;position:relative;min-width:0;display:flex;flex-direction:column}
 .pane iframe{flex:1;width:100%;border:0;background:#fff}
-.pager{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:11px 22px;border-top:1px solid var(--line);background:#fff}
-.pg{font:inherit;font-size:12.5px;padding:7px 15px;border-radius:8px;border:1px solid var(--line);
-  background:#fff;color:var(--body);cursor:pointer;max-width:44%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pg:hover:not(:disabled){border-color:var(--pri);color:var(--pri)}
-.pg:disabled{opacity:.4;cursor:default}
-.pg.next{background:var(--grad-r);border-color:transparent;color:#fff}
-.pg.next:hover:not(:disabled){color:#fff;opacity:.92}
-.donetag{font-size:12.5px;color:var(--muted);cursor:pointer;user-select:none;white-space:nowrap}
+.donetag{margin-left:auto;font-size:11.5px;color:var(--muted);cursor:pointer;user-select:none;white-space:nowrap}
 .donetag:hover{color:var(--green-d)}
 .donetag.done{color:var(--green-d);font-weight:500}
 
@@ -146,7 +138,7 @@ body.dragging iframe{pointer-events:none}
 
 <div class="main">
   <aside class="side" id="side">
-    <div class="prog"><div class="pbar"><i id="pbar" style="width:0"></i></div><span class="n" id="pnum">0 / 0</span></div>
+    <div class="prog"><div class="pbar"><i id="pbar" style="width:0"></i></div><span class="n" id="pnum">0 / 0</span><span class="donetag" id="mark"></span></div>
     <div class="sch"><input id="q" type="search" name="lesson-search" placeholder="搜索知识点…" autocomplete="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
     <div class="tree" id="tree"></div>
     <div class="foot">
@@ -158,11 +150,6 @@ body.dragging iframe{pointer-events:none}
 
   <div class="pane">
     <iframe id="frame" title="课程内容"></iframe>
-    <div class="pager">
-      <button class="pg" id="prev">← 上一节</button>
-      <span class="donetag" id="mark"></span>
-      <button class="pg next" id="next">下一节 →</button>
-    </div>
   </div>
 </div>
 
@@ -233,15 +220,14 @@ function load(){
   $('#frame').src=srcOf(l);
   document.title=l.title+' · meansights learning';
   const p=FLAT[i-1], n=FLAT[i+1];
-  $('#prev').disabled=!p; $('#next').disabled=!n;
-  $('#prev').textContent=p?'← '+p.title:'← 上一节';
-  $('#next').textContent=n?n.title+' →':'已是最后一节';
-  $('#prev').onclick=()=>p&&(location.hash='#'+encodeURIComponent(p.file));
-  $('#next').onclick=()=>n&&(location.hash='#'+encodeURIComponent(n.file));
+  // 底部翻页条已撤：翻页走侧栏目录 + 键盘 ←→（iframe 内外都监听）
+  window.goPrev=()=>p&&(location.hash='#'+encodeURIComponent(p.file));
+  window.goNext=()=>n&&(location.hash='#'+encodeURIComponent(n.file));
 
   const m=$('#mark'), isDone=done.has(l.file);
   m.className='donetag'+(isDone?' done':'');
-  m.textContent=isDone?'✓ 已学完':'○ 标记为学完';
+  m.textContent=isDone?'✓ 已学完':'○ 标记学完';
+  m.title=isDone?'点击取消这节的学完标记':'把当前这节标记为学完';
   m.onclick=()=>{ done.has(l.file)?done.delete(l.file):done.add(l.file);
     saveDone(); renderTree($('#q').value); renderProgress(); load(); };
 
@@ -282,14 +268,14 @@ window.addEventListener('hashchange',load);
 $('#frame').addEventListener('load',()=>{ try{
   $('#frame').contentDocument.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
-    if(e.key==='ArrowLeft'&&!$('#prev').disabled) $('#prev').click();
-    if(e.key==='ArrowRight'&&!$('#next').disabled) $('#next').click();
+    if(e.key==='ArrowLeft') window.goPrev&&window.goPrev();
+    if(e.key==='ArrowRight') window.goNext&&window.goNext();
   });
 }catch(e){} });
 document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT') return;
-  if(e.key==='ArrowLeft'&&!$('#prev').disabled) $('#prev').click();
-  if(e.key==='ArrowRight'&&!$('#next').disabled) $('#next').click();
+  if(e.key==='ArrowLeft') window.goPrev&&window.goPrev();
+  if(e.key==='ArrowRight') window.goNext&&window.goNext();
 });
 
 /* 登录态 */

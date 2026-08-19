@@ -215,18 +215,8 @@
   var style = document.createElement('style'); style.textContent = css;
   document.head.appendChild(style);
 
-  /* 球的底距全站统一取课程页的位置（74px）——课程页有底部翻页条，球必须抬到它上面；
-     其他页没有那条，但球的位置切页时不该跳。课程页仍动态量翻页条高度，防它变高时被盖。 */
-  function fitBall() {
-    var bar = document.querySelector('.pager'), pad = 74;
-    if (bar) {
-      var h = bar.getBoundingClientRect().height;
-      if (h > 0) pad = Math.round(h) + 14;
-    }
-    document.documentElement.style.setProperty('--spk-bottom', pad + 'px');
-  }
-  fitBall();
-  window.addEventListener('resize', fitBall);
+  /* 球和面板的底距全站统一走 CSS 默认的 --spk-bottom(20px)；
+     课程页的底部翻页条已撤，不再需要动态避让。 */
 
   var ball = document.createElement('button');
   ball.id = 'spk-ball'; ball.title = 'Sparky · 伴学助手';
