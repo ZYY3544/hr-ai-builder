@@ -427,6 +427,7 @@
   /* ---------------- 触发引擎：宁可错过，不可打扰 ---------------- */
   function fired() { return +(sessionStorage.getItem('spk_fired') || 0); }
   function canFire(id, coolH) {
+    if (asleep()) return false;        // 睡着就不说话——睡着的猫本身已经在提醒"夜深了"
     if ((document.hidden && !DBG) || panel.classList.contains('on') || busy) return false;
     if (+(sessionStorage.getItem('spk_x') || 0) >= 2) return false;          // 连按两次×→全程闭嘴
     if (fired() >= 2) return false;                                          // 每次访问最多2泡
