@@ -145,7 +145,7 @@
     // 悬浮圆角面板，不贴边、不通顶。bottom 跟悬浮球共用 --spk-bottom，
     // 这样在课程页会自动避开底部翻页条（跟球一个避让逻辑，改一处两处都对）。
     '#spk-panel{position:fixed;right:20px;bottom:var(--spk-bottom,20px);width:390px;',
-    ' max-width:calc(100vw - 32px);height:min(860px,calc(100vh - var(--spk-bottom,20px) - 14px));',
+    ' max-width:calc(100vw - 32px);height:min(860px,calc(100vh - var(--spk-bottom,20px) - 72px));',
     ' background:#fff;z-index:9999;border-radius:18px;overflow:hidden;',
     ' border:1px solid rgba(226,232,240,.9);',
     ' box-shadow:0 18px 48px -12px rgba(15,23,42,.26),0 4px 14px rgba(15,23,42,.07);',
