@@ -145,7 +145,7 @@
     // 悬浮圆角面板，不贴边、不通顶。bottom 跟悬浮球共用 --spk-bottom，
     // 这样在课程页会自动避开底部翻页条（跟球一个避让逻辑，改一处两处都对）。
     '#spk-panel{position:fixed;right:20px;bottom:var(--spk-bottom,20px);width:390px;',
-    ' max-width:calc(100vw - 32px);height:min(660px,calc(100vh - var(--spk-bottom,20px) - 28px));',
+    ' max-width:calc(100vw - 32px);height:min(860px,calc(100vh - var(--spk-bottom,20px) - 14px));',
     ' background:#fff;z-index:9999;border-radius:18px;overflow:hidden;',
     ' border:1px solid rgba(226,232,240,.9);',
     ' box-shadow:0 18px 48px -12px rgba(15,23,42,.26),0 4px 14px rgba(15,23,42,.07);',
@@ -153,9 +153,21 @@
     ' transform:translateY(14px) scale(.97);opacity:0;pointer-events:none;',
     ' transition:transform .2s cubic-bezier(.2,.8,.3,1),opacity .18s ease}',
     '#spk-panel.on{transform:none;opacity:1;pointer-events:auto}',
-    '#spk-head{padding:14px 18px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:10px}',
-    '#spk-head .t{font-weight:700;color:#0F172A;font-size:15px}',
-    '#spk-head .s{font-size:11.5px;color:#94A3B8}',
+    '#spk-head{padding:12px 14px 12px 18px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:10px}',
+    '#spk-head .t{font-weight:700;color:#0F172A;font-size:15px;flex:1}',
+    '.spk-ib{border:none;background:none;color:#94A3B8;cursor:pointer;padding:6px;border-radius:8px;display:flex}',
+    '.spk-ib:hover{color:#0F172A;background:#F1F5F9}',
+    '.spk-ib svg{width:17px;height:17px;display:block}',
+    '#spk-histp{position:absolute;top:57px;left:0;right:0;bottom:0;background:#fff;z-index:5;',
+    ' overflow-y:auto;padding:10px 12px;display:none}',
+    '#spk-histp.on{display:block}',
+    '.spk-hrow{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;cursor:pointer}',
+    '.spk-hrow:hover{background:#F8FAFC}',
+    '.spk-hrow.cur{background:#E8FBF6}',
+    '.spk-hrow .ht{flex:1;min-width:0;font-size:13px;color:#0F172A;font-weight:500;',
+    ' white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+    '.spk-hrow .hm{font-size:11px;color:#94A3B8;flex:0 0 auto}',
+    '.spk-hempty{text-align:center;color:#94A3B8;font-size:12.5px;padding:40px 0}',
     '#spk-x{margin-left:auto;border:none;background:none;font-size:20px;color:#94A3B8;cursor:pointer;padding:4px 8px}',
     '#spk-log{flex:1;overflow-y:auto;padding:16px;background:#F8FAFC}',
     '.spk-m{max-width:86%;margin-bottom:10px;padding:10px 13px;border-radius:12px;font-size:13.5px;line-height:1.8;',
@@ -246,8 +258,11 @@
   panel.id = 'spk-panel';
   panel.innerHTML =
     '<div id="spk-head"><span id="spk-avatar" style="display:flex">' + catSVG(30, 'idle') + '</span>' +
-    '<div><div class="t">Sparky</div><div class="s">帮你找到该读哪儿 · 不替课本讲课</div></div>' +
+    '<div class="t">Sparky</div>' +
+    '<button class="spk-ib" id="spk-new" title="新对话"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>' +
+    '<button class="spk-ib" id="spk-hi" title="对话记录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button>' +
     '<button id="spk-x">×</button></div>' +
+    '<div id="spk-histp"></div>' +
     '<div id="spk-log"></div>' +
     '<div id="spk-fb"><button type="button">这节没看懂 / 有改进建议</button></div>' +
     '<div id="spk-inp"><textarea rows="1" placeholder="说说你想拿 AI 干什么…"></textarea>' +
@@ -258,14 +273,77 @@
   var log = panel.querySelector('#spk-log'),
       ta = panel.querySelector('textarea'),
       send = panel.querySelector('#spk-send'),
-      fbBar = panel.querySelector('#spk-fb');
+      fbBar = panel.querySelector('#spk-fb'),
+      histp = panel.querySelector('#spk-histp');
+  panel.querySelector('#spk-hi').onclick = function () {
+    if (histp.classList.contains('on')) { histp.classList.remove('on'); return; }
+    renderHist(); histp.classList.add('on');
+  };
+  panel.querySelector('#spk-new').onclick = function () { newSession(); };
 
   /* ---------------- 状态 ---------------- */
-  var hist = [];
-  try { hist = JSON.parse(localStorage.getItem(HKEY) || '[]'); } catch (e) {}
+  /* 多会话：sessions=[{id,ts,title,msgs}]，hist 始终指向当前会话的 msgs。
+     旧的单线历史（sparky_hist）自动迁成第一个会话，用户什么都不丢。 */
+  var SKEY = 'spk_sess', MAX_S = 20;
+  var sessions = [];
+  try { sessions = JSON.parse(localStorage.getItem(SKEY) || '[]'); } catch (e) {}
+  if (!sessions.length) {
+    try {
+      var legacy = JSON.parse(localStorage.getItem(HKEY) || '[]');
+      if (legacy.length) sessions = [{ id: Date.now(), ts: Date.now(), title: '', msgs: legacy }];
+      localStorage.removeItem(HKEY);
+    } catch (e) {}
+  }
+  var cur = sessions.length ? sessions[sessions.length - 1]
+                            : { id: Date.now(), ts: Date.now(), title: '', msgs: [] };
+  if (!sessions.length) sessions.push(cur);
+  var hist = cur.msgs;
   var busy = false, enabled = null;   // enabled: null=未知 true/false=health 结果
 
-  function save() { try { localStorage.setItem(HKEY, JSON.stringify(hist.slice(-MAX_H))); } catch (e) {} }
+  function save() {
+    cur.ts = Date.now();
+    cur.msgs = hist.slice(-MAX_H);
+    if (!cur.title) {
+      var first = cur.msgs.find(function (m) { return m.role === 'user'; });
+      if (first) cur.title = first.content.slice(0, 24);
+    }
+    try { localStorage.setItem(SKEY, JSON.stringify(sessions.slice(-MAX_S))); } catch (e) {}
+  }
+  function switchTo(sess) {
+    save();
+    cur = sess; hist = cur.msgs;
+    log.innerHTML = ''; histp.classList.remove('on');
+    if (hist.length) { restore(); } else { opener(); }
+    scroll();
+  }
+  function newSession() {
+    if (!hist.length) { histp.classList.remove('on'); return; }   // 当前就是空的，别堆空会话
+    save();
+    cur = { id: Date.now(), ts: Date.now(), title: '', msgs: [] };
+    sessions.push(cur); hist = cur.msgs;
+    log.innerHTML = ''; histp.classList.remove('on');
+    opener();
+  }
+  function fmtTs(t) {
+    var d = new Date(t), now = new Date();
+    var hm = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    return d.toDateString() === now.toDateString() ? hm
+      : (d.getMonth() + 1) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function renderHist() {
+    var items = sessions.slice().reverse();
+    histp.innerHTML = items.filter(function (x) { return x.msgs.length; }).map(function (x) {
+      return '<div class="spk-hrow' + (x.id === cur.id ? ' cur' : '') + '" data-id="' + x.id + '">' +
+        '<span class="ht">' + esc(x.title || '（主动开口的对话）') + '</span>' +
+        '<span class="hm">' + fmtTs(x.ts) + ' · ' + x.msgs.length + '条</span></div>';
+    }).join('') || '<div class="spk-hempty">还没有历史对话</div>';
+    histp.querySelectorAll('.spk-hrow').forEach(function (r) {
+      r.onclick = function () {
+        var t = sessions.find(function (x) { return String(x.id) === r.dataset.id; });
+        if (t) switchTo(t);
+      };
+    });
+  }
   function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function md(s) { return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'); }
   function scroll() { log.scrollTop = log.scrollHeight; }
