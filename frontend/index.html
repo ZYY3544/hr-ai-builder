@@ -36,7 +36,6 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35
 /* ---------- nav ---------- */
 header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   backdrop-filter:saturate(1.8) blur(14px);border-bottom:1px solid rgba(226,232,240,.9)}
-.nav{display:flex;align-items:center;gap:24px;height:60px;--nav-shift:5.87px}
 .brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-42px;transition:opacity .15s}
 .brand:hover{opacity:.72}   /* 唯一的可点提示——不加下划线不变色，别动品牌本身 */
 @media(max-width:1402px){.brand{margin-left:0}}
@@ -45,12 +44,6 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
    字标基线在 SVG 的 viewBox y=56（viewBox 从 y=4 起、高 58.311），标记按整个 viewBox 居中
    （使用说明要求：顶部渐隐区算在内），于是基线落在距栏顶 40.97px，而居中的链接基线在 35.10px。
    下面 5.87px 是实测差值——改栏高 / 字标高 / 链接字号任何一个，都要重新量。 */
-.nav .links{display:flex;align-items:center;justify-content:flex-end;gap:20px;flex:1;
-  position:relative;top:var(--nav-shift)}
-.nav .links a{font-size:14px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:var(--r-s);transition:.15s;line-height:1.2}
-.nav .links a:hover{color:var(--pri);background:var(--pri-s)}
-.nav .right{display:flex;align-items:center;gap:9px;flex:0 0 auto;
-  position:relative;top:var(--nav-shift)}   /* 与三个链接同一条线，别只挪链接 */
 .btn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:var(--r-s);border:1px solid var(--line);
   color:var(--body);background:#fff;cursor:pointer;transition:.18s;display:inline-block;white-space:nowrap}
 .btn:hover{border-color:var(--pri);color:var(--pri)}
@@ -238,22 +231,33 @@ a.cc:hover{border-color:rgba(0,168,138,.4);box-shadow:0 12px 28px -18px rgba(0,1
 .modal .off{margin-top:20px;padding:16px;background:var(--bg);border-radius:12px;
   font-size:12.5px;color:var(--muted);line-height:1.8}
 footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;text-align:center}
+/* ── 全站统一顶栏（数值照抄首页，改这里前先对 index.html） ── */
+.gwrap{max-width:1400px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:24px;height:60px}
+.brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-42px;transition:opacity .15s}
+.brand:hover{opacity:.72}
+.glinks{display:flex;align-items:center;justify-content:flex-end;gap:20px;flex:1;position:relative;top:5.87px}
+.glinks a{font-size:14px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:6px;line-height:1.2;transition:.15s}
+.glinks a:hover{color:var(--pri);background:rgba(0,168,138,.07)}
+.glinks a.cur{color:var(--pri)}
+.gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px}
+.gbtn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:6px;color:#fff;white-space:nowrap;
+  background:linear-gradient(135deg,#00A88A,#0891B2);box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
+@media(max-width:1402px){.brand{margin-left:0}}
+@media(max-width:960px){.glinks{display:none}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="wrap nav">
-    <a class="brand" href="index.html" aria-label="回到首页"><picture><source media="(max-width:900px)" srcset="brand/lockup.svg"><img class="mark" src="brand/lockup-product.svg" alt="meansights — HR AI Learning Agent"></picture></a>
-    <div class="links">
+  <div class="gwrap">
+    <a class="brand" href="index.html" aria-label="回到首页"><picture><source media="(max-width:1100px)" srcset="brand/lockup.svg"><img class="mark" src="brand/lockup-product.svg" alt="meansights — HR AI Learning Agent"></picture></a>
+    <div class="glinks">
       <a href="learn.html">课程内容</a>
       <a href="tasks.html">实战任务</a>
       <a href="jobs.html">岗位机会</a>
       <a href="about.html">关于我们</a>
     </div>
-    <div class="right">
-      <a class="btn pri" href="#" id="loginBtn">登录</a>
-    </div>
+    <div class="gright"><a class="gbtn" href="#" id="loginBtn">登录</a></div>
   </div>
 </header>
 
