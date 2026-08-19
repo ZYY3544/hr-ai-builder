@@ -33,14 +33,8 @@ a{color:inherit;text-decoration:none}
   border-bottom:1px solid var(--line);background:#fff;z-index:20}
 .brand{display:flex;align-items:center;gap:7px;flex:0 0 auto}
 .mark{height:25px;width:auto;display:block}
-.crumb{flex:1;min-width:0;display:flex;align-items:center;gap:9px;font-size:12.5px;overflow:hidden}
-.crumb .c1{color:var(--pri);font-weight:500;white-space:nowrap}
-.crumb .sep{color:var(--line)}
-.crumb .c2{color:var(--ink);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.crumb .t-p{background:rgba(0,168,138,.1);color:var(--pri-d);text-decoration:none;font-weight:600}
-.crumb .tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;flex:0 0 auto}
 .t-l{background:#FEF3C7;color:#92400E}
-.prog{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.prog{display:flex;align-items:center;gap:9px;flex:0 0 auto;margin-left:auto}
 .pbar{width:120px;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
 .pbar i{display:block;height:100%;background:var(--grad-r);border-radius:3px;transition:width .3s}
 .prog .n{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -48,7 +42,7 @@ a{color:inherit;text-decoration:none}
   background:#fff;color:var(--body);cursor:pointer;white-space:nowrap}
 .tbtn:hover{border-color:var(--pri);color:var(--pri)}
 .tbtn.pri{background:var(--grad-r);border-color:transparent;color:#fff}
-@media(max-width:900px){.crumb .c1,.prog .n{display:none}}
+@media(max-width:900px){.prog .n{display:none}}
 
 /* ── 主体 ── */
 .main{flex:1;display:flex;min-height:0}
@@ -131,7 +125,6 @@ body.dragging iframe{pointer-events:none}
   <a class="brand" href="index.html">
     <picture><source media="(max-width:1100px)" srcset="brand/lockup.svg"><img class="mark" src="brand/lockup-product.svg" alt="meansights — HR AI Learning Agent"></picture>
   </a>
-  <div class="crumb" id="crumb"></div>
   <div class="prog">
     <div class="pbar"><i id="pbar" style="width:0"></i></div>
     <span class="n" id="pnum">0 / 0</span>
@@ -226,10 +219,6 @@ function load(){
   const l=FLAT[i];
   $('#frame').src=srcOf(l);
   document.title=l.title+' · meansights learning';
-  $('#crumb').innerHTML=`<span class="c1">${l.part}</span><span class="sep">·</span>`
-    +`<span class="c2">${l.partTitle.split('：')[0]}</span>`
-    +'';
-
   const p=FLAT[i-1], n=FLAT[i+1];
   $('#prev').disabled=!p; $('#next').disabled=!n;
   $('#prev').textContent=p?'← '+p.title:'← 上一节';
