@@ -127,13 +127,15 @@
      秒睡的话，那就只是个 hover 特效；隔几分钟才睡，它才像个活物。
      而且中间要有一档「醒着但没在走」——鼠标移开直接从走路跳回睡觉，动作是断的。
      所以三档：walk（正被摸） → idle（醒着、会眨眼） → sleep（睡回去）。 */
-  var wakeUntil = 0;
+  /* 醒/睡是全站一只猫的状态，不是每个页面各养一只：
+     清醒截止时间放 localStorage，换页、切标签页都接着算。 */
   function wakeMs() {
     try { if (localStorage.getItem('spk_debug') === '1') return 8000; } catch (e) {}
     return 3 * 60 * 1000;
   }
-  function stayAwake() { wakeUntil = Date.now() + wakeMs(); }
-  function asleep() { return isNight() && Date.now() >= wakeUntil; }
+  function readWake() { try { return +localStorage.getItem('spk_wake') || 0; } catch (e) { return 0; } }
+  function stayAwake() { try { localStorage.setItem('spk_wake', Date.now() + wakeMs()); } catch (e) {} }
+  function asleep() { return isNight() && Date.now() >= readWake(); }
   function ballMode(hovering) { return hovering ? 'walk' : (asleep() ? 'sleep' : 'idle'); }
 
   /* ---------------- DOM ---------------- */
@@ -236,6 +238,18 @@
     clearTimeout(dozeTimer);
     dozeTimer = setTimeout(renderBall, wakeMs() + 200);   // 到点了才睡回去
   };
+  /* 对表：按共享的清醒截止时间重画球、重新装"到点睡回去"的闹钟。
+     三个触发点——本页初始化；别的标签页摸醒了它（storage 事件只在其他页触发）；
+     切回这个标签页（storage 可能没赶上，visibilitychange 兜底）。 */
+  function syncDoze() {
+    clearTimeout(dozeTimer);
+    var left = readWake() - Date.now();
+    if (left > 0) dozeTimer = setTimeout(renderBall, left + 200);
+    renderBall();
+  }
+  window.addEventListener('storage', function (e) { if (e.key === 'spk_wake') syncDoze(); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) syncDoze(); });
+  syncDoze();
   // 跨过 23 点时不用刷新页面，球自己睡过去
   var nightWas = isNight();
   setInterval(function () {
