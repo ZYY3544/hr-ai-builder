@@ -31,9 +31,9 @@ h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35
 
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);
   backdrop-filter:saturate(1.6) blur(12px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;gap:18px;height:60px;max-width:860px;margin:0 auto;padding:0 28px}
+.nav{display:flex;align-items:center;gap:18px;height:60px;padding:0 20px}
 .brand{display:flex;align-items:center;gap:7px}
-.mark{height:26px;width:auto;display:block}
+.mark{height:25px;width:auto;display:block}
 .nav .sp{flex:1}
 .btn{font:inherit;font-size:12.5px;padding:6.5px 14px;border-radius:6px;border:1px solid var(--line);
   background:#fff;color:var(--body);cursor:pointer;white-space:nowrap}
@@ -140,7 +140,7 @@ main{padding:8px 0 70px}
 <body>
 
 <header><div class="nav">
-  <a class="brand" href="index.html"><img class="mark" src="brand/lockup.svg" alt="meansights"></a>
+  <a class="brand" href="index.html"><picture><source media="(max-width:1100px)" srcset="brand/lockup.svg"><img class="mark" src="brand/lockup-product.svg" alt="meansights — HR AI Learning Agent"></picture></a>
   <span class="sp"></span>
   <a class="btn" href="learn.html">课程</a>
   <a class="btn" href="index.html">返回首页</a>
