@@ -39,6 +39,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .nav{display:flex;align-items:center;gap:24px;height:60px;--nav-shift:5.87px}
 .brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-42px;transition:opacity .15s}
 .brand:hover{opacity:.72}   /* 唯一的可点提示——不加下划线不变色，别动品牌本身 */
+@media(max-width:1500px){.brand{margin-left:0}}
 .mark{height:25px;width:auto;display:block}
 /* 链接对齐字标基线，不是对齐栏的几何中心。
    字标基线在 SVG 的 viewBox y=56（viewBox 从 y=4 起、高 58.311），标记按整个 viewBox 居中
