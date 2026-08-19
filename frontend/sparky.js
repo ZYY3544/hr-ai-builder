@@ -215,10 +215,10 @@
   var style = document.createElement('style'); style.textContent = css;
   document.head.appendChild(style);
 
-  /* 避让页面底部的固定操作条（课程页的上一节/下一节那条），别把按钮盖住。
-     量出来而不是写死：那条的高度会随字号和换行变，写死早晚对不上。 */
+  /* 球的底距全站统一取课程页的位置（74px）——课程页有底部翻页条，球必须抬到它上面；
+     其他页没有那条，但球的位置切页时不该跳。课程页仍动态量翻页条高度，防它变高时被盖。 */
   function fitBall() {
-    var bar = document.querySelector('.pager'), pad = 20;
+    var bar = document.querySelector('.pager'), pad = 74;
     if (bar) {
       var h = bar.getBoundingClientRect().height;
       if (h > 0) pad = Math.round(h) + 14;
