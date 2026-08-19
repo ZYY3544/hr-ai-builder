@@ -750,14 +750,19 @@
         }).catch(function () { enabled = null; });
     }
     ta.focus();
+    try { sessionStorage.setItem('spk_open', '1'); } catch (e) {}
   }
   ball.onclick = openPanel;
   panel.querySelector('#spk-x').onclick = function () {
     panel.classList.remove('on'); ball.style.display = 'flex';
+    try { sessionStorage.removeItem('spk_open'); } catch (e) {}
     // 刚聊完就秒睡回去很出戏——按跟 hover 同一套规则续上清醒时间
     stayAwake();
     ball.innerHTML = catSVG(52, ballMode(false));
     clearTimeout(dozeTimer);
     dozeTimer = setTimeout(renderBall, wakeMs() + 200);
   };
+  /* 开着面板换页,新页面把面板接着打开——对话框跟着人走,不是每页重新来过。
+     用 sessionStorage:只跟当前标签页的浏览路径,新开的标签页从收起状态开始。 */
+  try { if (sessionStorage.getItem('spk_open') === '1') openPanel(); } catch (e) {}
 })();
