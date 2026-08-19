@@ -187,18 +187,17 @@
     '.spk-chips button{border:1px solid #E2E8F0;background:#fff;border-radius:18px;padding:6px 13px;',
     ' font-size:12.5px;color:#475569;cursor:pointer}',
     '.spk-chips button:hover{border-color:#00A88A;color:#00795F}',
-    '#spk-fb{display:none;padding:8px 14px 0;background:#fff}',
-    '#spk-fb button{border:1px dashed #CBD5E1;background:#fff;border-radius:9px;padding:5px 11px;',
-    ' font-size:12px;color:#64748B;cursor:pointer;font-family:inherit}',
-    '#spk-fb button:hover{border-color:#00A88A;color:#00795F;border-style:solid}',
     '.spk-note{font-size:11.5px;color:#00795F;background:#E8FBF6;border-radius:8px;',
     ' padding:6px 10px;margin:0 0 12px;max-width:86%;line-height:1.6}',
-    '#spk-inp{display:flex;gap:8px;padding:12px 14px;border-top:1px solid #E2E8F0;background:#fff}',
-    '#spk-inp textarea{flex:1;border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px;font-size:13.5px;',
-    ' font-family:inherit;resize:none;height:40px;line-height:1.6;outline:none}',
+    // 输入区不要分隔线、不要提示按钮：一个圆角输入框嵌在白底里，发送箭头收进框内右侧
+    '#spk-inp{position:relative;display:flex;padding:10px 14px 14px;background:#fff}',
+    '#spk-inp textarea{flex:1;border:1.5px solid #E2E8F0;border-radius:21px;padding:9px 46px 9px 15px;font-size:13.5px;',
+    ' font-family:inherit;resize:none;height:42px;line-height:1.6;outline:none;background:#fff}',
     '#spk-inp textarea:focus{border-color:#00A88A}',
-    '#spk-send{border:none;border-radius:10px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;',
-    ' padding:0 16px;font-size:13.5px;cursor:pointer;font-weight:600}',
+    '#spk-send{position:absolute;right:20px;bottom:20px;width:30px;height:30px;border:none;border-radius:50%;',
+    ' background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer;',
+    ' display:flex;align-items:center;justify-content:center;padding:0}',
+    '#spk-send svg{width:15px;height:15px}',
     '#spk-send:disabled{opacity:.45;cursor:default}',
     '.spk-typing{color:#94A3B8;font-size:12px;padding:2px 0 10px}',
     '#spk-bubble{position:fixed;right:24px;bottom:calc(var(--spk-bottom,20px) + 72px);max-width:240px;background:#fff;border:1px solid #E2E8F0;',
@@ -254,16 +253,14 @@
     '<button id="spk-x">×</button></div>' +
     '<div id="spk-histp"></div>' +
     '<div id="spk-log"></div>' +
-    '<div id="spk-fb"><button type="button">这节没看懂 / 有改进建议</button></div>' +
     '<div id="spk-inp"><textarea rows="1" placeholder="说说你想拿 AI 干什么…"></textarea>' +
-    '<button id="spk-send">发送</button></div>';
+    '<button id="spk-send" title="发送"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>';
   var bub = document.createElement('div'); bub.id = 'spk-bubble';
   document.body.appendChild(ball); document.body.appendChild(panel); document.body.appendChild(bub);
 
   var log = panel.querySelector('#spk-log'),
       ta = panel.querySelector('textarea'),
       send = panel.querySelector('#spk-send'),
-      fbBar = panel.querySelector('#spk-fb'),
       histp = panel.querySelector('#spk-histp');
   panel.querySelector('#spk-hi').onclick = function () {
     if (histp.classList.contains('on')) { histp.classList.remove('on'); return; }
@@ -688,16 +685,14 @@
     });
   }
 
-  /* ---------------- 课程反馈 ---------------- */
-  var fbArmed = false;      // 这一条是冲着"反馈课程"来的（决定模型挂掉时走不走直投）
-
+  /* 反馈没有专门的入口按钮了：主路径走对话（模型识别反馈并打 FB 标记），
+     直投端点 /api/sparky/feedback 仍在后端留着当兜底通道。 */
   function note(t) {
     var d = document.createElement('div'); d.className = 'spk-note';
     d.textContent = t; log.appendChild(d); scroll();
   }
   function syncFbBar() {
     var c = ctx(), f = c.lesson;
-    fbBar.style.display = (PAGE === 'learn' && f && LMAP[f]) ? 'block' : 'none';
     // 占位文案跟着场景走：老用户在读课时还问「你想拿 AI 干什么」，
     // 跟开场白的「卡在哪儿了」自相矛盾，也把人往回推了一步
     ta.placeholder = (PAGE === 'learn' && f && LMAP[f])
@@ -705,37 +700,15 @@
       : (c.done && c.done.length ? '卡在哪儿了，还是想找下一步读什么？'
                                  : '说说你想拿 AI 干什么…');
   }
-  fbBar.querySelector('button').onclick = function () {
-    var f = ctx().lesson, t = (LMAP[f] || {}).title || '';
-    fbArmed = true;
-    ta.value = '《' + t + '》这节 ';
-    ta.focus();
-    ta.setSelectionRange(ta.value.length, ta.value.length);
-  };
-  /* 直投兜底：反馈的主路径走对话（模型负责问清是哪一节、卡在哪），
-     但模型会挂、会限流。反馈是这阶段最贵的东西，不能因为"Sparky 说不了话"就整条丢了。 */
-  function sendDirect(text) {
-    var f = ctx().lesson || '';
-    bubble('user', text);
-    fetch(API + '/api/sparky/feedback', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lesson: f, kind: 'hard', note: text, visitor: vid() })
-    }).then(function (r) { return r.json(); }).then(function (j) {
-      note(j && j.ok ? '已记下' + (j.title ? '·《' + j.title + '》' : '') + '。Sparky 这会儿说不了话，但你这条收到了。'
-                     : '没存下——你这条可能丢了，回头再说一次。');
-    }).catch(function () { note('没存下——你这条可能丢了，回头再说一次。'); });
-  }
 
   /* ---------------- 发送 ---------------- */
   function submit() {
     var q = ta.value.trim();
     if (!q || busy) return;
     if (enabled === false) {
-      if (fbArmed) { ta.value = ''; fbArmed = false; sendDirect(q); return; }
       bubble('assistant', 'Sparky 还在接线中——课都能正常读，先去翻目录吧。', 'err');
       return;
     }
-    fbArmed = false;
     ta.value = '';
     bubble('user', q);
     hist.push({ role: 'user', content: q }); save();
