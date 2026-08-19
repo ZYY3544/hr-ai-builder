@@ -135,8 +135,24 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px}
 .gbtn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:6px;color:#fff;white-space:nowrap;
   background:linear-gradient(135deg,#00A88A,#0891B2);box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
-@media(max-width:1500px){.brand{margin-left:0}}
+@media(max-width:1402px){.brand{margin-left:0}}
 @media(max-width:960px){.glinks{display:none}}
+
+/* ── JD 视图（参考 Kimi 岗位页形态） ── */
+.d-co .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pri);margin-right:8px;vertical-align:1px}
+.jdhead{display:flex;align-items:center;justify-content:space-between;margin:26px 0 12px}
+.jdlabel{font-size:13px;font-weight:700;color:var(--ink)}
+.legend{font-size:11.5px;color:var(--faint)}
+.jdtext{font-size:14px;line-height:2.1;white-space:pre-wrap;color:var(--body)}
+mark.kw{background:rgba(0,168,138,.13);color:inherit;border-radius:3px;padding:1px 3px;
+  border-bottom:2px solid rgba(0,168,138,.45);cursor:default}
+mark.kw:hover{background:rgba(0,168,138,.22)}
+mark.kw.demo{cursor:default;font-size:11px}
+.applybtn{display:inline-flex;align-items:center;gap:8px;margin-top:26px;font-size:14px;font-weight:600;
+  color:#fff;background:linear-gradient(135deg,#00A88A,#0891B2);border-radius:12px;padding:12px 26px;
+  box-shadow:0 6px 20px -6px rgba(0,168,138,.55);transition:.15s}
+.applybtn:hover{transform:translateY(-1px);box-shadow:0 10px 26px -6px rgba(0,168,138,.65);color:#fff}
+.cap.lit{border-color:var(--pri);box-shadow:0 0 0 2px rgba(0,168,138,.15)}
 </style>
 </head>
 <body>
@@ -211,58 +227,45 @@ async function pick(id){
 }
 
 function renderDetail(j){
+  // JD 原文 + 命中词底纹 + 官网投递。命中词悬停时右栏对应能力卡点亮。
+  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function hlJD(text, hl){
+    let out = esc(text);
+    // 长词先标，避免短词是长词子串时把标注拆坏
+    for(const kw of Object.keys(hl||{}).sort((a,b)=>b.length-a.length)){
+      out = out.split(esc(kw)).join(`<mark class="kw" data-term="${hl[kw]}">${esc(kw)}</mark>`);
+    }
+    return out;
+  }
+  const kindNote = j.jd_kind==='excerpt' ? 'JD 摘录 · 完整版见官网'
+                 : j.jd_kind==='brief'   ? '官方方向说明 · 完整 JD 见官网' : '';
   $('#detail').innerHTML=`
-   <div class="d-co">${j.company}</div>
+   <div class="d-co"><span class="dot"></span>${j.company}</div>
    <h1 class="d-ti">${j.title}</h1>
    <div class="pills"><span class="pill">${j.type}</span><span class="pill">${j.location}</span>
-     <span class="pill ok">岗位已核实</span>${j.jd_text?'':'<span class="pill warn">JD 正文待补</span>'}</div>
+     <span class="pill ok">岗位已核实</span>${kindNote?`<span class="pill">${kindNote}</span>`:''}</div>
 
-   <div class="sec">
-     <div class="sec-h"><span class="no">1</span>这个 JD 背后，招聘方真正在解决什么问题
-       <em>懂招聘才写得出来的一层</em></div>
-     <div class="moat">${j.intent}</div>
-   </div>
+   <div class="jdhead"><span class="jdlabel">岗位 JD</span>
+     <span class="legend"><mark class="kw demo">底纹</mark> 处为命中的能力关键词，对应右栏</span></div>
+   ${j.jd_text
+     ? `<div class="jdtext">${hlJD(j.jd_text, j.hl)}</div>`
+     : `<div class="jdbox"><span class="ph">— JD 正文尚未取到，以官网为准 —</span></div>`}
 
-   <div class="sec">
-     <div class="sec-h"><span class="no">2</span>岗位 JD</div>
-     ${j.jd_text ? `<div style="font-size:14px;line-height:2;white-space:pre-wrap">${j.jd_text}</div>`
-       : `<div class="jdbox"><span class="ph">— JD 正文尚未取到 —</span><br><br>
-          真数据接入后此处显示原文，并对<b>命中能力的整句</b>做下划线标注。<br>
-          注意标的是<b>能力主张</b>，不是关键词——「具备用户研究、良好审美、逻辑思维」这一句里
-          混了技能和能力两类，逐词高亮反而看不出要什么。</div>`}
-   </div>
+   ${j.apply_url ? `<a class="applybtn" href="${j.apply_url}" target="_blank" rel="noopener">前往官网投递 <span>↗</span></a>` : ''}`;
 
-   <div class="sec">
-     <div class="sec-h"><span class="no">3</span>职级与薪酬带宽
-       <em>求职网站给不准的那部分</em></div>
-     <div class="pay">
-       <div><div class="k">对标职级</div><div class="v"><small>待接入 JE 引擎</small></div></div>
-       <div><div class="k">薪酬口径</div><div class="v"><small>待接入</small></div></div>
-       <div><div class="k">带宽区间</div><div class="v"><small>未公开 · 需实证</small></div></div>
-     </div>
-   </div>
-
-   <div class="sec">
-     <div class="sec-h"><span class="no">4</span>面试官会追问什么
-       <em>纯 know-how · 抄不走</em></div>
-     <ul class="qs">${(j.questions||DEFAULT_Q).map(q=>`<li>${q}</li>`).join('')}</ul>
-   </div>
-
-   <div class="databar">
-     <b>数据状态</b> · 岗位真实存在，2026-08 核实到公司/部门/地点 ·
-     <b>JD 正文、职级薪酬、面试追问为待补或示意</b>，真数据接入后重跑。
-   </div>`;
+  // 命中词 ↔ 右栏能力卡联动
+  document.querySelectorAll('#detail .kw[data-term]').forEach(el=>{
+    el.onmouseenter=()=>{const c=document.getElementById('cap-'+el.dataset.term);
+      if(c){c.classList.add('lit');c.scrollIntoView({block:'nearest',behavior:'smooth'});}};
+    el.onmouseleave=()=>{const c=document.getElementById('cap-'+el.dataset.term);
+      if(c)c.classList.remove('lit');};
+  });
 }
 
-const DEFAULT_Q=[
- '你怎么证明它比人工快 / 准？测过吗？',
- '如果它给了一个错的结果，谁来兜？',
- '为什么用 AI 做这件事，而不是写个规则？',
-];
 
 function renderCaps(j){
   const kp=(t)=>`
-    <div class="cap">
+    <div class="cap" id="cap-${t.id}">
       <div class="n"><span class="ksa k-${t.ksa}">${t.ksa}</span>${t.name}</div>
       <div class="why">${t.in_context||t.generic||''}</div>
       ${t.lessons&&t.lessons.length?`<div class="ls"><div class="lb">对应课程</div>
