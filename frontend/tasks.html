@@ -8,9 +8,8 @@
 <link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 <link rel="alternate icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-<title>meansights learning · 读懂 AI 的底层逻辑，做 AI Native 组织的先驱者</title>
-<meta name="description" content="面向 HR 的 AI 系统课程：从大模型底层逻辑到组织落地。课程、真实岗位库与能力测评，全部免费开放。">
+<title>实战任务 · 真实 HR 场景练手 · meansights learning</title>
+<meta name="description" content="HR AI 实战任务：周末入楼统计、调研 agent 设计、面试官 prep。真实场景原型、程序生成的练习数据、配套课程映射。">
 <style>
 :root{
   /* 蓝 → 紫 → 绿 · 飞书系鲜亮渐变 */
@@ -237,6 +236,26 @@ a.cc:hover{border-color:rgba(0,168,138,.4);box-shadow:0 12px 28px -18px rgba(0,1
 .modal .off{margin-top:20px;padding:16px;background:var(--bg);border-radius:12px;
   font-size:12.5px;color:var(--muted);line-height:1.8}
 footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;text-align:center}
+
+/* ---------- tasks ---------- */
+.tgrid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:40px;max-width:900px}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:var(--r-x);padding:30px 34px}
+.tcard.hot{border-color:rgba(0,168,138,.45);background:linear-gradient(180deg,rgba(0,168,138,.04),#fff)}
+.thead{display:flex;align-items:center;gap:10px}
+.tno{font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--pri);text-transform:uppercase}
+.tband{font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+.tcard h3{font-size:20px;letter-spacing:-.02em;margin-top:10px}
+.tdesc{font-size:14px;color:var(--muted);line-height:1.95;margin-top:10px}
+.tdesc b{color:var(--ink);font-weight:600}
+.tsec{display:flex;gap:14px;margin-top:14px;font-size:13px;line-height:1.85;color:var(--body)}
+.tsec>b{flex:0 0 52px;color:var(--faint);font-weight:600;font-size:12px;padding-top:2px}
+.tsec a{color:var(--pri);font-weight:500}
+.trefs{display:flex;flex-wrap:wrap;gap:7px}
+.tref{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid var(--line);
+  border-radius:8px;padding:4px 10px;color:var(--ink)!important;font-weight:500!important}
+.tref:hover{border-color:var(--pri)}
+.tref i{font-style:normal;font-size:10px;color:var(--faint)}
+@media(max-width:640px){.tcard{padding:22px 20px}.tsec{flex-direction:column;gap:3px}}
 </style>
 </head>
 <body>
@@ -256,130 +275,59 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   </div>
 </header>
 
-<!-- ========== HERO ========== -->
-<section class="hero">
+<section class="hero" style="padding:78px 0 30px">
   <div class="wrap">
-    <div class="pill"><span class="dot"></span>课程 · 岗位库 · 能力测评 <b>永久免费开放</b></div>
-
-    <h1>读懂 AI 的底层逻辑，<br><span class="g">做 AI Native 组织的先驱者</span></h1>
-
-    <p class="lede">
-      AI 正在重写每一个组织的运行方式——<b>怎么分工、怎么配人、能力怎么迁移</b>。
-      这些本来就是 HR 的命题，所以 HR 本该是最先看懂这件事的人。<br>
-      这里从大模型的底层逻辑讲起，一路到你<b>亲手做出第一个能用的东西</b>。
-      不为速成——<span class="hl">为的是当这件事被摆上桌，你说得出话，也听得出谁在唬你。</span>
-    </p>
-
-    <div class="statline" id="statline"></div>
-
+    <div class="pill"><span class="dot"></span>做出来的东西，<b>比读完更算数</b></div>
+    <h1 style="font-size:clamp(32px,4.6vw,52px)">实战任务</h1>
+    <p class="lede" style="max-width:40em">每个任务的原型都是<b>真实交付过的活</b>，材料全是程序生成的假数据——放心贴给任何 AI 工具。
+    在你自己的环境里做（Claude Code、对话、Excel 都行），做完拿答案卡对数，卡住了问右下角的 Sparky。</p>
   </div>
 </section>
 
-<!-- ========== 适合谁 ========== -->
-<section class="band alt" id="who">
+<section class="band alt" style="padding-top:40px">
   <div class="wrap">
-    <div class="eyebrow">For Who</div>
-    <h2>这门课适合谁</h2>
-    <p class="desc">不同背景有不同的学法。先对号入座；具体从哪节切入，问右下角的 Sparky。</p>
-    <div class="who">
-      <div class="wcard">
-        <h3>想补齐 AI 素养的在职 HR</h3>
-        <div class="p">你已经懂业务、懂流程、懂人，缺的是把判断变成可执行系统的手艺。<b>你的优势别人补不上，你的短板你补得上。</b></div>
-        <div class="tags"><span class="tg">能力边界</span><span class="tg">判断萃取</span><span class="tg">Vibe coding</span></div>
+    <div class="tgrid">
+      <div class="tcard">
+        <div class="thead"><span class="tno">任务 00</span><span class="tband">数据活 · 热身</span></div>
+        <h3>月报改造全程</h3>
+        <p class="tdesc">已有完整课程与练习表的那一个。没做过的从这里开始——三张表合成一份月报，做完你手上有一个能重复跑的流程。</p>
+        <div class="tsec"><b>交付物</b><span>一个能重复跑的月报流程 + 与答案卡对上的数字</span></div>
+        <div class="tsec"><b>材料</b><span><a href="data/2026-08/README.md" target="_blank">练习数据集 ·2026-08</a></span></div>
+        <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#data-monthly.html"><i>跟做</i>月报改造全程</a></span></div>
       </div>
-      <div class="wcard">
-        <h3>想推动组织变革的 HRD / OD</h3>
-        <div class="p">你要回答的不是「AI 能不能用」，而是<b>组织该怎么重新设计</b>。这需要你真的懂它的边界在哪，而不是听供应商讲。</div>
-        <div class="tags"><span class="tg">场景选择</span><span class="tg">人机分工</span><span class="tg">采购问话清单</span></div>
+      <div class="tcard hot">
+        <div class="thead"><span class="tno">任务 01</span><span class="tband">数据活 ★★</span></div>
+        <h3>周末入楼统计</h3>
+        <p class="tdesc">老板周一早上要一个数：上个月周末有多少人来公司加班？各 BU 呢？占比多少？听起来一句话的事——直到你打开那份两万行的刷卡记录。节假日、调休、凌晨误刷、工号对不上、部门名五花八门，<b>八个真实的坑等着你</b>。原型是站主在大厂真实交付过的统计。</p>
+        <div class="tsec"><b>交付物</b><span>两个月的周末入楼去重人数 / 分 BU 人数 / 入楼率，一页口径说明（每个数背后的规则），以及一个能下月重复跑的过程。行政通知：清明 4-04、4-05 放假；4-26（周日）调休上班。</span></div>
+        <div class="tsec"><b>材料</b><span><a href="data/task-weekend/01_门禁刷卡明细.csv" target="_blank">刷卡明细（2.1 万行）</a> · <a href="data/task-weekend/02_花名册_2026-03月末.csv" target="_blank">3 月花名册</a> · <a href="data/task-weekend/02_花名册_2026-04月末.csv" target="_blank">4 月花名册</a> · <a href="data/task-weekend/答案卡.md" target="_blank">答案卡（做完再开）</a></span></div>
+        <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#hr-caliber-1.html"><i>先读</i>三个系统、五种口径</a><a class="tref" href="learn.html#data-spec-four.html"><i>先读</i>四要素模板</a><a class="tref" href="learn.html#data-check-three.html"><i>验收用</i>小样、抽查、对总数</a><a class="tref" href="learn.html#data-ci-where.html"><i>卡住看</i>三条路：代码在哪跑</a></span></div>
       </div>
-      <div class="wcard">
-        <h3>刚入行或准备入行的人</h3>
-        <div class="p">这个领域还没有前辈，<b>没人有十年经验</b>。这意味着做出一个真能跑的东西，你就已经在前面了。</div>
-        <div class="tags"><span class="tg">作品选题</span><span class="tg">从零基础起步</span><span class="tg">岗位对照</span></div>
+      <div class="tcard">
+        <div class="thead"><span class="tno">任务 02</span><span class="tband">设计活 ★★</span></div>
+        <h3>把静态问卷改造成会追问的调研 agent</h3>
+        <p class="tdesc">新人调研收上来一堆 3 分 4 分，没人知道 3 分背后发生了什么。你的任务<b>不是写代码</b>——是设计：什么触发追问、追问怎么把感受翻译成事实、预算怎么守住「10 分钟填完」的承诺、哪些决定归规则哪些归模型。产出是一份设计文档和两段真实的 prompt。</p>
+        <div class="tsec"><b>交付物</b><span>追问触发规则 / 追问阶梯 / 预算与止损 / 规则与模型的分工书 / 两段完整 prompt</span></div>
+        <div class="tsec"><b>材料</b><span><a href="data/task-survey/问卷底稿.md" target="_blank">静态问卷底稿 + 任务详情</a></span></div>
+        <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#agent-vs-workflow.html"><i>先读</i>HR 大多不该给自主权</a><a class="tref" href="learn.html#prompt-system.html"><i>先读</i>System Prompt</a><a class="tref" href="learn.html#hr-elicitation-3.html"><i>先读</i>判断链怎么落地</a><a class="tref" href="learn.html#zero-5.html"><i>参照</i>先问我几个问题</a></span></div>
+      </div>
+      <div class="tcard">
+        <div class="thead"><span class="tno">任务 03</span><span class="tband">造物活 ★★★</span></div>
+        <h3>面试官 prep：让 AI 帮你备一场面试</h3>
+        <p class="tdesc">明天下午面两位候选人：一位简历亮眼但跳槽频繁，一位朴素但扎实。让 AI 帮你出面试问题和追问链——<b>然后把它初稿里不对的地方改掉</b>。评审最看重的恰恰是你改了什么、为什么改：AI 生成，人对判断负责。</p>
+        <div class="tsec"><b>交付物</b><span>每位候选人 5 个带假设的面试问题 / 一条至少 3 层的追问链 / 一段「我否掉了 AI 的什么」说明</span></div>
+        <div class="tsec"><b>材料</b><span><a href="data/task-interview/岗位与候选人.md" target="_blank">岗位 JD + 候选人材料 + 任务详情</a></span></div>
+        <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#hr-elicitation-1.html"><i>先读</i>老法师那一眼在看什么</a><a class="tref" href="learn.html#hallu-first-scene.html"><i>先读</i>它会编：筛简历现场</a><a class="tref" href="learn.html#hr-recall-vs-judge.html"><i>先读</i>召回 vs 判定</a><a class="tref" href="learn.html#prompt-hr-cases.html"><i>卡住看</i>HR 五个高频场景</a></span></div>
       </div>
     </div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:26px;max-width:56em">
+    做完之后想知道自己做得怎么样？作品评审通道在准备中——先把东西做出来、留好过程。</p>
   </div>
 </section>
 
-<!-- ========== Sparky ========== -->
-<section class="band" id="sparky">
-  <div class="wrap">
-    <div class="eyebrow">Study Buddy</div>
-    <h2><img class="spk-face" src="logo-cat.svg" alt="">认识一下 Sparky</h2>
-    <p class="desc">学习路上有任何问题，随时问它——<b>它读过这里的每一节课</b>。</p>
-    <div class="spk-grid">
-      <div class="spk-card">
-        <div class="k">卡住的时候它先开口</div>
-        <div class="v">某一节你停得比预计久，它会主动问一句，而且说得出你卡在哪一节、停了多久。</div>
-      </div>
-      <div class="spk-card">
-        <div class="k">随时点开就能问</div>
-        <div class="v">不知道从哪开始、某个词没看懂、下一节该读什么——直接问，不用组织语言。</div>
-      </div>
-      <div class="spk-card">
-        <div class="k">答案落到具体某一段</div>
-        <div class="v">它读过全部课程的结构，能指到哪一节的哪一块，而不是给你一段泛泛的建议。</div>
-      </div>
-      <div class="spk-card">
-        <div class="k">有意见也跟它说</div>
-        <div class="v">觉得哪节写得绕、想加个例子、发现讲错了——说一句就进改课清单，我们照着改。</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 课程内容 ========== -->
-<section class="band" id="curriculum">
-  <div class="wrap">
-    <div class="eyebrow">Curriculum</div>
-    <h2 id="curTitle"></h2>
-    <p class="desc">
-      从「它靠不靠得住」到「让它在组织里活下来」，<b>每一节都是「HR 场景 → 原理 → 一条能执行的规则」三段式</b>——
-      通用原理一个字不少讲，但它被夹在两个 HR 场景中间，你从第一句就知道这跟自己什么关系。
-    </p>
-    <div class="curmeta" id="sortnote"></div>
-    <div id="topics"></div>
-  </div>
-</section>
-
-<!-- ========== 交流 ========== -->
-<section class="band" id="contact">
-  <div class="wrap">
-    <div class="eyebrow">Community</div>
-    <h2>欢迎交流与关注</h2>
-    <p class="desc">课是免费的，也不打算卖。<b>想聊课程、看别人怎么做，或者拿练习数据自己跑一遍</b>——下面都有。</p>
-    <div class="contact">
-      <div class="cc"><div class="ic">📖</div><div class="n">公众号 · 麦麦是只小雀猫</div><div class="d">课程更新与拆解文章<br><b>搜「麦麦是只小雀猫」可关注</b></div></div>
-      <a class="cc" href="data/2026-08/README.md" target="_blank"><div class="ic">📦</div><div class="n">练习数据集</div><div class="d">花名册 / 考勤 / 业绩三张表，埋了 8 类真实脏数据，附答案卡</div></a>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 底部 CTA ========== -->
-<section class="final">
-  <div class="wrap">
-    <h2>准备好了吗？现在就开始</h2>
-    <p>全部课程现在<b>不登录也能完整阅读</b>。登录功能开放后，用来同步学习进度和测评记录——不会因此挡住任何内容。</p>
-    <div class="btns">
-      <a class="btn pri lg" href="learn.html">进入课程</a>
-      <a class="btn lg" href="tasks.html">接一个任务</a>
-      <a class="btn lg" href="quiz.html">测测掌握度</a>
-      <a class="btn lg" href="jobs.html">看在招岗位</a>
-      <a class="btn lg" href="#contact">关注公众号</a>
-    </div>
-  </div>
-</section>
-
-<div class="decl">
-  <div class="wrap">
-    <div class="box">
-      <h4>关于免费与开源</h4>
-      课程内容、真实岗位库与测评题库，<b>全部永久免费开放</b>。<br>
-      本站依 <b>AGPL-3.0</b> 开源，源码见 <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener" style="color:var(--pri)">GitHub</a>。<b>任何衍生版本必须同样开源，不得用于闭源商业产品。</b><br>
-      如果你在任何付费课程或课包里看到本站内容，说明你为免费的东西付了钱——请向对方申请退款。
-    </div>
-  </div>
-</div>
+<footer><div class="wrap attrib">
+  meansights learning &nbsp;·&nbsp; 内容永久免费开放 &nbsp;·&nbsp; <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; AGPL-3.0
+</div></footer>
 
 <div class="mask" id="loginMask">
   <div class="modal">
@@ -391,162 +339,16 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   </div>
 </div>
 
-<footer><div class="wrap attrib">
-  meansights learning &nbsp;·&nbsp; 内容永久免费开放 &nbsp;·&nbsp; <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; AGPL-3.0
-</div></footer>
-
 <script src="course-data.js"></script>
-<script>
-
-const $=s=>document.querySelector(s);
-
-/* ---- 课程：来自 course-data.js（单一真相源）---- */
-const CO = window.COURSE || {parts:[],meta:{stats:{}}};
-
-const AC={copy:['沿用','ac-c'],adapt:['改写','ac-a'],new:['原创','ac-n']};
-const GLYPH=['◈','◎','◇','▣','◐','⬡','✦','◑','⬢','✧','◧','⊙'];
-function renderTopics(){
-  const acc=CO.meta.access||{};
-  const GATED=(acc.gate==='on');
-  $('#sortnote').textContent=GATED
-    ? `按学习顺序排列 · 点任一主题进入课程阅读器 · ${acc.free||0} 节免费直读，${acc.locked||0} 节登录后读`
-    : '按学习顺序排列 · 点任一主题进入课程阅读器 · 全部内容不登录也能完整读';
-  let gi=0;
-  $('#topics').innerHTML=CO.parts.map((p,pi)=>{
-    const tps=p.topics, kp=tps.reduce((a,t)=>a+t.lessons.length,0);
-    const cards=tps.map((t,ti)=>{
-      const first=(t.lessons.find(l=>l.ready)||{}).file;
-      const lock=GATED?t.lessons.filter(l=>!l.free).length:0;
-      const ksa=Object.entries(t.lessons.reduce((a,l)=>(a[l.ksa]=(a[l.ksa]||0)+1,a),{}))
-        .sort().map(([k,v])=>`<span class="kb k-${k}">${k} ${v}</span>`).join('');
-      const inner=`<div class="ic">${GLYPH[gi++%GLYPH.length]}</div>
-        <span class="idx">${String(ti+1).padStart(2,'0')}</span>
-        <div class="n">${t.title}</div>
-        <div class="d">${t.desc||''}</div>
-        <div class="f"><span class="kp">${t.lessons.length} 个知识点${lock?`<span class="lk" title="${lock} 节登录后读">🔒</span>`:''}</span>
-          <span class="ksarow">${ksa}<span class="go">开始学 ›</span></span></div>`;
-      return first
-        ? `<a class="topic" href="learn.html#${encodeURIComponent(first)}">${inner}</a>`
-        : `<div class="topic dim">${inner}</div>`;
-    }).join('');
-    return `<section class="part" style="--pc:${p.color||'#7C3AED'}">
-      <div class="part-h">
-        <div class="part-no"><div class="pn"><div class="k"><i>P</i><i>A</i><i>R</i><i>T</i></div><div class="v">${String(pi).padStart(2,'0')}</div></div></div>
-        <div class="part-t">
-          <div class="meta"><b>${p.num}</b>${tps.length} 节 · 约 ${p.min} 分钟</div>
-          <h3>${p.title}</h3>
-          <p>${p.desc||''}</p>
-        </div>
-      </div>
-      <div class="topics">${cards}</div>
-    </section>`;
-  }).join('');
-}
-renderTopics();
-
-
-/* 首屏统计数字改用真实课程数据 */
-(function(){
-  const st=CO.meta&&CO.meta.stats||{};
-  const ct=document.getElementById('curTitle');
-  const tpN=CO.parts.reduce((a,p)=>a+p.topics.length,0);
-  if(ct&&st.lessons) ct.textContent=`${st.parts} 篇章 · ${tpN} 节 · ${st.lessons} 个知识点`;
-  const el=document.getElementById('statline');
-  if(el&&st.lessons) el.innerHTML=
-    `${st.parts} 篇章 · <b>${tpN}</b> 节 · ${st.lessons} 个知识点 · 全部读完约 ${Math.round(st.minutes/60)} 小时`;
-})();
-
-renderTopics();
-
-/* ================= 微信登录 ================= */
-const API = (location.hostname==='localhost'||location.protocol==='file:')
-  ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
-const TK='hab_token';
-let poll=null; let ssoWin=null;
-
-function setUser(u){
-  const b=$('#loginBtn'); if(!b) return;
-  if(!u){ b.className='btn pri'; b.textContent='登录'; b.onclick=openLogin; return; }
-  b.className='userchip';
-  b.innerHTML=(u.avatar?`<img src="${u.avatar}" alt="">`:`<span class="ph">${(u.nickname||'微')[0]}</span>`)
-    +`<span>${u.nickname||'微信用户'}</span>`;
-  b.onclick=e=>{e.preventDefault(); if(confirm('退出登录？')){localStorage.removeItem(TK); setUser(null);} };
-}
-
-async function loadMe(){
-  const t=localStorage.getItem(TK); if(!t) return setUser(null);
-  try{
-    const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok) throw 0;
-    setUser(await r.json());
-  }catch(e){ localStorage.removeItem(TK); setUser(null); }
-}
-
-function closeLogin(){ $('#loginMask').classList.remove('on'); if(poll){clearInterval(poll);poll=null;} }
-
-async function openLogin(e){
-  if(e) e.preventDefault();
-  const mask=$('#loginMask'), body=$('#loginBody');
-  mask.classList.add('on');
-  body.innerHTML='<div class="qrbox"><div class="spin"></div></div>';
-
-  let d;
-  try{
-    const r=await fetch(API+'/api/wx/login-session',{method:'POST'});
-    if(r.status===503) throw 'not_configured';
-    if(!r.ok) throw 'failed';
-    d=await r.json();
-  }catch(err){
-    $('#loginSub').textContent='微信登录尚未开通';
-    body.innerHTML='<div class="off">微信登录正在配置中（需要在微信开放平台完成网站应用审核 + 开通「微信登录」权限）。<br>暂时不登录也能看：全部课程、岗位库与测评题库都开放。</div>';
-    return;
-  }
-
-  if(d.mode==='oauth'){
-    $('#loginSub').textContent='点击下方按钮，用微信扫码授权';
-    body.innerHTML=`<button class="wxbtn" id="wxGo">用微信登录</button>`;
-    $('#wxGo').onclick=()=>{
-      // 小窗扫码；登录走服务端 scene 轮询，跟这个窗口无关，authed 后我们主动关掉它
-      ssoWin=window.open(d.oauth_url,'wxlogin',
-        'width=420,height=580,left='+Math.round((screen.width-420)/2)+',top=120');
-      $('#loginSub').textContent='在弹出的窗口里用微信扫码';
-    };
-  }else{
-    $('#loginSub').textContent='用微信扫描下方小程序码';
-    body.innerHTML=`<div class="qrbox"><img src="${API}/api/wx/qrcode?scene=${encodeURIComponent(d.scene)}" alt="小程序码" onerror="this.parentNode.innerHTML='<div class=&quot;st&quot;>二维码生成失败<br>请稍后重试</div>'"></div>`;
-  }
-
-  poll=setInterval(async()=>{
-    try{
-      const r=await fetch(API+'/api/wx/login-status?scene='+encodeURIComponent(d.scene));
-      const s=await r.json();
-      if(s.status==='authed'){ clearInterval(poll); poll=null;
-        if(ssoWin){ try{ssoWin.close()}catch(e){} ssoWin=null; }
-        localStorage.setItem(TK,s.token); setUser(s.user); closeLogin(); }
-      else if(s.status==='expired'){ clearInterval(poll); poll=null;
-        $('#loginBody').innerHTML='<div class="qrbox"><div class="st">二维码已过期<br>关闭后重新点登录</div></div>'; }
-    }catch(e){}
-  },2000);
-}
-
-// OAuth 直接回跳：token 在 fragment 里（fragment 不会发到服务器）
-(function(){
-  const h=location.hash||'';
-  if(h==='#login'){ history.replaceState(null,'',location.pathname); setTimeout(()=>openLogin(),80); }
-  if(h.startsWith('#token=')){
-    localStorage.setItem(TK, decodeURIComponent(h.slice(7)));
-    history.replaceState(null,'',location.pathname+location.search);
-  }else if(h.startsWith('#login_error=')){
-    history.replaceState(null,'',location.pathname+location.search);
-    setTimeout(()=>alert('微信登录失败：'+decodeURIComponent(h.slice(13))),100);
-  }
-})();
-
-$('#loginClose').onclick=closeLogin;
-$('#loginMask').onclick=e=>{ if(e.target.id==='loginMask') closeLogin(); };
-loadMe();
-</script>
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>
+<script>
+(function(){
+  var m=document.getElementById('loginMask'), b=document.getElementById('loginBtn'),
+      x=document.getElementById('loginClose');
+  if(b) b.onclick=function(e){e.preventDefault(); location.href='index.html#login';};
+  if(x) x.onclick=function(){m.classList.remove('on');};
+})();
+</script>
 </body>
 </html>
