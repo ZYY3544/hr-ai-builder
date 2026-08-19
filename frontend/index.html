@@ -471,7 +471,7 @@ let poll=null; let ssoWin=null;
 
 function setUser(u){
   const b=$('#loginBtn'); if(!b) return;
-  if(!u){ b.className='btn pri'; b.textContent='登录'; b.onclick=openLogin; return; }
+  if(!u){ b.className='gbtn'; b.textContent='登录'; b.onclick=openLogin; return; }
   b.className='userchip';
   b.innerHTML=(u.avatar?`<img src="${u.avatar}" alt="">`:`<span class="ph">${(u.nickname||'微')[0]}</span>`)
     +`<span>${u.nickname||'微信用户'}</span>`;
