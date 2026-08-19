@@ -6,3 +6,4 @@ node_modules/
 .DS_Store
 .env
 frontend/_archive/
+frontend/data/task-monthly/_pkg/
