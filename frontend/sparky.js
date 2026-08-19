@@ -190,7 +190,7 @@
     '.spk-note{font-size:11.5px;color:#00795F;background:#E8FBF6;border-radius:8px;',
     ' padding:6px 10px;margin:0 0 12px;max-width:86%;line-height:1.6}',
     // 输入区不要分隔线、不要提示按钮：一个圆角输入框嵌在白底里，发送箭头收进框内右侧
-    '#spk-inp{position:relative;display:flex;padding:10px 14px 14px;background:#fff}',
+    '#spk-inp{position:relative;display:flex;padding:4px 14px 14px;background:#F8FAFC}',
     '#spk-inp textarea{flex:1;border:1.5px solid #E2E8F0;border-radius:21px;padding:9px 46px 9px 15px;font-size:13.5px;',
     ' font-family:inherit;resize:none;height:42px;line-height:1.6;outline:none;background:#fff}',
     '#spk-inp textarea:focus{border-color:#00A88A}',
