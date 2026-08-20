@@ -278,7 +278,8 @@ function renderDetail(j){
     }
     return out;
   }
-  const kindNote = j.jd_kind==='excerpt' ? 'JD 摘录 · 完整版见官网'
+  const kindNote = j.jd_kind==='full'    ? '官方 JD 原文'
+                 : j.jd_kind==='excerpt' ? 'JD 摘录 · 完整版见官网'
                  : j.jd_kind==='brief'   ? '官方方向说明 · 完整 JD 见官网' : '';
   $('#detail').innerHTML=`
    <div class="d-co"><span class="dot"></span>${j.company}</div>
