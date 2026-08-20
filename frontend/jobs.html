@@ -288,6 +288,17 @@ function renderCaps(j){
 }
 
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(h&&h!==cur)pick(h);});
+
+/* 登录后右上角=成长地图入口（全站同一逻辑） */
+(async function(){
+  var t=localStorage.getItem('hab_token'); if(!t) return;
+  try{
+    var r=await fetch('https://hr-ai-builder-api.onrender.com/api/me',{headers:{Authorization:'Bearer '+t}});
+    if(!r.ok) return;
+    var u=await r.json(), lb=document.getElementById('loginBtn');
+    lb.textContent=u.nickname||'我的成长'; lb.href='growth.html'; lb.title='我的成长'; lb.onclick=null;
+  }catch(e){}
+})();
 </script>
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>

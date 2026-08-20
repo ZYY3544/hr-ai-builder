@@ -120,7 +120,6 @@ section.blk{padding:34px 0 6px}
   <div class="pagehead">
     <h1>我的成长</h1>
     <div class="sub">每个点亮都是测出来的，不是点出来的——通关靠答对题，S 靠真做完战役。</div>
-    <div class="note" id="anonNote" style="display:none">现在的记录只存在这台设备的浏览器里。<b>登录后</b>进度和成绩会跟着账号走，换设备不丢。</div>
   </div>
 
   <section class="blk">
@@ -223,12 +222,13 @@ function renderCurve(){
   box.innerHTML=s+'</svg>';
 }
 
+/* 成长地图是登录后的专属空间：没登录直接去登录，不做匿名版 */
 (async function(){
   const t=localStorage.getItem(TK);
-  if(!t){ $('#anonNote').style.display='block'; renderAll(); return; }
+  if(!t){ location.replace('index.html#login'); return; }
   try{
     const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok) throw 0;
+    if(!r.ok){ localStorage.removeItem(TK); location.replace('index.html#login'); return; }
     const u=await r.json(); logged=true;
     const b=$('#loginBtn'); b.textContent=u.nickname||'已登录'; b.removeAttribute('href');
     $('#logoutBtn').style.display='inline-block';
@@ -241,7 +241,7 @@ function renderCurve(){
       localStorage.setItem('hab_quiz_best',JSON.stringify(best));
       if((pg.quiz||[]).length) attempts=pg.quiz;
       taskSt=pg.task||{}; }
-  }catch(e){ $('#anonNote').style.display='block'; }
+  }catch(e){}   // 网络抖动:仍按已登录渲染本地数据,不把人踢出去
   renderAll();
 })();
 function renderAll(){ renderChapters(); renderTasks(); renderCurve(); }
