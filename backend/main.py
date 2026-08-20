@@ -580,23 +580,19 @@ def wx_login_session():
             out["oauth_url"] = wx.web_authorize_url(wx.web_callback_url(), scene)
             out["mode"] = "oauth"
         return out
-    # 铭曦后端睡着时冷启动要 20+ 秒——第一枪超时就直接报"没配置"是误导（实测踩过）。
-    # 首次给足 28 秒等它醒，还不行再快试一枪；错误码也分开：waking ≠ not_configured。
-    last_err = ""
-    for tmo in (28, 8):
-        try:
-            r = _rq.post(f"{_MS_API}/api/wx/oauth/url", timeout=tmo)
-            if r.status_code == 200:
-                d = r.json()
-                return {"scene": _SSO_PREFIX + d["scene"], "mode": "oauth",
-                        "oauth_url": d["url"]}
-            last_err = f"{r.status_code} {r.text[:120]}"
-            print(f"[SSO] 铭曦 oauth/url -> {last_err}", flush=True)
-        except Exception as e:
-            last_err = str(e)
-            print(f"[SSO] 铭曦不可达(timeout={tmo}s): {e}", flush=True)
-    raise HTTPException(503, "sso_waking" if "timed out" in last_err.lower() or "timeout" in last_err.lower()
-                        else "sso_unavailable")
+    # 铭曦后端睡着时冷启动要 20-30 秒。这里只打一枪、但给足 25 秒——
+    # 重试交给前端做（前端还要覆盖"本服务自己在重启"的窗口），
+    # 两边各自重试会叠加成几分钟，那比失败更难受。
+    try:
+        r = _rq.post(f"{_MS_API}/api/wx/oauth/url", timeout=25)
+        if r.status_code == 200:
+            d = r.json()
+            return {"scene": _SSO_PREFIX + d["scene"], "mode": "oauth",
+                    "oauth_url": d["url"]}
+        print(f"[SSO] 铭曦 oauth/url -> {r.status_code} {r.text[:120]}", flush=True)
+    except Exception as e:
+        print(f"[SSO] 铭曦不可达: {e}", flush=True)
+    raise HTTPException(503, "sso_waking")
 
 
 @app.get("/api/wx/qrcode")
