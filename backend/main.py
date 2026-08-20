@@ -221,11 +221,6 @@ _TERM_BY_ID = {t["id"]: t for t in TERMS}
 import json as __json
 from pathlib import Path as __Path
 _QUIZ = __json.loads((__Path(__file__).parent / "quiz_bank.json").read_text("utf-8"))
-# 题目 → 节 的绑定（scripts/map_quiz_lessons.py 生成）；没绑上的题只出现在篇章级测评页
-try:
-    _QMAP = __json.loads((__Path(__file__).parent / "quiz_lesson_map.json").read_text("utf-8"))
-except Exception:
-    _QMAP = {}
 
 
 # ---------------------------------------------------------------- routes
@@ -273,12 +268,10 @@ def get_job(job_id: str):
 
 @app.get("/api/quiz")
 def get_quiz(chapter: Optional[str] = None, ksa: Literal["K", "S", "A"] | None = None,
-             limit: Optional[int] = None, lesson: Optional[str] = None):
-    """题干与选项，**不含答案**。前端拿不到 ans，只能提交后由服务端判分。
-    lesson=<课件文件名> 时返回绑定到这一节的随堂题（可能为空——没绑上就诚实没有）。"""
+             limit: Optional[int] = None):
+    """题干与选项，**不含答案**。前端拿不到 ans，只能提交后由服务端判分。"""
     items = [q for q in _QUIZ["items"]
-             if (not lesson or _QMAP.get(q["id"]) == lesson)
-             and (not chapter or q["chapter"] == chapter) and (not ksa or q["ksa"] == ksa)]
+             if (not chapter or q["chapter"] == chapter) and (not ksa or q["ksa"] == ksa)]
     if limit:
         items = items[:limit]
     return {"count": len(items), "stats": _QUIZ["stats"], "chapters": _QUIZ["chapters"],

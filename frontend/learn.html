@@ -264,16 +264,24 @@ function toast(msg){
 $('#q').oninput=e=>renderTree(e.target.value);
 $('#sbtn').onclick=()=>$('#side').classList.toggle('show');
 window.addEventListener('hashchange',load);
-/* 随堂小测：课件滚到末尾原地出 1-3 道题。题在服务端按节绑定（quiz_lesson_map），
-   前端拿不到答案，点选后交服务端判分并回解析；没绑到题的节诚实地什么都不出现。 */
+/* 本章小测：每个篇章的最后一节读完，课件末尾原地出题——从本章题库随机抽 8 道。
+   放章末而不是每节：题库按篇章出，章末时全章都读过了，永远不会考到没读的内容。
+   前端拿不到答案，点选后交服务端判分并回解析。 */
 const QAPI=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com');
+const QCH={'第零篇章':'p-zero','第一篇章':'p-1','第二篇章':'p-2','第三篇章':'p-3','第四篇章':'p-4',
+           '第五篇章':'p-5','第六篇章':'p-6','第七篇章':'p-7','第八篇章':'p-8','第九篇章':'p-9'};
 $('#frame').addEventListener('load', async ()=>{ try{
   const doc=$('#frame').contentDocument;
   const file=(doc.location.pathname.split('/').pop()||'');
   if(!file || doc.getElementById('hq-quiz')) return;
-  const r=await fetch(QAPI+'/api/quiz?lesson='+encodeURIComponent(file));
+  const i=find(file); if(i<0) return;
+  const isChapterEnd=!FLAT[i+1]||FLAT[i+1].part!==FLAT[i].part;
+  const ch=QCH[FLAT[i].part];
+  if(!isChapterEnd||!ch) return;
+  const r=await fetch(QAPI+'/api/quiz?chapter='+ch);
   if(!r.ok) return;
-  const items=((await r.json()).items||[]).slice(0,3);
+  const pool=((await r.json()).items||[]);
+  const items=pool.sort(()=>Math.random()-.5).slice(0,8);
   if(!items.length) return;
   const st=doc.createElement('style');
   st.textContent=
@@ -297,7 +305,8 @@ $('#frame').addEventListener('load', async ()=>{ try{
     '#hq-quiz .hq-go:disabled{opacity:.45;cursor:default}';
   doc.head.appendChild(st);
   const box=doc.createElement('section'); box.id='hq-quiz';
-  box.innerHTML='<p class="hq-h">随堂小测</p><p class="hq-sub">读完顺手测一下——答错也没关系，解析比对错有用。</p>';
+  box.innerHTML='<p class="hq-h">本章小测 · '+FLAT[i].part+'</p>'+
+    '<p class="hq-sub">这一章读完了，抽 '+items.length+' 道测一测——答错也没关系，解析比对错有用。换一节再回来，题会重新抽。</p>';
   const grade=async (q,given,btns,wrap)=>{
     const res=await fetch(QAPI+'/api/quiz/submit',{method:'POST',
       headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:{[q.id]:given}})});
@@ -310,7 +319,7 @@ $('#frame').addEventListener('load', async ()=>{ try{
     const ex=doc.createElement('div'); ex.className='hq-exp';
     ex.textContent=(d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||'');
     wrap.appendChild(ex);
-    if(window.habTrack) habTrack('quiz',{extra:{lesson:file,qid:q.id,correct:d.correct}});
+    if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:d.correct}});
   };
   items.forEach((q,qi)=>{
     const wrap=doc.createElement('div');
