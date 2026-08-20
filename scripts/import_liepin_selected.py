@@ -69,6 +69,41 @@ KW2CAP = {
 # ── 逐条：id / 赛道 / 组织意图 / 硬门槛 / 加分项 ────────────────────
 # track: tech=技术产品侧长过来 · hr=HR 侧长出来 · rethought=老岗位被重估
 META = {
+ # ── 第二批：按人定的公司名单逐家扫（腾讯/华为/阿里/快手/蚂蚁/宁德时代等 19 家新公司）──
+ "快手|招聘专家-【生活服务】": ("ks-rec-ls", "rethought",
+  "职责里单列一条「AI 工具融合」，加分项要求「对 AI 招聘工具有**端到端**的实践经验」。"
+  "端到端三个字把门槛抬起来了：不是用过某个功能，是从头到尾跑通过一遍。",
+  ["agent_vs_wf", "hallucination", "hr_data"], ["scoping", "eval", "prompt"]),
+ "网易集团|资深产品策划（HR产品）": ("ne-hr-product", "tech",
+  "任职要求写的是「熟练应用各类 AI 工具，熟悉 AI 相关技术框架及落地路径」。"
+  "「技术框架」和「落地路径」并列出现，说明要的不是会用工具，是知道它怎么搭起来的。",
+  ["product", "agent_vs_wf", "prompt"], ["hr_data", "eval", "ship"]),
+ "网易集团|资深产品经理（HRSSC）": ("ne-ssc-pm", "tech",
+  "「识别高价值自动化与智能化需求，将适合技术介入的业务痛点转化为产品方案」——"
+  "关键在「适合技术介入」五个字：先判断哪些该交给技术、哪些不该，这个判断本身就是产出。",
+  ["scoping", "product", "agent_vs_wf"], ["hr_data", "elicitation", "eval"]),
+ "蚂蚁集团|蚂蚁集团-产品经理-HR科技": ("ant-hr-tech-pm", "tech",
+  "任职要求里「有 AI native 产品设计经验者优先」。注意是 AI native 而不是「用过 AI」——"
+  "前者指产品形态从一开始就按 AI 的能力来设计，是两种不同的做法。",
+  ["product", "agent_vs_wf", "hr_data"], ["prompt", "eval", "ship"]),
+ "蚂蚁集团|蚂蚁集团-招聘专家-职能线": ("ant-rec-func", "hr",
+  "开篇就把这个岗位的立场写清楚了：「你的工作不是被动响应需求，而是主动诊断组织能力缺口」。"
+  "然后才是「设计并优化 AI 在招聘中的应用：主导智能化招聘工具（AI 简历筛选、人岗匹配、面试辅助）落地」。"
+  "先有诊断的判断力，AI 才有用武之地——顺序不能反。",
+  ["scoping", "hallucination", "hr_data"], ["agent_vs_wf", "eval", "influence"]),
+ "宁德时代|HR AI产品经理 (MJ053892)": ("catl-hr-ai-pm", "tech",
+  "一家做动力电池的制造业公司，招「HR AI 产品经理」，要求把「大语言模型（LLM）、自然语言处理（NLP）、"
+  "推荐算法等 AI 技术转化为可落地的 HR 解决方案」。这类岗位从互联网走到硬核制造业，是这一年才发生的事。",
+  ["product", "agent_vs_wf", "hr_data"], ["prompt", "hallucination", "eval"]),
+ "小鹏集团|【探索者】售后培训运营主管(A214995)": ("xp-train-ops", "rethought",
+  "售后培训主管的职责里有一条「负责培训系统与培训 AI 能力优化与落地」。"
+  "售后培训是离总部最远、最一线的那一格，它开始要求 AI，说明这事已经推到了末梢。",
+  ["agent_vs_wf", "elicitation", "scoping"], ["prompt", "eval", "hr_data"]),
+ "小鹏集团|HRBP主管（硬件研发）(A250105)": ("xp-hrbp-hw", "rethought",
+  "「熟练使用 AI 搭建各种可视化工具」——注意动词是「搭建」不是「使用」。"
+  "一个 HRBP 岗位要求你自己做出东西来，而不是提需求等排期。",
+  ["vibecoding", "hr_data", "influence"], ["scoping", "data_prep", "agent_vs_wf"]),
+
  "用友网络|HRIS专家": ("uf-hris", "tech",
   "这条 JD 里有一句罕见的清醒话：「务实推动 AI 大模型、RPA、知识图谱等新技术在 HR 共享服务场景中的应用，不盲目追新」。"
   "在满屏都是「拥抱 AI」的招聘市场里，把「不盲目追新」写进职责，本身就是一种能力要求。",
