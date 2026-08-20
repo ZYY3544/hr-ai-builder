@@ -609,8 +609,10 @@ def get_progress(user: dict = Depends(auth.current_user)):
     return {"done": done, "quiz": quiz[::-1],             # 曲线旧→新
             "best": {c: round(p, 2) for c, p in best.items()}, "task": task}
 
-# 登录闸开关。微信登录尚未配通前默认 off——否则受保护章节会变成谁都打不开。
-# 登录跑通后在 Render 面板把 CONTENT_GATE 拨成 on 即可，代码零改动。
+# 登录闸开关。默认 off——全部内容匿名可读，18 节"登录内容"只显示轻提示。
+# ⚠️ 开闸要动两处：paywall.js 优先读 course-data.js 的 meta.access.gate（阅读器 iframe 场景），
+# 读不到才回落到这里的 /api/auth/config（直访 slides 场景）。只拨 Render 的 CONTENT_GATE
+# 而不改 course-data 的 "gate":"on"，阅读器里的墙不会立起来。
 def _gate_on() -> bool:
     return (os.getenv("CONTENT_GATE", "off") or "").strip().lower() in ("1", "on", "true")
 
