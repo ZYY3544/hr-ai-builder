@@ -93,9 +93,13 @@ def main():
             json.dump(state, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
             continue
         for h in hits:
-            h["_company_guess"] = name
-            print(f"     ✓ {h['title'][:30]:32s} {h['city'][:9]:11s} "
-                  f"{h['salary']:12s} AI在{h['where']}")
+            # ⚠️ 公司页里混着别家公司的推荐职位（实测用友名下混进美团/字节/嘉楠，
+            #    联想名下混进字节）。归属一律以**职位页自报的公司名**为准，
+            #    名录名只留作「从哪一次扫描来的」线索，不能当归属用。
+            h["_scanned_under"] = name
+            h["company"] = h.get("company") or name
+            print(f"     ✓ {h['company'][:10]:12s} {h['title'][:28]:30s} "
+                  f"{h['city'][:9]:11s} {h['salary']:12s} AI在{h['where']}")
         state["hits"].extend(hits)
         state["done"].append(cid)
         json.dump(state, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)

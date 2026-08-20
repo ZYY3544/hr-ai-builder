@@ -45,8 +45,33 @@ T_HR = re.compile(r"HR|人力|人事|人才|招聘|组织|薪酬|绩效|员工|�
 #    （chain / sustain / main / email / available…），英文 JD 会整片假阳性。
 #    实测京东「HRBP-常驻英国」就是这么被误判成 AI 岗的。
 T_AI = re.compile(r"(?<![A-Za-z])AI(?![A-Za-z])|人工智能|大模型|智能体|Agent|数字化|智能", re.I)
-# 正文里的 HR 上下文与 AI 强信号
-C_HR = re.compile(r"HR|人力|人事|人才|招聘|组织|薪酬|绩效|员工|培训|干部|入转调离|花名册")
+# 正文里的 HR 上下文。⚠️ 不能用「出现过任一 HR 词」当判据——技术岗的长 JD 里
+# 顺带提一次「组织」「培训」就会被误收（实测锐捷 32 条候选几乎全是 AI 算法/架构岗，
+# 每条正文只命中 1 个 HR 词）。改成：**标题里有 HR 词，或正文里至少命中 3 个不同 HR 词**。
+# 校准依据（真/假阳性各两例，见 is_hr_job 的 doctest）：
+#   假：AI算法负责人（标题无 · 正文仅「组织」）  假：AI产品专家（标题无 · 正文仅「HR」）
+#   真：组织发展专家(AI变革方向)（标题有「组织」） 真：AI产品经理(职能系统方向)（正文 6 个）
+HR_WORDS = ("HR", "人力", "人事", "人才", "招聘", "组织", "薪酬", "绩效",
+            "员工", "培训", "干部", "入转调离", "花名册", "职级", "考勤", "假勤")
+HR_MIN_DISTINCT = 3
+
+
+def is_hr_job(title: str, body: str) -> bool:
+    """这份 JD 讲的是不是 HR 的活。
+
+    >>> is_hr_job("AI算法负责人", "带领AI团队…推动组织能力建设")
+    False
+    >>> is_hr_job("组织发展专家（AI变革方向）", "…")
+    True
+    >>> is_hr_job("AI产品经理（职能系统方向）", "薪酬 考勤 招聘 绩效 人力 员工")
+    True
+    """
+    if any(w in (title or "") for w in HR_WORDS):
+        return True
+    return len({w for w in HR_WORDS if w in (body or "")}) >= HR_MIN_DISTINCT
+
+
+C_HR = re.compile("|".join(HR_WORDS))     # 保留给粗筛用
 C_AI = re.compile(r"(?<![A-Za-z])AI(?![A-Za-z])|人工智能|大模型|智能体|Agent|LLM|Vibe\s?Coding|Prompt|RAG|MCP", re.I)
 
 START = r"职位描述|职位介绍|岗位职责|职位职责|工作职责"
@@ -176,7 +201,7 @@ def main():
         if not d["desc"]:
             print(f"  ⚠️ {jid} 正文抠不出来（模板又变了？）：{t[:24]}", file=sys.stderr)
             continue
-        if not C_HR.search(d["full"] + t):
+        if not is_hr_job(d["title"] or t, d["full"]):
             continue
         where = [n for n, txt in (("标题", d["title"]), ("职责", d["desc"]), ("要求", d["req"]))
                  if C_AI.search(txt or "")]
