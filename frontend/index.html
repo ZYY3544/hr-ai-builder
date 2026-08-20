@@ -569,7 +569,10 @@ async function openLogin(e){
         if(ssoWin){ try{ssoWin.close()}catch(e){} ssoWin=null; }
         localStorage.setItem(TK,s.token);
         try{ localStorage.setItem('hab_user',JSON.stringify({nickname:s.user.nickname,avatar:s.user.avatar})); }catch(e){}
-        setUser(s.user); closeLogin(); }
+        setUser(s.user); closeLogin();
+        // 登录前想去哪就送回哪,别让人登完了迷路
+        try{ const nx=sessionStorage.getItem('hab_next');
+          if(nx){ sessionStorage.removeItem('hab_next'); location.href=nx; } }catch(e){} }
       else if(s.status==='expired'){ clearInterval(poll); poll=null;
         $('#loginBody').innerHTML='<div class="qrbox"><div class="st">二维码已过期<br>关闭后重新点登录</div></div>'; }
     }catch(e){}
@@ -580,6 +583,18 @@ async function openLogin(e){
 (function(){
   const h=location.hash||'';
   if(h==='#login'){ history.replaceState(null,'',location.pathname); setTimeout(()=>openLogin(),80); }
+  /* 强制登录闸：未登录点课程/测评入口 → 弹登录并记下目的地。
+     课件静态页(slides/)直访不拦——那是 SEO 和 AI 引擎的进站口。 */
+  document.addEventListener('click',e=>{
+    if(localStorage.getItem(TK)) return;
+    const a=e.target.closest('a'); if(!a) return;
+    const href=a.getAttribute('href')||'';
+    if(/^(learn|quiz)\.html/.test(href)){
+      e.preventDefault();
+      try{ sessionStorage.setItem('hab_next',href); }catch(err){}
+      openLogin();
+    }
+  });
   if(h.startsWith('#token=')){
     localStorage.setItem(TK, decodeURIComponent(h.slice(7)));
     history.replaceState(null,'',location.pathname+location.search);

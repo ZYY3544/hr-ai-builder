@@ -221,6 +221,11 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
 </div></div>
 
 <script>
+/* 强制登录：测评只对登录用户开放（免费,微信扫码一步） */
+if(!localStorage.getItem('hab_token')){
+  try{ sessionStorage.setItem('hab_next','quiz.html'); }catch(e){}
+  location.replace('index.html#login');
+}
 const API=(location.hostname==='localhost'||location.protocol==='file:')
   ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
 const $=s=>document.querySelector(s);

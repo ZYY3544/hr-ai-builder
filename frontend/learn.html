@@ -206,6 +206,13 @@ const $=s=>document.querySelector(s);
 const CO=window.COURSE||{parts:[]};
 const DONE_KEY='hab_done', TK='hab_token';
 
+/* 强制登录：阅读器只对登录用户开放（免费,微信扫码一步）。
+   课件静态页 slides/ 直访不拦——那是 SEO 和 AI 引擎的进站口。 */
+if(!localStorage.getItem(TK)){
+  try{ sessionStorage.setItem('hab_next','learn.html'+location.hash); }catch(e){}
+  location.replace('index.html#login');
+}
+
 /* 扁平序列 —— 上一节/下一节靠它 */
 const FLAT=[];
 CO.parts.forEach(p=>p.topics.forEach(t=>t.lessons.forEach(l=>{
