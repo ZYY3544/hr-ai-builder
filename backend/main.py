@@ -661,6 +661,15 @@ def track_stats():
                  key=lambda r: -r[1])[:15]
     downloads = Counter((x.get("extra") or {}).get("file", "?")
                         for x in _EVENTS if x["event"] == "download")
+    qz = [x.get("extra") or {} for x in _EVENTS if x["event"] == "quiz"]
+    quiz_by_ch = {}
+    for e in qz:
+        ch = e.get("chapter", "?")
+        a = quiz_by_ch.setdefault(ch, [0, 0])
+        a[1] += 1
+        a[0] += int(bool(e.get("correct")))
+    quiz_stats = [{"chapter": c, "answered": n, "correct": k,
+                   "rate": round(k / n, 2)} for c, (k, n) in quiz_by_ch.items()]
     return {
         "buffered": len(_EVENTS), "note": "内存环形缓冲，最多 3000 条，重启清空",
         "visitors": len({x["visitor_id"] for x in _EVENTS}),
