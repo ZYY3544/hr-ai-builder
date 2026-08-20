@@ -86,17 +86,32 @@ def parse_job(page: str, url: str) -> dict:
             "sha": hashlib.sha256(full.encode()).hexdigest()[:16] if desc else ""}
 
 
+class FetchFailed(Exception):
+    """取数失败——**不是**「这家公司没岗位」。
+
+    两者必须分开：把失败当成 0，扫描器会安安静静地报出一份漂亮的空结果。
+    实测批量跑到第 7 家起被限流，41 家全报 0 命中，差点当真数用。
+    """
+
+
 def listing(s, comp_id: str, pages: int) -> list:
-    """翻公司在招列表，返回 (职位id, 标题)。翻到没有新 id 就停。"""
+    """翻公司在招列表，返回 (职位id, 标题)。翻到没有新 id 就停。
+
+    第 1 页取不到 → 抛 FetchFailed（多半是被限流），交给调用方退避重试；
+    第 1 页有数据、后面翻空 → 正常结束。"""
     out, seen = [], set()
     for pn in range(1, pages + 1):
         url = f"https://www.liepin.com/company-jobs/{comp_id}/" + (f"pn{pn}/" if pn > 1 else "")
         try:
             r = s.get(url, timeout=25)
         except Exception as e:
+            if pn == 1:
+                raise FetchFailed(f"第 1 页请求异常：{e}")
             print(f"  列表第 {pn} 页失败：{e}", file=sys.stderr)
             break
         if r.status_code != 200:
+            if pn == 1:
+                raise FetchFailed(f"第 1 页 HTTP {r.status_code}")
             break
         pairs = re.findall(r'href="https://www\.liepin\.com/job/(\d+)\.shtml"[^>]*>(.*?)</a>',
                            r.text, re.S)
@@ -110,6 +125,8 @@ def listing(s, comp_id: str, pages: int) -> list:
                 out.append((jid, t))
                 fresh += 1
         print(f"  第 {pn} 页：新增 {fresh} 个（累计 {len(out)}）")
+        if pn == 1 and fresh == 0:
+            raise FetchFailed("第 1 页一个职位链接都没有——页面结构变了或被限流")
         if fresh == 0:
             break
         time.sleep(GAP)

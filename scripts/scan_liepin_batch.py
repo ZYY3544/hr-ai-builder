@@ -21,7 +21,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import requests                                    # noqa: E402
-from scan_liepin_company import (UA, C_AI, C_HR, T_AI, T_HR,      # noqa: E402
+from scan_liepin_company import (UA, C_AI, C_HR, FetchFailed, T_AI, T_HR,   # noqa: E402
                                  listing, parse_job)
 
 
@@ -72,11 +72,25 @@ def main():
         if cid in state["done"] or name in a.skip:
             continue
         print(f"\n[{i}/{len(comps)}] {name}（{cid}）")
-        try:
-            hits = scan_one(s, cid, a.pages)
-        except Exception as e:
-            print(f"  失败：{e}")
-            state["errors"].append({"id": cid, "name": name, "err": str(e)})
+        # 取数失败要退避重试，不能当成「这家没岗位」。猎聘连着扫十来家就开始限流，
+        # 第一版没区分这两者，41 家静静地报了 0 命中，差点当真数用。
+        hits, err = None, ""
+        for attempt, backoff in enumerate((0, 60, 180), 1):
+            if backoff:
+                print(f"  等 {backoff}s 后重试（第 {attempt} 次）…")
+                time.sleep(backoff)
+            try:
+                hits = scan_one(s, cid, a.pages)
+                break
+            except FetchFailed as e:
+                err = str(e)
+            except Exception as e:
+                err = str(e)
+                break
+        if hits is None:
+            print(f"  取数失败（非「无岗位」）：{err}")
+            state["errors"].append({"id": cid, "name": name, "err": err})
+            json.dump(state, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
             continue
         for h in hits:
             h["_company_guess"] = name
@@ -86,6 +100,7 @@ def main():
         state["done"].append(cid)
         json.dump(state, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print(f"  本家 {len(hits)} 条 · 累计 {len(state['hits'])} 条（已落盘）")
+        time.sleep(8)          # 公司之间多喘一口，降低被限流概率
 
     print(f"\n完成 {len(state['done'])} 家，候选共 {len(state['hits'])} 条，失败 {len(state['errors'])} 家。")
     print("下一步：逐条读 JD 判收不收（四条排除规则见 scan_liepin_company.py 注释）。")
