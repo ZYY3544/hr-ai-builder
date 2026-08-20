@@ -348,10 +348,17 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   if(b) b.onclick=function(e){e.preventDefault(); location.href='index.html#login';};
   if(x) x.onclick=function(){m.classList.remove('on');};
 
-  /* 任务材料下载埋点：漏斗从「打开任务页」到「下载了哪个包」之间,原来是黑的 */
+  /* 任务材料下载埋点：漏斗从「打开任务页」到「下载了哪个包」之间,原来是黑的。
+     登录用户同时记一笔战役进度(已领任务包),成长页靠它点状态 */
   document.querySelectorAll('a[href^="data/task-"]').forEach(function(a){
     a.addEventListener('click', function(){
-      if (window.habTrack) habTrack('download', { extra: { file: a.getAttribute('href') } });
+      var href=a.getAttribute('href');
+      if (window.habTrack) habTrack('download', { extra: { file: href } });
+      var t=localStorage.getItem('hab_token');
+      var key=(href.match(/task-(monthly|survey|interview|weekend)/)||[])[1];
+      if(t&&key) fetch('https://hr-ai-builder-api.onrender.com/api/progress',{method:'POST',
+        headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},
+        body:JSON.stringify({kind:'task',key:key,value:{status:'downloaded'}})}).catch(function(){});
     });
   });
 })();

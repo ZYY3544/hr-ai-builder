@@ -88,6 +88,36 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .donetag{margin-left:auto;font-size:11.5px;color:var(--muted);cursor:pointer;user-select:none;white-space:nowrap}
 .donetag:hover{color:var(--green-d)}
 .donetag.done{color:var(--green-d);font-weight:500}
+/* 本章小测：目录里的独立卡片 + 阅读区的测验视图 */
+.quizls{display:flex;align-items:center;gap:8px;margin:10px 8px 16px;padding:10px 13px;
+  border:1.5px solid rgba(0,168,138,.35);border-radius:11px;text-decoration:none;
+  background:linear-gradient(135deg,rgba(0,168,138,.05),rgba(8,145,178,.05));
+  font-size:12.5px;font-weight:600;color:#00795F;cursor:pointer}
+.quizls:hover{border-color:#00A88A}
+.quizls.on{background:linear-gradient(135deg,rgba(0,168,138,.13),rgba(8,145,178,.13))}
+.quizls .sc{margin-left:auto;font-weight:500;font-size:11.5px;color:var(--muted)}
+.quizls .sc.pass{color:#00795F;font-weight:600}
+#quizpane{flex:1;overflow-y:auto;display:none;background:#fff}
+#quizpane .hq-in{max-width:820px;margin:36px auto 80px;padding:0 28px;color:#0F172A}
+#quizpane .hq-h{font-size:13px;font-weight:600;color:#00795F;letter-spacing:.06em;margin:0 0 4px}
+#quizpane .hq-sub{font-size:12.5px;color:#64748B;margin:0 0 18px}
+#quizpane .hq-q{font-size:14.5px;font-weight:600;line-height:1.7;margin:22px 0 10px}
+#quizpane .hq-o{display:block;width:100%;text-align:left;font:inherit;font-size:13.5px;line-height:1.65;
+  padding:9px 13px;margin:7px 0;border:1.5px solid #E2E8F0;border-radius:10px;background:#fff;
+  color:#334155;cursor:pointer;transition:border-color .12s}
+#quizpane .hq-o:hover{border-color:#00A88A}
+#quizpane .hq-o.sel{border-color:#00A88A;background:#F0FDFA}
+#quizpane .hq-o.ok{border-color:#00A88A;background:#E8FBF6;color:#00795F;font-weight:600}
+#quizpane .hq-o.bad{border-color:#FCA5A5;background:#FEF2F2;color:#B91C1C}
+#quizpane .hq-o:disabled{cursor:default}
+#quizpane .hq-exp{font-size:12.5px;line-height:1.8;color:#475569;background:#F8FAFC;
+  border-left:3px solid #00A88A;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 4px}
+#quizpane .hq-go{font:inherit;font-size:12.5px;font-weight:600;padding:7px 16px;margin-top:10px;
+  border:none;border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
+#quizpane .hq-go:disabled{opacity:.45;cursor:default}
+#quizpane .hq-sum{margin:26px 0 0;padding:16px 18px;border:1.5px solid #E2E8F0;border-radius:12px;
+  font-size:13.5px;line-height:1.8;color:#334155;background:#F8FAFC}
+#quizpane .hq-sum.pass{border-color:rgba(0,168,138,.45);background:#E8FBF6;color:#00795F}
 
 .sbtn{display:none;font:inherit;font-size:16px;background:none;border:0;cursor:pointer;color:var(--muted);padding:4px 8px}
 @media(max-width:860px){
@@ -150,6 +180,7 @@ body.dragging iframe{pointer-events:none}
 
   <div class="pane">
     <iframe id="frame" title="课程内容"></iframe>
+    <div id="quizpane"></div>
   </div>
 </div>
 
@@ -197,6 +228,13 @@ function renderTree(filter){
             <span class="dot"></span><span>${l.title}<span class="mn">${l.min}′</span></span></a>`;
         }).join('')}</div></div>`;
     });
+    // 每章一张独立的「本章小测」卡片，挂在这一章目录的末尾；搜索时不掺和
+    const ch=(typeof QCH!=='undefined')&&QCH[p.num];
+    if(ptHtml&&ch&&!kw){
+      const best=QBEST[ch]||0;
+      const sc=best>=0.7?'<span class="sc pass">已通关 ✓</span>':(best>0?`<span class="sc">最好 ${Math.round(best*100)}%</span>`:'');
+      ptHtml+=`<a class="quizls ${('quiz:'+ch)===f?'on':''}" href="#quiz:${ch}"><span>✦ 本章小测</span>${sc}</a>`;
+    }
     if(ptHtml) html+=`<div class="pt"><div class="num">${p.num}</div><div class="ti">${p.title}</div></div>${ptHtml}`;
   });
   $('#tree').innerHTML=html||'<div style="padding:20px 8px;color:var(--faint);font-size:12.5px">没有匹配的知识点</div>';
@@ -214,6 +252,8 @@ function load(){
   let f=cur();
   const OLD2NEW={"0-intro.html": "start-dunning-kruger.html", "0-how.html": "start-how-to-learn.html", "0-why.html": "start-why-principles.html", "1-2-fake-chat.html": "hallu-fake-chat.html", "1-2-hallucination.html": "hallu-first-scene.html", "1-2-mitigation-prompt.html": "hallu-fix-prompt.html", "1-2-mitigation-rag.html": "hallu-fix-rag.html", "1-2-mitigation-temp.html": "hallu-fix-temp.html", "1-2-mitigation-eval.html": "hallu-fix-eval.html", "5-1.html": "context-window.html", "5-2.html": "context-overflow.html", "6-1.html": "prompt-system.html", "6-2.html": "prompt-advanced.html", "7-1.html": "agent-what.html", "10-1.html": "agent-vs-workflow.html", "7-4a.html": "agent-react.html", "7-4b.html": "agent-stuck.html", "8-1.html": "token-cost.html", "9-27.html": "cc-permissions.html", "9-28.html": "cc-permissions.html", "9-29.html": "harness-audit.html", "10-8.html": "eval-why.html", "10-9.html": "eval-graders.html", "10-10.html": "eval-pitfalls.html", "vibe-1.html": "vibe-rules.html", "vibe-2.html": "vibe-workflow.html", "vibe-5.html": "vibe-debug.html", "vibe-6.html": "vibe-complete.html", "vibe-7.html": "vibe-docs.html", "vibe-8.html": "vibe-env.html", "vibe-9.html": "vibe-safety.html", "oss-8.html": "jargon-deploy.html", "oss-9.html": "jargon-deploy.html", "interview-1.html": "interview-p1.html", "interview-2.html": "interview-p2.html", "interview-7.html": "interview-p4.html", "hr-org-1.html": "hr-org-3.html", "hr-org-2.html": "hr-org-3.html"};
   if(OLD2NEW[f]){ location.replace('#'+encodeURIComponent(OLD2NEW[f])); return; }
+  if(/^quiz:/.test(f)){ renderQuizView(f.slice(5)); return; }
+  $('#quizpane').style.display='none'; $('#frame').style.display='block'; $('#mark').style.display='';
   let i=find(f);
   if(i<0){ i=0; f=FLAT[0].file; location.replace('#'+encodeURIComponent(f)); }
   const l=FLAT[i];
@@ -229,7 +269,11 @@ function load(){
   m.textContent=isDone?'✓ 已学完':'○ 标记学完';
   m.title=isDone?'点击取消这节的学完标记':'把当前这节标记为学完';
   m.onclick=()=>{ done.has(l.file)?done.delete(l.file):done.add(l.file);
-    saveDone(); renderTree($('#q').value); renderProgress(); load(); };
+    saveDone(); renderTree($('#q').value); renderProgress(); load();
+    const t=localStorage.getItem(TK);
+    if(t) fetch(QAPI+'/api/progress',{method:'POST',
+      headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},
+      body:JSON.stringify({kind:'done',key:l.file,value:{on:done.has(l.file)}})}).catch(()=>{}); };
 
   renderTree($('#q').value); renderProgress();
   const on=$('#tree .ls.on'); if(on) on.scrollIntoView({block:'nearest'});
@@ -264,49 +308,66 @@ function toast(msg){
 $('#q').oninput=e=>renderTree(e.target.value);
 $('#sbtn').onclick=()=>$('#side').classList.toggle('show');
 window.addEventListener('hashchange',load);
-/* 本章小测：每个篇章的最后一节读完，课件末尾原地出题——从本章题库随机抽 8 道。
-   放章末而不是每节：题库按篇章出，章末时全章都读过了，永远不会考到没读的内容。
-   前端拿不到答案，点选后交服务端判分并回解析。 */
+/* 本章小测：每章一张独立卡片（目录里 ✦ 本章小测），点开在阅读区单独呈现。
+   从本章题库随机抽 8 道；前端拿不到答案，点选后交服务端判分并回解析。
+   全部答完给通关判定（≥70% 点亮），成绩落库（登录走服务端，匿名存本地）。 */
 const QAPI=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com');
 const QCH={'第零篇章':'p-zero','第一篇章':'p-1','第二篇章':'p-2','第三篇章':'p-3','第四篇章':'p-4',
            '第五篇章':'p-5','第六篇章':'p-6','第七篇章':'p-7','第八篇章':'p-8','第九篇章':'p-9'};
-$('#frame').addEventListener('load', async ()=>{ try{
-  const doc=$('#frame').contentDocument;
-  const file=(doc.location.pathname.split('/').pop()||'');
-  if(!file || doc.getElementById('hq-quiz')) return;
-  const i=find(file); if(i<0) return;
-  const isChapterEnd=!FLAT[i+1]||FLAT[i+1].part!==FLAT[i].part;
-  const ch=QCH[FLAT[i].part];
-  if(!isChapterEnd||!ch) return;
-  const r=await fetch(QAPI+'/api/quiz?chapter='+ch);
-  if(!r.ok) return;
-  const pool=((await r.json()).items||[]);
+const QBEST_KEY='hab_quiz_best';
+const QBEST=JSON.parse(localStorage.getItem(QBEST_KEY)||'{}');   // {章代码: 最好正确率}
+function saveBest(ch,pct){
+  if(pct>(QBEST[ch]||0)){ QBEST[ch]=pct; localStorage.setItem(QBEST_KEY,JSON.stringify(QBEST)); }
+}
+async function saveAttempt(ch,correct,n){
+  saveBest(ch,n?correct/n:0);
+  const t=localStorage.getItem(TK);
+  if(t){
+    try{ await fetch(QAPI+'/api/progress',{method:'POST',
+      headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},
+      body:JSON.stringify({kind:'quiz',key:ch,value:{correct,n}})}); }catch(e){}
+  } else {
+    try{ const h=JSON.parse(localStorage.getItem('hab_quiz_local')||'[]');
+      h.push({ch,correct,n,ts:new Date().toISOString()});
+      localStorage.setItem('hab_quiz_local',JSON.stringify(h.slice(-200))); }catch(e){}
+  }
+}
+
+async function renderQuizView(ch){
+  const part=Object.keys(QCH).find(k=>QCH[k]===ch);
+  if(!part){ location.replace('#'+encodeURIComponent(FLAT[0].file)); return; }
+  $('#frame').style.display='none';
+  const pane=$('#quizpane'); pane.style.display='block';
+  $('#mark').style.display='none';
+  document.title='本章小测 · '+part+' · meansights learning';
+  renderTree($('#q').value);
+  // ←→ 依然有意义：上一步=本章最后一节，下一步=下一章第一节
+  const inCh=FLAT.filter(l=>l.part===part);
+  const lastIdx=find(inCh[inCh.length-1].file), next=FLAT[lastIdx+1];
+  window.goPrev=()=>location.hash='#'+encodeURIComponent(inCh[inCh.length-1].file);
+  window.goNext=()=>next&&(location.hash='#'+encodeURIComponent(next.file));
+
+  pane.innerHTML='<div class="hq-in"><p class="hq-h">本章小测 · '+part+'</p><p class="hq-sub">出题中…</p></div>';
+  let pool=[];
+  try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
+  if(!pool.length){ pane.querySelector('.hq-sub').textContent='题目没取到——网络抖了下，切走再切回来重试。'; return; }
   const items=pool.sort(()=>Math.random()-.5).slice(0,8);
-  if(!items.length) return;
-  const st=doc.createElement('style');
-  st.textContent=
-    '#hq-quiz{max-width:820px;margin:48px auto 72px;padding:26px 28px;background:#fff;'+
-    'border:1px solid #E2E8F0;border-radius:14px;font-family:inherit;color:#0F172A}'+
-    '#hq-quiz .hq-h{font-size:13px;font-weight:600;color:#00795F;letter-spacing:.06em;margin:0 0 4px}'+
-    '#hq-quiz .hq-sub{font-size:12.5px;color:#64748B;margin:0 0 18px}'+
-    '#hq-quiz .hq-q{font-size:14.5px;font-weight:600;line-height:1.7;margin:20px 0 10px}'+
-    '#hq-quiz .hq-o{display:block;width:100%;text-align:left;font:inherit;font-size:13.5px;line-height:1.65;'+
-    'padding:9px 13px;margin:7px 0;border:1.5px solid #E2E8F0;border-radius:10px;background:#fff;'+
-    'color:#334155;cursor:pointer;transition:border-color .12s}'+
-    '#hq-quiz .hq-o:hover{border-color:#00A88A}'+
-    '#hq-quiz .hq-o.sel{border-color:#00A88A;background:#F0FDFA}'+
-    '#hq-quiz .hq-o.ok{border-color:#00A88A;background:#E8FBF6;color:#00795F;font-weight:600}'+
-    '#hq-quiz .hq-o.bad{border-color:#FCA5A5;background:#FEF2F2;color:#B91C1C}'+
-    '#hq-quiz .hq-o:disabled{cursor:default}'+
-    '#hq-quiz .hq-exp{font-size:12.5px;line-height:1.8;color:#475569;background:#F8FAFC;'+
-    'border-left:3px solid #00A88A;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 4px}'+
-    '#hq-quiz .hq-go{font:inherit;font-size:12.5px;font-weight:600;padding:7px 16px;margin-top:8px;'+
-    'border:none;border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}'+
-    '#hq-quiz .hq-go:disabled{opacity:.45;cursor:default}';
-  doc.head.appendChild(st);
-  const box=doc.createElement('section'); box.id='hq-quiz';
-  box.innerHTML='<p class="hq-h">本章小测 · '+FLAT[i].part+'</p>'+
-    '<p class="hq-sub">这一章读完了，抽 '+items.length+' 道测一测——答错也没关系，解析比对错有用。换一节再回来，题会重新抽。</p>';
+  const box=document.createElement('div'); box.className='hq-in';
+  box.innerHTML='<p class="hq-h">本章小测 · '+part+'</p>'+
+    '<p class="hq-sub">从本章题库随机抽 '+items.length+' 道——答错也没关系，解析比对错有用。答对 70% 点亮本章。</p>';
+  let ansN=0, okN=0;
+  const finish=()=>{
+    const pct=okN/items.length, pass=pct>=0.7;
+    const sum=document.createElement('div'); sum.className='hq-sum'+(pass?' pass':'');
+    sum.innerHTML=(pass?'🎉 <b>本章通关！</b>':'<b>差一点。</b>')+' 答对 '+okN+' / '+items.length+
+      (pass?'':'——回去翻翻错题对应的那几节，随时可以再抽一轮。');
+    const again=document.createElement('button'); again.className='hq-go'; again.textContent='再抽一轮';
+    again.onclick=()=>renderQuizView(ch);
+    sum.appendChild(document.createElement('br')); sum.appendChild(again);
+    box.appendChild(sum); sum.scrollIntoView({behavior:'smooth',block:'nearest'});
+    saveAttempt(ch,okN,items.length);
+    renderTree($('#q').value);          // 卡片上的通关标即时点亮
+  };
   const grade=async (q,given,btns,wrap)=>{
     const res=await fetch(QAPI+'/api/quiz/submit',{method:'POST',
       headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:{[q.id]:given}})});
@@ -316,20 +377,22 @@ $('#frame').addEventListener('load', async ()=>{ try{
     btns.forEach((b,i)=>{ b.disabled=true;
       if(ans.includes(i)) b.className='hq-o ok';
       else if(b.classList.contains('sel')||(!Array.isArray(given)&&i===given)) b.className='hq-o bad'; });
-    const ex=doc.createElement('div'); ex.className='hq-exp';
+    const ex=document.createElement('div'); ex.className='hq-exp';
     ex.innerHTML=(d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||'');   // exp 是自家题库的富文本(<b>等)
     wrap.appendChild(ex);
     if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:d.correct}});
+    ansN++; okN+=d.correct?1:0;
+    if(ansN===items.length) finish();
   };
   items.forEach((q,qi)=>{
-    const wrap=doc.createElement('div');
-    const h=doc.createElement('p'); h.className='hq-q';
+    const wrap=document.createElement('div');
+    const h=document.createElement('p'); h.className='hq-q';
     h.innerHTML=(qi+1)+'. '+q.q+(q.type==='multi'?'（多选）':''); wrap.appendChild(h);
-    const btns=q.opts.map((o,i)=>{
-      const b=doc.createElement('button'); b.className='hq-o'; b.innerHTML=o;
+    const btns=q.opts.map(o=>{
+      const b=document.createElement('button'); b.className='hq-o'; b.innerHTML=o;
       wrap.appendChild(b); return b; });
     if(q.type==='multi'){
-      const go=doc.createElement('button'); go.className='hq-go'; go.textContent='确认';
+      const go=document.createElement('button'); go.className='hq-go'; go.textContent='确认';
       btns.forEach(b=>b.onclick=()=>b.classList.toggle('sel'));
       go.onclick=()=>{ const sel=btns.map((b,i)=>b.classList.contains('sel')?i:-1).filter(i=>i>=0);
         if(!sel.length) return; go.disabled=true; grade(q,sel,btns,wrap); };
@@ -339,8 +402,8 @@ $('#frame').addEventListener('load', async ()=>{ try{
     }
     box.appendChild(wrap);
   });
-  doc.body.appendChild(box);
-}catch(e){} });
+  pane.innerHTML=''; pane.appendChild(box); pane.scrollTop=0;
+}
 
 /* iframe 内按 ←/→ 也能翻节：same-origin，把按键转发到父页 */
 $('#frame').addEventListener('load',()=>{ try{
@@ -356,14 +419,19 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight') window.goNext&&window.goNext();
 });
 
-/* 登录态 */
+/* 登录态 + 服务端进度合并：学完的节、各章最好成绩都跟着账号走 */
 (async function(){
   const t=localStorage.getItem(TK); if(!t) return;
   try{
-    const r=await fetch((location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com')+'/api/me',
-      {headers:{Authorization:'Bearer '+t}});
-    if(r.ok){ const u=await r.json();
-      const b=$('#loginBtn'); b.textContent=u.nickname||'已登录'; b.className='tbtn'; b.removeAttribute('href'); }
+    const r=await fetch(QAPI+'/api/me',{headers:{Authorization:'Bearer '+t}});
+    if(!r.ok) return;
+    const u=await r.json();
+    const b=$('#loginBtn'); b.textContent=u.nickname||'已登录'; b.className='gbtn'; b.href='growth.html'; b.title='我的成长';
+    const pr=await fetch(QAPI+'/api/progress',{headers:{Authorization:'Bearer '+t}});
+    if(pr.ok){ const pg=await pr.json();
+      (pg.done||[]).forEach(f=>done.add(f)); saveDone();
+      Object.entries(pg.best||{}).forEach(([ch,p])=>saveBest(ch,p));
+      renderTree($('#q').value); renderProgress(); }
   }catch(e){}
 })();
 

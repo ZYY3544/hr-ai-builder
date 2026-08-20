@@ -36,6 +36,10 @@ class _Base:
     def recent(self, table: str, limit: int = 50) -> list:
         raise NotImplementedError
 
+    def find(self, table: str, eq: dict, limit: int = 1000) -> list:
+        """按等值条件取行，新→旧。进度/成绩这类「按人查」的场景用。"""
+        raise NotImplementedError
+
 
 class MemStore(_Base):
     """内存 + 尽力落盘。重启即丢——这是明确的降级，不是"看起来在工作"。
@@ -79,6 +83,11 @@ class MemStore(_Base):
                 pass
         return rows[-limit:][::-1]
 
+    def find(self, table: str, eq: dict, limit: int = 1000) -> list:
+        rows = [r for r in self.recent(table, _MEM_MAX)
+                if all(r.get(k) == v for k, v in eq.items())]
+        return rows[:limit]
+
 
 class SupabaseStore(_Base):
     """走 PostgREST。不引新依赖（requests 已在），失败自动降级到内存副本。"""
@@ -118,6 +127,20 @@ class SupabaseStore(_Base):
             print(f"[STORE] supabase select {table} 异常: {e}", flush=True)
         return self._fallback.recent(table, limit)
 
+    def find(self, table: str, eq: dict, limit: int = 1000) -> list:
+        try:
+            params = {"select": "*", "order": "created_at.desc", "limit": str(limit)}
+            for k, v in eq.items():
+                params[k] = f"eq.{v}"
+            r = _rq.get(f"{_SB_URL}/rest/v1/{table}",
+                        headers={**self._h, "Prefer": ""}, params=params, timeout=6)
+            if r.status_code < 300:
+                return r.json()
+            print(f"[STORE] supabase find {table} -> {r.status_code}", flush=True)
+        except Exception as e:
+            print(f"[STORE] supabase find {table} 异常: {e}", flush=True)
+        return self._fallback.find(table, eq, limit)
+
 
 store: _Base = SupabaseStore() if (_SB_URL and _SB_KEY) else MemStore()
 print(f"[STORE] 持久层模式 = {store.mode}"
@@ -128,6 +151,7 @@ print(f"[STORE] 持久层模式 = {store.mode}"
 # ---------------------------------------------------------------- 业务封装
 FEEDBACK = "hab_feedback"      # 用户明说的：某节难 / 有建议
 SIGNAL = "hab_signal"          # 行为侧的匿名难度信号：卡住
+PROGRESS = "hab_progress"      # 登录用户的成长记录：学完/小测成绩/战役状态（append-only，曲线要历史）
 
 
 def now_iso() -> str:
@@ -150,6 +174,19 @@ def add_signal(lesson: str, dwell_s: int, kind: str = "stuck",
         "dwell_s": int(dwell_s), "kind": kind[:24],
         "visitor": (visitor or "")[:40],
     })
+
+
+def add_progress(openid: str, kind: str, key: str, value: dict) -> bool:
+    return store.add(PROGRESS, {
+        "created_at": now_iso(), "openid": openid[:80],
+        "kind": kind[:16], "key": key[:120],
+        "value": value,
+    })
+
+
+def user_progress(openid: str, limit: int = 2000) -> list:
+    """某人的全部成长记录，新→旧。聚合（最新态/最好成绩/曲线）在调用方做。"""
+    return store.find(PROGRESS, {"openid": openid}, limit)
 
 
 # 测试/探针留下的行。看板默认排除——它们是我们自己打进去的，

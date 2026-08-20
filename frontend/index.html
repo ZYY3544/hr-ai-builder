@@ -475,7 +475,8 @@ function setUser(u){
   b.className='userchip';
   b.innerHTML=(u.avatar?`<img src="${u.avatar}" alt="">`:`<span class="ph">${(u.nickname||'微')[0]}</span>`)
     +`<span>${u.nickname||'微信用户'}</span>`;
-  b.onclick=e=>{e.preventDefault(); if(confirm('退出登录？')){localStorage.removeItem(TK); setUser(null);} };
+  b.title='我的成长';
+  b.onclick=e=>{e.preventDefault(); location.href='growth.html';};   // 退出登录在成长页里
 }
 
 async function loadMe(){

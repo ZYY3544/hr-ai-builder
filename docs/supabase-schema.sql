@@ -43,3 +43,19 @@ drop policy if exists hab_feedback_insert on hab_feedback;
 drop policy if exists hab_signal_insert   on hab_signal;
 create policy hab_feedback_insert on hab_feedback for insert to anon, authenticated with check (true);
 create policy hab_signal_insert   on hab_signal   for insert to anon, authenticated with check (true);
+
+-- 成长记录：登录用户的学完/小测成绩/战役状态。append-only——曲线需要历史。
+-- （2026-08-20 增；已应用到 meansights-learning 项目）
+create table if not exists hab_progress (
+  id          bigserial primary key,
+  created_at  timestamptz not null default now(),
+  openid      text  not null,          -- JWT sub（ms:<id> 等），服务端写入，永不信前端
+  kind        text  not null,          -- done=节学完 | quiz=章末小测一次作答 | task=战役状态
+  key         text  not null,          -- done→课件文件名 / quiz→篇章代码 / task→任务 id
+  value       jsonb not null default '{}'::jsonb
+);
+create index if not exists hab_progress_user_idx on hab_progress (openid, created_at desc);
+
+alter table hab_progress enable row level security;
+drop policy if exists hab_progress_insert on hab_progress;
+create policy hab_progress_insert on hab_progress for insert to anon, authenticated with check (true);

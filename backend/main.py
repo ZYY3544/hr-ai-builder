@@ -531,6 +531,77 @@ import sparky as _sparky
 app.include_router(_sparky.make_router(TERMS, JOBS, TERM_LESSONS, _LESSON_IDX,
                                        _LESSON_SKEL, _LESSON_TEXT))
 
+
+# ══════════════════════════════════════════════════════════════════
+#  成长记录（登录用户）：学完的节 / 章末小测成绩 / 战役状态
+#  append-only：曲线需要历史；「最新态」在读取时聚合。
+#  已知债：quiz 的 correct/n 是前端聚合上报的（单题判分在服务端，但一次作答的
+#  汇总可被伪造）——热场站先接受，等有作弊动机的那天再把作答会话搬到服务端。
+# ══════════════════════════════════════════════════════════════════
+import store as _store
+
+
+class ProgressIn(BaseModel):
+    kind: Literal["done", "quiz", "task"]
+    key: str
+    value: dict = {}
+
+
+_TASK_KEYS = ("monthly", "survey", "interview", "weekend")
+
+
+@app.post("/api/progress")
+def post_progress(p: ProgressIn, user: dict = Depends(auth.current_user)):
+    if p.kind == "done" and p.key not in _LESSON_IDX:
+        raise HTTPException(400, "unknown lesson")
+    if p.kind == "quiz" and p.key not in _QUIZ["chapters"]:
+        raise HTTPException(400, "unknown chapter")
+    if p.kind == "task" and p.key not in _TASK_KEYS:
+        raise HTTPException(400, "unknown task")
+    v = p.value or {}
+    if p.kind == "done":
+        v = {"on": bool(v.get("on", True))}
+    elif p.kind == "quiz":
+        v = {"correct": int(v.get("correct", 0)), "n": int(v.get("n", 0))}
+        if not (0 < v["n"] <= 20 and 0 <= v["correct"] <= v["n"]):
+            raise HTTPException(400, "bad quiz result")
+    else:
+        v = {"status": str(v.get("status", ""))[:24]}
+    _store.add_progress(user["openid"], p.kind, p.key, v)
+    return {"ok": True}
+
+
+@app.get("/api/progress")
+def get_progress(user: dict = Depends(auth.current_user)):
+    rows = _store.user_progress(user["openid"])          # 新→旧
+    done, seen = [], set()
+    quiz, task = [], {}
+    for r in rows:
+        k, key, v = r.get("kind"), r.get("key", ""), r.get("value") or {}
+        if isinstance(v, str):                            # 内存降级模式下 value 已是 dict；库里是 jsonb 也为 dict
+            try:
+                v = _json.loads(v)
+            except Exception:
+                v = {}
+        if k == "done":
+            if key not in seen:                           # 新→旧：首见即最新态
+                seen.add(key)
+                if v.get("on"):
+                    done.append(key)
+        elif k == "quiz":
+            quiz.append({"chapter": key, "correct": v.get("correct", 0),
+                         "n": v.get("n", 0), "ts": r.get("created_at", "")})
+        elif k == "task":
+            task.setdefault(key, v.get("status", ""))
+    best = {}
+    for a in quiz:
+        if a["n"]:
+            pct = a["correct"] / a["n"]
+            if pct > best.get(a["chapter"], -1):
+                best[a["chapter"]] = pct
+    return {"done": done, "quiz": quiz[::-1],             # 曲线旧→新
+            "best": {c: round(p, 2) for c, p in best.items()}, "task": task}
+
 # 登录闸开关。微信登录尚未配通前默认 off——否则受保护章节会变成谁都打不开。
 # 登录跑通后在 Render 面板把 CONTENT_GATE 拨成 on 即可，代码零改动。
 def _gate_on() -> bool:
