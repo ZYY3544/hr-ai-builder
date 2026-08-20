@@ -22,10 +22,19 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import requests                                    # noqa: E402
 from scan_liepin_company import (UA, C_AI, C_HR, FetchFailed, T_AI, T_HR,   # noqa: E402
-                                 listing, parse_job)
+                                 is_hr_job, listing, parse_job)
 
 
-def scan_one(s, cid: str, pages: int) -> list:
+def company_of(page: str):
+    """从职位页取公司 id —— 扫的过程中顺手把新公司收进来。"""
+    m = re.search(r'"compId"\s*:\s*"?(\d+)"?', page) or re.search(r"/company/(\d+)/", page)
+    return m.group(1) if m else None
+
+
+def scan_one(s, cid: str, pages: int, found: dict = None) -> list:
+    """扫一家公司。found 非空时，把沿途职位页上出现的**其他**公司 id 也记下来——
+    公司发现不能只靠一个种子滚一圈：那样推荐算法给什么就只看见什么，
+    阿里/腾讯/华为/快手这些压根不会进视野（第一轮 47 家就是这么来的）。"""
     items = listing(s, cid, pages)
     cand = [(i, t) for i, t in items if T_HR.search(t) or T_AI.search(t)]
     hits = []
@@ -38,8 +47,12 @@ def scan_one(s, cid: str, pages: int) -> list:
         time.sleep(2.0)
         if r.status_code != 200:
             continue
+        if found is not None:
+            ncid = company_of(r.text)
+            if ncid and ncid != cid:
+                found.setdefault(ncid, parse_job(r.text, url).get("company") or "?")
         d = parse_job(r.text, url)
-        if not d["desc"] or not C_HR.search(d["full"] + t):
+        if not d["desc"] or not is_hr_job(d["title"] or t, d["full"]):
             continue
         where = [n for n, txt in (("标题", d["title"]), ("职责", d["desc"]), ("要求", d["req"]))
                  if C_AI.search(txt or "")]
@@ -67,7 +80,11 @@ def main():
     s = requests.Session()
     s.headers["User-Agent"] = UA
 
-    for i, c in enumerate(comps, 1):
+    found = {}                       # 沿途新发现的公司：id → 名
+    state.setdefault("discovered", [])
+    i = 0
+    while i < len(comps):
+        c = comps[i]; i += 1
         name, cid = c["name"], c["id"]
         if cid in state["done"] or name in a.skip:
             continue
@@ -80,7 +97,7 @@ def main():
                 print(f"  等 {backoff}s 后重试（第 {attempt} 次）…")
                 time.sleep(backoff)
             try:
-                hits = scan_one(s, cid, a.pages)
+                hits = scan_one(s, cid, a.pages, found)
                 break
             except FetchFailed as e:
                 err = str(e)
@@ -104,6 +121,15 @@ def main():
         state["done"].append(cid)
         json.dump(state, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print(f"  本家 {len(hits)} 条 · 累计 {len(state['hits'])} 条（已落盘）")
+        # 把沿途新发现的公司排进队列，滚到不再有新公司为止
+        known = {x["id"] for x in comps}
+        for ncid, nname in list(found.items()):
+            if ncid not in known:
+                comps.append({"id": ncid, "name": nname})
+                state["discovered"].append({"id": ncid, "name": nname})
+                known.add(ncid)
+        found.clear()
+        print(f"  队列 {len(comps)} 家（新发现累计 {len(state['discovered'])}）")
         time.sleep(8)          # 公司之间多喘一口，降低被限流概率
 
     print(f"\n完成 {len(state['done'])} 家，候选共 {len(state['hits'])} 条，失败 {len(state['errors'])} 家。")
