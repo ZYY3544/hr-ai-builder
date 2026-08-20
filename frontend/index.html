@@ -585,7 +585,14 @@ async function openLogin(e){
     history.replaceState(null,'',location.pathname+location.search);
   }else if(h.startsWith('#login_error=')){
     history.replaceState(null,'',location.pathname+location.search);
-    setTimeout(()=>alert('微信登录失败：'+decodeURIComponent(h.slice(13))),100);
+    // 页内提示,不用原生 alert;错误文本来自 URL,必须走 textContent 防注入
+    setTimeout(()=>{
+      $('#loginMask').classList.add('on');
+      $('#loginSub').textContent='微信登录没成功';
+      const d=document.createElement('div'); d.className='off';
+      d.textContent=decodeURIComponent(h.slice(13))+'。关掉这个窗口,重新点登录再试一次。';
+      $('#loginBody').innerHTML=''; $('#loginBody').appendChild(d);
+    },100);
   }
 })();
 
