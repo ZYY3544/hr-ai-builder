@@ -422,11 +422,16 @@ document.addEventListener('keydown',e=>{
 /* 登录态 + 服务端进度合并：学完的节、各章最好成绩都跟着账号走 */
 (async function(){
   const t=localStorage.getItem(TK); if(!t) return;
+  const b=$('#loginBtn');
+  const show=u=>{ b.textContent=u.nickname||'我的成长'; b.className='gbtn'; b.href='growth.html'; b.title='我的成长'; };
+  try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  // 同步先画缓存,不闪"登录"
   try{
     const r=await fetch(QAPI+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok) return;
+    if(!r.ok){ if(r.status===401){ localStorage.removeItem(TK); localStorage.removeItem('hab_user');
+      b.textContent='登录'; b.href='index.html#login'; } return; }
     const u=await r.json();
-    const b=$('#loginBtn'); b.textContent=u.nickname||'已登录'; b.className='gbtn'; b.href='growth.html'; b.title='我的成长';
+    localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
+    show(u);
     const pr=await fetch(QAPI+'/api/progress',{headers:{Authorization:'Bearer '+t}});
     if(pr.ok){ const pg=await pr.json();
       (pg.done||[]).forEach(f=>done.add(f)); saveDone();

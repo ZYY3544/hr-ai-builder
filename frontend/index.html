@@ -479,13 +479,18 @@ function setUser(u){
   b.onclick=e=>{e.preventDefault(); location.href='growth.html';};   // 退出登录在成长页里
 }
 
+/* 换页闪"登录"的根子：昵称要等 /api/me 网络往返。所以本地缓存一份身份
+   (hab_user)，进页同步先画缓存——零闪烁；/api/me 在后台静默校验兜底。 */
 async function loadMe(){
   const t=localStorage.getItem(TK); if(!t) return setUser(null);
+  try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) setUser(c); }catch(e){}
   try{
     const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
     if(!r.ok) throw 0;
-    setUser(await r.json());
-  }catch(e){ localStorage.removeItem(TK); setUser(null); }
+    const u=await r.json();
+    localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
+    setUser(u);
+  }catch(e){ localStorage.removeItem(TK); localStorage.removeItem('hab_user'); setUser(null); }
 }
 
 function closeLogin(){ $('#loginMask').classList.remove('on'); if(poll){clearInterval(poll);poll=null;} }
@@ -544,7 +549,9 @@ async function openLogin(e){
       const s=await r.json();
       if(s.status==='authed'){ clearInterval(poll); poll=null;
         if(ssoWin){ try{ssoWin.close()}catch(e){} ssoWin=null; }
-        localStorage.setItem(TK,s.token); setUser(s.user); closeLogin(); }
+        localStorage.setItem(TK,s.token);
+        try{ localStorage.setItem('hab_user',JSON.stringify({nickname:s.user.nickname,avatar:s.user.avatar})); }catch(e){}
+        setUser(s.user); closeLogin(); }
       else if(s.status==='expired'){ clearInterval(poll); poll=null;
         $('#loginBody').innerHTML='<div class="qrbox"><div class="st">二维码已过期<br>关闭后重新点登录</div></div>'; }
     }catch(e){}

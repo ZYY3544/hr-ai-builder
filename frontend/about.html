@@ -346,11 +346,15 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 /* 登录后右上角=成长地图入口（全站同一逻辑） */
 (async function(){
   var t=localStorage.getItem('hab_token'); if(!t) return;
+  var lb=document.getElementById('loginBtn');
+  var show=function(u){ lb.textContent=u.nickname||'我的成长'; lb.href='growth.html'; lb.title='我的成长'; lb.onclick=null; };
+  try{ var c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  /* 同步先画缓存,不闪"登录" */
   try{
     var r=await fetch('https://hr-ai-builder-api.onrender.com/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok) return;
-    var u=await r.json(), lb=document.getElementById('loginBtn');
-    lb.textContent=u.nickname||'我的成长'; lb.href='growth.html'; lb.title='我的成长'; lb.onclick=null;
+    if(!r.ok){ if(r.status===401){ localStorage.removeItem('hab_token'); localStorage.removeItem('hab_user'); } return; }
+    var u=await r.json();
+    localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
+    show(u);
   }catch(e){}
 })();
 </script>

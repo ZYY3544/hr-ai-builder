@@ -226,13 +226,16 @@ function renderCurve(){
 (async function(){
   const t=localStorage.getItem(TK);
   if(!t){ location.replace('index.html#login'); return; }
+  try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null');
+    if(c){ const b=$('#loginBtn'); b.textContent=c.nickname||'已登录'; b.removeAttribute('href'); } }catch(e){}
   try{
     const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok){ localStorage.removeItem(TK); location.replace('index.html#login'); return; }
+    if(!r.ok){ localStorage.removeItem(TK); localStorage.removeItem('hab_user'); location.replace('index.html#login'); return; }
     const u=await r.json(); logged=true;
+    localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
     const b=$('#loginBtn'); b.textContent=u.nickname||'已登录'; b.removeAttribute('href');
     $('#logoutBtn').style.display='inline-block';
-    $('#logoutBtn').onclick=()=>{ if(confirm('退出登录？')){ localStorage.removeItem(TK); location.href='index.html'; } };
+    $('#logoutBtn').onclick=()=>{ if(confirm('退出登录？')){ localStorage.removeItem(TK); localStorage.removeItem('hab_user'); location.href='index.html'; } };
     const pr=await fetch(API+'/api/progress',{headers:{Authorization:'Bearer '+t}});
     if(pr.ok){ const pg=await pr.json();
       (pg.done||[]).forEach(f=>done.add(f));
