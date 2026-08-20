@@ -659,11 +659,14 @@ def track_stats():
         dwell.setdefault(x["page"], []).append(x["dwell_ms"])
     top = sorted(((p, len(v), round(sum(v) / len(v) / 1000)) for p, v in dwell.items()),
                  key=lambda r: -r[1])[:15]
+    downloads = Counter((x.get("extra") or {}).get("file", "?")
+                        for x in _EVENTS if x["event"] == "download")
     return {
         "buffered": len(_EVENTS), "note": "内存环形缓冲，最多 3000 条，重启清空",
         "visitors": len({x["visitor_id"] for x in _EVENTS}),
         "sessions": len({x["session_id"] for x in _EVENTS}),
         "views": len(views),
         "top_pages": pages.most_common(15),
+        "downloads": downloads.most_common(20),
         "avg_dwell_sec": [{"page": p, "n": n, "sec": s} for p, n, s in top],
     }

@@ -347,6 +347,13 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       x=document.getElementById('loginClose');
   if(b) b.onclick=function(e){e.preventDefault(); location.href='index.html#login';};
   if(x) x.onclick=function(){m.classList.remove('on');};
+
+  /* 任务材料下载埋点：漏斗从「打开任务页」到「下载了哪个包」之间,原来是黑的 */
+  document.querySelectorAll('a[href^="data/task-"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      if (window.habTrack) habTrack('download', { extra: { file: a.getAttribute('href') } });
+    });
+  });
 })();
 </script>
 </body>
