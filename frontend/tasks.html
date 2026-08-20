@@ -258,7 +258,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 .glinks a{font-size:14px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:6px;line-height:1.2;transition:.15s}
 .glinks a:hover{color:var(--pri);background:rgba(0,168,138,.07)}
 .glinks a.cur{color:var(--pri)}
-.gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px}
+.gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px;margin-right:-14px}
 .gbtn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:6px;color:#fff;white-space:nowrap;
   background:linear-gradient(135deg,#00A88A,#0891B2);box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
 .uava{width:30px;height:30px;border-radius:50%;display:block;overflow:hidden;padding:0;
@@ -267,6 +267,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 .uava img{width:100%;height:100%;object-fit:cover;display:block}
 .uava .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
   font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#00A88A,#0891B2)}
+.uava .ph svg{width:15px;height:15px}
 @media(max-width:1402px){.brand{margin-left:0}}
 @media(max-width:960px){.glinks{display:none}}
 </style>
@@ -282,7 +283,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       <a href="jobs.html">岗位机会</a>
       <a href="about.html">关于我们</a>
     </div>
-    <div class="gright"><a class="gbtn" href="#" id="loginBtn">登录</a></div>
+    <div class="gright"><a class="uava" href="#" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
   </div>
 </header>
 <script>/* 防闪：顶栏一画出来就用缓存身份换掉"登录"，网络校验在页尾脚本 */
