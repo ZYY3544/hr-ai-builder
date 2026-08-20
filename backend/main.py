@@ -144,54 +144,11 @@ TOPICS = [
 ]
 
 # ---------------------------------------------------------------- 岗位库
-# 数据状态：岗位真实存在（2026-08 核实到公司/部门/地点）；JD 正文待补，未编造原文；
-# 能力匹配与职级薪酬为示意，真数据接入后重跑。
+# 数据状态：岗位均为真实在招，取自招聘方官网职位接口（2026-08-20）。
+# JD 为官方原文全文，逐字未改，jd_sha 是抓取时原文的 SHA-256 指纹——
+# 改动一个字 scripts/verify_jobs_jd.py 就会失败。能力匹配（must/plus/hl）是我们的判断，不是官方说法。
+# 加新岗位走 scripts/import_bytedance_jobs.py，保真规则写在那份注释里。
 JOBS = [
-    {"track": "hr", "id": "tx-tech", "company": "腾讯 · S3", "title": "AI-HR 培训生（技术&应用方向）",
-     "type": "应届实习", "location": "深圳总部 · 成都", "verified": True,
-     "intent": "一口气开了四个方向（创意/分析/技术&应用/沟通）——不是想清楚了，是还没想清楚这个角色该长什么样，在试。",
-
-     "jd_text": "官方方向说明：潜在岗位方向有 HR AI 应用科学家、HR 数字化产品经理、数据工程师、后台开发等。",
-     "jd_kind": "brief", "apply_url": "https://join.qq.com/post_detail.html?pid=2&id=350&tid=6",
-     "hl": {"HR AI 应用科学家": "vibecoding", "数据工程师": "hr_data", "后台开发": "vibecoding"},
-     "must": ["vibecoding", "hallucination", "hr_data"],
-     "plus": ["prompt", "agent_vs_wf", "eval"]},
-    {"track": "hr", "id": "tx-ana", "company": "腾讯 · S3", "title": "AI-HR 培训生（分析方向）",
-     "type": "应届实习", "location": "深圳总部 · 上海", "verified": True,
-     "intent": "分析方向单开，说明已经有一批数据在手但用不起来的场景。真正缺的不是会跑模型的人，是能把口径吵清楚的人。",
-
-     "jd_text": "官方方向说明：潜在岗位方向有人力规划、组织发展、人才发展、薪酬管理、绩效管理等。",
-     "jd_kind": "brief", "apply_url": "https://join.qq.com/post.html?query=2_93%2Cp_2",
-     "hl": {"人力规划": "hr_data", "绩效管理": "data_prep"},
-     "must": ["hr_data", "hallucination", "data_prep"],
-     "plus": ["eval", "vibecoding", "logic"]},
-    {"track": "tech", "id": "oai-people", "company": "OpenAI · People Innovation", "title": "Software Engineer, Full Stack",
-     "type": "全职", "location": "Remote - US", "verified": True,
-     "intent": "注意形态：这是工程师进 HR 部门，不是 HR 学 AI。这个角色正在从两头往中间长。",
-
-     "jd_text": "About the Team\nPeople Innovation Labs is a fast-moving engineering team embedded in the People organization, focused on rethinking how we find and retain the best talent and empower everyone to do their best work. Projects range from greenfield products like OpenHouse to AI-powered automations and recruiting tools.\n\nIn this role you will\n· Own the full product development lifecycle for new people products end-to-end\n· Talk to internal stakeholders to understand their problems and design solutions to address them\n· Work with the research team, sharing feedback and iterating on applying their latest models\n· Collaborate across engineers, HRBPs, recruiters, researchers, product managers, designers, and operations personnel\n\nYour background might look like\n· 4+ years professional engineering experience in tech and product-driven companies\n· Interest in company culture and recruiting talent\n· Proficiency with JavaScript, React, and other web technologies; a backend language (Python preferred); relational databases like Postgres/MySQL\n· Interest in AI/ML (direct experience not required)\n· Ability to move quickly in an environment with loosely defined tasks and competing priorities",
-     "jd_kind": "excerpt", "apply_url": "https://openai.com/careers/software-engineer-full-stack-(people-innovation)/",
-     "hl": {"full product development lifecycle": "vibecoding", "end-to-end": "ship", "relational databases like Postgres/MySQL": "data_prep", "recruiting tools": "hr_data", "applying their latest models": "prompt", "AI-powered automations": "vibecoding"},
-     "must": ["vibecoding", "data_prep", "ship", "compliance"],
-     "plus": ["hallucination", "prompt", "hr_data"]},
-    {"track": "tech", "id": "el-transform", "company": "ElevenLabs · Engineering", "title": "Internal AI Transformation",
-     "type": "全职", "location": "Amsterdam · Berlin", "verified": True,
-     "intent": "岗位名一个 HR 字都没有，做的却是同一件事。这是「命名空缺」最直接的证据。",
-
-     "jd_text": "About the Role\nAs an Internal AI Engineer at ElevenLabs, you'll be embedded at the frontier of how we scale — acting as a forward-deployed engineer across our GTM, Operations, and Finance teams.\n\nWhat you'll work on\n· Designing and iterating on AI agents and workflow orchestrations using tools like Claude and n8n\n· Integrating AI systems with our core business stack — Salesforce, Slack, Ashby, and more\n· Building reusable automation services, patterns and shared templates that multiply the output of every team you touch\n· Owning experiments end-to-end: spotting the opportunity, building the solution, and measuring the impact\n· Developing evaluation and monitoring frameworks so our AI-native workflows are reliable, auditable, and safe\n\nWho you are\n· Proven experience building and shipping automations or applications in production\n· Strong familiarity with LLM capabilities, prompting strategies, RAG patterns, and a genuine passion for building agentic workflows\n· Strong Python and SQL and system design patterns (APIs, webhooks, orchestration layers)\n· A systems-thinking mindset: you design with security, auditability, and blast radius in mind",
-     "jd_kind": "excerpt", "apply_url": "https://elevenlabs.io/careers/a3097257-a07a-4a7e-b9fe-b8555c1a0fa7/engineering-internal-ai-transformation",
-     "hl": {"AI agents and workflow orchestrations": "agent_vs_wf", "spotting the opportunity": "scoping", "evaluation and monitoring frameworks": "eval", "measuring the impact": "eval", "building and shipping automations": "vibecoding", "multiply the output of every team": "influence"},
-     "must": ["scoping", "vibecoding", "agent_vs_wf", "influence"],
-     "plus": ["eval", "structured", "learning_agility"]},
-    {"track": "tech", "id": "cog-tm", "company": "Cognition · Applied AI", "title": "Applied AI Transformation Manager",
-     "type": "全职", "location": "New York · London", "verified": True,
-     "intent": "客户侧的转型岗——说服是主业，构建是佐证。对 HR / 咨询背景友好，核心是把技术判断翻译成生意语言。",
-
-     "jd_text": "About the Role\nTechnically oriented strategic advisors and operators who serve as trusted advisor to senior and functional leaders at enterprise accounts — identifying strategic opportunities for customers to realize value from agentic AI, and driving program delivery across several strategic accounts.\n\nWhat you'll do\n· Partner with customer leadership to identify, quantify and report value targets for productivity gains and financial impact\n· Design and build the operating model and delivery model for agentic AI\n· Oversee onboarding and rollout to thousands of engineers; build centers of excellence within accounts through tailored enablement\n· Apply world-class analytical and technical program management skills to support customer executives\n\nWhat we look for\n· 3–5 years at a major strategy consulting firm, with background in value targeting and realization and technology strategy\n· Software engineering internship or full-time experience; CS or EE degree\n· Ability to operate in ambiguous, fast-changing environments with rapid learning capacity",
-     "jd_kind": "excerpt", "apply_url": "https://jobs.ashbyhq.com/cognition/2f6d29d9-1e3e-43a6-8b92-8ca5a1b23ede",
-     "hl": {"identify, quantify and report value targets": "scoping", "trusted advisor": "influence", "agentic AI": "agent_vs_wf", "operating model and delivery model": "product", "value targeting and realization": "scoping"},
-     "must": ["scoping", "influence", "hallucination", "agent_vs_wf"],
-     "plus": ["structured", "vibecoding", "product"]},
 
     # ── 字节跳动（2026-08-20 官方职位接口核实；JD 为官方原文节选）──────────
     # track: tech=技术/产品侧长过来 · hr=HR 侧长出来 · rethought=老岗位被重估
