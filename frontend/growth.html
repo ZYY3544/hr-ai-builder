@@ -251,7 +251,11 @@ function renderCurve(){
       b.removeAttribute('href'); } }catch(e){}
   try{
     const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok){ localStorage.removeItem(TK); localStorage.removeItem('hab_user'); location.replace('index.html#login'); return; }
+    // 只有服务器确认 token 失效才踢人；后端打盹/5xx/网络抖动一律留着缓存身份继续渲染
+    if(r.status===401||r.status===403){
+      localStorage.removeItem(TK); localStorage.removeItem('hab_user');
+      location.replace('index.html#login'); return; }
+    if(!r.ok) throw 0;
     const u=await r.json(); logged=true;
     localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
     const b=$('#loginBtn'); b.className='uava'; b.title=u.nickname||'';

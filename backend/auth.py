@@ -18,13 +18,18 @@ _TTL = 60 * 60 * 24 * 30   # 30 天
 def _secret() -> str:
     s = (os.getenv("JWT_SECRET") or "").strip()
     if not s:
-        # 未配置时用进程内随机串：服务重启即登出，避免出现"人人可伪造"的固定弱密钥。
+        # 未配置时用进程内随机串：宁可重启即登出，也不留一个"人人可伪造"的固定弱密钥。
+        # 但这是降级不是常态——免费档休眠一次就等于把所有人踢下线，
+        # 而登录是强制的，被踢下线＝整站打不开。所以这里要吵，别让它静默退化。
         global _fallback
         try:
             return _fallback
         except NameError:
             import secrets as _s
             _fallback = _s.token_hex(32)
+            print("[AUTH] ⚠️ JWT_SECRET 未配置，本次使用进程内随机密钥："
+                  "服务一重启/休眠，全站登录态即刻失效。"
+                  "修复：render.yaml 里 JWT_SECRET 用 generateValue: true。", flush=True)
             return _fallback
     return s
 

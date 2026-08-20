@@ -19,9 +19,12 @@ services:
         value: "off"
       - key: WX_OAUTH_CALLBACK
         value: https://hr-ai-builder-api.onrender.com/api/wx/oauth/callback
-      # 以下为密钥，在 Render 面板手填，不入库不入仓
+      # 会话签名密钥。必须由 Render 生成并固定下来——
+      # ⚠️ 没有它时 auth.py 退回「进程内随机串」，后端每次重启/免费档休眠都会让
+      #    全站 token 集体失效；登录改成强制之后，那等于整站定期锁死。
+      #    generateValue 让 Render 自己生成，值不进仓库、也不经人手。
       - key: JWT_SECRET
-        sync: false
+        generateValue: true
       - key: DEEPSEEK_API_KEY      # Sparky 的模型 key
         sync: false
       - key: ADMIN_CODE            # 看 /api/sparky/insights 的口令；不填=端点直接 404
