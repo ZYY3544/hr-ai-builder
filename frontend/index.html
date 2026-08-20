@@ -589,7 +589,7 @@ async function openLogin(e){
     if(localStorage.getItem(TK)) return;
     const a=e.target.closest('a'); if(!a) return;
     const href=a.getAttribute('href')||'';
-    if(/^(learn|quiz)\.html/.test(href)){
+    if(/^(learn|quiz|jobs)\.html/.test(href)){
       e.preventDefault();
       try{ sessionStorage.setItem('hab_next',href); }catch(err){}
       openLogin();
