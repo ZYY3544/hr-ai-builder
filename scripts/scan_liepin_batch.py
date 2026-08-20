@@ -122,15 +122,16 @@ def main():
         state["done"].append(cid)
         json.dump(state, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print(f"  本家 {len(hits)} 条 · 累计 {len(state['hits'])} 条（已落盘）")
-        # 把沿途新发现的公司排进队列，滚到不再有新公司为止
+        # 沿途遇到的其他公司只记录、**不自动入队**——公司名单必须是人定的。
+        # 自动入队等于又变回滚雪球：名单由算法决定，阿里/腾讯/华为这类不在推荐圈里的
+        # 永远进不来，而且两次跑的路径不同，没法定期刷新对比。
         known = {x["id"] for x in comps}
         for ncid, nname in list(found.items()):
             if ncid not in known:
-                comps.append({"id": ncid, "name": nname})
                 state["discovered"].append({"id": ncid, "name": nname})
-                known.add(ncid)
         found.clear()
-        print(f"  队列 {len(comps)} 家（新发现累计 {len(state['discovered'])}）")
+        if state["discovered"]:
+            print(f"  （沿途记下 {len(state['discovered'])} 家公司备选，需人工确认后才加进名单）")
         time.sleep(8)          # 公司之间多喘一口，降低被限流概率
 
     print(f"\n完成 {len(state['done'])} 家，候选共 {len(state['hits'])} 条，失败 {len(state['errors'])} 家。")
