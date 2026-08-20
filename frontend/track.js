@@ -58,10 +58,8 @@
       ts: new Date().toISOString(),
     };
     if (extra) for (var k in extra) body[k] = extra[k];
-    try {
-      var blob = new Blob([JSON.stringify(body)], { type: 'application/json' });
-      if (navigator.sendBeacon && ev !== 'view') { navigator.sendBeacon(API + '/api/t', blob); return; }
-    } catch (e) {}
+    /* 不用 sendBeacon：application/json 的 Blob 跨域发不出去（CORS 不放行、还静默失败），
+       leave 事件曾整条丢在这上面。fetch keepalive 是它的正牌替代，卸载页面时同样能送达。 */
     fetch(API + '/api/t', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body), keepalive: true,
