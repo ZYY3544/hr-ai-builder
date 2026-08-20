@@ -496,15 +496,31 @@ async function openLogin(e){
   mask.classList.add('on');
   body.innerHTML='<div class="qrbox"><div class="spin"></div></div>';
 
+  /* 登录走 meansights SSO。它的免费托管会休眠，冷启动 20+ 秒——
+     后端已放宽等待并把错误分成 sso_waking / sso_unavailable / wx_not_configured，
+     这里对应三种话术，别再拿"尚未开通"糊弄一个只是没睡醒的服务。 */
   let d;
   try{
-    const r=await fetch(API+'/api/wx/login-session',{method:'POST'});
-    if(r.status===503) throw 'not_configured';
-    if(!r.ok) throw 'failed';
+    const slow=setTimeout(()=>{ $('#loginSub').textContent='登录服务在唤醒中，最多要半分钟…'; },4000);
+    let r, det='';
+    for(let i=0;i<2;i++){
+      r=await fetch(API+'/api/wx/login-session',{method:'POST'});
+      if(r.ok) break;
+      det=await r.json().then(j=>j.detail).catch(()=>'');
+      if(det==='sso_waking'||det==='sso_unavailable'){ $('#loginSub').textContent='还在唤醒，再等一下…'; continue; }
+      break;
+    }
+    clearTimeout(slow);
+    if(!r.ok) throw det||'failed';
     d=await r.json();
   }catch(err){
-    $('#loginSub').textContent='微信登录尚未开通';
-    body.innerHTML='<div class="off">微信登录正在配置中（需要在微信开放平台完成网站应用审核 + 开通「微信登录」权限）。<br>暂时不登录也能看：全部课程、岗位库与测评题库都开放。</div>';
+    if(err==='sso_waking'||err==='sso_unavailable'){
+      $('#loginSub').textContent='登录服务没醒过来';
+      body.innerHTML='<div class="off">登录服务这会儿没叫醒（免费托管会休眠，不是坏了）。<b>等半分钟再点一次登录</b>就好——期间看课不受影响。</div>';
+    }else{
+      $('#loginSub').textContent='微信登录尚未开通';
+      body.innerHTML='<div class="off">微信登录正在配置中（需要在微信开放平台完成网站应用审核 + 开通「微信登录」权限）。<br>暂时不登录也能看：全部课程、岗位库与测评题库都开放。</div>';
+    }
     return;
   }
 
