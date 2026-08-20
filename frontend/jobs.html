@@ -135,6 +135,12 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px}
 .gbtn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:6px;color:#fff;white-space:nowrap;
   background:linear-gradient(135deg,#00A88A,#0891B2);box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
+.uava{width:30px;height:30px;border-radius:50%;display:block;overflow:hidden;padding:0;
+  border:1.5px solid #E2E8F0;box-shadow:none;background:#fff;cursor:pointer}
+.uava:hover{border-color:#00A88A}
+.uava img{width:100%;height:100%;object-fit:cover;display:block}
+.uava .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#00A88A,#0891B2)}
 @media(max-width:1402px){.brand{margin-left:0}}
 @media(max-width:960px){.glinks{display:none}}
 
@@ -170,7 +176,9 @@ mark.kw.demo{cursor:default;font-size:11px}
 <script>/* 防闪：顶栏一画出来就用缓存身份换掉"登录"，网络校验在页尾脚本 */
 (function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
 if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
-b.textContent=u.nickname||'我的成长';b.setAttribute('href','growth.html');b.title='我的成长';}}catch(e){}})();
+b.className='uava';b.title=(u.nickname||'')+' · 我的成长';
+b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+b.setAttribute('href','growth.html');}}catch(e){}})();
 </script>
 
 <div class="main">
@@ -298,7 +306,9 @@ window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');
 (async function(){
   var t=localStorage.getItem('hab_token'); if(!t) return;
   var lb=document.getElementById('loginBtn');
-  var show=function(u){ lb.textContent=u.nickname||'我的成长'; lb.href='growth.html'; lb.title='我的成长'; lb.onclick=null; };
+  var show=function(u){ lb.className='uava'; lb.title=(u.nickname||'')+' · 我的成长';
+      lb.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+      lb.href='growth.html'; lb.onclick=null; };
   try{ var c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  /* 同步先画缓存,不闪"登录" */
   try{
     var r=await fetch('https://hr-ai-builder-api.onrender.com/api/me',{headers:{Authorization:'Bearer '+t}});

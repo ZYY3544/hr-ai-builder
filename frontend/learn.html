@@ -148,6 +148,12 @@ body.dragging iframe{pointer-events:none}
 .gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px}
 .gbtn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:6px;color:#fff;white-space:nowrap;
   background:linear-gradient(135deg,#00A88A,#0891B2);box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
+.uava{width:30px;height:30px;border-radius:50%;display:block;overflow:hidden;padding:0;
+  border:1.5px solid #E2E8F0;box-shadow:none;background:#fff;cursor:pointer}
+.uava:hover{border-color:#00A88A}
+.uava img{width:100%;height:100%;object-fit:cover;display:block}
+.uava .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#00A88A,#0891B2)}
 @media(max-width:1402px){.brand{margin-left:0}}
 @media(max-width:960px){.glinks{display:none}}
 </style>
@@ -168,7 +174,9 @@ body.dragging iframe{pointer-events:none}
 <script>/* 防闪：顶栏一画出来就用缓存身份换掉"登录"，网络校验在页尾脚本 */
 (function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
 if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
-b.textContent=u.nickname||'我的成长';b.setAttribute('href','growth.html');b.title='我的成长';}}catch(e){}})();
+b.className='uava';b.title=(u.nickname||'')+' · 我的成长';
+b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+b.setAttribute('href','growth.html');}}catch(e){}})();
 </script>
 
 <div class="main">
@@ -428,12 +436,14 @@ document.addEventListener('keydown',e=>{
 (async function(){
   const t=localStorage.getItem(TK); if(!t) return;
   const b=$('#loginBtn');
-  const show=u=>{ b.textContent=u.nickname||'我的成长'; b.className='gbtn'; b.href='growth.html'; b.title='我的成长'; };
+  const show=u=>{ b.className='uava'; b.title=(u.nickname||'')+' · 我的成长';
+    b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+    b.href='growth.html'; };
   try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  // 同步先画缓存,不闪"登录"
   try{
     const r=await fetch(QAPI+'/api/me',{headers:{Authorization:'Bearer '+t}});
     if(!r.ok){ if(r.status===401){ localStorage.removeItem(TK); localStorage.removeItem('hab_user');
-      b.textContent='登录'; b.href='index.html#login'; } return; }
+      b.className='gbtn'; b.innerHTML='登录'; b.href='index.html#login'; b.removeAttribute('title'); } return; }
     const u=await r.json();
     localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
     show(u);
