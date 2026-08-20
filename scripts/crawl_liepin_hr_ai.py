@@ -32,9 +32,12 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 GAP = 2.0                     # 每次请求间隔（秒）
 
 HR = re.compile(r"HR|人力|人事|人才|招聘|组织|薪酬|绩效|员工|培训|学发|干部|HRBP|HRIS|假勤|考勤")
-AI = re.compile(r"AI|人工智能|大模型|智能体|Agent|LLM|GPT|Vibe|Prompt|RAG|MCP|数字化", re.I)
+# ⚠️ AI 必须加词边界：re.I 下的裸 AI 会命中英文单词内部的 ai
+#    （chain / sustain / main / email / available…），英文 JD 会整片假阳性。
+#    实测京东「HRBP-常驻英国」就是这么被误判成 AI 岗的。
+AI = re.compile(r"(?<![A-Za-z])AI(?![A-Za-z])|人工智能|大模型|智能体|Agent|LLM|GPT|Vibe|Prompt|RAG|MCP|数字化", re.I)
 # 强信号：真要求任职者动手用 AI，而不是「对 AI 有热情」
-STRONG = re.compile(r"AI|人工智能|大模型|智能体|Agent|LLM|Vibe\s?Coding|Prompt|RAG|MCP", re.I)
+STRONG = re.compile(r"(?<![A-Za-z])AI(?![A-Za-z])|人工智能|大模型|智能体|Agent|LLM|Vibe\s?Coding|Prompt|RAG|MCP", re.I)
 
 # 猎聘有两套 JD 模板，都要认：
 #   A：「职位描述: … 职位要求: …」
