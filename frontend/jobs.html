@@ -67,6 +67,13 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .jc .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:11px;color:var(--faint)}
 .chip{border:1px solid var(--line);border-radius:4px;padding:1px 6px;background:#fff}
 .jc .n{margin-left:auto;color:var(--pri);font-weight:600}
+/* 分组头：三类主轴 */
+.grp{padding:16px 12px 6px}
+.grp:first-child{padding-top:6px}
+.gt{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--pri)}
+.gt .gn{font-weight:600;letter-spacing:0;color:var(--faint);background:#fff;
+  border:1px solid var(--line);border-radius:99px;padding:0 6px;font-size:10.5px}
+.gd{font-size:11px;color:var(--faint);margin-top:3px;line-height:1.6}
 
 /* 中栏 */
 .mid-in{max-width:760px;padding:30px 40px 70px}
@@ -219,16 +226,31 @@ let JOBS=[], cur=null, kw='';
   }
 })();
 
+/* 主轴＝这个岗位从哪一头长出来的。不按 HR 职能分：学习者点进来问的是
+   「我够不够得着、要补什么」，那由出身和门槛决定，不由职能决定。 */
+const TRACKS=[
+  {k:'tech',      t:'技术 / 产品侧长过来', d:'门槛在产品与工程那头，HR 是场景'},
+  {k:'hr',        t:'HR 侧长出来',        d:'干的是 HR 本行，但要求你把 AI 落进去'},
+  {k:'rethought', t:'老岗位被重估',        d:'标题还是老的，JD 里已经开始要求 AI'},
+];
 function renderList(){
   const l=JOBS.filter(j=>!kw || (j.title+j.company+j.location).toLowerCase().includes(kw));
   $('#cnt').textContent=`共 ${l.length} 个岗位`;
-  $('#list').innerHTML=l.map(j=>`
+  const card=j=>`
     <div class="jc ${j.id===cur?'on':''}" data-id="${j.id}">
       <div class="co">${j.company}</div>
       <div class="ti">${j.title}</div>
       <div class="m"><span class="chip">${j.type}</span><span>${j.location}</span>
         <span class="n">${j.must.length} 项硬门槛</span></div>
-    </div>`).join('') || '<div class="load">没有匹配的岗位</div>';
+    </div>`;
+  let html='';
+  TRACKS.forEach(g=>{
+    const rows=l.filter(j=>(j.track||'hr')===g.k);
+    if(!rows.length) return;
+    html+=`<div class="grp"><div class="gt">${g.t}<span class="gn">${rows.length}</span></div>
+      <div class="gd">${g.d}</div></div>`+rows.map(card).join('');
+  });
+  $('#list').innerHTML=html || '<div class="load">没有匹配的岗位</div>';
   $('#list').querySelectorAll('.jc').forEach(el=>el.onclick=()=>pick(el.dataset.id));
 }
 $('#q').oninput=e=>{kw=e.target.value.trim().toLowerCase(); renderList();};
