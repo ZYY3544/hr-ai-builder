@@ -115,6 +115,11 @@ section.blk{padding:34px 0 6px}
     <div class="gright"><a class="gbtn" href="index.html#login" id="loginBtn">登录</a></div>
   </div>
 </header>
+<script>/* 防闪：顶栏一画出来就用缓存身份换掉"登录" */
+(function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
+if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
+b.textContent=u.nickname||'已登录';b.removeAttribute('href');}}catch(e){}})();
+</script>
 
 <div class="wrap">
   <div class="pagehead">

@@ -259,6 +259,11 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="gright"><a class="gbtn" href="#" id="loginBtn">登录</a></div>
   </div>
 </header>
+<script>/* 防闪：顶栏一画出来就用缓存身份换掉"登录"，网络校验在页尾脚本 */
+(function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
+if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
+b.textContent=u.nickname||'我的成长';b.setAttribute('href','growth.html');b.title='我的成长';}}catch(e){}})();
+</script>
 
 
 <section class="hero" style="padding:78px 0 40px">

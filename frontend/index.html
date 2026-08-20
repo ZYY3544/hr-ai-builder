@@ -260,6 +260,13 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
     <div class="gright"><a class="gbtn" href="#" id="loginBtn">登录</a></div>
   </div>
 </header>
+<script>/* 防闪：顶栏一画出来就用缓存身份画出用户徽章，网络校验在页尾脚本 */
+(function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
+if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
+b.className='userchip';b.title='我的成长';
+b.innerHTML=(u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'微')[0]+'</span>')+'<span>'+(u.nickname||'微信用户')+'</span>';
+b.onclick=function(e){e.preventDefault();location.href='growth.html';};}}catch(e){}})();
+</script>
 
 <!-- ========== HERO ========== -->
 <section class="hero">
@@ -486,11 +493,13 @@ async function loadMe(){
   try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) setUser(c); }catch(e){}
   try{
     const r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(!r.ok) throw 0;
+    if(r.status===401||r.status===403){   // 只有确认 token 失效才登出
+      localStorage.removeItem(TK); localStorage.removeItem('hab_user'); setUser(null); return; }
+    if(!r.ok) return;                     // 后端打盹/重启(5xx):保持缓存身份,别把人误登出
     const u=await r.json();
     localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
     setUser(u);
-  }catch(e){ localStorage.removeItem(TK); localStorage.removeItem('hab_user'); setUser(null); }
+  }catch(e){}                             // 网络抖动同理
 }
 
 function closeLogin(){ $('#loginMask').classList.remove('on'); if(poll){clearInterval(poll);poll=null;} }
