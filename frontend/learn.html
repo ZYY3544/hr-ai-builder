@@ -317,7 +317,7 @@ $('#frame').addEventListener('load', async ()=>{ try{
       if(ans.includes(i)) b.className='hq-o ok';
       else if(b.classList.contains('sel')||(!Array.isArray(given)&&i===given)) b.className='hq-o bad'; });
     const ex=doc.createElement('div'); ex.className='hq-exp';
-    ex.textContent=(d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||'');
+    ex.innerHTML=(d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||'');   // exp 是自家题库的富文本(<b>等)
     wrap.appendChild(ex);
     if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:d.correct}});
   };
