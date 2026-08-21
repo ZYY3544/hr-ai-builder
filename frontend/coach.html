@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
 <link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 <link rel="alternate icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>就业辅导 · meansights learning</title>
-<meta name="robots" content="noindex">
+<title>就业辅导 · 从「会做」到「拿到 offer」 · meansights learning</title>
+<meta name="description" content="一对一就业辅导：能力水位评估、定制学习方案、做出真作品、简历改写、面试辅导。先约 15 分钟免费沟通，聊清楚再报价。">
 <style>
 :root{
-  --blue:#3370FF; --blue-d:#1F55E0; --blue-s:#EEF3FF;
+  /* 蓝 → 紫 → 绿 · 飞书系鲜亮渐变 */
+  --blue:#3370FF; --blue-d:#1F55E0; --blue-l:#5B8CFF; --blue-s:#EEF3FF;
   --pri:#00A88A; --pri-d:#00876F; --pri-s:#E8FBF6;
-  --violet:#7C3AED; --violet-s:#F5EFFF;
+  --violet:#7C3AED; --violet-l:#9B6BFF; --violet-s:#F5EFFF;
+  --green:#00C6A2; --green-d:#00A88A; --green-l:#2AE0BE; --green-s:#E8FBF6;
+  --grad:linear-gradient(100deg,#3370FF 0%,#0891B2 45%,#00A88A 100%);
   --grad-r:linear-gradient(135deg,#00A88A,#0891B2);
   --ink:#0F172A; --body:#475569; --muted:#64748B; --faint:#94A3B8;
   --line:#E2E8F0; --line-soft:#F1F5F9; --bg:#F8FAFC;
-  --r-s:6px; --r:10px; --r-l:14px;
+  --ok:#00A88A; --danger:#DC2626;
+  --r-s:6px; --r:10px; --r-l:14px; --r-x:20px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC',sans-serif;
   color:var(--body);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35}
-.wrap{max-width:920px;margin:0 auto;padding:0 40px}
+.wrap{max-width:1400px;margin:0 auto;padding:0 40px}
 @media(max-width:640px){.wrap{padding:0 20px}}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* ---------- 统一导航（与全站 byte-identical）---------- */
 header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
@@ -52,49 +57,125 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 @media(max-width:1402px){.brand{margin-left:0}}
 @media(max-width:960px){.glinks{display:none}}
 
-/* ---------- 页面 ---------- */
-.pagehead{padding:54px 0 10px}
-.pagehead h1{font-size:clamp(26px,3.4vw,36px)}
-.pagehead .sub{margin-top:10px;font-size:14px;color:var(--muted);max-width:42em;line-height:2}
-.pagehead .sub b{color:var(--ink);font-weight:500}
-section.blk{padding:34px 0 6px}
-.blk h2{font-size:18px;margin-bottom:6px}
-.blk .hint{font-size:12.5px;color:var(--faint);margin-bottom:20px}
+/* ---------- HERO ---------- */
+.hero{position:relative;text-align:center;padding:88px 0 72px;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(1000px 460px at 50% -22%, rgba(0,168,138,.07), transparent 68%);}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;
+  background-image:linear-gradient(rgba(15,23,42,.042) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(15,23,42,.042) 1px,transparent 1px);
+  background-size:54px 54px;
+  mask-image:radial-gradient(620px 400px at 50% 34%,#000 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.22) 64%,transparent 82%);
+  -webkit-mask-image:radial-gradient(620px 400px at 50% 34%,#000 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.22) 64%,transparent 82%);}
+@keyframes hue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
+  background:#fff;border:1px solid var(--line);border-radius:30px;
+  padding:5px 15px;margin-bottom:26px;
+  box-shadow:0 2px 10px -5px rgba(15,23,42,.2)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 3px rgba(0,198,162,.2)}
+.pill b{font-weight:600;color:var(--ink)}
+.hero h1{font-size:clamp(34px,5.4vw,58px);line-height:1.18;letter-spacing:-.04em;
+  max-width:16em;margin:0 auto;font-weight:650}
+.hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:42em;margin:24px auto 0}
+.hero .lede b{color:var(--ink);font-weight:500}
+.cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.btn{font:inherit;font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:var(--r-s);border:1px solid var(--line);
+  color:var(--body);background:#fff;cursor:pointer;transition:.18s;display:inline-block;white-space:nowrap}
+.btn:hover{border-color:var(--pri);color:var(--pri)}
+.btn.pri{background:var(--grad-r);border-color:transparent;color:#fff;
+  box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
+.btn.pri:hover{color:#fff;box-shadow:0 7px 22px -5px rgba(0,168,138,.72);transform:translateY(-1px)}
+.btn.lg{font-size:13.5px;padding:11px 24px;border-radius:var(--r)}
+.statline{margin-top:24px;font-size:12.5px;color:var(--muted);letter-spacing:.01em}
+.statline b{color:var(--ink);font-weight:600}
+
+/* ---------- bands ---------- */
+section{scroll-margin-top:72px}
+.band{padding:78px 0}
+.band.alt{background:var(--bg)}
+.band h2{font-size:clamp(26px,3.2vw,36px);letter-spacing:-.03em;margin-top:14px;line-height:1.25}
+.band .desc{font-size:15px;color:var(--muted);max-width:46em;margin-top:16px;line-height:2}
+.band .desc b{color:var(--ink);font-weight:500}
+
+/* 为什么是现在：三个事实 */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+@media(max-width:920px){.facts{grid-template-columns:1fr}}
+.fct{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:24px 26px;transition:.16s}
+.fct:hover{border-color:var(--pri);box-shadow:0 10px 28px -14px rgba(0,168,138,.35);transform:translateY(-2px)}
+.fct .n{font-size:26px;font-weight:650;letter-spacing:-.03em;background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.fct .n small{font-size:14px}
+.fct .d{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.9}
+.fct .d b{color:var(--ink);font-weight:500}
+.fct .go{display:inline-block;margin-top:11px;font-size:12px;font-weight:600;color:var(--pri)}
+.factnote{margin-top:16px;font-size:12px;color:var(--faint)}
 
 /* 路径图：五步一条线 */
-.path{border:1px solid var(--line);border-radius:var(--r-l);background:var(--bg);padding:26px 22px;overflow-x:auto}
-.path-line{display:flex;min-width:660px}
+.path{border:1px solid var(--line);border-radius:var(--r-x);background:#fff;padding:34px 26px;overflow-x:auto;margin-top:38px}
+.path-line{display:flex;min-width:720px}
 .pstep{flex:1;position:relative;padding:0 8px;text-align:center}
-.pstep .pn{width:34px;height:34px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;color:#fff;background:var(--grad-r);position:relative;z-index:1}
-.pstep .pt{font-size:13px;font-weight:600;color:var(--ink);margin-top:9px}
-.pstep .pd{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.65}
-.pstep:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 22px);right:calc(-50% + 22px);
+.pstep .pn{width:38px;height:38px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;background:var(--grad-r);position:relative;z-index:1;
+  box-shadow:0 4px 12px -4px rgba(0,168,138,.5)}
+.pstep .pt{font-size:13.5px;font-weight:600;color:var(--ink);margin-top:11px}
+.pstep .pd{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.7}
+.pstep:not(:last-child)::after{content:'';position:absolute;top:18px;left:calc(50% + 25px);right:calc(-50% + 25px);
   height:2px;background:repeating-linear-gradient(90deg,var(--pri) 0 6px,transparent 6px 11px);opacity:.5}
 
 /* 服务卡 */
-.coach{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-.cc{border:1px solid var(--line);border-radius:var(--r-l);padding:18px 20px;background:#fff}
-.cc .t{font-size:14px;font-weight:600;color:var(--ink)}
-.cc .d{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.85}
+.svc{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:38px}
+.sc{position:relative;border:1px solid var(--line);border-radius:var(--r-l);padding:22px 24px;background:#fff;transition:.16s}
+.sc:hover{border-color:var(--pri);box-shadow:0 10px 28px -14px rgba(0,168,138,.35)}
+.sc .no{position:absolute;top:18px;right:20px;font-size:22px;font-weight:700;letter-spacing:-.03em;
+  color:var(--line);line-height:1;font-variant-numeric:tabular-nums}
+.sc .t{font-size:15px;font-weight:600;color:var(--ink);padding-right:36px}
+.sc .d{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.9}
+.sc .d b{color:var(--ink);font-weight:500}
 
-/* 规则 */
+/* 谁来辅导 */
+.whoin{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px}
+@media(max-width:920px){.whoin{grid-template-columns:1fr}}
+.wc{background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:26px 28px}
+.wc .k{font-size:15px;font-weight:600;color:var(--ink);padding-left:15px;position:relative}
+.wc .k::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
+.wc .v{font-size:13px;color:var(--muted);line-height:2;margin-top:10px;padding-left:15px}
+.wc .v b{color:var(--ink);font-weight:500}
+
+/* 怎么开始 + 表单 */
+.startrow{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;margin-top:38px;align-items:start}
+@media(max-width:920px){.startrow{grid-template-columns:1fr}}
+.steps{display:flex;flex-direction:column;gap:0}
+.st{position:relative;padding:0 0 26px 46px}
+.st:last-child{padding-bottom:0}
+.st .sn{position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:700;color:#fff;background:var(--grad-r)}
+.st:not(:last-child)::before{content:'';position:absolute;left:14px;top:34px;bottom:4px;width:2px;
+  background:repeating-linear-gradient(180deg,var(--line) 0 5px,transparent 5px 9px)}
+.st .t{font-size:14px;font-weight:600;color:var(--ink);line-height:30px}
+.st .d{font-size:12.5px;color:var(--muted);line-height:1.9;margin-top:2px}
+.st .d b{color:var(--ink);font-weight:500}
 .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
-  padding:16px 20px;font-size:13px;line-height:2;color:var(--ink)}
+  padding:14px 18px;font-size:12.5px;line-height:2;color:var(--ink);margin-top:22px}
 .rules b{font-weight:600}
-
-/* 表单 */
-.form{border:1px solid var(--line);border-radius:var(--r-l);padding:24px;background:#fff;max-width:640px}
-.form label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin:14px 0 6px}
-.form label:first-child{margin-top:0}
-.form textarea{width:100%;font:inherit;font-size:13px;padding:9px 12px;min-height:96px;resize:vertical;
-  border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.form{border:1px solid var(--line);border-radius:var(--r-x);padding:28px;background:#fff;
+  box-shadow:0 14px 40px -24px rgba(15,23,42,.18)}
+.form h3{font-size:16px}
+.form .fh{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.8}
+.form label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin:18px 0 6px}
+.form textarea{width:100%;font:inherit;font-size:13px;padding:10px 13px;min-height:110px;resize:vertical;
+  border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}
 .form textarea:focus{outline:none;border-color:var(--pri)}
-.form .go{margin-top:18px;font:inherit;font-size:13.5px;font-weight:600;padding:10px 26px;border:none;
-  border-radius:9px;background:var(--grad-r);color:#fff;cursor:pointer}
-.form .go:disabled{opacity:.5;cursor:default}
+.form .go{margin-top:18px;font:inherit;font-size:13.5px;font-weight:600;padding:11px 28px;border:none;
+  border-radius:9px;background:var(--grad-r);color:#fff;cursor:pointer;box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
+.form .go:hover{box-shadow:0 7px 22px -5px rgba(0,168,138,.72)}
+.form .go:disabled{opacity:.5;cursor:default;box-shadow:none}
+.form .lognote{margin-top:11px;font-size:11.5px;color:var(--faint)}
 .form .ok{margin-top:14px;font-size:13px;color:var(--pri-d);background:var(--pri-s);border-radius:8px;padding:10px 14px;display:none}
-.foot{padding:48px 0 70px;font-size:12px;color:var(--faint)}
+
+.foot{padding:54px 0 76px;font-size:12px;color:var(--faint);text-align:center}
 .foot a{color:var(--pri-d)}
 </style>
 </head>
@@ -106,7 +187,8 @@ section.blk{padding:34px 0 6px}
     <div class="glinks">
       <a href="learn.html">课程内容</a>
       <a href="tasks.html">实战任务</a>
-      <a href="jobs.html" class="cur">岗位机会</a>
+      <a href="jobs.html">岗位机会</a>
+      <a href="coach.html" class="cur">就业辅导</a>
       <a href="about.html">关于我们</a>
     </div>
     <div class="gright"><a class="uava" href="index.html#login" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
@@ -120,16 +202,55 @@ b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.ni
 b.setAttribute('href','growth.html');}}catch(e){}})();
 </script>
 
-<div class="wrap">
-  <div class="pagehead">
-    <h1>就业辅导：从「会做」到「拿到 offer」</h1>
-    <div class="sub">岗位库里那些真实 JD 你都看到了——要求是新的，市面上会的人很少，这正是机会。
-      课程解决「学会」，评审解决「作品行不行」，<b>这里解决「你这个人怎么走到那个岗位上」</b>。
-      一对一，按需组合，不打包强卖。</div>
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="pill"><span class="dot"></span>一对一 · 先约 <b>15 分钟免费沟通</b> · 聊清楚再报价</div>
+    <h1>从「会做」<br>到<span class="g">「拿到 offer」</span></h1>
+    <p class="lede">课程解决「学会」，评审解决「作品行不行」，
+      就业辅导解决的是最后一段——<b>你这个人，怎么走到那个岗位上</b>。
+      五项服务单点或组合，不打包强卖。</p>
+    <div class="cta">
+      <a class="btn pri lg" href="#apply">申请免费沟通</a>
+      <a class="btn lg" href="jobs.html">先看 64 个真实岗位 →</a>
+    </div>
+    <div class="statline">辅导人：<b>meansights Consulting 创始人</b> · 7 年国际顶尖人力资源与组织管理咨询公司经验</div>
   </div>
+</section>
 
-  <section class="blk">
+<!-- ========== 为什么是现在 ========== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Why Now</div>
+    <h2>为什么是现在</h2>
+    <p class="desc">不是我们造的焦虑——下面三件事都写在<b>岗位库里逐字核对过的 JD 原文</b>里，点进去自己看。</p>
+    <div class="facts">
+      <a class="fct" href="jobs.html">
+        <div class="n">7.6%</div>
+        <div class="d">字节 225 个 HR 在招岗位里，真要求 AI 能力的只有 17 个。<b>比例这么低，恰恰说明这事才刚开始</b>——现在入场，你和先行者之间没有代差。</div>
+        <span class="go">去岗位库核对 →</span>
+      </a>
+      <a class="fct" href="jobs.html">
+        <div class="n">「不限专业和经验」</div>
+        <div class="d">字节 30-50k 的人才系统专家 JD 原话。敢这么写只有一个解释：<b>市场上找不到有经验的人</b>。中关村科金干脆把岗位叫「AI 应用先锋」。</div>
+        <span class="go">去岗位库核对 →</span>
+      </a>
+      <a class="fct" href="jobs.html">
+        <div class="n">100-120k<small>·月</small></div>
+        <div class="d">泰康「智能体架构（人力系统方向）」的真实薪资。网易 50-80k、理想 40-70k、金山 70-100k——<b>数字都在岗位库里，能看到 JD 原文</b>。</div>
+        <span class="go">去岗位库核对 →</span>
+      </a>
+    </div>
+    <div class="factnote">岗位库覆盖 38 家公司 · 64 条在招岗位 · 每条 JD 逐字可核（指纹校验）</div>
+  </div>
+</section>
+
+<!-- ========== 一条完整的路径 ========== -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">The Path</div>
     <h2>一条完整的路径</h2>
+    <p class="desc">从「我想去那样的岗位」到「offer 在手」，中间是五步。<b>每一步都可以单独做</b>，也可以连着走完。</p>
     <div class="path">
       <div class="path-line">
         <div class="pstep"><div class="pn">1</div><div class="pt">能力水位评估</div><div class="pd">对照目标岗位<br>逐项标出差距</div></div>
@@ -139,51 +260,86 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
         <div class="pstep"><div class="pn">5</div><div class="pt">面试辅导</div><div class="pd">按真实 JD<br>模拟追问</div></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="blk">
+<!-- ========== 五项服务 ========== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Services</div>
     <h2>五项服务，单点或组合</h2>
-    <div class="coach">
-      <div class="cc"><div class="t">能力水位评估</div><div class="d">对照真实岗位的 K/S/A 要求，逐项标出你现在的位置和差距，不是拿模板套你。差在 K 还是差在 A，补法完全不同。</div></div>
-      <div class="cc"><div class="t">定制学习方案</div><div class="d">选定一个目标岗位，倒推你要补的课、要做的作品、要准备的证据，排成可执行的周计划。</div></div>
-      <div class="cc"><div class="t">做出真能用的产品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——面试桌上，这两者的分量完全不同。</div></div>
-      <div class="cc"><div class="t">简历改写</div><div class="d">把你的经历翻译成这类岗位读得懂的能力语言——「有人真的在用吗」这种追问，简历里就要埋好答案。</div></div>
-      <div class="cc"><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界。我们的岗位库里就是这些岗位的原文。</div></div>
+    <p class="desc">每一项都是一对一。你可能只需要其中一两项——<b>免费沟通里我们会直说先做哪个，帮不上也会直说</b>。</p>
+    <div class="svc">
+      <div class="sc"><div class="no">01</div><div class="t">能力水位评估</div><div class="d">对照真实岗位的 K/S/A 要求，逐项标出你现在的位置和差距，不是拿模板套你。<b>差在 K 还是差在 A，补法完全不同。</b></div></div>
+      <div class="sc"><div class="no">02</div><div class="t">定制学习方案</div><div class="d">选定一个目标岗位，倒推你要补的课、要做的作品、要准备的证据，<b>排成可执行的周计划</b>。</div></div>
+      <div class="sc"><div class="no">03</div><div class="t">做出真能用的产品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——<b>面试桌上，这两者的分量完全不同</b>。</div></div>
+      <div class="sc"><div class="no">04</div><div class="t">简历改写</div><div class="d">把你的经历翻译成这类岗位读得懂的能力语言——「有人真的在用吗」这种追问，<b>简历里就要埋好答案</b>。</div></div>
+      <div class="sc"><div class="no">05</div><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界。<b>我们的岗位库里就是这些岗位的原文</b>。</div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="blk">
+<!-- ========== 谁来辅导 ========== -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">Who</div>
     <h2>谁来辅导</h2>
-    <div class="rules">
-      meansights Consulting 创始人——<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，
-      跨境电商龙头企业与互联网大厂组织管理专家经历。
-      课程、任务、评审、辅导用的是同一套标准：<b>咨询的方法论给出「什么是对的」，大厂的实战给出「什么是能落地的」。</b>
+    <div class="whoin">
+      <div class="wc">
+        <div class="k">辅导人</div>
+        <div class="v">meansights Consulting 创始人——<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，
+          跨境电商龙头企业与互联网大厂组织管理专家经历。你要去的那类岗位，就是他每天在打交道的领域。</div>
+      </div>
+      <div class="wc">
+        <div class="k">同一套标准</div>
+        <div class="v">课程、任务、评审、辅导用的是同一套标准：<b>咨询的方法论给出「什么是对的」，
+          大厂的实战给出「什么是能落地的」</b>。辅导不是另起炉灶，是把你在这个站里学的东西接到岗位上。</div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="blk" id="apply">
-    <h2>申请沟通</h2>
-    <div class="hint">先约一次 15 分钟的<b>免费沟通</b>，聊清楚你的目标和现状，再说方案和价格——不聊清楚不报价。</div>
-    <div class="form">
-      <label>你的目标和现状（目标岗位 / 现在做什么 / 最想解决哪块）</label>
-      <textarea id="cNote" placeholder="例：目标是字节那条 AI 提效产品经理，现在在传统行业做 HRBP，最想先做能力评估+学习方案……"></textarea>
-      <button class="go" id="cGo">申请辅导沟通</button>
-      <div class="ok" id="cOk">收到。我们会先跟你约一次 15 分钟的免费沟通，聊清楚你的目标和现状，再说方案和价格。</div>
+<!-- ========== 怎么开始 + 申请 ========== -->
+<section class="band alt" id="apply">
+  <div class="wrap">
+    <div class="eyebrow">Get Started</div>
+    <h2>怎么开始</h2>
+    <div class="startrow">
+      <div>
+        <div class="steps">
+          <div class="st"><div class="sn">1</div><div class="t">提交申请</div><div class="d">写清楚你的目标岗位、现在在做什么、最想先解决哪一块。</div></div>
+          <div class="st"><div class="sn">2</div><div class="t">15 分钟免费沟通</div><div class="d">聊清楚你的目标和现状，<b>判断值不值得做、先做哪一项</b>。这一步不收费。</div></div>
+          <div class="st"><div class="sn">3</div><div class="t">出方案和报价</div><div class="d">按你需要的服务单点或组合报价，<b>你挑着买</b>，不打包强卖。</div></div>
+        </div>
+        <div class="rules"><b>三条规矩：</b>不聊清楚不报价 · 不代投简历、不承诺「包 offer」 · 免费沟通里如果我们判断帮不上你，会直接说。</div>
+      </div>
+      <div class="form">
+        <h3>申请免费沟通</h3>
+        <div class="fh">留下你的情况，我们会先跟你约一次 15 分钟的免费沟通。</div>
+        <label>你的目标和现状（目标岗位 / 现在做什么 / 最想解决哪块）</label>
+        <textarea id="cNote" placeholder="例：目标是字节那条 AI 提效产品经理，现在在传统行业做 HRBP，最想先做能力评估+学习方案……"></textarea>
+        <button class="go" id="cGo">申请免费沟通</button>
+        <div class="lognote" id="cLog"></div>
+        <div class="ok" id="cOk">收到。我们会先跟你约一次 15 分钟的免费沟通，聊清楚你的目标和现状，再说方案和价格。</div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div class="foot">就业辅导由 meansights 团队提供 · 想先检验作品？<a href="review.html">作品评审 →</a></div>
-</div>
+<div class="foot">就业辅导由 meansights 团队提供 · 想先检验作品？<a href="review.html">作品评审 →</a></div>
 
 <script>
-/* 登录专属：辅导以了解你的学习/作品数据为前提 */
-if(!localStorage.getItem('hab_token')){
-  try{ sessionStorage.setItem('hab_next','coach.html'); }catch(e){}
-  location.replace('index.html#login');
-}
 const API=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com');
 const $=s=>document.querySelector(s);
+/* 页面开放浏览；提交这一步才需要登录（要看你的学习/作品数据才辅导得起来） */
+if(!localStorage.getItem('hab_token')){
+  $('#cLog').textContent='提交需要先登录——点按钮会带你去登录，登录后自动回到这里。';
+}
 $('#cGo').onclick=async ()=>{
+  if(!localStorage.getItem('hab_token')){
+    try{ sessionStorage.setItem('hab_next','coach.html#apply'); }catch(e){}
+    location.href='index.html#login'; return;
+  }
   const note=$('#cNote').value.trim();
   if(!note){ $('#cNote').focus(); return; }
   const btn=$('#cGo'); btn.disabled=true;
@@ -191,19 +347,21 @@ $('#cGo').onclick=async ()=>{
     const r=await fetch(API+'/api/review/apply',{method:'POST',
       headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},
       body:JSON.stringify({kind:'coach', note})});
+    if(r.status===401){ localStorage.removeItem('hab_token'); localStorage.removeItem('hab_user');
+      try{ sessionStorage.setItem('hab_next','coach.html#apply'); }catch(e){}
+      location.href='index.html#login'; return; }
     if(!r.ok) throw 0;
-    $('#cOk').style.display='block'; btn.textContent='已提交';
+    $('#cOk').style.display='block'; btn.textContent='已提交'; $('#cLog').textContent='';
   }catch(e){ btn.disabled=false;
     $('#cOk').style.display='block'; $('#cOk').textContent='没提交上——网络或服务打盹了，过一分钟再点一次。'; }
 };
 
-/* 登录态后台校验 */
+/* 登录态后台校验（只在 401/403 才清身份；5xx/断网保留缓存） */
 (async function(){
   var t=localStorage.getItem('hab_token'); if(!t) return;
   try{
     var r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
-    if(r.status===401){ localStorage.removeItem('hab_token'); localStorage.removeItem('hab_user');
-      location.replace('index.html#login'); return; }
+    if(r.status===401||r.status===403){ localStorage.removeItem('hab_token'); localStorage.removeItem('hab_user'); return; }
     if(!r.ok) return;
     var u=await r.json(), b=document.getElementById('loginBtn');
     localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
