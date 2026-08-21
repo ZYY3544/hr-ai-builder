@@ -8,7 +8,7 @@
 <link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 <link rel="alternate icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>交作业 · 评审与辅导 · meansights learning</title>
+<title>交作业 · 作品评审 · meansights learning</title>
 <meta name="robots" content="noindex">
 <style>
 :root{
@@ -115,11 +115,6 @@ section.blk{padding:34px 0 6px}
 .form .go:disabled{opacity:.5;cursor:default}
 .form .ok{margin-top:14px;font-size:13px;color:var(--pri-d);background:var(--pri-s);border-radius:8px;padding:10px 14px;display:none}
 
-/* 辅导 */
-.coach{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:13px}
-.cc{border:1px solid var(--line);border-radius:var(--r-l);padding:16px 18px;background:#fff}
-.cc .t{font-size:13.5px;font-weight:600;color:var(--ink)}
-.cc .d{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.75}
 .foot{padding:48px 0 70px;font-size:12px;color:var(--faint)}
 </style>
 </head>
@@ -164,7 +159,7 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
         <div class="fstep alt"><div class="fn">5</div><div class="ft">改</div><div class="fd">对照报告自己改<br>改完的才是你的</div></div>
       </div>
       <div class="floop"><span class="fl-a">↺ 回到第 2 步</span><span>带着评审指出的问题再做一轮——错题练对了才划掉，作品也一样。</span>
-        <span class="fl-a" style="margin-left:auto">→ 走得更远</span><span>能力评估 · 定制学习方案 · 简历 · 面试，见下方「辅导」。</span></div>
+        <span class="fl-a" style="margin-left:auto">→ 走得更远</span><span>能力评估 · 学习方案 · 简历 · 面试，见<a href="coach.html" style="color:var(--pri-d);font-weight:600">就业辅导</a>。</span></div>
     </div>
   </section>
 
@@ -229,25 +224,16 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
     </div>
   </section>
 
-  <section class="blk" id="coach">
-    <h2>辅导：从「会做」到「拿到 offer」</h2>
-    <div class="hint">评审解决「这个作品行不行」。下面这些解决「你这个人往哪儿走」——一对一，按需组合。</div>
-    <div class="coach">
-      <div class="cc"><div class="t">能力水位评估</div><div class="d">对照真实岗位的 K/S/A 要求，逐项标出你现在的位置和差距，不是拿模板套你。</div></div>
-      <div class="cc"><div class="t">定制学习方案</div><div class="d">选定一个目标岗位，倒推你要补的课、要做的作品、要准备的证据，排成可执行的周计划。</div></div>
-      <div class="cc"><div class="t">简历改写</div><div class="d">把你的经历翻译成这类岗位读得懂的能力语言——「有人真的在用吗」这种追问，简历里就要埋好答案。</div></div>
-      <div class="cc"><div class="t">做出真能用的产品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——面试桌上，这两者的分量完全不同。</div></div>
-      <div class="cc"><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界。我们的岗位库里就是这些岗位的原文。</div></div>
-    </div>
-    <div class="form" style="margin-top:18px" id="coachForm">
-      <label>想聊哪块（可多写）</label>
-      <textarea id="cNote" placeholder="例：目标是字节那条 AI 提效产品经理，想先做能力评估+学习方案……"></textarea>
-      <button class="go" id="cGo">申请辅导沟通</button>
-      <div class="ok" id="cOk">收到。我们会先跟你约一次 15 分钟的免费沟通，聊清楚你的目标和现状，再说方案和价格——不聊清楚不报价。</div>
-    </div>
-  </section>
+  <div style="margin-top:8px;padding:18px 22px;border:1px solid var(--line);border-radius:14px;
+    background:var(--bg);display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+    <div style="flex:1;min-width:240px;font-size:13px;color:var(--muted);line-height:1.9">
+      评审解决「这个作品行不行」。想解决「你这个人往哪儿走」——能力评估、学习方案、简历、面试，
+      在<b style="color:var(--ink)">就业辅导</b>里。</div>
+    <a href="coach.html" style="flex:0 0 auto;font-size:13px;font-weight:600;color:var(--pri-d)">去看就业辅导 →</a>
+  </div>
 
-  <div class="foot">评审与辅导由 meansights 团队提供 · 课程内容永久免费，这两项是可选的深度服务</div>
+
+  <div class="foot">作品评审由 meansights 团队提供 · 课程内容永久免费，评审是可选的深度服务 · <a href="coach.html" style="color:var(--pri-d)">就业辅导 →</a></div>
 </div>
 
 <script>
@@ -279,11 +265,6 @@ $('#fGo').onclick=()=>{
   const link=$('#fLink').value.trim();
   if(!link){ $('#fLink').focus(); return; }
   apply('review', {tier:$('#fTier').value, link, note:$('#fNote').value.trim()}, $('#fGo'), $('#fOk'));
-};
-$('#cGo').onclick=()=>{
-  const note=$('#cNote').value.trim();
-  if(!note){ $('#cNote').focus(); return; }
-  apply('coach', {note}, $('#cGo'), $('#cOk'));
 };
 
 /* 登录态（缓存已由防闪脚本画好，这里只做后台校验） */
