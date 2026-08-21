@@ -250,6 +250,33 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 .tref:hover{border-color:var(--pri)}
 .tref i{font-style:normal;font-size:10px;color:var(--faint)}
 @media(max-width:640px){.tcard{padding:22px 20px}.tsec{flex-direction:column;gap:3px}}
+
+/* ---------- 怎么玩：四步一条线（与就业辅导页同一设计语言） ---------- */
+.path{border:1px solid var(--line);border-radius:var(--r-x);background:#fff;padding:34px 26px;overflow-x:auto;margin-top:38px}
+.path-line{display:flex;min-width:640px}
+.pstep{flex:1;position:relative;padding:0 8px;text-align:center}
+.pstep .pn{width:38px;height:38px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;background:var(--grad-r);position:relative;z-index:1;
+  box-shadow:0 4px 12px -4px rgba(0,168,138,.5)}
+.pstep .pt{font-size:13.5px;font-weight:600;color:var(--ink);margin-top:11px}
+.pstep .pd{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.7}
+.pstep .pd b{color:var(--ink);font-weight:500}
+.pstep:not(:last-child)::after{content:'';position:absolute;top:18px;left:calc(50% + 25px);right:calc(-50% + 25px);
+  height:2px;background:repeating-linear-gradient(90deg,var(--pri) 0 6px,transparent 6px 11px);opacity:.5}
+.after{margin-top:16px;border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
+  padding:14px 18px;font-size:13px;line-height:2;color:var(--ink)}
+.after b{font-weight:600}
+
+/* ---------- 任务 tab 切换 ---------- */
+.ttabs{display:flex;gap:10px;margin-top:40px;flex-wrap:wrap}
+.ttab{font:inherit;font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--body);transition:.15s;text-align:left}
+.ttab small{display:block;font-size:11px;font-weight:400;color:var(--faint);margin-top:2px}
+.ttab:hover{border-color:var(--pri);color:var(--pri)}
+.ttab.on{border-color:var(--pri);background:var(--pri-s);color:var(--pri-d);box-shadow:0 0 0 1px var(--pri)}
+.ttab.on small{color:var(--pri-d);opacity:.75}
+.tpanel{display:none;margin-top:18px}
+.tpanel.on{display:block}
 /* ── 全站统一顶栏（数值照抄首页，改这里前先对 index.html） ── */
 .gwrap{max-width:1400px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:24px;height:60px}
 .brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-42px;transition:opacity .15s}
@@ -301,14 +328,40 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
     <div class="pill"><span class="dot"></span>做出来的东西，<b>比读完更算数</b></div>
     <h1 style="font-size:clamp(32px,4.6vw,52px)">实战任务</h1>
     <p class="lede" style="max-width:40em">每个任务的原型都是<b>真实交付过的活</b>，材料全是程序生成的假数据——放心贴给任何 AI 工具。
-    在你自己的环境里做（Claude Code、对话、Excel 都行），做完拿答案卡对数，卡住了问右下角的 Sparky。</p>
+    先看下面的玩法，再挑一个开做。</p>
+  </div>
+</section>
+
+<section class="band" style="padding:44px 0 52px" id="howto">
+  <div class="wrap">
+    <div class="eyebrow">How It Works</div>
+    <h2 style="font-size:clamp(24px,3vw,32px)">怎么玩</h2>
+    <p class="desc" style="font-size:14px">实战任务不在网站里做——<b>它模拟的就是你日常接活的样子</b>：拿到材料，在自己的环境里做出来。</p>
+    <div class="path">
+      <div class="path-line">
+        <div class="pstep"><div class="pn">1</div><div class="pt">领任务包</div><div class="pd">登录后下载材料<br>全是程序生成的假数据</div></div>
+        <div class="pstep"><div class="pn">2</div><div class="pt">在自己的环境做</div><div class="pd">Claude Code / 对话 / Excel 都行<br><b>像接了个真活那样做</b></div></div>
+        <div class="pstep"><div class="pn">3</div><div class="pt">卡住了问 Sparky</div><div class="pd">右下角那只猫读过每一节课<br>告诉它你卡在哪</div></div>
+        <div class="pstep"><div class="pn">4</div><div class="pt">对数 · 交评审</div><div class="pd">先拿答案卡自查<br>想要专业反馈就交上来</div></div>
+      </div>
+    </div>
+    <div class="after"><b>做完之后：</b>作品评审（登录用户首次免费）会指出你差在哪 → 按报告改一版 →
+      这段经历就是简历上<b>「做出过真作品」</b>的证据——「岗位机会」里那些 JD 追问的正是这个，
+      再往后有「就业辅导」接着陪你走。</div>
   </div>
 </section>
 
 <section class="band alt" style="padding-top:40px">
   <div class="wrap">
+    <div class="eyebrow">Tasks</div>
+    <h2 style="font-size:clamp(24px,3vw,32px)">挑一个开做</h2>
+    <div class="ttabs" id="ttabs">
+      <button class="ttab on" data-t="t01">任务 01 · 人力月报<small>数据活 ★★★★ · 完整战役</small></button>
+      <button class="ttab" data-t="t02">任务 02 · 调研 agent<small>设计活 ★★</small></button>
+      <button class="ttab" data-t="t03">任务 03 · 面试官 prep<small>造物活 ★★★</small></button>
+    </div>
     <div class="tgrid">
-      <div class="tcard hot">
+      <div class="tpanel on" id="t01"><div class="tcard hot">
         <div class="thead"><span class="tno">任务 01</span><span class="tband">数据活 ★★★★ · 完整战役</span></div>
         <h3>人力月报：从一句模糊的需求到一张能对数的报表</h3>
         <p class="tdesc">周五傍晚 HRD 丢来一句话：「下周一例会要用 4 月人力月报，老规矩。」你拿到的是<b>两个月的多文件夹底表</b>（在职、外包、入职、离职、两栋楼的打卡，共 2.2 万行）、一份 25 条的口径说明，和一张 12 行 × 23 列的交付模板。口径互相交叉、顺序敏感，<b>其中三处说明是刻意没写死的</b>——发现模糊、跟 AI 掰扯清楚、做出决定并记录，正是这一题考的东西。原型是站主真实交付过的经营月报。</p>
@@ -318,7 +371,7 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
         <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#hr-caliber-1.html"><i>先读</i>三个系统、五种口径</a><a class="tref" href="learn.html#hr-caliber-2.html"><i>先读</i>口径不确认全是假的</a><a class="tref" href="learn.html#data-when-code.html"><i>先读</i>什么时候必须走代码</a><a class="tref" href="learn.html#data-spec-cleaning.html"><i>卡住看</i>清洗规则必须逐条写</a><a class="tref" href="learn.html#data-check-three.html"><i>验收用</i>小样、抽查、对总数</a></span></div>
       </div>
 
-      <div class="tcard">
+      </div><div class="tpanel" id="t02"><div class="tcard">
         <div class="thead"><span class="tno">任务 02</span><span class="tband">设计活 ★★</span></div>
         <h3>把静态问卷改造成会追问的调研 agent</h3>
         <p class="tdesc">新人调研收上来一堆 3 分 4 分，没人知道 3 分背后发生了什么。你的任务<b>不是写代码</b>——是设计：什么触发追问、追问怎么把感受翻译成事实、预算怎么守住「10 分钟填完」的承诺、哪些决定归规则哪些归模型。产出是一份设计文档和两段真实的 prompt。</p>
@@ -326,14 +379,14 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
         <div class="tsec"><b>材料</b><span><a href="data/task-survey/问卷底稿.md" target="_blank">静态问卷底稿 + 任务详情</a></span></div>
         <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#agent-vs-workflow.html"><i>先读</i>HR 大多不该给自主权</a><a class="tref" href="learn.html#prompt-system.html"><i>先读</i>System Prompt</a><a class="tref" href="learn.html#hr-elicitation-3.html"><i>先读</i>判断链怎么落地</a><a class="tref" href="learn.html#zero-5.html"><i>参照</i>先问我几个问题</a></span></div>
       </div>
-      <div class="tcard">
+      </div><div class="tpanel" id="t03"><div class="tcard">
         <div class="thead"><span class="tno">任务 03</span><span class="tband">造物活 ★★★</span></div>
         <h3>面试官 prep：让 AI 帮你备一场面试</h3>
         <p class="tdesc">明天下午面两位候选人：一位简历亮眼但跳槽频繁，一位朴素但扎实。让 AI 帮你出面试问题和追问链——<b>然后把它初稿里不对的地方改掉</b>。评审最看重的恰恰是你改了什么、为什么改：AI 生成，人对判断负责。</p>
         <div class="tsec"><b>交付物</b><span>每位候选人 5 个带假设的面试问题 / 一条至少 3 层的追问链 / 一段「我否掉了 AI 的什么」说明</span></div>
         <div class="tsec"><b>材料</b><span><a href="data/task-interview/岗位与候选人.md" target="_blank">岗位 JD + 候选人材料 + 任务详情</a></span></div>
         <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#hr-elicitation-1.html"><i>先读</i>老法师那一眼在看什么</a><a class="tref" href="learn.html#hallu-first-scene.html"><i>先读</i>它会编：筛简历现场</a><a class="tref" href="learn.html#hr-recall-vs-judge.html"><i>先读</i>召回 vs 判定</a><a class="tref" href="learn.html#prompt-hr-cases.html"><i>卡住看</i>HR 五个高频场景</a></span></div>
-      </div>
+      </div></div>
     </div>
     <div style="margin-top:34px;border:1.5px solid rgba(0,168,138,.4);border-radius:14px;padding:22px 26px;
       background:linear-gradient(135deg,rgba(0,168,138,.05),rgba(8,145,178,.05));display:flex;gap:18px;align-items:center;flex-wrap:wrap">
@@ -372,6 +425,18 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
       x=document.getElementById('loginClose');
   if(b) b.onclick=function(e){e.preventDefault(); location.href='index.html#login';};
   if(x) x.onclick=function(){m.classList.remove('on');};
+
+  /* 任务 tab 切换：#t01/#t02/#t03 可深链直达 */
+  var tabs=document.querySelectorAll('.ttab'), panels=document.querySelectorAll('.tpanel');
+  function showT(id){
+    tabs.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-t')===id); });
+    panels.forEach(function(p){ p.classList.toggle('on', p.id===id); });
+  }
+  tabs.forEach(function(b){ b.onclick=function(){
+    showT(b.getAttribute('data-t'));
+    try{ history.replaceState(null,'','#'+b.getAttribute('data-t')); }catch(e){}
+  };});
+  if(/^#t0[123]$/.test(location.hash)) showT(location.hash.slice(1));
 
   /* 任务材料下载埋点：漏斗从「打开任务页」到「下载了哪个包」之间,原来是黑的。
      登录用户同时记一笔战役进度(已领任务包),成长页靠它点状态 */
