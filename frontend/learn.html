@@ -54,29 +54,40 @@ a{color:inherit;text-decoration:none}
 input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
 .ls .mn{font-size:10px;color:var(--faint);margin-left:6px;font-variant-numeric:tabular-nums;opacity:.85;white-space:nowrap}
 .tree{flex:1;overflow-y:auto;padding:0 8px 30px}
-.pt{margin:14px 0 4px;padding:0 6px}
-.pt .num{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--pri);text-transform:uppercase}
-.pt .ti{font-size:13px;font-weight:600;color:var(--ink);margin-top:1px;line-height:1.4}
+/* 侧栏三级层次：篇章 > 主题 > 节。
+   原来篇章标题 13px/600、主题 12.5px/500，只差半个像素和一档字重，还都是同一个墨色——
+   肉眼根本分不出谁包着谁。层次要靠**多个信号叠加**：字号 + 字重 + 颜色深浅，
+   再用一条分隔线把篇章之间切开做视觉分块。 */
+.pt{margin:26px 0 6px;padding:15px 6px 0;border-top:1px solid var(--line)}
+.pt:first-of-type{margin-top:6px;padding-top:2px;border-top:0}
+.pt .num{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--pri)}
+.pt .ti{font-size:14.5px;font-weight:650;color:var(--ink);margin-top:4px;
+  line-height:1.35;letter-spacing:-.012em}
 .tp{margin:2px 0}
+/* 主题：比篇章浅一档（--body 而非 --ink），展开或命中当前节时才升到墨色 */
 .tp-h{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:7px;cursor:pointer;
-  font-size:12.5px;font-weight:500;color:var(--ink)}
-.tp-h:hover{background:#fff}
+  font-size:12.5px;font-weight:500;color:var(--body);transition:color .12s}
+.tp-h:hover{background:#fff;color:var(--ink)}
+.tp.open>.tp-h{color:var(--ink);font-weight:600}
 .tp-h .ar{color:var(--faint);font-size:10px;transition:.15s;flex:0 0 auto}
 .tp.open .tp-h .ar{transform:rotate(90deg)}
 .tp-h .nm{flex:1;line-height:1.45}
 .tp-h .ct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;flex:0 0 auto}
 .tp-l{display:none;padding:1px 0 4px 15px}
 .tp.open .tp-l{display:block}
+/* 节：最浅的一档（--muted），当前节才用主色 */
 .ls{display:flex;align-items:flex-start;gap:7px;padding:6px 9px;border-radius:7px;cursor:pointer;
   position:relative;
-  font-size:12.5px;color:var(--body);line-height:1.55}
-.ls:hover{background:#fff}
+  font-size:12.5px;color:var(--muted);line-height:1.55}
+.ls:hover{background:#fff;color:var(--body)}
 .ls.on{background:var(--pri-s);color:var(--pri);font-weight:500}
 .ls.off{color:var(--faint);cursor:default}
 .ls.off:hover{background:none}
 .dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);flex:0 0 auto;margin-top:3px}
 .ls.on .dot{border-color:var(--pri)}
 .ls.done .dot{background:var(--green);border-color:var(--green)}
+.ls.done{color:var(--body)}          /* 读过的略深一点，跟没读的拉开 */
+.ls.on{font-weight:500}
 .ls .lk{font-size:9px;opacity:.55;margin-left:3px}
 .side .foot{flex:0 0 auto;padding:11px 16px;border-top:1px solid var(--line);font-size:11px;
   color:var(--faint);line-height:1.75}
