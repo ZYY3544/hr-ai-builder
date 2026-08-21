@@ -201,6 +201,14 @@
     ' display:flex;align-items:center;justify-content:center;padding:0}',
     '#spk-send svg{width:15px;height:15px}',
     '#spk-send:disabled{opacity:.45;cursor:default}',
+    // / 指令菜单:悬浮在输入框上方
+    '#spk-cmds{position:absolute;left:14px;right:14px;bottom:calc(100% - 2px);background:#fff;border:1px solid #E2E8F0;',
+    ' border-radius:12px;box-shadow:0 10px 30px -12px rgba(15,23,42,.25);overflow:hidden;display:none;z-index:5}',
+    '#spk-cmds.on{display:block}',
+    '#spk-cmds button{display:block;width:100%;text-align:left;background:#fff;border:none;padding:9px 14px;font:inherit;font-size:13px;cursor:pointer}',
+    '#spk-cmds button:hover{background:#F0FDF9}',
+    '#spk-cmds b{color:#0F172A;font-weight:600}',
+    '#spk-cmds i{font-style:normal;color:#64748B;font-size:11.5px;margin-left:8px}',
     '.spk-typing{color:#94A3B8;font-size:12px;padding:2px 0 10px}',
     '#spk-bubble{position:fixed;right:24px;bottom:calc(var(--spk-bottom,20px) + 72px);max-width:240px;background:#fff;border:1px solid #E2E8F0;',
     ' border-radius:14px;border-bottom-right-radius:4px;padding:11px 30px 11px 14px;font-size:13px;line-height:1.7;',
@@ -267,7 +275,7 @@
     '<button id="spk-x">×</button></div>' +
     '<div id="spk-histp"></div>' +
     '<div id="spk-log"></div>' +
-    '<div id="spk-inp"><textarea rows="1" placeholder="说说你想拿 AI 干什么…"></textarea>' +
+    '<div id="spk-inp"><div id="spk-cmds"></div><textarea rows="1" placeholder="说说你想拿 AI 干什么…"></textarea>' +
     '<button id="spk-send" title="发送"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>';
   var bub = document.createElement('div'); bub.id = 'spk-bubble';
   document.body.appendChild(ball); document.body.appendChild(panel); document.body.appendChild(bub);
@@ -564,7 +572,7 @@
     if (PAGE === 'learn' && location.hash) {
       lesson = decodeURIComponent(location.hash.slice(1));
     }
-    return { page: PAGE, lesson: lesson, done: done, visitor: vid() };
+    return { page: PAGE, lesson: lesson, done: done, visitor: vid(), mode: chatMode };
   }
   // 复用 track.js 的匿名访客 id（随机串，不含任何个人信息），别再造一个
   function vid() { try { return localStorage.getItem('hab_vid') || ''; } catch (e) { return ''; } }
@@ -595,9 +603,11 @@
     var reply = '', replyEl = null, refs = [];
     busy = true; send.disabled = true;
 
+    var hdrs = { 'Content-Type': 'application/json' };
+    try { var tkh = localStorage.getItem('hab_token'); if (tkh) hdrs.Authorization = 'Bearer ' + tkh; } catch (e) {}
     fetch(API + '/api/sparky/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: hdrs,
       body: JSON.stringify({
         // 回喂历史时要把当轮真实发出的 REFS 还原回去。
         // 不还原会出事：服务端遇到 REFS: 就停止下发，所以存下来的 content 天然不含那一行；
@@ -641,6 +651,19 @@
               note(!ev.ok ? '这条没存下，回头再说一次。'
                    : ev.title ? '已记下·《' + ev.title + '》，会拿它改课。'
                    : '已记下——这条是对整个站的意见，没挂到具体哪一节。');
+            } else if (ev.t === 'apply') {
+              // 落库走已鉴权的 /api/review/apply——聊天通道匿名,不该有写库权限
+              (function (kind, noteTxt) {
+                var t2 = null; try { t2 = localStorage.getItem('hab_token'); } catch (e) {}
+                if (!t2) { note('要先登录才能递交——点右上角头像登录，回来跟我说一声「递交」。'); return; }
+                fetch(API + '/api/review/apply', { method: 'POST',
+                  headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + t2 },
+                  body: JSON.stringify({ kind: kind, note: noteTxt }) })
+                .then(function (r) {
+                  if (r.ok) { note('✅ 申请已递交，我们会在微信/站内联系你。'); chatMode = null; }
+                  else note('没递交上——稍后跟我说一声「再递交一次」。');
+                }).catch(function () { note('没递交上——稍后跟我说一声「再递交一次」。'); });
+              })(ev.kind, ev.note || '');
             } else if (ev.t === 'err') {
               if (typing.parentNode) typing.remove();
               bubble('assistant', ev.msg, 'err');
@@ -713,13 +736,59 @@
     ta.placeholder = (PAGE === 'learn' && f && LMAP[f])
       ? '这节哪儿卡住了？'
       : (c.done && c.done.length ? '卡在哪儿了，还是想找下一步读什么？'
-                                 : '说说你想拿 AI 干什么…');
+                                 : '说说你想拿 AI 干什么…（输入 / 有指令）');
   }
+
+  /* ---------------- / 指令 ---------------- */
+  var chatMode = null;      // coach / review / opc;换页即清(模式块只影响当下这段对话)
+  var CMDS = [
+    { c: '/就业辅导', m: 'coach',  msg: '我想申请就业辅导', d: '聊两句，我帮你递申请' },
+    { c: '/交作业',   m: 'review', msg: '我想提交作品评审', d: '做完任务，交作品换报告' },
+    { c: '/一人公司', m: 'opc',    msg: '我想聊聊我的一人公司想法', d: '想法陪练 · 要登录' },
+    { c: '/退出',     m: null,     msg: null, d: '回到普通对话' }
+  ];
+  var cmdsEl = panel.querySelector('#spk-cmds');
+  function hideCmds() { cmdsEl.classList.remove('on'); }
+  function renderCmds(prefix) {
+    var list = CMDS.filter(function (x) { return x.c.indexOf(prefix) === 0; });
+    if (!list.length) { hideCmds(); return; }
+    cmdsEl.innerHTML = '';
+    list.forEach(function (x) {
+      var b = document.createElement('button');
+      b.innerHTML = '<b>' + x.c + '</b><i>' + x.d + '</i>';
+      b.onclick = function () { pickCmd(x); };
+      cmdsEl.appendChild(b);
+    });
+    cmdsEl.classList.add('on');
+  }
+  function pickCmd(x) {
+    hideCmds(); ta.value = '';
+    if (!x.m) { if (chatMode) { chatMode = null; note('已回到普通对话。'); } return; }
+    if (x.m === 'opc') {
+      var t3 = null; try { t3 = localStorage.getItem('hab_token'); } catch (e) {}
+      if (!t3) { note('「一人公司陪练」要登录后用——点右上角头像登录再来。'); return; }
+    }
+    chatMode = x.m;
+    note(x.m === 'coach' ? '已进入就业辅导申请——聊两句，确认后我帮你递上去。发 /退出 可随时离开。'
+       : x.m === 'review' ? '已进入作品评审提交——说说你做的哪个任务、放在哪。发 /退出 可随时离开。'
+       : '已进入一人公司想法陪练——从「谁付钱」开始磨。发 /退出 可随时离开。');
+    ta.value = x.msg; submit();
+  }
+  ta.addEventListener('input', function () {
+    var v = ta.value;
+    if (v.charAt(0) === '/') renderCmds(v.trim());
+    else hideCmds();
+  });
 
   /* ---------------- 发送 ---------------- */
   function submit() {
     var q = ta.value.trim();
     if (!q || busy) return;
+    // 输入的是完整指令 → 走指令,不发给模型
+    for (var ci = 0; ci < CMDS.length; ci++) {
+      if (CMDS[ci].c === q) { ta.value = ''; hideCmds(); pickCmd(CMDS[ci]); return; }
+    }
+    hideCmds();
     if (enabled === false) {
       bubble('assistant', 'Sparky 还在接线中——课都能正常读，先去翻目录吧。', 'err');
       return;

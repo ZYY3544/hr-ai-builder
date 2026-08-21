@@ -43,6 +43,11 @@ _RL_MIN = int(os.getenv("SPARKY_RPM", "8"))        # 每分钟
 _RL_DAY = int(os.getenv("SPARKY_RPD", "80"))       # 每天
 _hits: dict = defaultdict(lambda: deque(maxlen=200))
 
+# OPC 想法陪练：长对话高频场景，会吃光普通配额，所以按登录用户单独限——
+# 与 IP 限流叠加生效（都过才放行），额度独立核算。
+_OPC_DAY = int(os.getenv("SPARKY_OPC_RPD", "30"))
+_opc_hits: dict = defaultdict(lambda: deque(maxlen=100))
+
 
 def _limited(ip: str) -> Optional[str]:
     now = time.time()
@@ -198,6 +203,9 @@ def _site_map(jobs: list) -> str:
   **这不是招聘职位，是「一起做事」**，别把它说成有薪资的工作机会。
   对方表达想加入时：请 ta 说清自己是谁、想做什么，你按 FB 行（kind 写 site）记下来，
   并给公众号「麦麦是只小雀猫」这个真人出口。
+- **/ 指令**：在你的对话框里输入 / 会弹出快捷指令——/就业辅导（对话里直接递申请）、
+  /交作业（对话里提交作品评审）、/一人公司（想法陪练，登录专属、每天限量）、/退出（回普通对话）。
+  没有别的隐藏指令。辅导页和评审页的表单仍然在，是你说不了话时的兜底通道。
 - **手机**：手机浏览器能正常用，不需要装任何东西。
 - **免费与开源**：课程、岗位库、能力测评**永久免费**；整站按 AGPL-3.0 开源，
   代码在 GitHub（ZYY3544/hr-ai-builder），衍生自洛小山的 xueai.app。
@@ -226,7 +234,46 @@ _FORMAT_TAIL = """
 
 # 容忍加粗变体：实测模型偶尔把标记写成 **REFS**: ，精确匹配 "\nREFS:" 会穿透，
 # 整行 "**REFS**: []" 原样漏到用户屏幕上。
-_MARK_RE = re.compile(r"\*{0,2}(REFS|FB)\*{0,2}\s*:")
+_MARK_RE = re.compile(r"\*{0,2}(REFS|FB|APPLY)\*{0,2}\s*:")
+
+
+# ---------------------------------------------------------------- 指令模式
+# 前端 / 指令唤起：ctx.mode 随每条消息带上来，这里换对应的流程块。
+# 为什么是模式切换而不是往主 prompt 里再堆规则：主 prompt 的纪律（指路不讲课等）
+# 和申请流程/想法陪练的要求天然冲突，堆在一起会互相污染——实测规则打架时行为直接塌。
+_MODE_BLOCKS = {
+    "coach": """
+
+## 本轮处于「就业辅导申请」流程（用户用 /就业辅导 唤起）
+你的任务只有一个：把申请信息聊清楚——①目标（想去什么岗位、最想解决哪块）②现状（现在做什么、卡在哪）。
+一次只问一个问题，最多两轮就该问完；信息够了就用一两句复述确认：「我这样帮你递上去：……对吗？」
+对方明确确认后，输出一行（给系统读的，放在正文之后、REFS 之前）：
+APPLY: {"kind":"coach","note":"你整理的申请摘要，80 字内"}
+并在正文告诉对方：已递交，之后会先约 15 分钟免费沟通——免费、聊清楚再报价。
+没确认前绝不输出 APPLY 行；对方中途说不申请了，就自然退出流程照常聊。""",
+    "review": """
+
+## 本轮处于「作品评审提交」流程（用户用 /交作业 唤起）
+你的任务只有一个：把提交信息聊清楚——①做的是哪个实战任务②做到哪一步了③作品放在哪（有链接就要，没有就说明交付形态）。
+一次只问一个问题；顺带提醒规则：登录用户首次免费（要求真做过：领过任务包、附决策记录），
+评估报告 ¥50/次、报告+重构版 Agent ¥300/次，3-5 个工作日出结果，不代写不包过。
+信息够了复述确认；对方明确确认后，输出一行（给系统读的，放在正文之后、REFS 之前）：
+APPLY: {"kind":"review","note":"你整理的提交摘要（任务/进度/作品位置），120 字内"}
+没确认前绝不输出 APPLY 行。""",
+    "opc": """
+
+## 本轮处于「一人公司想法陪练」模式（用户用 /一人公司 唤起，登录用户专属）
+你现在是想法陪练：可以有观点、可以连续追问，本模式下「指路不讲课」放宽——但三条不放：
+1. **一次只追一个问题**，按这个顺序打磨：谁付钱 → 他现在怎么解决这事 → 为什么是现在 →
+   你最小能交付的版本是什么 → 第一个客户具体是谁（不用真名，说清关系：前同事/社群里的谁）。
+   对方答得虚就往具体里逼（「小公司」不行，要「多小、什么行业、你认识里面的谁」）。
+2. **不替对方做人生判断**：该不该辞职、该不该全职——这条铁律在本模式原样有效。
+   聊的是生意想法，不是人生选择；碰到就划清（「这个我不替你拍，咱们把生意本身聊扎实」）。
+3. **每 3-4 轮收敛一次**：把讨论压成一个本周能做的下一步（给某人看一个样例 / 去问某人一个问题），
+   并提醒：聊天磨的是想法，产品要回 Claude Code 做，客户要自己开口去找。
+   《把你的 agent 变成一人公司》是本模式的地基，对方没读过先指过去。REFS 规则照常。""",
+}
+_MODE_KINDS = {"coach", "review"}          # APPLY 只认这两类
 
 
 def _marker_cut(text: str, leading_nl: bool = True) -> int:
@@ -315,6 +362,7 @@ def _extras(terms: list, jobs: list, term_lessons: dict) -> str:
 # ---------------------------------------------------------------- 请求协议
 class ChatCtx(BaseModel):
     page: Optional[str] = None          # index/learn/quiz/jobs/tasks/review/coach/growth/about
+    mode: Optional[str] = None          # / 指令模式：coach / review / opc，无指令时为空
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
     trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
@@ -457,6 +505,28 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         if msg:
             raise HTTPException(429, msg)
 
+        # / 指令模式：不认识的值静默当无模式，老前端/伪造值都不至于挂
+        mode = (body.ctx.mode or "").strip() if (body.ctx and body.ctx.mode) else ""
+        if mode not in _MODE_BLOCKS:
+            mode = ""
+        if mode == "opc":
+            # 登录专属 + 独立日额度。挡在这里而不是前端：前端的检查挡君子，这道挡直连的
+            import auth as _auth
+            tok = request.headers.get("authorization") or ""
+            claims = None
+            if tok.lower().startswith("bearer "):
+                try:
+                    claims = _auth.decode(tok.split(" ", 1)[1].strip())
+                except Exception:
+                    claims = None
+            if not claims:
+                raise HTTPException(401, "「一人公司陪练」要登录后用——点右上角头像登录，回来再发一次 /一人公司。")
+            uid = str(claims.get("sub") or ip)
+            q2, now2 = _opc_hits[uid], time.time()
+            if sum(1 for t2 in q2 if now2 - t2 < 86400) >= _OPC_DAY:
+                raise HTTPException(429, "今天的陪练额度用完了——先把聊出来的那个下一步做掉，明天再来。")
+            q2.append(now2)
+
         # 载荷收口：只认 user/assistant，截最近 12 条，总字数封顶
         msgs = [{"role": m.get("role"), "content": str(m.get("content", ""))[:2000]}
                 for m in body.messages[-12:]
@@ -475,7 +545,8 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
             "model": _DS_MODEL,
             "messages": [{"role": "system",
                           "content": system_static + _ctx_block(body.ctx)
-                          + _fulltext_block(body.ctx, _last_user)}] + msgs,
+                          + _fulltext_block(body.ctx, _last_user)
+                          + _MODE_BLOCKS.get(mode, "")}] + msgs,
             "stream": True,
             # 1200 而非 900：REFS 是全文最后一行，正文一长就可能在它写出来之前被截断，
             # 而截断了系统这边完全无感——用户就拿到零个可点入口。
@@ -626,9 +697,25 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
                             yield sse({"t": "fb", "ok": bool(got_fb),
                                        "lesson": les,
                                        "title": LESSON_IDX.get(les, {}).get("title", "")})
+                # ── APPLY 闸：申请意向确认。服务端只转发事件不落库——
+                #    落库走前端已鉴权的 /api/review/apply（身份、权限都在那边），
+                #    这条匿名聊天通道不该有写库权限。
+                got_apply = ""
+                ma = re.search(r"APPLY\*{0,2}\s*:\s*(\{.*?\})", text, re.S)
+                if ma:
+                    try:
+                        ap = json.loads(ma.group(1))
+                    except Exception:
+                        ap = None
+                    if isinstance(ap, dict) and str(ap.get("kind")) in _MODE_KINDS:
+                        got_apply = str(ap.get("kind"))
+                        yield sse({"t": "apply", "kind": got_apply,
+                                   "note": str(ap.get("note") or "")[:500]})
+
                 yield sse({"t": "done"})
                 print(f"[SPARKY] ip={ip[:12]} turns={len(msgs)} out={len(text)}ch "
-                      f"refs={len(refs)} fb={int(got_fb)}", flush=True)
+                      f"refs={len(refs)} fb={int(got_fb)} mode={mode or '-'}"
+                      f"{' apply=' + got_apply if got_apply else ''}", flush=True)
             except _rq.exceptions.RequestException as e:
                 print(f"[SPARKY] network error: {e}", flush=True)
                 yield sse({"t": "err", "msg": "我这会儿连不上模型了。你可以先翻目录，或者过几分钟再来。"})
