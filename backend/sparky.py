@@ -492,9 +492,12 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
     def health():
         # prompt_chars: 部署验证用——system prompt 变了这个数就变，
         # 不用真调一次 LLM 才能确认新知识上线了
+        # prompt_chars 只反映 system_static——模式块（_MODE_BLOCKS）是按请求拼的，
+        # 改它不会体现在这个数上，所以模式块的版本单独用 mode_ver 标（部署验证用）。
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
-                "cut_ver": 2}   # 标记截断逻辑版本：v2 兼容 **REFS** 加粗变体
+                "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
+                "mode_ver": 2}   # 模式块版本：v2=确认轮不带 APPLY
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
