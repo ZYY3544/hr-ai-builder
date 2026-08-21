@@ -126,6 +126,7 @@ section.blk{padding:34px 0 6px}
       <a href="tasks.html">实战任务</a>
       <a href="jobs.html">岗位机会</a>
       <a href="coach.html">就业辅导</a>
+      <a href="growth.html" class="cur">成长地图</a>
       <a href="about.html">关于我们</a>
     </div>
     <div class="gright"><a class="uava" href="index.html#login" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
@@ -276,7 +277,8 @@ function renderCurve(){
 /* 成长地图是登录后的专属空间：没登录直接去登录，不做匿名版 */
 (async function(){
   const t=localStorage.getItem(TK);
-  if(!t){ location.replace('index.html#login'); return; }
+  if(!t){ try{ sessionStorage.setItem('hab_next','growth.html'); }catch(e){}
+    location.replace('index.html#login'); return; }
   try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null');
     if(c){ const b=$('#loginBtn'); b.className='uava'; b.title=c.nickname||'';
       b.innerHTML=c.avatar?'<img src="'+c.avatar+'" alt="">':'<span class="ph">'+(c.nickname||'我')[0]+'</span>';
