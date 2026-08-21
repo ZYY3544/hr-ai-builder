@@ -219,21 +219,26 @@ _FORMAT_TAIL = """
 正文点名却不写 REFS＝对方拿到零个可点入口，这是这个助手最严重的失效方式。"""
 
 
-_MARKERS = ("REFS:", "FB:")
+# 容忍加粗变体：实测模型偶尔把标记写成 **REFS**: ，精确匹配 "\nREFS:" 会穿透，
+# 整行 "**REFS**: []" 原样漏到用户屏幕上。
+_MARK_RE = re.compile(r"\*{0,2}(REFS|FB)\*{0,2}\s*:")
 
 
 def _marker_cut(text: str, leading_nl: bool = True) -> int:
     """正文到哪儿为止——尾部标记（FB/REFS）出现的最早位置，没有则 -1。
 
     两个标记都可能出现，顺序不保证，所以取最小值；只取一个的话另一个会被当正文发给用户。
+    leading_nl=True 时标记必须在行首（返回前导 \\n 的位置，跟旧实现切法一致）。
     """
     hits = []
-    for tag in _MARKERS:
-        i = text.find(("\n" + tag) if leading_nl else tag)
-        if i != -1:
+    for m in _MARK_RE.finditer(text):
+        i = m.start()
+        if not leading_nl:
             hits.append(i)
-    if leading_nl and any(text.startswith(t) for t in _MARKERS):
-        hits.append(0)
+        elif i == 0:
+            hits.append(0)
+        elif text[i - 1] == "\n":
+            hits.append(i - 1)
     return min(hits) if hits else -1
 
 
@@ -434,7 +439,8 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         # prompt_chars: 部署验证用——system prompt 变了这个数就变，
         # 不用真调一次 LLM 才能确认新知识上线了
         return {"enabled": bool(_key()), "model": _DS_MODEL,
-                "prompt_chars": len(system_static)}
+                "prompt_chars": len(system_static),
+                "cut_ver": 2}   # 标记截断逻辑版本：v2 兼容 **REFS** 加粗变体
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
@@ -523,7 +529,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
                 # 兜底：模型偶尔会把 FB:/REFS: 顶到最前面，那样正文会被整条切掉，
                 # 用户看到一片空白。宁可把顺序摆正后补发，也不能让人对着空气。
                 if sent == 0:
-                    body_only = re.sub(r"^\s*(FB|REFS)\s*:.*$", "", text,
+                    body_only = re.sub(r"^\s*\*{0,2}(FB|REFS)\*{0,2}\s*:.*$", "", text,
                                        flags=re.M).strip()
                     if body_only:
                         print("[SPARKY] 模型把标记放到了正文前面，已补发正文", flush=True)
@@ -531,7 +537,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
 
                 # ── 校验闸：REFS 里的每一节都必须真实存在 ──
                 refs = []
-                m = re.search(r"REFS:\s*(\[.*?\])", text, re.S)
+                m = re.search(r"REFS\*{0,2}\s*:\s*(\[.*?\])", text, re.S)
                 if m:
                     try:
                         cand = json.loads(m.group(1))
@@ -566,7 +572,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
 
                 # ── 反馈闸：FB 行落库，同样要求 lesson 真实存在 ──
                 got_fb = False
-                mf = re.search(r"FB:\s*(\{.*?\})", text, re.S)
+                mf = re.search(r"FB\*{0,2}\s*:\s*(\{.*?\})", text, re.S)
                 if mf:
                     try:
                         fb = json.loads(mf.group(1))
