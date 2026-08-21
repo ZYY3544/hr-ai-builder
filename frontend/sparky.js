@@ -654,13 +654,14 @@
             } else if (ev.t === 'apply') {
               // 落库走已鉴权的 /api/review/apply——聊天通道匿名,不该有写库权限
               (function (kind, noteTxt) {
+                if (appliedKinds[kind]) { return; }
                 var t2 = null; try { t2 = localStorage.getItem('hab_token'); } catch (e) {}
                 if (!t2) { note('要先登录才能递交——点右上角头像登录，回来跟我说一声「递交」。'); return; }
                 fetch(API + '/api/review/apply', { method: 'POST',
                   headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + t2 },
                   body: JSON.stringify({ kind: kind, note: noteTxt }) })
                 .then(function (r) {
-                  if (r.ok) { note('✅ 申请已递交，我们会在微信/站内联系你。'); chatMode = null; }
+                  if (r.ok) { appliedKinds[kind] = 1; note('✅ 申请已递交，我们会在微信/站内联系你。'); chatMode = null; }
                   else note('没递交上——稍后跟我说一声「再递交一次」。');
                 }).catch(function () { note('没递交上——稍后跟我说一声「再递交一次」。'); });
               })(ev.kind, ev.note || '');
@@ -741,6 +742,7 @@
 
   /* ---------------- / 指令 ---------------- */
   var chatMode = null;      // coach / review / opc;换页即清(模式块只影响当下这段对话)
+  var appliedKinds = {};    // 已递交的申请类型:模型若重复吐 APPLY(确认轮又吐一次),这里挡住不重复落库
   var CMDS = [
     { c: '/就业辅导', m: 'coach',  msg: '我想申请就业辅导', d: '聊两句，我帮你递申请' },
     { c: '/交作业',   m: 'review', msg: '我想提交作品评审', d: '做完任务，交作品换报告' },
