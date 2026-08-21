@@ -251,6 +251,7 @@ _MODE_BLOCKS = {
 才在那一轮输出（给系统读的，放在正文之后、REFS 之前）：
 APPLY: {"kind":"coach","note":"你整理的申请摘要，80 字内"}
 并在正文告诉对方：已递交，之后会先约 15 分钟免费沟通——免费、聊清楚再报价。
+**正文说「已递交」的那一轮必须带 APPLY 行；没带 APPLY 行就不许说「已递交」。**
 没确认前绝不输出 APPLY 行；对方中途说不申请了，就自然退出流程照常聊。""",
     "review": """
 
@@ -260,7 +261,8 @@ APPLY: {"kind":"coach","note":"你整理的申请摘要，80 字内"}
 评估报告 ¥50/次、报告+重构版 Agent ¥300/次，3-5 个工作日出结果，不代写不包过。
 信息够了复述确认；**复述确认的那一轮绝不能带 APPLY 行**——必须等对方下一轮明确说
 「对／确认／递交」，才在那一轮输出（给系统读的，放在正文之后、REFS 之前）：
-APPLY: {"kind":"review","note":"你整理的提交摘要（任务/进度/作品位置），120 字内"}""",
+APPLY: {"kind":"review","note":"你整理的提交摘要（任务/进度/作品位置），120 字内"}
+**正文说「已递交」的那一轮必须带 APPLY 行；没带 APPLY 行就不许说「已递交」。**""",
     "opc": """
 
 ## 本轮处于「一人公司想法陪练」模式（用户用 /一人公司 唤起，登录用户专属）
@@ -497,7 +499,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 2}   # 模式块版本：v2=确认轮不带 APPLY
+                "mode_ver": 3}   # 模式块版本：v3=漏标回捞闸
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
@@ -715,6 +717,17 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
                         got_apply = str(ap.get("kind"))
                         yield sse({"t": "apply", "kind": got_apply,
                                    "note": str(ap.get("note") or "")[:500]})
+                # 回捞闸：模型嘴上说「已递交」却漏了 APPLY 行——用户以为递了、库里什么都没有，
+                # 这是最毒的失效。把可见回复全文兜成申请事件，摘要就在正文里，线索不丢。
+                # 只认「已递交」这个宣告式说法：复述确认轮说的是「帮你递上去…对吗」，不会误触。
+                if not got_apply and mode in _MODE_KINDS:
+                    cutA = _marker_cut(text)
+                    vis2 = text[:cutA] if cutA != -1 else text
+                    if "已递交" in vis2:
+                        got_apply = mode
+                        yield sse({"t": "apply", "kind": mode,
+                                   "note": ("[回捞·模型漏标] " + vis2.strip())[:500]})
+                        print("[SPARKY] 模型说已递交但漏 APPLY 行，已回捞", flush=True)
 
                 yield sse({"t": "done"})
                 print(f"[SPARKY] ip={ip[:12]} turns={len(msgs)} out={len(text)}ch "
