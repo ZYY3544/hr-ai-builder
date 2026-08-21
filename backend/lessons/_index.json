@@ -1637,5 +1637,16 @@
   "part_title": "审美工程：让 AI 做出拿得出手的东西",
   "topic": "参考库与验收",
   "seo": "材料发出去之前的审美检查清单"
+ },
+ "opc-second-path.html": {
+  "title": "把你的 agent 变成一人公司",
+  "free": false,
+  "ready": true,
+  "ksa": "A",
+  "min": 6,
+  "part": "课后甜点",
+  "part_title": "第二条出路：一人公司",
+  "topic": "一人公司 OPC",
+  "seo": "HR 一人公司怎么起步？服务谁、第一单从哪来、收钱前要办的三件事"
  }
 }
