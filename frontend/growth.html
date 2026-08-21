@@ -79,6 +79,9 @@ section.blk{padding:34px 0 6px}
 .chc .qrow{margin-top:8px}
 .chc .qrow .go{color:var(--pri-d);font-weight:600}
 .chc .qrow .go:hover{text-decoration:underline}
+.wk{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);margin-top:5px}
+.kb{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;color:#fff}
+.k-K{background:#3370FF} .k-S{background:#00A88A} .k-A{background:#7C3AED}
 .badge{position:absolute;top:13px;right:14px;font-size:11px;font-weight:600;color:var(--pri-d);
   background:var(--pri-s);border:1px solid rgba(0,168,138,.35);border-radius:99px;padding:2px 9px}
 
@@ -153,6 +156,12 @@ b.removeAttribute('href');}}catch(e){}})();
     <div class="tkgrid" id="tkgrid"></div>
   </section>
 
+  <section class="blk" id="wrongBlk" style="display:none">
+    <h2>错题本</h2>
+    <div class="hint">错的题会留在这儿，直到你把它练对。K 类回去读就能补，A 类补不了——只能拿真实经历重新证明。</div>
+    <div class="chgrid" id="wronggrid"></div>
+  </section>
+
   <section class="blk">
     <h2>成绩曲线</h2>
     <div class="hint">每次本章小测的正确率，按时间排——曲线抖不可怕，掉头向上就对了。</div>
@@ -222,6 +231,28 @@ function renderTasks(){
   });
 }
 
+/* 错题本：按篇章聚合，点进去只练这一章的错题 */
+const KSA_NAME={K:'知识 · 读就能补', S:'技能 · 得动手做', A:'能力 · 补不了要重新证明'};
+function renderWrong(){
+  let w={};
+  try{ w=JSON.parse(localStorage.getItem('hab_wrong')||'{}'); }catch(e){}
+  const ids=Object.keys(w);
+  if(!ids.length){ $('#wrongBlk').style.display='none'; return; }
+  $('#wrongBlk').style.display='';
+  const byCh={};
+  ids.forEach(id=>{ const e=w[id]; (byCh[e.ch]=byCh[e.ch]||[]).push(e); });
+  const CHN={}; Object.entries(QCH).forEach(([k,v])=>CHN[v]=k);
+  $('#wronggrid').innerHTML=Object.entries(byCh).map(([ch,rows])=>{
+    const k={}; rows.forEach(r=>{ k[r.ksa||'K']=(k[r.ksa||'K']||0)+1; });
+    const bars=['K','S','A'].filter(x=>k[x]).map(x=>
+      `<div class="wk"><span class="kb k-${x}">${x}</span>${k[x]} 道 · ${esc(KSA_NAME[x])}</div>`).join('');
+    return `<a class="chc" href="learn.html#quiz:${ch}:wrong">
+      <div class="num">${esc(CHN[ch]||ch)}</div>
+      <div class="ti">${rows.length} 道错题</div>${bars}
+      <div class="row qrow"><span class="go">只练这些 →</span></div></a>`;
+  }).join('');
+}
+
 function renderCurve(){
   const box=$('#curvebox');
   const pts=attempts.filter(a=>a.n>0).map(a=>({...a,pct:a.correct/a.n}));
@@ -285,7 +316,7 @@ function renderCurve(){
   }catch(e){}   // 网络抖动:仍按已登录渲染本地数据,不把人踢出去
   renderAll();
 })();
-function renderAll(){ renderChapters(); renderTasks(); renderCurve(); }
+function renderAll(){ renderChapters(); renderWrong(); renderTasks(); renderCurve(); }
 </script>
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>
