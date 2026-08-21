@@ -102,6 +102,24 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 .attrib{font-size:11.5px;color:var(--faint);line-height:1.9}
 .attrib a{color:var(--muted);border-bottom:1px solid var(--line)}
 .attrib a:hover{color:var(--pri)}
+/* 学完后你可以去哪儿 */
+.wt-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+@media(max-width:920px){.wt-facts{grid-template-columns:1fr}}
+.wtf{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 26px}
+.wtf .wn{font-size:26px;font-weight:650;color:var(--ink);letter-spacing:-.02em;line-height:1.3}
+.wtf .wn small{font-size:13px;font-weight:400;color:var(--faint)}
+.wtf .wd{font-size:13px;color:var(--muted);line-height:1.95;margin-top:10px}
+.wtf .wd b{color:var(--ink);font-weight:500}
+.wt-jobs{margin-top:26px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.wtj{display:flex;align-items:center;gap:14px;padding:13px 20px;font-size:13.5px;transition:.13s}
+.wtj+.wtj{border-top:1px solid var(--line-soft)}
+.wtj:hover{background:var(--pri-s)}
+.wtj .c{flex:0 0 92px;font-size:12px;color:var(--muted)}
+.wtj .t{flex:1;font-weight:600;color:var(--ink)}
+.wtj .s{flex:0 0 auto;font-size:12.5px;color:var(--pri-d);font-weight:600;font-variant-numeric:tabular-nums}
+@media(max-width:640px){.wtj .c{flex-basis:70px}.wtj .s{display:none}}
+.wt-cta{margin-top:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.wt-note{font-size:12px;color:var(--faint)}
 /* ---------- bands ---------- */
 section{scroll-margin-top:72px}
 .band{padding:96px 0}
@@ -362,6 +380,39 @@ b.onclick=function(e){e.preventDefault();location.href='growth.html';};}}catch(e
   </div>
 </section>
 
+<!-- ========== 学完后你可以去哪儿 ==========
+     三个论点全部用招聘方原话和岗位库真实数据讲，一个形容词都不加：
+     ①比例低=才刚开始 ②「不限经验」「先锋」=市场上没人 ③薪资数字自己会说话 -->
+<section class="band alt" id="whereto">
+  <div class="wrap">
+    <div class="eyebrow">Where This Leads</div>
+    <h2>学完之后，你可以去哪儿</h2>
+    <p class="desc">下面是我们逐条核实过的真实在招岗位（JD 原文逐字可核，指纹校验）。
+      读完你会发现三件事——<b>不用我们说，招聘方自己写在 JD 里了</b>。</p>
+
+    <div class="wt-facts">
+      <div class="wtf"><div class="wn">7.6%</div>
+        <div class="wd">字节 225 个 HR 在招岗位里，真要求 AI 能力的只有 17 个。<b>比例这么低，恰恰说明这事才刚开始</b>——现在入场，你和先行者之间没有代差。</div></div>
+      <div class="wtf"><div class="wn">「不限专业和经验」</div>
+        <div class="wd">字节 30-50k 的人才系统专家 JD 原话。敢这么写只有一个解释：<b>市场上找不到有经验的人</b>。中关村科金干脆把岗位叫「AI 应用先锋」——招聘方自己承认这条路还没人趟过。</div></div>
+      <div class="wtf"><div class="wn">100-120k<small>·月</small></div>
+        <div class="wd">泰康「智能体架构（人力系统方向）」的真实薪资。网易 HR 域产品 50-80k，理想 HR AI 岗 40-70k，金山 70-100k——<b>这些数字都在岗位库里，点进去能看到 JD 原文</b>。</div></div>
+    </div>
+
+    <div class="wt-jobs" id="wtJobs">
+      <a class="wtj" href="jobs.html#tk-agent-arch"><span class="c">泰康保险</span><span class="t">智能体架构（人力系统方向）</span><span class="s">100-120k</span></a>
+      <a class="wtj" href="jobs.html#bd-vibe-pm"><span class="c">字节跳动</span><span class="t">AI 提效产品经理（Vibe Coding 招聘管理方向）</span><span class="s">北京 · 上海</span></a>
+      <a class="wtj" href="jobs.html#li-hr-ai"><span class="c">理想汽车</span><span class="t">HR AI / HR 智能化岗</span><span class="s">40-70k·14薪</span></a>
+      <a class="wtj" href="jobs.html#ant-rec-func"><span class="c">蚂蚁集团</span><span class="t">招聘专家（主导 AI 在招聘中的应用）</span><span class="s">35-45k·15薪</span></a>
+      <a class="wtj" href="jobs.html#catl-hr-ai-pm"><span class="c">宁德时代</span><span class="t">HR AI 产品经理</span><span class="s">25-35k·16薪</span></a>
+    </div>
+    <div class="wt-cta">
+      <a class="btn pri lg" href="jobs.html">看全部 64 个真实岗位 →</a>
+      <span class="wt-note">登录可见 · 覆盖 38 家公司 · 每条 JD 逐字可核</span>
+    </div>
+  </div>
+</section>
+
 <!-- ========== 交流 ========== -->
 <section class="band" id="contact">
   <div class="wrap">
@@ -587,7 +638,8 @@ async function openLogin(e){
     if(localStorage.getItem(TK)) return;
     const a=e.target.closest('a'); if(!a) return;
     const href=a.getAttribute('href')||'';
-    if(/^(learn|quiz|jobs)\.html/.test(href)){
+    // learn 不拦——阅读器自己按章放行前两章（先尝后登）；测评和岗位库仍登录专属
+    if(/^(quiz|jobs)\.html/.test(href)){
       e.preventDefault();
       try{ sessionStorage.setItem('hab_next',href); }catch(err){}
       openLogin();

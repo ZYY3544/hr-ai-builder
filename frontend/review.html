@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+<link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+<link rel="alternate icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>交作业 · 评审与辅导 · meansights learning</title>
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --blue:#3370FF; --blue-d:#1F55E0; --blue-s:#EEF3FF;
+  --pri:#00A88A; --pri-d:#00876F; --pri-s:#E8FBF6;
+  --violet:#7C3AED; --violet-s:#F5EFFF;
+  --grad-r:linear-gradient(135deg,#00A88A,#0891B2);
+  --ink:#0F172A; --body:#475569; --muted:#64748B; --faint:#94A3B8;
+  --line:#E2E8F0; --line-soft:#F1F5F9; --bg:#F8FAFC;
+  --danger:#DC2626;
+  --r-s:6px; --r:10px; --r-l:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:13px/1.7 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC',sans-serif;
+  color:var(--body);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.02em;line-height:1.35}
+.wrap{max-width:920px;margin:0 auto;padding:0 40px}
+@media(max-width:640px){.wrap{padding:0 20px}}
+
+/* ---------- 统一导航（与全站 byte-identical）---------- */
+header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
+  backdrop-filter:saturate(1.8) blur(14px);border-bottom:1px solid rgba(226,232,240,.9)}
+.mark{height:25px;width:auto;display:block}
+.gwrap{max-width:1400px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:24px;height:60px}
+.brand{display:flex;align-items:center;flex:0 0 auto;margin-left:-42px;transition:opacity .15s}
+.brand:hover{opacity:.72}
+.glinks{display:flex;align-items:center;justify-content:flex-end;gap:20px;flex:1;position:relative;top:5.87px}
+.glinks a{font-size:14px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:6px;line-height:1.2;transition:.15s}
+.glinks a:hover{color:var(--pri);background:rgba(0,168,138,.07)}
+.glinks a.cur{color:var(--pri)}
+.gright{display:flex;align-items:center;gap:9px;flex:0 0 auto;position:relative;top:5.87px;margin-right:-14px}
+.gbtn{font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:6px;color:#fff;white-space:nowrap;
+  background:linear-gradient(135deg,#00A88A,#0891B2);box-shadow:0 3px 12px -3px rgba(0,168,138,.6)}
+.uava{width:30px;height:30px;border-radius:50%;display:block;overflow:hidden;padding:0;
+  border:1.5px solid #E2E8F0;box-shadow:none;background:#fff;cursor:pointer}
+.uava:hover{border-color:#00A88A}
+.uava img{width:100%;height:100%;object-fit:cover;display:block}
+.uava .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#00A88A,#0891B2)}
+.uava .ph svg{width:15px;height:15px}
+@media(max-width:1402px){.brand{margin-left:0}}
+@media(max-width:960px){.glinks{display:none}}
+
+/* ---------- 页面 ---------- */
+.pagehead{padding:54px 0 10px}
+.pagehead h1{font-size:clamp(26px,3.4vw,36px)}
+.pagehead .sub{margin-top:10px;font-size:14px;color:var(--muted);max-width:40em;line-height:2}
+section.blk{padding:34px 0 6px}
+.blk h2{font-size:18px;margin-bottom:6px}
+.blk .hint{font-size:12.5px;color:var(--faint);margin-bottom:20px}
+
+/* 流程图：五步主线 + 一条回环 + 一条向外的分支。纯 HTML/CSS，不引库 */
+.flow{border:1px solid var(--line);border-radius:var(--r-l);background:var(--bg);padding:26px 22px 22px;overflow-x:auto}
+.flow-line{display:flex;align-items:stretch;gap:0;min-width:640px}
+.fstep{flex:1;position:relative;padding:0 8px;text-align:center}
+.fstep .fn{width:34px;height:34px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;background:var(--grad-r);position:relative;z-index:1}
+.fstep.alt .fn{background:#fff;color:var(--pri-d);border:2px solid var(--pri)}
+.fstep .ft{font-size:13.5px;font-weight:600;color:var(--ink);margin-top:9px}
+.fstep .fd{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.65}
+.fstep:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 22px);right:calc(-50% + 22px);
+  height:2px;background:repeating-linear-gradient(90deg,var(--pri) 0 6px,transparent 6px 11px);opacity:.5}
+.floop{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);
+  display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--muted);min-width:640px}
+.floop .fl-a{color:var(--pri-d);font-weight:700;flex:0 0 auto}
+
+/* 价格卡 */
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.tiers{grid-template-columns:1fr}}
+.tier{border:1px solid var(--line);border-radius:var(--r-l);padding:22px 24px;background:#fff;position:relative}
+.tier.hot{border-color:rgba(0,168,138,.5);box-shadow:0 10px 30px -18px rgba(0,168,138,.45)}
+.tier .tn{font-size:14px;font-weight:600;color:var(--ink)}
+.tier .tp{font-size:30px;font-weight:650;color:var(--ink);margin:8px 0 2px;letter-spacing:-.02em}
+.tier .tp small{font-size:13px;font-weight:400;color:var(--faint);margin-left:4px}
+.tier .free{display:inline-block;font-size:11px;font-weight:600;color:var(--pri-d);background:var(--pri-s);
+  border:1px solid rgba(0,168,138,.35);border-radius:99px;padding:2px 9px;margin:4px 0 10px}
+.tier ul{list-style:none;margin-top:10px}
+.tier li{font-size:12.5px;line-height:1.8;color:var(--body);padding-left:18px;position:relative}
+.tier li::before{content:'✓';position:absolute;left:0;color:var(--pri);font-weight:700}
+.tier li.no::before{content:'—';color:var(--faint)}
+.tier li.no{color:var(--faint)}
+.tier .pick{margin-top:16px;width:100%;font:inherit;font-size:13px;font-weight:600;padding:10px 0;
+  border-radius:9px;border:1.5px solid rgba(0,168,138,.5);background:#fff;color:var(--pri-d);cursor:pointer}
+.tier.hot .pick{background:var(--grad-r);border-color:transparent;color:#fff}
+.tier .pick:hover{opacity:.92}
+
+/* 规则与边界 */
+.rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
+  padding:16px 20px;font-size:13px;line-height:2;color:var(--ink)}
+.rules b{font-weight:600}
+.smallnote{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.8}
+
+/* 表单 */
+.form{border:1px solid var(--line);border-radius:var(--r-l);padding:24px;background:#fff;max-width:640px}
+.form label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin:14px 0 6px}
+.form label:first-child{margin-top:0}
+.form input,.form textarea,.form select{width:100%;font:inherit;font-size:13px;padding:9px 12px;
+  border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.form textarea{min-height:84px;resize:vertical}
+.form input:focus,.form textarea:focus,.form select:focus{outline:none;border-color:var(--pri)}
+.form .go{margin-top:18px;font:inherit;font-size:13.5px;font-weight:600;padding:10px 26px;border:none;
+  border-radius:9px;background:var(--grad-r);color:#fff;cursor:pointer}
+.form .go:disabled{opacity:.5;cursor:default}
+.form .ok{margin-top:14px;font-size:13px;color:var(--pri-d);background:var(--pri-s);border-radius:8px;padding:10px 14px;display:none}
+
+/* 辅导 */
+.coach{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:13px}
+.cc{border:1px solid var(--line);border-radius:var(--r-l);padding:16px 18px;background:#fff}
+.cc .t{font-size:13.5px;font-weight:600;color:var(--ink)}
+.cc .d{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.75}
+.foot{padding:48px 0 70px;font-size:12px;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="gwrap">
+    <a class="brand" href="index.html" aria-label="回到首页"><picture><source media="(max-width:1100px)" srcset="brand/lockup.svg"><img class="mark" src="brand/lockup-product.svg" alt="meansights — HR AI Learning Agent"></picture></a>
+    <div class="glinks">
+      <a href="learn.html">课程内容</a>
+      <a href="tasks.html" class="cur">实战任务</a>
+      <a href="jobs.html">岗位机会</a>
+      <a href="about.html">关于我们</a>
+    </div>
+    <div class="gright"><a class="uava" href="index.html#login" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
+  </div>
+</header>
+<script>/* 防闪：顶栏一画出来就用缓存身份换掉登录圆标 */
+(function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
+if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
+b.title=(u.nickname||'')+' · 我的成长';
+b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+b.setAttribute('href','growth.html');}}catch(e){}})();
+</script>
+
+<div class="wrap">
+  <div class="pagehead">
+    <h1>做完了？交上来，我们认真看</h1>
+    <div class="sub">你在自己电脑上做任务时，AI 教练一直在旁边。但「做出来了」和「做对了」是两回事——
+      交上来，我们用 <b>Fable 5（最高推理档）+ 自建评审 skills</b> 对照课程口径逐处审，
+      3-5 个工作日给你结果。</div>
+  </div>
+
+  <section class="blk">
+    <h2>整个循环长这样</h2>
+    <div class="flow">
+      <div class="flow-line">
+        <div class="fstep"><div class="fn">1</div><div class="ft">学</div><div class="fd">读课程<br>过本章小测</div></div>
+        <div class="fstep"><div class="fn">2</div><div class="ft">做</div><div class="fd">领任务包<br>AI 教练陪你干</div></div>
+        <div class="fstep"><div class="fn">3</div><div class="ft">交</div><div class="fd">提交作品链接<br>+ 决策记录</div></div>
+        <div class="fstep"><div class="fn">4</div><div class="ft">评</div><div class="fd">Fable 5 + skills<br>人工复核</div></div>
+        <div class="fstep alt"><div class="fn">5</div><div class="ft">改</div><div class="fd">对照报告自己改<br>改完的才是你的</div></div>
+      </div>
+      <div class="floop"><span class="fl-a">↺ 回到第 2 步</span><span>带着评审指出的问题再做一轮——错题练对了才划掉，作品也一样。</span>
+        <span class="fl-a" style="margin-left:auto">→ 走得更远</span><span>能力评估 · 定制学习方案 · 简历 · 面试，见下方「辅导」。</span></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2>两档，按你要的深度选</h2>
+    <div class="hint">首次提交免费（限评估报告档）——需要你真做过：领过任务包，并附上你的决策记录。</div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tn">评估报告</div>
+        <div class="tp">¥50<small>/ 次</small></div>
+        <span class="free">登录用户首次免费</span>
+        <ul>
+          <li>逐处评审：口径判断、防幻觉闸、流程拆分、评估设计，对照课程标准打分</li>
+          <li>指出问题清单——每一处都标注在你的代码/文档的具体位置，可核对</li>
+          <li>关键改法的示范片段：不止说哪儿错了，给你「该怎么写」的对照</li>
+          <li class="no">不含整套重构代码</li>
+        </ul>
+        <button class="pick" data-tier="report">选这档提交</button>
+      </div>
+      <div class="tier hot">
+        <div class="tn">评估报告 + 重构版 Agent</div>
+        <div class="tp">¥300<small>/ 次</small></div>
+        <span class="free" style="visibility:hidden">占位</span>
+        <ul>
+          <li>包含左边那份完整评估报告</li>
+          <li>在<b>你的作品基础上</b>重构的可运行版本——不是模板，是你的思路的更好写法</li>
+          <li>逐处改动说明：每一处为什么这么改，对着看就是一堂课</li>
+          <li>一次往返答疑：拿到后有疑问，可以追问一轮</li>
+        </ul>
+        <button class="pick" data-tier="agent">选这档提交</button>
+      </div>
+    </div>
+    <div class="smallnote">为什么报告档不给整套代码：整套给你，你学不到；五处对照给你，你自己改完才是你的。要现成能跑的，选右边那档。</div>
+  </section>
+
+  <section class="blk">
+    <h2>规则，先说清楚</h2>
+    <div class="rules">
+      <b>评什么</b>：口径理解是否扎实、该设闸的地方设了没有、Agent 和固定流程分得对不对、有没有验证自己做对了。评的是判断，不只是代码能不能跑。<br>
+      <b>怎么评</b>：Fable 5 最高推理档 + 我们自建的评审 skills（和课程同一套口径），出结果前人工复核。<br>
+      <b>多久</b>：3-5 个工作日。提交后会先人工确认收到。<br>
+      <b>不做什么</b>：不代写作业、不保证「包过」任何面试——报告里说的每一个问题都能在你的作品里指出具体位置，这是我们唯一承诺的事。
+    </div>
+  </section>
+
+  <section class="blk" id="apply">
+    <h2>提交</h2>
+    <div class="form" id="applyForm">
+      <label>选档</label>
+      <select id="fTier">
+        <option value="report">评估报告 · ¥50（首次免费）</option>
+        <option value="agent">评估报告 + 重构版 Agent · ¥300</option>
+      </select>
+      <label>作品链接（GitHub 仓库 / 网盘，确保我们能打开）</label>
+      <input id="fLink" type="url" placeholder="https://github.com/你/你的作品">
+      <label>说明（做的哪个任务、决策记录在哪、特别想让我们看哪一段）</label>
+      <textarea id="fNote" placeholder="例：做的是 01 人力月报战役，决策记录在 repo 的 DECISIONS.md，最没把握的是 YTD 重分类那段口径……"></textarea>
+      <button class="go" id="fGo">提交申请</button>
+      <div class="ok" id="fOk">收到。我们会先人工确认这份提交，然后开始评审——3-5 个工作日内你会在微信/站内收到结果通知。首次免费档不用付款；付费档我们确认后会联系你完成付款再开始。</div>
+    </div>
+  </section>
+
+  <section class="blk" id="coach">
+    <h2>辅导：从「会做」到「拿到 offer」</h2>
+    <div class="hint">评审解决「这个作品行不行」。下面这些解决「你这个人往哪儿走」——一对一，按需组合。</div>
+    <div class="coach">
+      <div class="cc"><div class="t">能力水位评估</div><div class="d">对照真实岗位的 K/S/A 要求，逐项标出你现在的位置和差距，不是拿模板套你。</div></div>
+      <div class="cc"><div class="t">定制学习方案</div><div class="d">选定一个目标岗位，倒推你要补的课、要做的作品、要准备的证据，排成可执行的周计划。</div></div>
+      <div class="cc"><div class="t">简历改写</div><div class="d">把你的经历翻译成这类岗位读得懂的能力语言——「有人真的在用吗」这种追问，简历里就要埋好答案。</div></div>
+      <div class="cc"><div class="t">做出真能用的产品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——面试桌上，这两者的分量完全不同。</div></div>
+      <div class="cc"><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界。我们的岗位库里就是这些岗位的原文。</div></div>
+    </div>
+    <div class="form" style="margin-top:18px" id="coachForm">
+      <label>想聊哪块（可多写）</label>
+      <textarea id="cNote" placeholder="例：目标是字节那条 AI 提效产品经理，想先做能力评估+学习方案……"></textarea>
+      <button class="go" id="cGo">申请辅导沟通</button>
+      <div class="ok" id="cOk">收到。我们会先跟你约一次 15 分钟的免费沟通，聊清楚你的目标和现状，再说方案和价格——不聊清楚不报价。</div>
+    </div>
+  </section>
+
+  <div class="foot">评审与辅导由 meansights 团队提供 · 课程内容永久免费，这两项是可选的深度服务</div>
+</div>
+
+<script>
+/* 强制登录：这页的一切都以「你做过任务」为前提 */
+if(!localStorage.getItem('hab_token')){
+  try{ sessionStorage.setItem('hab_next','review.html'+location.hash); }catch(e){}
+  location.replace('index.html#login');
+}
+const API=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com');
+const $=s=>document.querySelector(s);
+
+document.querySelectorAll('.tier .pick').forEach(b=>b.onclick=()=>{
+  $('#fTier').value=b.dataset.tier;
+  document.getElementById('apply').scrollIntoView({behavior:'smooth'});
+});
+
+async function apply(kind, payload, btn, okEl){
+  btn.disabled=true;
+  try{
+    const r=await fetch(API+'/api/review/apply',{method:'POST',
+      headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},
+      body:JSON.stringify({kind, ...payload})});
+    if(!r.ok) throw 0;
+    okEl.style.display='block'; btn.textContent='已提交';
+  }catch(e){ btn.disabled=false;
+    okEl.style.display='block'; okEl.textContent='没提交上——网络或服务打盹了，过一分钟再点一次。'; }
+}
+$('#fGo').onclick=()=>{
+  const link=$('#fLink').value.trim();
+  if(!link){ $('#fLink').focus(); return; }
+  apply('review', {tier:$('#fTier').value, link, note:$('#fNote').value.trim()}, $('#fGo'), $('#fOk'));
+};
+$('#cGo').onclick=()=>{
+  const note=$('#cNote').value.trim();
+  if(!note){ $('#cNote').focus(); return; }
+  apply('coach', {note}, $('#cGo'), $('#cOk'));
+};
+
+/* 登录态（缓存已由防闪脚本画好，这里只做后台校验） */
+(async function(){
+  var t=localStorage.getItem('hab_token'); if(!t) return;
+  try{
+    var r=await fetch(API+'/api/me',{headers:{Authorization:'Bearer '+t}});
+    if(r.status===401){ localStorage.removeItem('hab_token'); localStorage.removeItem('hab_user');
+      location.replace('index.html#login'); return; }
+    if(!r.ok) return;
+    var u=await r.json(), b=document.getElementById('loginBtn');
+    localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
+    b.title=(u.nickname||'')+' · 我的成长';
+    b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+    b.setAttribute('href','growth.html');
+  }catch(e){}
+})();
+</script>
+<script src="track.js"></script>
+<script src="sparky.js" defer></script>
+</body>
+</html>

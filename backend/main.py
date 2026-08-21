@@ -1148,6 +1148,28 @@ def post_progress(p: ProgressIn, user: dict = Depends(auth.current_user)):
     return {"ok": True}
 
 
+# ── 评审/辅导报名：先收意向，不自动接单。存进 hab_feedback（kind=review/coach），
+#    人工在 insights 看板里读。第一单由人工确认后再跑——真实账单出来前不放量。
+class ServiceApply(BaseModel):
+    kind: Literal["review", "coach"]
+    tier: str = ""            # report=¥50 评估报告 | agent=¥300 报告+重构agent | coach 档暂不分
+    link: str = ""            # 作品链接（仓库/网盘）
+    note: str = ""
+
+
+@app.post("/api/review/apply")
+def review_apply(a: ServiceApply, user: dict = Depends(auth.current_user)):
+    payload = _json.dumps({"tier": a.tier[:16], "link": a.link[:300],
+                           "note": a.note[:800], "nick": user.get("nickname", "")},
+                          ensure_ascii=False)
+    _store.store.add(_store.FEEDBACK, {
+        "created_at": _store.now_iso(), "lesson": "",
+        "kind": a.kind, "note": payload[:2000],
+        "visitor": (user.get("openid") or "")[:40], "source": "service",
+    })
+    return {"ok": True}
+
+
 @app.get("/api/progress")
 def get_progress(user: dict = Depends(auth.current_user)):
     rows = _store.user_progress(user["openid"])          # 新→旧

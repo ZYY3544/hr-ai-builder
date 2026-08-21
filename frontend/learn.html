@@ -239,10 +239,13 @@ const $=s=>document.querySelector(s);
 const CO=window.COURSE||{parts:[]};
 const DONE_KEY='hab_done', TK='hab_token';
 
-/* 强制登录：阅读器只对登录用户开放（免费,微信扫码一步）。
-   课件静态页 slides/ 直访不拦——那是 SEO 和 AI 引擎的进站口。 */
-if(!localStorage.getItem(TK)){
-  try{ sessionStorage.setItem('hab_next','learn.html'+location.hash); }catch(e){}
+/* 登录闸（按章）：前两章（第零/第一篇章）不登录可读——先尝后登；
+   其余章 + 本章小测的后续章，登录解锁。课件静态页 slides/ 直访不拦（SEO 口）。 */
+const FREE_PARTS=['第零篇章','第一篇章'];
+const FREE_CH=['p-zero','p-1'];
+const loggedIn=()=>!!localStorage.getItem(TK);
+function gateTo(dest){
+  try{ sessionStorage.setItem('hab_next','learn.html#'+dest); }catch(e){}
   location.replace('index.html#login');
 }
 
@@ -278,8 +281,9 @@ function renderTree(filter){
         <div class="tp-h"><span class="ar">▸</span><span class="nm">${t.title}</span><span class="ct">${dn}/${rdy.length}</span></div>
         <div class="tp-l">${ls.map(l=>{
           if(!l.ready) return `<div class="ls off"><span class="dot"></span><span>${l.title} · 待写</span></div>`;
+          const lock=(typeof loggedIn==='function'&&!loggedIn()&&!FREE_PARTS.includes(p.num))?'<span class="lk">🔒</span>':'';
           return `<a class="ls ${l.file===f?'on':''} ${done.has(l.file)?'done':''}" href="#${encodeURIComponent(l.file)}">
-            <span class="dot"></span><span>${l.title}<span class="mn">${l.min}′</span></span></a>`;
+            <span class="dot"></span><span>${l.title}${lock}<span class="mn">${l.min}′</span></span></a>`;
         }).join('')}</div></div>`;
     });
     // 每章一张独立的「本章小测」卡片，挂在这一章目录的末尾；搜索时不掺和
@@ -309,6 +313,7 @@ function load(){
   if(/^quiz:/.test(f)){
     // #quiz:p-8 打开本章小测；#quiz:p-8:wrong 只练这一章的错题（成长页的错题本从这儿进来）
     const seg=f.slice(5).split(':');
+    if(!loggedIn() && !FREE_CH.includes(seg[0])){ gateTo(f); return; }
     if(seg[1]==='wrong'){
       const w=loadWrong();
       const ids=Object.keys(w).filter(id=>w[id].ch===seg[0]);
@@ -319,6 +324,7 @@ function load(){
   let i=find(f);
   if(i<0){ i=0; f=FLAT[0].file; location.replace('#'+encodeURIComponent(f)); }
   const l=FLAT[i];
+  if(!loggedIn() && !FREE_PARTS.includes(l.part)){ gateTo(f); return; }
   $('#frame').src=srcOf(l);
   document.title=l.title+' · meansights learning';
   const p=FLAT[i-1], n=FLAT[i+1];
