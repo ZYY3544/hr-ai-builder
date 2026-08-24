@@ -101,24 +101,27 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .quizls.on{background:linear-gradient(135deg,rgba(0,168,138,.13),rgba(8,145,178,.13))}
 .quizls .sc{margin-left:auto;font-weight:500;font-size:11.5px;color:var(--muted)}
 .quizls .sc.pass{color:#00795F;font-weight:600}
-/* ── 对话式测评(hqc 系):浅灰画布+白气泡+头像,形态同调研 agent ── */
-#quizpane{background:#F6F8FA}
-#quizpane .hqc{max-width:780px;margin:0 auto;padding:28px 24px 40px;min-height:100%;display:flex;flex-direction:column}
+/* ── 对话式测评(hqc 系):终端化纯文字流,同 meansights 主产品 .sparky-messages ——
+   整个画布就是对话:无气泡无卡片,Sparky 的话直接落在页面上;
+   用户输入左对齐,贴文字一条品牌色底纹;猫头像顶对齐第一行文字。 ── */
+#quizpane{background:#fff}
+#quizpane .hqc{max-width:760px;margin:0 auto;padding:30px 24px 40px;min-height:100%;display:flex;flex-direction:column}
 #quizpane .hqc-log{flex:1}
-#quizpane .hqm{display:flex;margin:9px 0;gap:8px}
-#quizpane .hqm.bot{align-items:flex-end}
-#quizpane .hqm.me{justify-content:flex-end}
-#quizpane .hqav{width:40px;height:40px;flex:0 0 auto;display:flex;align-items:flex-end;justify-content:center;
-  color:#00A88A;font-size:15px}
-#quizpane .hqb{max-width:85%;padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.85;color:#0F172A}
-#quizpane .hqm.bot .hqb{background:#fff;border-bottom-left-radius:4px;
-  box-shadow:0 1px 4px rgba(15,23,42,.06)}
-#quizpane .hqm.me .hqb{background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;border-bottom-right-radius:4px;
-  box-shadow:0 2px 8px -3px rgba(0,168,138,.5)}
+#quizpane .hqm{display:flex;gap:12px;margin:13px 0}
+#quizpane .hqm.bot{align-items:flex-start}
+#quizpane .hqm.me{justify-content:flex-start;margin:24px 0 10px}   /* 用户消息=新一轮开头,轮前多留空 */
+#quizpane .hqav{width:32px;height:32px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  margin-top:1px;color:#00A88A;font-size:14px}   /* 顶对齐首行文字 */
+#quizpane .hqb{flex:1;min-width:0;max-width:100%;padding:0;background:transparent;border:none;box-shadow:none;
+  font-size:13.5px;line-height:1.85;color:#0F172A}
+#quizpane .hqm.me .hqb{display:flex;gap:8px;align-items:flex-start;font-weight:500;margin-left:44px}
+#quizpane .hq-umark{flex-shrink:0;color:#00A88A;font-weight:700;margin-top:0}
+#quizpane .hq-ubody{flex:0 1 auto;min-width:0;background:#DCF3ED;border-radius:8px;line-height:1.7;
+  padding:2px 8px 3px;margin:-2px -8px -3px}   /* 底纹贴文字:padding 撑色、负 margin 收位,文字坐标不动 */
 #quizpane .hqb.live::after{content:'▍';color:#00A88A;margin-left:1px;animation:hqcblink 1s steps(1) infinite}
 @keyframes hqcblink{50%{opacity:0}}
 #quizpane .hqc-no{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#00795F;margin-bottom:4px}
-#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px 38px;max-width:calc(85% - 38px)}
+#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px 44px;max-width:calc(100% - 44px)}
 #quizpane .hqc-opt{text-align:left;font:inherit;font-size:13.5px;padding:10px 15px;border:1.5px solid rgba(0,168,138,.35);
   border-radius:11px;background:#fff;cursor:pointer;line-height:1.7;color:#0F172A;font-weight:500;transition:.13s;
   box-shadow:0 1px 2px rgba(15,23,42,.04)}
@@ -129,14 +132,13 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-opts.answered .hqc-opt.bad{opacity:1;border-color:#DC2626;background:#FEF2F2}
 #quizpane .hqc-goml{align-self:flex-start;font:inherit;font-size:12.5px;font-weight:600;padding:7px 18px;border:none;
   border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
-#quizpane .hqc-acts{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 6px}
+#quizpane .hqc-acts{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 6px 44px}
 #quizpane .hqc-act{font:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:9px;
   border:1.5px solid rgba(0,168,138,.45);background:#fff;color:#00795F;cursor:pointer}
-#quizpane .hqc-acts{margin-left:38px}
 #quizpane .hqc-act.pri{background:linear-gradient(135deg,#00A88A,#0891B2);border-color:transparent;color:#fff}
 #quizpane .hqc-act.ghost{border-color:#E2E8F0;color:#64748B}
-#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#F6F8FA;padding:10px 0 14px;gap:8px;
-  align-items:flex-end;border-top:1px solid #E9EEF3}
+#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#fff;padding:10px 0 14px;gap:8px;
+  align-items:flex-end;border-top:1px solid #F1F5F9}
 #quizpane .hqc-inp textarea{flex:1;font:inherit;font-size:13.5px;border:1.5px solid #E2E8F0;border-radius:12px;
   padding:9px 13px;resize:none;outline:none;line-height:1.6;background:#fff}
 #quizpane .hqc-inp textarea:focus{border-color:#00A88A}
@@ -146,7 +148,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-end{font:inherit;font-size:12px;padding:9px 12px;border:1px solid #E2E8F0;border-radius:10px;
   background:#fff;color:#64748B;cursor:pointer}
 #quizpane .hqc-typing{color:#94A3B8;font-size:12.5px}
-#quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+#quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 6px 44px}
 #quizpane .hqc-refs a{font-size:12px;font-weight:500;color:#00795F;border:1px solid rgba(0,168,138,.4);
   border-radius:8px;padding:5px 11px;background:#F0FDF9}
 #quizpane{flex:1;overflow-y:auto;display:none;background:#fff}
@@ -537,7 +539,8 @@ async function renderQuizView(ch, onlyIds){
     tick(); });
   const bot=html=>{ const b=mkBot(); return typeHTML(b,html).then(()=>b); };
   const me=text=>{ const m=document.createElement('div'); m.className='hqm me';
-    m.innerHTML='<div class="hqb">'+esc(text)+'</div>'; logEl.appendChild(m); scroll(); };
+    m.innerHTML='<div class="hqb"><span class="hq-umark">›</span><span class="hq-ubody">'+esc(text)+'</span></div>';
+    logEl.appendChild(m); scroll(); };
   /* 反馈不念稿:按对错、连对连错、进度挑话说——还是状态机,只是不机械 */
   let streak=0, misses=0;
   const pick=a=>a[Math.floor(Math.random()*a.length)];
