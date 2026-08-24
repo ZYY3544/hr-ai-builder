@@ -97,13 +97,15 @@ def main():
         print("\n(未设 QTOKEN,登录态对话质量部分跳过)")
         sys.exit(0 if ok401 else 1)
 
-    print("\n== 登录态对话质量(3 轮) ==")
+    print("\n== 登录态对话质量(4 轮) ==")
     hist, fails = [], []
     turns = [
         "开始吧,出第一道",
         # 故意给一个明显偏离参照的回答——阴性场景:即便答得糙,Sparky 也不许宣判"错"
         "我觉得应该立刻下线这个 agent,改回全人工,稳妥第一",
         "嗯,那按你说的参照,我重新想:先把这个案例加进评测集,再抽同期被拒的人工复核一遍",
+        # 第二次作答已给出——按硬闸,这轮之后必须出参照,不许再追问
+        "按临界分数段抽,发现漏人就先查根因,再决定动不动阈值",
     ]
     saw_ref = False
     for i, u in enumerate(turns):
@@ -121,7 +123,7 @@ def main():
         if re.search(r"参照", a):
             saw_ref = True
     if not saw_ref:
-        fails.append("三轮里从未给出「参照」思路")
+        fails.append("四轮里从未给出「参照」思路")
     print("\n======")
     print("结论:", "✓ 全过(无宣判/有参照/匿名被拦)" if (not fails and ok401) else f"✗ {fails}")
     sys.exit(0 if (not fails and ok401) else 1)
