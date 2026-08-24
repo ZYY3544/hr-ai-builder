@@ -107,21 +107,19 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane{background:#fff}
 #quizpane .hqc{max-width:760px;margin:0 auto;padding:30px 24px 40px;min-height:100%;display:flex;flex-direction:column}
 #quizpane .hqc-log{flex:1}
-#quizpane .hqm{display:flex;gap:12px;margin:13px 0}
-#quizpane .hqm.bot{align-items:flex-start}
-#quizpane .hqm.me{justify-content:flex-start;margin:24px 0 10px}   /* 用户消息=新一轮开头,轮前多留空 */
-#quizpane .hqav{width:32px;height:32px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
-  margin-top:1px;color:#00A88A;font-size:14px}   /* 顶对齐首行文字 */
+#quizpane .hqm{display:flex;gap:8px;margin:13px 0;align-items:flex-start}
+#quizpane .hqm.me{margin:24px 0 10px}   /* 用户消息=新一轮开头,轮前多留空 */
+#quizpane .hq-dot{flex-shrink:0;margin-top:7px;color:#00A88A;font-size:10px;line-height:1}   /* ● 对首行行盒中心 */
 #quizpane .hqb{flex:1;min-width:0;max-width:100%;padding:0;background:transparent;border:none;box-shadow:none;
   font-size:13.5px;line-height:1.85;color:#0F172A}
-#quizpane .hqm.me .hqb{display:flex;gap:8px;align-items:flex-start;font-weight:500;margin-left:44px}
+#quizpane .hqm.me .hqb{display:flex;gap:8px;align-items:flex-start;font-weight:500}
 #quizpane .hq-umark{flex-shrink:0;color:#00A88A;font-weight:700;margin-top:0}
 #quizpane .hq-ubody{flex:0 1 auto;min-width:0;background:#DCF3ED;border-radius:8px;line-height:1.7;
   padding:2px 8px 3px;margin:-2px -8px -3px}   /* 底纹贴文字:padding 撑色、负 margin 收位,文字坐标不动 */
 #quizpane .hqb.live::after{content:'▍';color:#00A88A;margin-left:1px;animation:hqcblink 1s steps(1) infinite}
 @keyframes hqcblink{50%{opacity:0}}
 #quizpane .hqc-no{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#00795F;margin-bottom:4px}
-#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px 44px;max-width:calc(100% - 44px)}
+#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px 18px;max-width:calc(100% - 18px)}
 #quizpane .hqc-opt{text-align:left;font:inherit;font-size:13.5px;padding:10px 15px;border:1.5px solid rgba(0,168,138,.35);
   border-radius:11px;background:#fff;cursor:pointer;line-height:1.7;color:#0F172A;font-weight:500;transition:.13s;
   box-shadow:0 1px 2px rgba(15,23,42,.04)}
@@ -132,7 +130,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-opts.answered .hqc-opt.bad{opacity:1;border-color:#DC2626;background:#FEF2F2}
 #quizpane .hqc-goml{align-self:flex-start;font:inherit;font-size:12.5px;font-weight:600;padding:7px 18px;border:none;
   border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
-#quizpane .hqc-acts{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 6px 44px}
+#quizpane .hqc-acts{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 6px 18px}
 #quizpane .hqc-act{font:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:9px;
   border:1.5px solid rgba(0,168,138,.45);background:#fff;color:#00795F;cursor:pointer}
 #quizpane .hqc-act.pri{background:linear-gradient(135deg,#00A88A,#0891B2);border-color:transparent;color:#fff}
@@ -148,7 +146,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-end{font:inherit;font-size:12px;padding:9px 12px;border:1px solid #E2E8F0;border-radius:10px;
   background:#fff;color:#64748B;cursor:pointer}
 #quizpane .hqc-typing{color:#94A3B8;font-size:12.5px}
-#quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 6px 44px}
+#quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 6px 18px}
 #quizpane .hqc-refs a{font-size:12px;font-weight:500;color:#00795F;border:1px solid rgba(0,168,138,.4);
   border-radius:8px;padding:5px 11px;background:#F0FDF9}
 #quizpane{flex:1;overflow-y:auto;display:none;background:#fff}
@@ -517,7 +515,7 @@ async function renderQuizView(ch, onlyIds){
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   /* bot 气泡带 Sparky 头像;botNow 立即渲染(SSE 流式自己写字),bot 走打字机 */
   const mkBot=()=>{ const m=document.createElement('div'); m.className='hqm bot';
-    m.innerHTML='<div class="hqav">'+(window.sparkyFace?window.sparkyFace(36):'✦')+'</div><div class="hqb"></div>';
+    m.innerHTML='<span class="hq-dot">●</span><div class="hqb"></div>';
     logEl.appendChild(m); scroll(); return m.querySelector('.hqb'); };
   const botNow=html=>{ const b=mkBot(); b.innerHTML=html; scroll(); return b; };
   /* 打字机:富文本按 DOM 结构逐字符流出,<b> 等标签结构保留 */
