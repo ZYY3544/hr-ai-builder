@@ -40,13 +40,29 @@ body {
   padding-bottom: 110px; /* 给底部悬浮按钮留空间 */
 }
 
+/* ═══ 字号阶梯（全站唯一真相源，改字号先改这里）═══
+   32   大标题 h1
+   17   章节小标题 .sec-label
+   15.5 正文 p / li / .l-callout（由 .lesson 继承下去，不逐个选择器写）
+   14   提示块 .good .bad .try / .rule ol
+   13.5 表格 .htab / .stuck
+   13   代码块 .say .cmd
+   11   表头 .htab th
+   ⚠️ 组件字号必须与各课件 <style> 里的历史定义保持一致：95 个课件内联重复
+   定义了同一套值（逐字节相同），页内样式晚于本文件、同特异性下会覆盖这里。
+   要改任何组件字号 = 本文件 + 那 95 个文件一起改，否则会分裂成两套观感。
+   新课件不必再抄，直接用类名即可。 */
+
 /* ── 文章容器 ── */
 .lesson {
   max-width: var(--content-w);
   margin: 0 auto;
   padding: 56px 28px 40px;
+  font-size: 15.5px;        /* 正文基准：靠继承管住 p/li/.l-callout，组件各自覆写 */
 }
 .lesson.wide { max-width: var(--content-w-wide); }
+.lesson p + p { margin-top: 12px; }
+.lesson ul, .lesson ol { padding-left: 22px; margin: 10px 0; }
 
 /* ── 页头 ── */
 .lesson-header { margin-bottom: 36px; }
@@ -62,11 +78,13 @@ body {
 }
 
 /* ── 章节小标题（贯穿全文的分节） ── */
+/* 原为 12px 灰色全大写的 eyebrow，读者扫不出分节在哪；
+   改成深色 17px 的真标题，保留尾随细线这个视觉母题。 */
 .sec-label {
-  font-size: 12px; font-weight: 800; letter-spacing: 0.8px;
-  text-transform: uppercase; color: var(--sub);
-  margin: 36px 0 14px;
-  display: flex; align-items: center; gap: 10px;
+  font-size: 17px; font-weight: 700; letter-spacing: 0;
+  color: var(--text);
+  margin: 44px 0 16px;
+  display: flex; align-items: center; gap: 14px;
 }
 .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
@@ -132,6 +150,56 @@ code {
   padding: 1px 6px; border-radius: 5px;
   color: var(--accent);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   内容组件基线（表格 / 好坏对照 / 动手块 / 铁律 / 代码 / 卡壳）
+   这套值原先只写在各课件的 <style> 里、抄了 95 份；另有 25 个课件用了
+   类名却漏抄，于是表格和提示块整块裸奔在浏览器默认 16px——第零篇章第
+   一节就是其中之一。提到这里做基线：漏抄的立刻恢复，已抄的因为值逐字节
+   相同、覆盖后观感不变。新课件直接用类名，不必再抄。
+   ═══════════════════════════════════════════════════════════ */
+
+/* 表格 */
+.htab{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+.htab th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:600;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.htab td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.7}
+.htab tr:last-child td{border-bottom:0}
+.htab td b{color:var(--text)}
+/* 首列多是「段 / 类型」这类短标签，自动布局会把它挤到一字一行（「愚昧之
+   巅」断成两行）。给个最小宽度：短标签不再折行，长内容照旧换行——全站
+   132 个首列单元格超过 12 字，用 nowrap 会把表格撑爆。 */
+.htab td:first-child{min-width:5em}
+
+/* 好 / 坏 对照 */
+.bad,.good{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.8;margin:10px 0}
+.bad{background:rgba(220,38,38,.055);border-left:3px solid var(--danger)}
+.good{background:rgba(5,150,105,.06);border-left:3px solid var(--success)}
+.bad .t,.good .t{font-weight:600;display:block;margin-bottom:4px}
+.bad .t{color:var(--danger)}
+.good .t{color:var(--success)}
+
+/* 可整段抄走的话术 */
+.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+
+/* 今天就试 */
+.try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
+.try .t{font-weight:700;color:#4D7C0F;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.1em}
+
+/* 铁律 */
+.rule{background:linear-gradient(135deg,#0F172A,#1E293B);color:#E2E8F0;border-radius:var(--radius);padding:22px 26px;margin:26px 0 8px}
+.rule .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:#A3E635;background:rgba(101,163,13,.22);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.rule h3{color:#fff;font-size:18px;margin:0 0 10px;line-height:1.45}
+.rule ol{margin:12px 0 0;padding-left:20px;color:#CBD5E1;font-size:14px;line-height:1.95}
+.rule ol b{color:#fff}
+
+/* 终端命令 */
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+
+/* 卡住了 */
+.stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
+.stuck .t{font-weight:700;color:#B45309;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.08em}
 
 /* ── 滚动条 ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }

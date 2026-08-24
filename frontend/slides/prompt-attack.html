@@ -141,7 +141,7 @@
 <meta name="twitter:title" content="Prompt Injection：注入攻击的本质与原理">
 <meta name="twitter:description" content="Prompt 注入（Prompt Injection）是大模型应用面临的最严重安全威胁之一。深入解析注入攻击的原理：攻击者如何通过用户输入覆盖 System Prompt 的指令。">
 <!-- SEO End -->
-<!--seo:begin--><style>html.xa-locked .:not(.xa-peek){display:none!important}html.xa-locked .xa-peek{max-height:132px;overflow:hidden;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%);mask-image:linear-gradient(180deg,#000 0,#000 14%,transparent 94%)}</style><script>try{if(localStorage.getItem('xa_auth')!=='1')document.documentElement.classList.add('xa-locked')}catch(e){document.documentElement.classList.add('xa-locked')}</script><!--seo:end-->
+<!--seo:begin--><!--seo:end-->
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -189,7 +189,7 @@ WHERE name = '</span><span class="inject">'; DROP TABLE users;--</span><span cla
     <div class="cmp-point"><b>同一原理：</b>用户数据和系统指令混在同一个通道里 → 攻击者就能在数据中塞入指令。</div>
   </div>
 
-  <div class="block essence reveal xa-peek" id="b1">
+  <div class="block essence reveal" id="b1">
     <h3>核心问题：缺乏参数化</h3>
     <p>SQL 注入的终极解决方案是<b>参数化查询</b>：数据和指令彻底分离。<br><br>但 LLM 的 message list 没有这个机制：system、user、assistant 的文本<b>全部拼成一个字符串</b>喂给模型。模型无法区分「这是指令」还是「这是用户数据」。<br><br><b>这就是 Prompt Injection 存在的根本原因。</b></p>
   </div>
