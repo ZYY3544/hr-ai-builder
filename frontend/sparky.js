@@ -227,6 +227,9 @@
   /* 球和面板的底距全站统一走 CSS 默认的 --spk-bottom(20px)；
      课程页的底部翻页条已撤，不再需要动态避让。 */
 
+  /* 供页面级组件(对话式小测)取猫头像用——只读,不碰面板状态 */
+  window.sparkyFace = function (sz) { return catSVG(sz || 26, 'still'); };
+
   var ball = document.createElement('button');
   ball.id = 'spk-ball'; ball.title = 'Sparky · 伴学助手';
   ball.innerHTML = catSVG(52, ballMode(false));

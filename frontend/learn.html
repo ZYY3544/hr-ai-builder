@@ -101,19 +101,28 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .quizls.on{background:linear-gradient(135deg,rgba(0,168,138,.13),rgba(8,145,178,.13))}
 .quizls .sc{margin-left:auto;font-weight:500;font-size:11.5px;color:var(--muted)}
 .quizls .sc.pass{color:#00795F;font-weight:600}
-/* ── 对话式测评(hqc 系):气泡流+嵌入式选项,形态同调研 agent ── */
+/* ── 对话式测评(hqc 系):浅灰画布+白气泡+头像,形态同调研 agent ── */
+#quizpane{background:#F6F8FA}
 #quizpane .hqc{max-width:780px;margin:0 auto;padding:28px 24px 40px;min-height:100%;display:flex;flex-direction:column}
 #quizpane .hqc-log{flex:1}
-#quizpane .hqm{display:flex;margin:8px 0}
+#quizpane .hqm{display:flex;margin:9px 0;gap:8px}
+#quizpane .hqm.bot{align-items:flex-end}
 #quizpane .hqm.me{justify-content:flex-end}
-#quizpane .hqb{max-width:88%;padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.85;color:#0F172A}
-#quizpane .hqm.bot .hqb{background:#F8FAFC;border:1px solid #E2E8F0;border-bottom-left-radius:4px}
-#quizpane .hqm.me .hqb{background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;border-bottom-right-radius:4px}
+#quizpane .hqav{width:30px;height:30px;flex:0 0 auto;border-radius:50%;background:#fff;border:1px solid #E2E8F0;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;color:#00A88A;font-size:13px}
+#quizpane .hqb{max-width:85%;padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.85;color:#0F172A}
+#quizpane .hqm.bot .hqb{background:#fff;border:1px solid #E9EEF3;border-bottom-left-radius:4px;
+  box-shadow:0 1px 3px rgba(15,23,42,.05)}
+#quizpane .hqm.me .hqb{background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;border-bottom-right-radius:4px;
+  box-shadow:0 2px 8px -3px rgba(0,168,138,.5)}
+#quizpane .hqb.live::after{content:'▍';color:#00A88A;margin-left:1px;animation:hqcblink 1s steps(1) infinite}
+@keyframes hqcblink{50%{opacity:0}}
 #quizpane .hqc-no{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#00795F;margin-bottom:4px}
-#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px;max-width:88%}
-#quizpane .hqc-opt{text-align:left;font:inherit;font-size:13.5px;padding:10px 14px;border:1.5px solid #E2E8F0;
-  border-radius:10px;background:#fff;cursor:pointer;line-height:1.7;color:#0F172A;transition:.13s}
-#quizpane .hqc-opt:hover{border-color:#00A88A;background:#F0FDF9}
+#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px 38px;max-width:calc(85% - 38px)}
+#quizpane .hqc-opt{text-align:left;font:inherit;font-size:13.5px;padding:10px 15px;border:1.5px solid rgba(0,168,138,.35);
+  border-radius:11px;background:#fff;cursor:pointer;line-height:1.7;color:#0F172A;font-weight:500;transition:.13s;
+  box-shadow:0 1px 2px rgba(15,23,42,.04)}
+#quizpane .hqc-opt:hover{border-color:#00A88A;background:#F0FDF9;transform:translateX(2px)}
 #quizpane .hqc-opt.sel{border-color:#00A88A;background:#E8FBF6}
 #quizpane .hqc-opts.answered .hqc-opt{pointer-events:none;opacity:.45}
 #quizpane .hqc-opts.answered .hqc-opt.ok{opacity:1;border-color:#00A88A;background:#E8FBF6;font-weight:600}
@@ -123,12 +132,13 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-acts{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 6px}
 #quizpane .hqc-act{font:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:9px;
   border:1.5px solid rgba(0,168,138,.45);background:#fff;color:#00795F;cursor:pointer}
+#quizpane .hqc-acts{margin-left:38px}
 #quizpane .hqc-act.pri{background:linear-gradient(135deg,#00A88A,#0891B2);border-color:transparent;color:#fff}
 #quizpane .hqc-act.ghost{border-color:#E2E8F0;color:#64748B}
-#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#fff;padding:10px 0 14px;gap:8px;
-  align-items:flex-end;border-top:1px solid #F1F5F9}
+#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#F6F8FA;padding:10px 0 14px;gap:8px;
+  align-items:flex-end;border-top:1px solid #E9EEF3}
 #quizpane .hqc-inp textarea{flex:1;font:inherit;font-size:13.5px;border:1.5px solid #E2E8F0;border-radius:12px;
-  padding:9px 13px;resize:none;outline:none;line-height:1.6}
+  padding:9px 13px;resize:none;outline:none;line-height:1.6;background:#fff}
 #quizpane .hqc-inp textarea:focus{border-color:#00A88A}
 #quizpane .hqc-send{font:inherit;font-size:13px;font-weight:600;padding:9px 18px;border:none;border-radius:10px;
   background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
@@ -499,29 +509,63 @@ async function renderQuizView(ch, onlyIds){
   const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
   const scroll=()=>{ pane.scrollTop=pane.scrollHeight; };
-  const bot=html=>{ const m=document.createElement('div'); m.className='hqm bot';
-    m.innerHTML='<div class="hqb">'+html+'</div>'; logEl.appendChild(m); scroll();
-    return m.querySelector('.hqb'); };
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  /* bot 气泡带 Sparky 头像;botNow 立即渲染(SSE 流式自己写字),bot 走打字机 */
+  const mkBot=()=>{ const m=document.createElement('div'); m.className='hqm bot';
+    m.innerHTML='<div class="hqav">'+(window.sparkyFace?window.sparkyFace(22):'✦')+'</div><div class="hqb"></div>';
+    logEl.appendChild(m); scroll(); return m.querySelector('.hqb'); };
+  const botNow=html=>{ const b=mkBot(); b.innerHTML=html; scroll(); return b; };
+  /* 打字机:富文本按 DOM 结构逐字符流出,<b> 等标签结构保留 */
+  const typeHTML=(el,html)=>new Promise(res=>{
+    const tpl=document.createElement('div'); tpl.innerHTML=html;
+    el.classList.add('live');
+    const steps=[];
+    (function collect(src,dst){ for(const n of src.childNodes){
+      if(n.nodeType===3) steps.push({txt:n.textContent,parent:dst});
+      else{ const c=n.cloneNode(false); steps.push({el:c,parent:dst}); collect(n,c); } } })(tpl,el);
+    let i=0;
+    const tick=()=>{ const st=steps[i];
+      if(!st){ el.classList.remove('live'); scroll(); res(); return; }
+      i++;
+      if(st.el){ st.parent.appendChild(st.el); tick(); return; }
+      const tn=document.createTextNode(''); st.parent.appendChild(tn);
+      let j=0; const iv=setInterval(()=>{ j+=2; tn.textContent=st.txt.slice(0,j); scroll();
+        if(j>=st.txt.length){ clearInterval(iv); tick(); } },16); };
+    tick(); });
+  const bot=html=>{ const b=mkBot(); return typeHTML(b,html).then(()=>b); };
   const me=text=>{ const m=document.createElement('div'); m.className='hqm me';
     m.innerHTML='<div class="hqb">'+esc(text)+'</div>'; logEl.appendChild(m); scroll(); };
-  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  /* 反馈不念稿:按对错、连对连错、进度挑话说——还是状态机,只是不机械 */
+  let streak=0, misses=0;
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const okLine=()=>{ streak++; misses=0;
+    if(streak>=3) return pick(['✓ '+streak+' 连对,手感来了。','✓ 又对——连着 '+streak+' 道了。']);
+    if(streak===2) return pick(['✓ 连着两道,稳。','✓ 又对。']);
+    return pick(['✓ 对了。','✓ 没错。','✓ 就是这个。']); };
+  const badLine=()=>{ const wasStreak=streak>=2; streak=0; misses++;
+    if(wasStreak) return '✗ 断在这道——看看差在哪:';
+    if(misses>=2) return pick(['✗ 这道也不对——别急,解析里有钩子:','✗ 又差一点。这道的关键:']);
+    return pick(['✗ 不对。','✗ 差一点。','✗ 这道不对——']); };
 
   let pool=[];
-  bot('出题中…');
+  botNow('<span class="hqc-typing">出题中…</span>');
   try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
   logEl.innerHTML='';
-  if(!pool.length){ bot('题目没取到——网络抖了下,切走再切回来重试。'); return; }
+  if(!pool.length){ botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
   const aPool=pool.filter(x=>x.ksa==='A');
   const items = onlyIds && onlyIds.length
       ? pool.filter(x=>onlyIds.includes(x.id))
       : pool.filter(x=>x.ksa!=='A').sort(()=>Math.random()-.5).slice(0,8);
-  if(!items.length){ bot('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
+  if(!items.length){ botNow('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
 
   let ansN=0, okN=0; const wrongList=[];
 
   /* ── 每道 K/S 题:抛题→点选→判分→解析,一个 Promise 一道题 ── */
-  const askKS=(q,qi)=>new Promise(resolve=>{
-    bot('<span class="hqc-no">第 '+(qi+1)+' / '+items.length+' 题'+
+  const askKS=(q,qi)=>new Promise(async resolve=>{
+    if(qi===Math.floor(items.length/2)&&qi>1){
+      await bot(okN>=qi-1?'过半了,一道没丢——继续。':(okN>=qi/2?'过半了,状态在线。':'过半了。前面错的那几道,解析别跳过——后半段还会碰到同类。'));
+      await sleep(300); }
+    await bot('<span class="hqc-no">第 '+(qi+1)+' / '+items.length+' 题'+
         (q.type==='multi'?' · 多选':'')+'</span>'+q.q);
     const row=document.createElement('div'); row.className='hqc-opts';
     const btns=q.opts.map((o,i)=>{ const b=document.createElement('button');
@@ -535,11 +579,11 @@ async function renderQuizView(ch, onlyIds){
       try{ const res=await fetch(QAPI+'/api/quiz/submit',{method:'POST',
         headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:{[q.id]:given}})});
         if(res.ok) d=(await res.json()).details[0]; }catch(e){}
-      if(!d){ bot('这题没判上——网络抖了,跳过它继续。'); resolve(); return; }
+      if(!d){ botNow('这题没判上——网络抖了,跳过它继续。'); resolve(); return; }
       const ans=Array.isArray(d.ans)?d.ans:[d.ans];
       btns.forEach((b,i)=>{ if(ans.includes(i)) b.classList.add('ok');
         else if(b.classList.contains('sel')||(!Array.isArray(given)&&i===given)) b.classList.add('bad'); });
-      bot((d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||''));   /* exp=自家题库的富文本 */
+      await bot((d.correct?okLine():badLine())+' '+(d.exp||''));   /* exp=自家题库的富文本 */
       if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:d.correct}});
       if(!d.correct) wrongList.push({ksa:d.ksa||q.ksa||'K'});
       markWrong(ch,{id:q.id,ksa:d.ksa||q.ksa||'K'},!d.correct);
@@ -568,11 +612,11 @@ async function renderQuizView(ch, onlyIds){
     logEl.appendChild(acts); scroll(); };
 
   /* ── 开场 ── */
-  bot(onlyIds
+  await bot(onlyIds
     ? '这 '+items.length+' 道是你上次错的——练对了就从错题本里划掉。开始。'
-    : '本章小测,我来主持。<b>知识与技能题 '+items.length+' 道</b>,答错没关系,解析比对错有用;答对 70% 点亮本章。'+
+    : '来,本章小测。<b>知识与技能题 '+items.length+' 道</b>——答错完全没关系,解析比对错有用;答对 70% 点亮本章。'+
       (aPool.length?'做完还有几道<b>判断力题</b>,那部分不打分,咱们聊。':'')+'开始。');
-  await sleep(400);
+  await sleep(300);
   for(let i=0;i<items.length;i++) await askKS(items[i],i);
 
   /* ── K/S 小结:通关判定与落库,全部照旧 ── */
@@ -584,7 +628,7 @@ async function renderQuizView(ch, onlyIds){
     const byK={}; wrongList.forEach(x=>byK[x.ksa]=(byK[x.ksa]||0)+1);
     sum+='<br>'+Object.keys(byK).map(k=>'错了 '+byK[k]+' 道'+KSA_NAME[k]+'题——'+KSA_FIX[k]).join('<br>');
   }
-  bot(sum);
+  await bot(sum);
   if(!onlyIds) saveAttempt(ch,okN,items.length);
   renderTree($('#q').value);
 
@@ -592,19 +636,19 @@ async function renderQuizView(ch, onlyIds){
   if(onlyIds || !aPool.length){ actions(); return; }
   await sleep(600);
   if(!loggedIn()){
-    const b=bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分,是聊出来的,要登录才能开。');
+    const b=await bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分,是聊出来的,要登录才能开。');
     const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
     lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
     actions(); return;
   }
   const aIds=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
-  bot('选择题到此为止。接下来 <b>'+aIds.length+' 道判断力题</b>——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
+  await bot('选择题到此为止。接下来 <b>'+aIds.length+' 道判断力题</b>——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
   const hist=[];
   const sendA=async(text,silent)=>{
     if(!silent) me(text);
     hist.push({role:'user',content:text});
     ta.disabled=true; sendBtn.disabled=true;
-    const bub=bot('<span class="hqc-typing">Sparky 正在想…</span>');
+    const bub=botNow('<span class="hqc-typing">Sparky 正在想…</span>');
     let reply='', started=false;
     try{
       const r=await fetch(QAPI+'/api/sparky/chat',{method:'POST',
@@ -633,8 +677,8 @@ async function renderQuizView(ch, onlyIds){
   const submitA=()=>{ const v=ta.value.trim(); if(!v||ta.disabled) return; ta.value=''; sendA(v); };
   sendBtn.onclick=submitA;
   ta.onkeydown=e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); submitA(); } };
-  endBtn.onclick=()=>{ inpRow.style.display='none';
-    bot('好,这轮到这。判断力没有分数——上面每道题你和参照的差别,就是下一步该看的方向。'); actions(); };
+  endBtn.onclick=async()=>{ inpRow.style.display='none';
+    await bot('好,这轮到这。判断力没有分数——上面每道题你和参照的差别,就是下一步该看的方向。'); actions(); };
   sendA('开始吧,出第一道',true);
 }
 
