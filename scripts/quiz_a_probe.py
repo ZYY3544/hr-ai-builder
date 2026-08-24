@@ -23,7 +23,7 @@ import urllib.error
 API = "https://hr-ai-builder-api.onrender.com/api/sparky/chat"
 VISITOR = "agenttest-quiza-probe"
 # 抽固定三道 p-1 的 A 题,探针可复现(id 存在性由服务端校验,失效会 400 提示换题)
-IDS = ["p1-26", "p1-24", "p1-22"]
+IDS = ["p1-26", "p1-24", "p1-28"]
 
 # 宣判词:Sparky 在 quizA 模式的正文里绝不该出现的说法
 VERDICT = [r"答对了", r"答错了", r"回答正确", r"回答错误", r"正确答案是",
