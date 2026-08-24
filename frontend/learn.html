@@ -33,15 +33,10 @@ a{color:inherit;text-decoration:none}
 .top{flex:0 0 auto;border-bottom:1px solid var(--line);background:#fff;z-index:20}
 .mark{height:25px;width:auto;display:block}
 .t-l{background:#FEF3C7;color:#92400E}
-.prog{display:flex;align-items:center;gap:9px;padding:12px 16px 0}
-.pbar{flex:1;min-width:56px;max-width:120px;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
-.pbar i{display:block;height:100%;background:var(--grad-r);border-radius:3px;transition:width .3s}
-.prog .n{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .tbtn{font:inherit;font-size:12.5px;padding:6px 13px;border-radius:6px;border:1px solid var(--line);
   background:#fff;color:var(--body);cursor:pointer;white-space:nowrap}
 .tbtn:hover{border-color:var(--pri);color:var(--pri)}
 .tbtn.pri{background:var(--grad-r);border-color:transparent;color:#fff}
-@media(max-width:900px){.prog .n{display:none}}
 
 /* ── 主体 ── */
 .main{flex:1;display:flex;min-height:0}
@@ -97,9 +92,6 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 /* ── 内容区 ── */
 .pane{flex:1;position:relative;min-width:0;display:flex;flex-direction:column}
 .pane iframe{flex:1;width:100%;border:0;background:#fff}
-.donetag{margin-left:auto;font-size:11.5px;color:var(--muted);cursor:pointer;user-select:none;white-space:nowrap}
-.donetag:hover{color:var(--green-d)}
-.donetag.done{color:var(--green-d);font-weight:500}
 /* 本章小测：目录里的独立卡片 + 阅读区的测验视图 */
 .quizls{display:flex;align-items:center;gap:8px;margin:10px 8px 16px;padding:10px 13px;
   border:1.5px solid rgba(0,168,138,.35);border-radius:11px;text-decoration:none;
@@ -218,7 +210,6 @@ b.setAttribute('href','growth.html');}}catch(e){}})();
 
 <div class="main">
   <aside class="side" id="side">
-    <div class="prog"><div class="pbar"><i id="pbar" style="width:0"></i></div><span class="n" id="pnum">0 / 0</span><span class="donetag" id="mark"></span></div>
     <div class="sch"><input id="q" type="search" name="lesson-search" placeholder="搜索知识点…" autocomplete="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
     <div class="tree" id="tree"></div>
     <div class="foot">
@@ -278,10 +269,9 @@ function renderTree(filter){
       const ls=t.lessons.filter(l=>!kw || l.title.toLowerCase().includes(kw) || t.title.toLowerCase().includes(kw));
       if(!ls.length) return;
       const rdy=t.lessons.filter(l=>l.ready);
-      const dn=rdy.filter(l=>done.has(l.file)).length;
       const open = kw || t.lessons.some(l=>l.file===f);
       ptHtml+=`<div class="tp ${open?'open':''}">
-        <div class="tp-h"><span class="ar">▸</span><span class="nm">${t.title}</span><span class="ct">${dn}/${rdy.length}</span></div>
+        <div class="tp-h"><span class="ar">▸</span><span class="nm">${t.title}</span><span class="ct">${rdy.length} 节</span></div>
         <div class="tp-l">${ls.map(l=>{
           if(!l.ready) return `<div class="ls off"><span class="dot"></span><span>${l.title} · 待写</span></div>`;
           const lock=(typeof loggedIn==='function'&&!loggedIn()&&!FREE_PARTS.includes(p.num))?'<span class="lk">🔒</span>':'';
@@ -302,11 +292,37 @@ function renderTree(filter){
   $('#tree').querySelectorAll('.tp-h').forEach(h=>h.onclick=()=>h.parentNode.classList.toggle('open'));
 }
 
-function renderProgress(){
-  const dn=FLAT.filter(l=>done.has(l.file)).length;
-  $('#pbar').style.width=(FLAT.length?dn/FLAT.length*100:0)+'%';
-  $('#pnum').textContent=`${dn} / ${FLAT.length}`;
-  const a=CO.meta&&CO.meta.access||{};
+/* ── 自动记「读过」──────────────────────────────────────────
+   判据是两个条件的与：滚到正文 90% + 停留 ≥ 该节声明时长的一半
+   （course-data 的 min 字段是现成真值锚，比拍脑袋定 3 分钟准）。
+   ⚠️ 它只声称「你打开并读到了底」，绝不声称「你学会了」——所以叫「读过」
+   不叫「学完」，也不汇总成任何数字。学没学会由本章小测和实战战役说话，
+   成长地图上那句「点亮是测出来的不是点出来的」才立得住。
+   宁可少记不可虚记：条件不满足就不记，挂着标签页刷不出进度。 */
+let readTimer=null;
+function watchRead(l){
+  clearInterval(readTimer);
+  if(done.has(l.file)) return;                       // 已经读过，不用再盯
+  const need=Math.max(30,(l.min||3)*30);             // 声明时长的一半（秒），下限 30 秒
+  const t0=Date.now(), fr=$('#frame');
+  readTimer=setInterval(()=>{
+    if(cur()!==l.file){ clearInterval(readTimer); return; }   // 翻到别节了，自行了断
+    let d,w; try{ d=fr.contentDocument; w=fr.contentWindow; }catch(e){ return; }
+    if(!d||!d.documentElement||!w) return;
+    const el=d.documentElement;
+    const bottom=(w.scrollY||el.scrollTop||0)+(w.innerHeight||0);
+    const total=Math.max(el.scrollHeight||0,(d.body&&d.body.scrollHeight)||0);
+    const deep=total>0 && bottom/total>=0.9;
+    if(deep && (Date.now()-t0)/1000>=need){ clearInterval(readTimer); markRead(l.file); }
+  },3000);
+}
+function markRead(file){
+  if(done.has(file)) return;
+  done.add(file); saveDone(); renderTree($('#q').value);
+  const t=localStorage.getItem(TK);
+  if(t) fetch(QAPI+'/api/progress',{method:'POST',
+    headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},
+    body:JSON.stringify({kind:'done',key:file,value:{on:true}})}).catch(()=>{});
 }
 
 function load(){
@@ -323,7 +339,7 @@ function load(){
       renderQuizView(seg[0], ids.length?ids:null);
     } else renderQuizView(seg[0]);
     return; }
-  $('#quizpane').style.display='none'; $('#frame').style.display='block'; $('#mark').style.display='';
+  $('#quizpane').style.display='none'; $('#frame').style.display='block';
   let i=find(f);
   if(i<0){ i=0; f=FLAT[0].file; location.replace('#'+encodeURIComponent(f)); }
   const l=FLAT[i];
@@ -335,18 +351,9 @@ function load(){
   window.goPrev=()=>p&&(location.hash='#'+encodeURIComponent(p.file));
   window.goNext=()=>n&&(location.hash='#'+encodeURIComponent(n.file));
 
-  const m=$('#mark'), isDone=done.has(l.file);
-  m.className='donetag'+(isDone?' done':'');
-  m.textContent=isDone?'✓ 已学完':'○ 标记学完';
-  m.title=isDone?'点击取消这节的学完标记':'把当前这节标记为学完';
-  m.onclick=()=>{ done.has(l.file)?done.delete(l.file):done.add(l.file);
-    saveDone(); renderTree($('#q').value); renderProgress(); load();
-    const t=localStorage.getItem(TK);
-    if(t) fetch(QAPI+'/api/progress',{method:'POST',
-      headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},
-      body:JSON.stringify({kind:'done',key:l.file,value:{on:done.has(l.file)}})}).catch(()=>{}); };
+  watchRead(l);          /* 「读过」改为自动记，不再让用户点 */
 
-  renderTree($('#q').value); renderProgress();
+  renderTree($('#q').value);
   const on=$('#tree .ls.on'); if(on) on.scrollIntoView({block:'nearest'});
   $('#side').classList.remove('show');
 }
@@ -571,7 +578,7 @@ document.addEventListener('keydown',e=>{
     if(pr.ok){ const pg=await pr.json();
       (pg.done||[]).forEach(f=>done.add(f)); saveDone();
       Object.entries(pg.best||{}).forEach(([ch,p])=>saveBest(ch,p));
-      renderTree($('#q').value); renderProgress(); }
+      renderTree($('#q').value); }
   }catch(e){}
 })();
 

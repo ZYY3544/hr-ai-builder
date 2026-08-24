@@ -191,13 +191,11 @@ function renderChapters(){
   $('#chgrid').innerHTML=CO.parts.map(p=>{
     const ch=QCH[p.num]||'';
     const lessons=[]; p.topics.forEach(t=>t.lessons.forEach(l=>l.ready&&lessons.push(l)));
-    const dn=lessons.filter(l=>done.has(l.file)).length;
     const b=best[ch]||0, pass=b>=0.7;
     const firstUnread=(lessons.find(l=>!done.has(l.file))||lessons[0]||{}).file||'';
     return `<a class="chc" href="learn.html#${encodeURIComponent(firstUnread)}">
       ${pass?'<span class="badge">已通关 ✓</span>':''}
       <div class="num">${esc(p.num)}</div><div class="ti">${esc(p.title)}</div>
-      <div class="row"><span>读了 ${dn}/${lessons.length}</span><span class="bar"><i style="width:${lessons.length?dn/lessons.length*100:0}%"></i></span></div>
       <div class="row qrow"><span>小测最好 ${b>0?Math.round(b*100)+'%':'—'}</span>
         <span style="flex:1"></span><span class="go" data-q="${ch}">去打小测 →</span></div>
     </a>`;

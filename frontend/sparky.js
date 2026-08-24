@@ -533,7 +533,7 @@
     var m = LMAP[newest]; if (!m || !m.sibs) return;
     var all = m.sibs.every(function (f) { return d.indexOf(f) >= 0; });
     if (all) fire('topicdone', 1, '「**' + m.topic + '**」这一组读完了。',
-      '用户刚读完《' + m.title + '》，至此「' + m.topic + '」主题下的所有节都学完了。给出紧接着最值得读的下一组（按课程顺序），并肯定一句');
+      '用户刚读完《' + m.title + '》，至此「' + m.topic + '」主题下的每一节都读过了。给出紧接着最值得读的下一组（按课程顺序），并肯定一句——注意「读过」不等于「学会」，别说成学完了');
   }, 2500);
 
   // ⑤ 新客迷茫：首页90秒没点任何课
@@ -701,7 +701,7 @@
   function opener() {
     var done = ctx().done.length;
     var t = done > 0
-      ? '又见面了。你已经读完 ' + done + ' 节了。\n\n卡在哪儿了，还是想找下一步读什么？'
+      ? '又见面了。\n\n卡在哪儿了，还是想找下一步读什么？'
       : '你好，我是 Sparky。\n\n**你想拿 AI 干点什么？**说得越具体越好——「每个月要合三张表做人力报表」就比「想学 AI」有用得多。\n\n也可以直接问某个概念、某节课。';
     bubble('assistant', t);
     var chips = document.createElement('div'); chips.className = 'spk-chips';
