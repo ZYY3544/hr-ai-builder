@@ -298,6 +298,7 @@ _QUIZA_RULES = """
    对方的回答与它差在哪个环节——是事实性差异就直说，是取舍差异就把两条路的代价摆出来。
    **呈现差异，不下判决。**对方的思路比参照更好也完全可能，值得就直说值得。
 4. 收尾这道题，进入下一道。
+追问与参照都优先接课程里讲过的概念（尤其前面篇章的——课程是连贯的，巩固也该连贯）。
 全部聊完后：给一段**思维画像**——从这几轮回答里你观察到的思考模式
 （比如「你习惯先动系统再找根因」），必须引用 ta 说过的原话作证据，不贴标签、不打分；
 最后按 REFS 规则推荐 1-3 节最值得回看的课。"""
@@ -322,10 +323,26 @@ def _quiza_block(quiz_by_id: dict, ids: list) -> str:
             + "\n\n".join(rows))
 
 
-def _quizk_block(quiz_by_id: dict, qid, picked, stage) -> str:
-    """K/S 选择题的伴考块。两个场景，纪律完全不同：
+def _quizk_block(quiz_by_id: dict, qid, picked, stage, chapter=None) -> str:
+    """本章巩固的伴考块。三个场景，纪律各不同：
+    open（开场）——你是这场巩固的主持人，不是考官；
     reprobe（答错反问）——**正确答案还没揭晓**，一个字都不许漏；
     ask（判分后答疑）——解析已经给过了，可以放开讲。"""
+    if stage == "open":
+        return f"""
+
+## 本轮处于「本章巩固 · 开场」（小测页替用户唤起，篇章代码 {chapter or '?'}）
+先摆正定位：这**不是考试，是巩固**——对方刚学完这一篇章，你的活是帮 ta 把知识钉扎实。
+分数不是目标：答对 70% 会点亮本章，但那只是进度信号，别渲染分数、别制造考试紧张感。
+user 消息里带了对方的实际情况（读了几节、上回最好成绩、首次还是重来还是错题重练）。
+任务——像一个认识 ta 的教练那样开场，三四句话：
+1. 认出对方的状态打招呼（读完了来验成色 / 没怎么读先摸底 / 上回差口气 / 通关后再巩固 /
+   错题清算），说人话，别客套别端着。
+2. 用你手上的课程目录，一句话点出**这一篇章在整门课里管什么**；对方已读过前面的篇章时，
+   顺一句它和前章的接续（比如第一篇章的幻觉是第零篇章「接话茬」机制的直接后果）——课程是连贯的。
+3. 玩法一句话带过：答错你不报答案、会追问再给一次机会；选择题后还有不打分的判断力题；有疑问随时打字。
+4. 收在「开始」上，别拖。
+REFS 固定写 []。"""
     q = quiz_by_id.get(str(qid or ""))
     if not q:
         return ""
@@ -343,10 +360,13 @@ def _quizk_block(quiz_by_id: dict, qid, picked, stage) -> str:
             "2. 给一个反问或提示，把 ta 往正确的思考方向推一步。\n"
             "**铁律：绝不许透露哪个是参照答案**——不说「正确答案是」、不复述参照选项的内容、"
             "不用排除法把答案圈出来。答案一漏，第二次机会就废了。语气别训人，短一点。\n"
+            "反问的钩子优先接课程里讲过的概念（尤其前面篇章的——课程是连贯的，"
+            "用第零篇章的「接话茬」解释第一篇章的坑，巩固才成体系）。\n"
             "这一轮 REFS 固定写 []。")
     return base + (
         "任务：这道题已经判完、解析已经给过，对方还有疑问。基于参照解析答疑，可以展开讲透；"
-        "解析没覆盖的部分，按你对课程的了解补充，拿不准就说拿不准。答完把 ta 拉回考试：「继续下一题」。\n"
+        "能接上前面篇章讲过的概念就接（课程是连贯的，巩固也该连贯）；"
+        "解析没覆盖的部分，按你对课程的了解补充，拿不准就说拿不准。答完把 ta 拉回：「继续下一题」。\n"
         "REFS 按正常规则（有点名才写）。")
 
 
@@ -443,7 +463,8 @@ class ChatCtx(BaseModel):
     quiz_ids: Optional[list] = None     # quizA 专用：本轮对话抽中的 A 题 id（服务端校验后注入题面）
     quiz_qid: Optional[str] = None      # quizK 专用：当前这道 K/S 题的 id
     quiz_picked: Optional[list] = None  # quizK 专用：用户选了哪几个选项（下标）
-    quiz_stage: Optional[str] = None    # quizK 专用：reprobe=答错反问（不许漏答案）| ask=判分后答疑
+    quiz_stage: Optional[str] = None    # quizK 专用：open=开场 | reprobe=答错反问（不许漏答案）| ask=判分后答疑
+    quiz_chapter: Optional[str] = None  # quizK open 专用：篇章代码（p-zero/p-1/…）
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
     trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
@@ -578,7 +599,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 5}   # 模式块版本：v5=quizK 选择题伴考(reprobe/ask)
+                "mode_ver": 6}   # 模式块版本：v6=巩固定位(open开场+跨章钩子)
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
@@ -626,7 +647,8 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         elif mode == "quizK":
             mode_block = _quizk_block(QUIZ_BY_ID, body.ctx.quiz_qid if body.ctx else None,
                                       body.ctx.quiz_picked if body.ctx else None,
-                                      (body.ctx.quiz_stage or "ask") if body.ctx else "ask")
+                                      (body.ctx.quiz_stage or "ask") if body.ctx else "ask",
+                                      body.ctx.quiz_chapter if body.ctx else None)
             if not mode_block:
                 raise HTTPException(400, "这道题没找到——刷新小测页重试。")
         else:

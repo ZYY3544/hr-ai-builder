@@ -108,11 +108,11 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqm{display:flex;margin:9px 0;gap:8px}
 #quizpane .hqm.bot{align-items:flex-end}
 #quizpane .hqm.me{justify-content:flex-end}
-#quizpane .hqav{width:30px;height:30px;flex:0 0 auto;border-radius:50%;background:#fff;border:1px solid #E2E8F0;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;color:#00A88A;font-size:13px}
+#quizpane .hqav{width:40px;height:40px;flex:0 0 auto;display:flex;align-items:flex-end;justify-content:center;
+  color:#00A88A;font-size:15px}
 #quizpane .hqb{max-width:85%;padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.85;color:#0F172A}
-#quizpane .hqm.bot .hqb{background:#fff;border:1px solid #E9EEF3;border-bottom-left-radius:4px;
-  box-shadow:0 1px 3px rgba(15,23,42,.05)}
+#quizpane .hqm.bot .hqb{background:#fff;border-bottom-left-radius:4px;
+  box-shadow:0 1px 4px rgba(15,23,42,.06)}
 #quizpane .hqm.me .hqb{background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;border-bottom-right-radius:4px;
   box-shadow:0 2px 8px -3px rgba(0,168,138,.5)}
 #quizpane .hqb.live::after{content:'▍';color:#00A88A;margin-left:1px;animation:hqcblink 1s steps(1) infinite}
@@ -502,7 +502,7 @@ async function renderQuizView(ch, onlyIds){
   window.goPrev=()=>location.hash='#'+encodeURIComponent(inCh[inCh.length-1].file);
   window.goNext=()=>next&&(location.hash='#'+encodeURIComponent(next.file));
 
-  pane.innerHTML='<div class="hqc"><p class="hq-h">'+(onlyIds?'只练错题':'本章小测')+' · '+part+'</p>'+
+  pane.innerHTML='<div class="hqc">'+
     '<div class="hqc-log"></div>'+
     '<div class="hqc-inp"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
     '<button class="hqc-send">发送</button><button class="hqc-end">收尾</button></div></div>';
@@ -515,7 +515,7 @@ async function renderQuizView(ch, onlyIds){
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   /* bot 气泡带 Sparky 头像;botNow 立即渲染(SSE 流式自己写字),bot 走打字机 */
   const mkBot=()=>{ const m=document.createElement('div'); m.className='hqm bot';
-    m.innerHTML='<div class="hqav">'+(window.sparkyFace?window.sparkyFace(22):'✦')+'</div><div class="hqb"></div>';
+    m.innerHTML='<div class="hqav">'+(window.sparkyFace?window.sparkyFace(36):'✦')+'</div><div class="hqb"></div>';
     logEl.appendChild(m); scroll(); return m.querySelector('.hqb'); };
   const botNow=html=>{ const b=mkBot(); b.innerHTML=html; scroll(); return b; };
   /* 打字机:富文本按 DOM 结构逐字符流出,<b> 等标签结构保留 */
@@ -663,25 +663,25 @@ async function renderQuizView(ch, onlyIds){
     logEl.appendChild(acts); scroll(); };
 
   /* ── 开场 ── */
-  /* 开场:先打招呼,按"你是谁、来干嘛"说话——首考/重考/裸考/错题清算,各有各的开场 */
+  /* 开场:交给模型当这场巩固的主持人(定位=巩固不是考试,见后端 open 场景)。
+     真值情况(读了几节/上回成绩/首次或重练)由系统消息给它,话让它自己说。
+     匿名无 LLM,一句脚本兜底,不装腔。 */
   const readN=inCh.filter(l=>done.has(l.file)).length;
   const prevBest=Math.round((QBEST[ch]||0)*100);
-  if(onlyIds){
-    await bot('欢迎回来——错题清算时间。');
-    await sleep(250);
-    await bot('这 '+items.length+' 道是你上次栽过的。练对了,我就把它从错题本里划掉。来。');
+  if(loggedIn()){
+    const situ='(系统:用户进入「'+part+'」的本章巩固。'+
+      (onlyIds
+        ? '这次是错题重练,共 '+items.length+' 道上回错的题。'
+        : '本章 '+inCh.length+' 节已读 '+readN+' 节;'+
+          (prevBest>0?'上回小测最好 '+prevBest+'%'+(prevBest>=70?'(已通关)':'(未通关)'):'第一次做本章小测')+
+          ';本轮知识与技能题 '+items.length+' 道'+(aPool.length?',之后还有判断力对话':'')+'。')+
+      '请按 open 场景开场。)';
+    const bub=botNow('<span class="hqc-typing">…</span>');
+    await sseChat([{role:'user',content:situ}],{mode:'quizK',quiz_stage:'open',quiz_chapter:ch},bub);
   } else {
-    await bot(prevBest>0?'又见面了。':'嗨,我是 Sparky——这章的小测由我来陪你过。');
-    await sleep(280);
-    if(prevBest>=70) await bot('这章你已经通关过了(最好 '+prevBest+'%),这回是巩固还是想冲更高?都行,规则不变。');
-    else if(prevBest>0) await bot('上回到 '+prevBest+'%,差口气。这回把它踩过去——错过的题型我会盯着。');
-    else if(readN>=inCh.length*0.6) await bot('这章的课你读得差不多了,来验验成色。');
-    else if(readN>0) await bot('这章你读了一部分就来了——胆子不小,我喜欢。摸个底也好,错了正好知道回哪节补。');
-    else await bot('这章你好像还没怎么读就直接来了——裸考是吧?也行,先摸个底,错了知道差在哪。');
-    await sleep(280);
-    await bot('玩法:<b>知识与技能题 '+items.length+' 道</b>,答对 70% 点亮本章。答错我不直接报答案——我会追问你一句,再给一次机会。'+
-      (aPool.length?'选择题做完还有几道<b>判断力题</b>,那部分不打分,咱们聊。':'')+
-      (loggedIn()?'过程中对题目有疑问,下面输入框随时打字问我。':''));
+    await bot(onlyIds
+      ? '错题重练——这 '+items.length+' 道是你上次错的,练对就划掉。'
+      : '来把这章钉扎实。<b>知识与技能题 '+items.length+' 道</b>,答对 70% 点亮本章,答错看解析。');
   }
   await sleep(300);
   /* K/S 段:答疑输入框常开(登录时)——单行道变双行道 */
