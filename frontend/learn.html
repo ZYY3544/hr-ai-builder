@@ -436,7 +436,6 @@ async function renderQuizView(ch, onlyIds){
   if(!part){ location.replace('#'+encodeURIComponent(FLAT[0].file)); return; }
   $('#frame').style.display='none';
   const pane=$('#quizpane'); pane.style.display='block';
-  $('#mark').style.display='none';
   document.title='本章小测 · '+part+' · meansights learning';
   renderTree($('#q').value);
   // ←→ 依然有意义：上一步=本章最后一节，下一步=下一章第一节
