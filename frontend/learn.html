@@ -570,15 +570,15 @@ async function renderQuizView(ch, onlyIds){
   /* ── 开场 ── */
   bot(onlyIds
     ? '这 '+items.length+' 道是你上次错的——练对了就从错题本里划掉。开始。'
-    : '本章小测,我来主持。**知识与技能题 '+items.length+' 道**,答错没关系,解析比对错有用;答对 70% 点亮本章。'+
-      (aPool.length?'做完还有几道**判断力题**,那部分不打分,咱们聊。':'')+'开始。');
+    : '本章小测,我来主持。<b>知识与技能题 '+items.length+' 道</b>,答错没关系,解析比对错有用;答对 70% 点亮本章。'+
+      (aPool.length?'做完还有几道<b>判断力题</b>,那部分不打分,咱们聊。':'')+'开始。');
   await sleep(400);
   for(let i=0;i<items.length;i++) await askKS(items[i],i);
 
   /* ── K/S 小结:通关判定与落库,全部照旧 ── */
   const pct=okN/items.length, pass=pct>=0.7;
   const best=Math.round((QBEST[ch]||0)*100);
-  let sum=(pass?'🎉 **本章通关**':(onlyIds?'错题重练完成':'**差一点**'))+' · 答对 '+okN+' / '+items.length;
+  let sum=(pass?'🎉 <b>本章通关</b>':(onlyIds?'错题重练完成':'<b>差一点</b>'))+' · 答对 '+okN+' / '+items.length;
   if(!onlyIds) sum+='<br>本章最好成绩 '+Math.max(best,Math.round(pct*100))+'%'+(pass?'':' · 答对 70% 即可点亮本章');
   if(wrongList.length){
     const byK={}; wrongList.forEach(x=>byK[x.ksa]=(byK[x.ksa]||0)+1);
@@ -592,13 +592,13 @@ async function renderQuizView(ch, onlyIds){
   if(onlyIds || !aPool.length){ actions(); return; }
   await sleep(600);
   if(!loggedIn()){
-    const b=bot('接下来本来还有 '+aPool.length+' 道**判断力题**——那部分不打分,是聊出来的,要登录才能开。');
+    const b=bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分,是聊出来的,要登录才能开。');
     const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
     lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
     actions(); return;
   }
   const aIds=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
-  bot('选择题到此为止。接下来 **'+aIds.length+' 道判断力题**——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
+  bot('选择题到此为止。接下来 <b>'+aIds.length+' 道判断力题</b>——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
   const hist=[];
   const sendA=async(text,silent)=>{
     if(!silent) me(text);
