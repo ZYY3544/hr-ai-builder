@@ -322,6 +322,34 @@ def _quiza_block(quiz_by_id: dict, ids: list) -> str:
             + "\n\n".join(rows))
 
 
+def _quizk_block(quiz_by_id: dict, qid, picked, stage) -> str:
+    """K/S 选择题的伴考块。两个场景，纪律完全不同：
+    reprobe（答错反问）——**正确答案还没揭晓**，一个字都不许漏；
+    ask（判分后答疑）——解析已经给过了，可以放开讲。"""
+    q = quiz_by_id.get(str(qid or ""))
+    if not q:
+        return ""
+    opts = "\n".join(f"  {j}. {'[✓参照]' if (j == q.get('ans') if not isinstance(q.get('ans'), list) else j in q.get('ans'))else ''}{o}"
+                      for j, o in enumerate(q.get("opts", [])))
+    picked_txt = "、".join(str(q["opts"][i]) for i in (picked or []) if isinstance(i, int) and 0 <= i < len(q["opts"]))
+    base = (f"\n\n## 本轮处于「选择题伴考」模式（本章小测的 K/S 层，页面替用户唤起）\n"
+            f"当前题：{q['q']}\n选项（✓=参照答案，仅你可见）：\n{opts}\n"
+            f"参照解析：{q.get('exp','')}\n"
+            f"对方刚才选的是：{picked_txt or '（还没选）'}\n")
+    if stage == "reprobe":
+        return base + (
+            "任务：对方选错了，你来当那个不直接念答案的老师。两三句话：\n"
+            "1. 针对 ta 选的那个选项，点破它错在哪个具体环节——说这个选项本身的问题，别泛泛。\n"
+            "2. 给一个反问或提示，把 ta 往正确的思考方向推一步。\n"
+            "**铁律：绝不许透露哪个是参照答案**——不说「正确答案是」、不复述参照选项的内容、"
+            "不用排除法把答案圈出来。答案一漏，第二次机会就废了。语气别训人，短一点。\n"
+            "这一轮 REFS 固定写 []。")
+    return base + (
+        "任务：这道题已经判完、解析已经给过，对方还有疑问。基于参照解析答疑，可以展开讲透；"
+        "解析没覆盖的部分，按你对课程的了解补充，拿不准就说拿不准。答完把 ta 拉回考试：「继续下一题」。\n"
+        "REFS 按正常规则（有点名才写）。")
+
+
 _MODE_KINDS = {"coach", "review"}          # APPLY 只认这两类
 
 
@@ -413,6 +441,9 @@ class ChatCtx(BaseModel):
     page: Optional[str] = None          # index/learn/quiz/jobs/tasks/review/coach/growth/about
     mode: Optional[str] = None          # / 指令模式：coach/review/opc/quizA，无指令时为空
     quiz_ids: Optional[list] = None     # quizA 专用：本轮对话抽中的 A 题 id（服务端校验后注入题面）
+    quiz_qid: Optional[str] = None      # quizK 专用：当前这道 K/S 题的 id
+    quiz_picked: Optional[list] = None  # quizK 专用：用户选了哪几个选项（下标）
+    quiz_stage: Optional[str] = None    # quizK 专用：reprobe=答错反问（不许漏答案）| ask=判分后答疑
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
     trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
@@ -547,7 +578,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 4}   # 模式块版本：v4=quizA 追问两层硬闸
+                "mode_ver": 5}   # 模式块版本：v5=quizK 选择题伴考(reprobe/ask)
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
@@ -561,9 +592,9 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
 
         # / 指令模式：不认识的值静默当无模式，老前端/伪造值都不至于挂
         mode = (body.ctx.mode or "").strip() if (body.ctx and body.ctx.mode) else ""
-        if mode not in _MODE_BLOCKS and mode != "quizA":
+        if mode not in _MODE_BLOCKS and mode not in ("quizA", "quizK"):
             mode = ""
-        if mode in ("opc", "quizA"):
+        if mode in ("opc", "quizA", "quizK"):
             # 登录专属 + 各自独立的日额度。挡在这里而不是前端：前端的检查挡君子，这道挡直连的
             import auth as _auth
             tok = request.headers.get("authorization") or ""
@@ -576,8 +607,9 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
             if not claims:
                 raise HTTPException(401, "「一人公司陪练」要登录后用——点右上角头像登录，回来再发一次 /一人公司。"
                                     if mode == "opc" else
-                                    "判断题对话要登录后用——点右上角头像登录，回来再点一次「跟 Sparky 过判断题」。")
+                                    "这部分要登录后用——点右上角头像登录再回来。")
             uid = str(claims.get("sub") or ip)
+            # quizK 与 quizA 同属一场考试，共用一个日额度
             hits2, cap2 = ((_opc_hits, _OPC_DAY) if mode == "opc" else (_quiza_hits, _QUIZA_DAY))
             q2, now2 = hits2[uid], time.time()
             if sum(1 for t2 in q2 if now2 - t2 < 86400) >= cap2:
@@ -586,11 +618,19 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
                                     "今天的判断题对话额度用完了——消化一下聊过的，明天再来一轮。")
             q2.append(now2)
 
-        # quizA 的模式块是动态的：含本轮抽中的题（答案与解析只在服务端）
-        mode_block = (_quiza_block(QUIZ_BY_ID, body.ctx.quiz_ids if body.ctx else [])
-                      if mode == "quizA" else _MODE_BLOCKS.get(mode, ""))
-        if mode == "quizA" and not mode_block:
-            raise HTTPException(400, "这轮判断题没抽到有效题目——回小测页重新点一次入口。")
+        # quizA/quizK 的模式块是动态的：含题面与答案解析（只在服务端）
+        if mode == "quizA":
+            mode_block = _quiza_block(QUIZ_BY_ID, body.ctx.quiz_ids if body.ctx else [])
+            if not mode_block:
+                raise HTTPException(400, "这轮判断题没抽到有效题目——回小测页重新点一次入口。")
+        elif mode == "quizK":
+            mode_block = _quizk_block(QUIZ_BY_ID, body.ctx.quiz_qid if body.ctx else None,
+                                      body.ctx.quiz_picked if body.ctx else None,
+                                      (body.ctx.quiz_stage or "ask") if body.ctx else "ask")
+            if not mode_block:
+                raise HTTPException(400, "这道题没找到——刷新小测页重试。")
+        else:
+            mode_block = _MODE_BLOCKS.get(mode, "")
 
         # 载荷收口：只认 user/assistant，截最近 12 条，总字数封顶
         msgs = [{"role": m.get("role"), "content": str(m.get("content", ""))[:2000]}
