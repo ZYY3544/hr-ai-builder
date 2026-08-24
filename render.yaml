@@ -14,7 +14,7 @@ services:
       - key: ALLOWED_ORIGINS
         value: "*"
       - key: FRONTEND_URL
-        value: https://hr-ai-builder-web.onrender.com
+        value: https://learning.meansights.com
       - key: CONTENT_GATE      # 微信登录跑通后拨成 on，代码零改动
         value: "off"
       - key: WX_OAUTH_CALLBACK
