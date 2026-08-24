@@ -135,17 +135,28 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
   border:1.5px solid rgba(0,168,138,.45);background:#fff;color:#00795F;cursor:pointer}
 #quizpane .hqc-act.pri{background:linear-gradient(135deg,#00A88A,#0891B2);border-color:transparent;color:#fff}
 #quizpane .hqc-act.ghost{border-color:#E2E8F0;color:#64748B}
-#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#fff;padding:10px 0 14px;gap:8px;
-  align-items:flex-end;border-top:1px solid #F1F5F9}
-#quizpane .hqc-inp textarea{flex:1;font:inherit;font-size:13.5px;border:1.5px solid #E2E8F0;border-radius:12px;
-  padding:9px 13px;resize:none;outline:none;line-height:1.6;background:#fff}
-#quizpane .hqc-inp textarea:focus{border-color:#00A88A}
-#quizpane .hqc-send{font:inherit;font-size:13px;font-weight:600;padding:9px 18px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
-#quizpane .hqc-send:disabled{opacity:.45}
-#quizpane .hqc-end{font:inherit;font-size:12px;padding:9px 12px;border:1px solid #E2E8F0;border-radius:10px;
-  background:#fff;color:#64748B;cursor:pointer}
-#quizpane .hqc-typing{color:#94A3B8;font-size:12.5px}
+#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#fff;padding:8px 0 16px}
+#quizpane .hqc-shell{background:#fff;border:1px solid #E5E7EB;border-radius:16px;width:100%;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);transition:border-color .15s}
+#quizpane .hqc-shell:focus-within{border-color:#9CA3AF}
+#quizpane .hqc-inp textarea{width:100%;font:inherit;font-size:13px;border:none;background:transparent;
+  padding:13px 18px 4px;resize:none;outline:none;line-height:1.6;min-height:42px;box-sizing:border-box}
+#quizpane .hqc-inp textarea::placeholder{color:#9CA3AF}
+#quizpane .hqc-btm{display:flex;align-items:center;padding:2px 8px 8px 12px}
+#quizpane .hqc-send{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:none;
+  border-radius:12px;background:#00A88A;color:#fff;cursor:pointer;transition:.15s}
+#quizpane .hqc-send:hover{background:#00876F}
+#quizpane .hqc-send:disabled{opacity:.4;cursor:default}
+#quizpane .hqc-end{font:inherit;font-size:12px;padding:4px 8px;border:none;background:none;color:#94A3B8;cursor:pointer}
+#quizpane .hqc-end:hover{color:#00795F}
+/* 思考态:Musing… 扫光(品牌绿高光扫过灰字,同主产品 thinking-shimmer)+ 行首点呼吸 */
+@keyframes hqshimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes hqbreathe{0%,100%{opacity:.45}50%{opacity:1}}
+#quizpane .hqc-typing{font-size:12.5px;
+  background:linear-gradient(100deg,#94A3B8 35%,#00A88A 50%,#94A3B8 65%);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:hqshimmer 1.9s linear infinite}
+#quizpane .hqm.bot:has(.hqc-typing) .hq-dot{animation:hqbreathe 1.6s ease-in-out infinite}
 #quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 6px 18px}
 #quizpane .hqc-refs a{font-size:12px;font-weight:500;color:#00795F;border:1px solid rgba(0,168,138,.4);
   border-radius:8px;padding:5px 11px;background:#F0FDF9}
@@ -504,8 +515,9 @@ async function renderQuizView(ch, onlyIds){
 
   pane.innerHTML='<div class="hqc">'+
     '<div class="hqc-log"></div>'+
-    '<div class="hqc-inp"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
-    '<button class="hqc-send">发送</button><button class="hqc-end">收尾</button></div></div>';
+    '<div class="hqc-inp"><div class="hqc-shell"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
+    '<div class="hqc-btm"><button class="hqc-end">聊完了,收尾</button><span style="flex:1"></span>'+
+    '<button class="hqc-send" title="发送"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></div></div>';
   const logEl=pane.querySelector('.hqc-log'), inpRow=pane.querySelector('.hqc-inp'),
         ta=pane.querySelector('.hqc-inp textarea'), sendBtn=pane.querySelector('.hqc-send'),
         endBtn=pane.querySelector('.hqc-end');
@@ -552,7 +564,7 @@ async function renderQuizView(ch, onlyIds){
     return pick(['✗ 不对。','✗ 差一点。','✗ 这道不对——']); };
 
   let pool=[];
-  botNow('<span class="hqc-typing">出题中…</span>');
+  botNow('<span class="hqc-typing">Musing…</span>');
   try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
   logEl.innerHTML='';
   if(!pool.length){ botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
@@ -637,7 +649,7 @@ async function renderQuizView(ch, onlyIds){
       if(d.correct || tries>1 || !loggedIn()){ await finalize(d,given); return; }
       /* 答错第一次:不念答案,反问一句,给第二次机会 */
       const pickedArr=Array.isArray(given)?given:[given];
-      const bub=botNow('<span class="hqc-typing">等等——</span>');
+      const bub=botNow('<span class="hqc-typing">Musing…</span>');
       await sseChat([{role:'user',content:'这道题我选了:'+pickedArr.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join('、')}],
         {mode:'quizK',quiz_qid:q.id,quiz_picked:pickedArr,quiz_stage:'reprobe'},bub);
       /* 重开选项:错选保持红、锁死;其余恢复可点 */
@@ -677,7 +689,7 @@ async function renderQuizView(ch, onlyIds){
           (prevBest>0?'上回小测最好 '+prevBest+'%'+(prevBest>=70?'(已通关)':'(未通关)'):'第一次做本章小测')+
           ';本轮知识与技能题 '+items.length+' 道'+(aPool.length?',之后还有判断力对话':'')+'。')+
       '请按 open 场景开场。)';
-    const bub=botNow('<span class="hqc-typing">…</span>');
+    const bub=botNow('<span class="hqc-typing">Musing…</span>');
     await sseChat([{role:'user',content:situ}],{mode:'quizK',quiz_stage:'open',quiz_chapter:ch},bub);
   } else {
     await bot(onlyIds
@@ -693,7 +705,7 @@ async function renderQuizView(ch, onlyIds){
     if(!curQ){ await bot('还没开考呢。开始做题后,随时来问。'); return; }
     kHist.push({role:'user',content:v});
     ta.disabled=true; sendBtn.disabled=true;
-    const bub=botNow('<span class="hqc-typing">Sparky 正在想…</span>');
+    const bub=botNow('<span class="hqc-typing">Musing…</span>');
     const reply=await sseChat(kHist.slice(-6),{mode:'quizK',quiz_qid:curQ.id,quiz_stage:'ask'},bub);
     if(reply) kHist.push({role:'assistant',content:reply});
     ta.disabled=false; sendBtn.disabled=false; };
@@ -751,7 +763,7 @@ async function renderQuizView(ch, onlyIds){
     if(!silent) me(text);
     hist.push({role:'user',content:text});
     ta.disabled=true; sendBtn.disabled=true;
-    const bub=botNow('<span class="hqc-typing">Sparky 正在想…</span>');
+    const bub=botNow('<span class="hqc-typing">Musing…</span>');
     try{
       const reply=await sseChat(hist.slice(-10),{mode:'quizA',quiz_ids:aIds},bub);
       if(reply) hist.push({role:'assistant',content:reply});
