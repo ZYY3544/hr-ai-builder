@@ -101,12 +101,44 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .quizls.on{background:linear-gradient(135deg,rgba(0,168,138,.13),rgba(8,145,178,.13))}
 .quizls .sc{margin-left:auto;font-weight:500;font-size:11.5px;color:var(--muted)}
 .quizls .sc.pass{color:#00795F;font-weight:600}
-#quizpane .hq-acard{border:1.5px solid rgba(0,168,138,.35);border-radius:12px;padding:15px 18px;margin:6px 0 22px;
-  background:linear-gradient(135deg,rgba(0,168,138,.05),rgba(8,145,178,.05))}
-#quizpane .hq-acard .t{font-size:13.5px;font-weight:600;color:#0F172A}
-#quizpane .hq-acard .d{font-size:12.5px;color:#64748B;margin-top:5px;line-height:1.8}
-#quizpane .hq-ago{margin-top:10px;font:inherit;font-size:12.5px;font-weight:600;padding:7px 16px;border:none;
+/* ── 对话式测评(hqc 系):气泡流+嵌入式选项,形态同调研 agent ── */
+#quizpane .hqc{max-width:780px;margin:0 auto;padding:28px 24px 40px;min-height:100%;display:flex;flex-direction:column}
+#quizpane .hqc-log{flex:1}
+#quizpane .hqm{display:flex;margin:8px 0}
+#quizpane .hqm.me{justify-content:flex-end}
+#quizpane .hqb{max-width:88%;padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.85;color:#0F172A}
+#quizpane .hqm.bot .hqb{background:#F8FAFC;border:1px solid #E2E8F0;border-bottom-left-radius:4px}
+#quizpane .hqm.me .hqb{background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;border-bottom-right-radius:4px}
+#quizpane .hqc-no{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#00795F;margin-bottom:4px}
+#quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px;max-width:88%}
+#quizpane .hqc-opt{text-align:left;font:inherit;font-size:13.5px;padding:10px 14px;border:1.5px solid #E2E8F0;
+  border-radius:10px;background:#fff;cursor:pointer;line-height:1.7;color:#0F172A;transition:.13s}
+#quizpane .hqc-opt:hover{border-color:#00A88A;background:#F0FDF9}
+#quizpane .hqc-opt.sel{border-color:#00A88A;background:#E8FBF6}
+#quizpane .hqc-opts.answered .hqc-opt{pointer-events:none;opacity:.45}
+#quizpane .hqc-opts.answered .hqc-opt.ok{opacity:1;border-color:#00A88A;background:#E8FBF6;font-weight:600}
+#quizpane .hqc-opts.answered .hqc-opt.bad{opacity:1;border-color:#DC2626;background:#FEF2F2}
+#quizpane .hqc-goml{align-self:flex-start;font:inherit;font-size:12.5px;font-weight:600;padding:7px 18px;border:none;
   border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
+#quizpane .hqc-acts{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 6px}
+#quizpane .hqc-act{font:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:9px;
+  border:1.5px solid rgba(0,168,138,.45);background:#fff;color:#00795F;cursor:pointer}
+#quizpane .hqc-act.pri{background:linear-gradient(135deg,#00A88A,#0891B2);border-color:transparent;color:#fff}
+#quizpane .hqc-act.ghost{border-color:#E2E8F0;color:#64748B}
+#quizpane .hqc-inp{display:none;position:sticky;bottom:0;background:#fff;padding:10px 0 14px;gap:8px;
+  align-items:flex-end;border-top:1px solid #F1F5F9}
+#quizpane .hqc-inp textarea{flex:1;font:inherit;font-size:13.5px;border:1.5px solid #E2E8F0;border-radius:12px;
+  padding:9px 13px;resize:none;outline:none;line-height:1.6}
+#quizpane .hqc-inp textarea:focus{border-color:#00A88A}
+#quizpane .hqc-send{font:inherit;font-size:13px;font-weight:600;padding:9px 18px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
+#quizpane .hqc-send:disabled{opacity:.45}
+#quizpane .hqc-end{font:inherit;font-size:12px;padding:9px 12px;border:1px solid #E2E8F0;border-radius:10px;
+  background:#fff;color:#64748B;cursor:pointer}
+#quizpane .hqc-typing{color:#94A3B8;font-size:12.5px}
+#quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+#quizpane .hqc-refs a{font-size:12px;font-weight:500;color:#00795F;border:1px solid rgba(0,168,138,.4);
+  border-radius:8px;padding:5px 11px;background:#F0FDF9}
 #quizpane{flex:1;overflow-y:auto;display:none;background:#fff}
 #quizpane .hq-in{max-width:820px;margin:36px auto 80px;padding:0 28px;color:#0F172A}
 #quizpane .hq-h{font-size:13px;font-weight:600;color:#00795F;letter-spacing:.06em;margin:0 0 4px}
@@ -438,131 +470,172 @@ const KSA_FIX={K:'回去读就能补，几天的事',
                A:'补不了，只能拿真实经历重新证明'};
 
 async function renderQuizView(ch, onlyIds){
-  const part=Object.keys(QCH).find(k=>QCH[k]===ch);
+  /* ── 对话式测评引擎 ──────────────────────────────────────────
+     形态抄自我们自己的调研 agent(gaode-survey-agent),同一条架构铁律:
+     **状态机管流程,LLM 只填空。**
+     - K/S 选择题:选项按钮嵌在对话流里,点选变成一条"我"的气泡;
+       判分永远走服务端 /api/quiz/submit(答案不在前端),零 LLM 成本,
+       70% 通关闸、错题本、成绩曲线全部照旧——"点亮是测出来的"没动。
+     - A 判断力题:无缝切到 quizA 模式(登录专属),Sparky 抛场景、追问、
+       给参照,不打分;未登录给登录出口,不挡 K/S 完卷。 */
+  const part=Object.keys(QCH).find(p=>QCH[p]===ch);
   if(!part){ location.replace('#'+encodeURIComponent(FLAT[0].file)); return; }
   $('#frame').style.display='none';
   const pane=$('#quizpane'); pane.style.display='block';
   document.title='本章小测 · '+part+' · meansights learning';
   renderTree($('#q').value);
-  // ←→ 依然有意义：上一步=本章最后一节，下一步=下一章第一节
   const inCh=FLAT.filter(l=>l.part===part);
   const lastIdx=find(inCh[inCh.length-1].file), next=FLAT[lastIdx+1];
   window.goPrev=()=>location.hash='#'+encodeURIComponent(inCh[inCh.length-1].file);
   window.goNext=()=>next&&(location.hash='#'+encodeURIComponent(next.file));
 
-  pane.innerHTML='<div class="hq-in"><p class="hq-h">本章小测 · '+part+'</p><p class="hq-sub">出题中…</p></div>';
+  pane.innerHTML='<div class="hqc"><p class="hq-h">'+(onlyIds?'只练错题':'本章小测')+' · '+part+'</p>'+
+    '<div class="hqc-log"></div>'+
+    '<div class="hqc-inp"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
+    '<button class="hqc-send">发送</button><button class="hqc-end">收尾</button></div></div>';
+  const logEl=pane.querySelector('.hqc-log'), inpRow=pane.querySelector('.hqc-inp'),
+        ta=pane.querySelector('.hqc-inp textarea'), sendBtn=pane.querySelector('.hqc-send'),
+        endBtn=pane.querySelector('.hqc-end');
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+  const scroll=()=>{ pane.scrollTop=pane.scrollHeight; };
+  const bot=html=>{ const m=document.createElement('div'); m.className='hqm bot';
+    m.innerHTML='<div class="hqb">'+html+'</div>'; logEl.appendChild(m); scroll();
+    return m.querySelector('.hqb'); };
+  const me=text=>{ const m=document.createElement('div'); m.className='hqm me';
+    m.innerHTML='<div class="hqb">'+esc(text)+'</div>'; logEl.appendChild(m); scroll(); };
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
   let pool=[];
+  bot('出题中…');
   try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
-  if(!pool.length){ pane.querySelector('.hq-sub').textContent='题目没取到——网络抖了下，切走再切回来重试。'; return; }
-  /* 判断力题(A)退出静态卷:识别对错测得出 K/S,判断力测不出——A 层走 Sparky 对话,不打分 */
+  logEl.innerHTML='';
+  if(!pool.length){ bot('题目没取到——网络抖了下,切走再切回来重试。'); return; }
   const aPool=pool.filter(x=>x.ksa==='A');
   const items = onlyIds && onlyIds.length
       ? pool.filter(x=>onlyIds.includes(x.id))
       : pool.filter(x=>x.ksa!=='A').sort(()=>Math.random()-.5).slice(0,8);
-  if(!items.length){ pane.innerHTML='<div class="hq-in"><p class="hq-h">本章小测 · '+part+
-    '</p><p class="hq-sub">这些错题在本章题库里找不到了（题库更新过）。换一轮吧。</p></div>'; return; }
-  const box=document.createElement('div'); box.className='hq-in';
-  box.innerHTML='<p class="hq-h">'+(onlyIds?'只练错题 · ':'本章小测 · ')+part+'</p>'+
-    '<p class="hq-sub">'+(onlyIds
-      ? '这 '+items.length+' 道是你上次错的。练对了就从错题本里划掉。'
-      : '知识与技能题随机抽 '+items.length+' 道——答错也没关系，解析比对错有用。答对 70% 点亮本章。')+'</p>';
-  /* A 层入口:判断力题跟 Sparky 一问一答地过——不打分,不进通关 */
-  if(!onlyIds && aPool.length && window.SparkyQuizA){
-    const ac=document.createElement('div'); ac.className='hq-acard';
-    ac.innerHTML='<div class="t">✦ 判断力题不打分——跟 Sparky 过</div>'+
-      '<div class="d">本章还有 '+aPool.length+' 道判断力题（A）。这类题没有标准答案的宣判：'+
-      'Sparky 抛场景、追问你的思路、给课程的参照判断让你自己比，聊完给一段思维画像。</div>';
-    const ab=document.createElement('button'); ab.className='hq-ago'; ab.textContent='开始对话（抽 3 道）';
-    ab.onclick=()=>{
-      if(!loggedIn()){ gateTo('quiz:'+ch); return; }
-      const ids=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
-      window.SparkyQuizA(ch, ids);
-    };
-    ac.appendChild(ab); box.appendChild(ac);
-  }
+  if(!items.length){ bot('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
+
   let ansN=0, okN=0; const wrongList=[];
-  /* 收尾。做完一定要给三样东西，缺一样这一轮就是白做的：
-     ① 结论（通没通关） ② 错在哪、这类差距补不补得上（按 K/S/A 分，跟全站口径一致）
-     ③ 下一步能点的动作（只练错题 / 再抽一轮 / 去下一章） */
-  const finish=()=>{
-    const pct=okN/items.length, pass=pct>=0.7;
-    const sum=document.createElement('div'); sum.className='hq-sum'+(pass?' pass':'');
-    const best=Math.round((QBEST[ch]||0)*100);
-    let html='<div class="hq-score">'+(pass?'🎉 本章通关':(onlyIds?'错题重练完成':'差一点'))+
-      ' <span>答对 '+okN+' / '+items.length+'</span></div>';
-    if(!onlyIds) html+='<div class="hq-line">本章最好成绩 '+Math.max(best,Math.round(pct*100))+
-      '%'+(pass?'':'　·　答对 70% 即可点亮本章')+'</div>';
 
-    if(wrongList.length){
-      const byK={};
-      wrongList.forEach(w=>{ (byK[w.ksa]=byK[w.ksa]||[]).push(w); });
-      html+='<div class="hq-wt">错的 '+wrongList.length+' 道，分别差在哪</div>';
-      ['K','S','A'].forEach(k=>{
-        if(!byK[k]) return;
-        html+='<div class="hq-kg"><span class="hq-kb k-'+k+'">'+k+' · '+KSA_NAME[k]+'</span>'+
-          '<span class="hq-kn">'+byK[k].length+' 道</span>'+
-          '<span class="hq-kf">'+KSA_FIX[k]+'</span></div>';
-      });
-      html+='<ul class="hq-wl">'+wrongList.map(w=>
-        '<li><b>'+w.q+'</b>'+(w.tag?'<span class="hq-tag">'+w.tag+'</span>':'')+'</li>').join('')+'</ul>';
-    } else if(!onlyIds){
-      html+='<div class="hq-line">全对——这一章不用再回头了。</div>';
-    }
-    sum.innerHTML=html;
-
-    const acts=document.createElement('div'); acts.className='hq-acts';
-    const mk=(txt,cls,fn)=>{ const b=document.createElement('button'); b.className='hq-go '+(cls||'');
-      b.textContent=txt; b.onclick=fn; acts.appendChild(b); return b; };
-    if(wrongList.length) mk('只练这 '+wrongList.length+' 道错题','',()=>renderQuizView(ch, wrongList.map(w=>w.id)));
-    mk('再抽一轮','ghost',()=>renderQuizView(ch));
-    const nextCh=FLAT[find(inCh[inCh.length-1].file)+1];
-    if(nextCh) mk((pass?'去下一章：':'先去下一章：')+nextCh.part,'ghost',
-      ()=>location.hash='#'+encodeURIComponent(nextCh.file));
-    if(!pass) mk('回本章第一节重读','ghost',()=>location.hash='#'+encodeURIComponent(inCh[0].file));
-    sum.appendChild(acts);
-
-    box.appendChild(sum); sum.scrollIntoView({behavior:'smooth',block:'nearest'});
-    if(!onlyIds) saveAttempt(ch,okN,items.length);
-    renderTree($('#q').value);          // 卡片上的通关标即时点亮
-  };
-  const grade=async (q,given,btns,wrap)=>{
-    const res=await fetch(QAPI+'/api/quiz/submit',{method:'POST',
-      headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:{[q.id]:given}})});
-    if(!res.ok) return;
-    const d=(await res.json()).details[0];
-    const ans=Array.isArray(d.ans)?d.ans:[d.ans];
-    btns.forEach((b,i)=>{ b.disabled=true;
-      if(ans.includes(i)) b.className='hq-o ok';
-      else if(b.classList.contains('sel')||(!Array.isArray(given)&&i===given)) b.className='hq-o bad'; });
-    const ex=document.createElement('div'); ex.className='hq-exp';
-    ex.innerHTML=(d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||'');   // exp 是自家题库的富文本(<b>等)
-    wrap.appendChild(ex);
-    if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:d.correct}});
-    if(!d.correct) wrongList.push({id:q.id, q:(q.q||'').replace(/<[^>]+>/g,'').slice(0,52),
-                                   ksa:d.ksa||q.ksa||'K', tag:d.tag||q.tag||''});
-    markWrong(ch, {id:q.id, ksa:d.ksa||q.ksa||'K'}, !d.correct);
-    ansN++; okN+=d.correct?1:0;
-    if(ansN===items.length) finish();
-  };
-  items.forEach((q,qi)=>{
-    const wrap=document.createElement('div');
-    const h=document.createElement('p'); h.className='hq-q';
-    h.innerHTML=(qi+1)+'. '+q.q+(q.type==='multi'?'（多选）':''); wrap.appendChild(h);
-    const btns=q.opts.map(o=>{
-      const b=document.createElement('button'); b.className='hq-o'; b.innerHTML=o;
-      wrap.appendChild(b); return b; });
+  /* ── 每道 K/S 题:抛题→点选→判分→解析,一个 Promise 一道题 ── */
+  const askKS=(q,qi)=>new Promise(resolve=>{
+    bot('<span class="hqc-no">第 '+(qi+1)+' / '+items.length+' 题'+
+        (q.type==='multi'?' · 多选':'')+'</span>'+q.q);
+    const row=document.createElement('div'); row.className='hqc-opts';
+    const btns=q.opts.map((o,i)=>{ const b=document.createElement('button');
+      b.className='hqc-opt'; b.innerHTML=o; row.appendChild(b); return b; });
+    logEl.appendChild(row); scroll();
+    const judge=async given=>{
+      row.classList.add('answered');
+      me(Array.isArray(given)? given.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join(' + ')
+                             : q.opts[given].replace(/<[^>]+>/g,''));
+      let d=null;
+      try{ const res=await fetch(QAPI+'/api/quiz/submit',{method:'POST',
+        headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:{[q.id]:given}})});
+        if(res.ok) d=(await res.json()).details[0]; }catch(e){}
+      if(!d){ bot('这题没判上——网络抖了,跳过它继续。'); resolve(); return; }
+      const ans=Array.isArray(d.ans)?d.ans:[d.ans];
+      btns.forEach((b,i)=>{ if(ans.includes(i)) b.classList.add('ok');
+        else if(b.classList.contains('sel')||(!Array.isArray(given)&&i===given)) b.classList.add('bad'); });
+      bot((d.correct?'✓ 对了。':'✗ 不对。')+(d.exp||''));   /* exp=自家题库的富文本 */
+      if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:d.correct}});
+      if(!d.correct) wrongList.push({ksa:d.ksa||q.ksa||'K'});
+      markWrong(ch,{id:q.id,ksa:d.ksa||q.ksa||'K'},!d.correct);
+      ansN++; okN+=d.correct?1:0;
+      await sleep(500); resolve();
+    };
     if(q.type==='multi'){
-      const go=document.createElement('button'); go.className='hq-go'; go.textContent='确认';
+      const go=document.createElement('button'); go.className='hqc-goml'; go.textContent='确认';
       btns.forEach(b=>b.onclick=()=>b.classList.toggle('sel'));
       go.onclick=()=>{ const sel=btns.map((b,i)=>b.classList.contains('sel')?i:-1).filter(i=>i>=0);
-        if(!sel.length) return; go.disabled=true; grade(q,sel,btns,wrap); };
-      wrap.appendChild(go);
-    } else {
-      btns.forEach((b,i)=>b.onclick=()=>grade(q,i,btns,wrap));
-    }
-    box.appendChild(wrap);
+        if(!sel.length) return; go.remove(); judge(sel); };
+      row.appendChild(go);
+    } else btns.forEach((b,i)=>b.onclick=()=>{ b.classList.add('sel'); judge(i); });
   });
-  pane.innerHTML=''; pane.appendChild(box); pane.scrollTop=0;
+
+  /* ── 收尾动作行 ── */
+  const actions=()=>{ const acts=document.createElement('div'); acts.className='hqc-acts';
+    const mk=(t,cls,fn)=>{ const b=document.createElement('button');
+      b.className='hqc-act'+(cls?' '+cls:''); b.textContent=t; b.onclick=fn; acts.appendChild(b); };
+    const w=loadWrong(), wIds=Object.keys(w).filter(id=>w[id].ch===ch);
+    if(wIds.length) mk('只练错题（'+wIds.length+'）','',()=>{ renderQuizView(ch,wIds); });
+    mk('再抽一轮','',()=>renderQuizView(ch));
+    const nextCh=next&&next.part!==part?next:null;
+    if(next) mk('去下一章 →','pri',()=>location.hash='#'+encodeURIComponent(next.file));
+    mk('回本章第一节','ghost',()=>location.hash='#'+encodeURIComponent(inCh[0].file));
+    logEl.appendChild(acts); scroll(); };
+
+  /* ── 开场 ── */
+  bot(onlyIds
+    ? '这 '+items.length+' 道是你上次错的——练对了就从错题本里划掉。开始。'
+    : '本章小测,我来主持。**知识与技能题 '+items.length+' 道**,答错没关系,解析比对错有用;答对 70% 点亮本章。'+
+      (aPool.length?'做完还有几道**判断力题**,那部分不打分,咱们聊。':'')+'开始。');
+  await sleep(400);
+  for(let i=0;i<items.length;i++) await askKS(items[i],i);
+
+  /* ── K/S 小结:通关判定与落库,全部照旧 ── */
+  const pct=okN/items.length, pass=pct>=0.7;
+  const best=Math.round((QBEST[ch]||0)*100);
+  let sum=(pass?'🎉 **本章通关**':(onlyIds?'错题重练完成':'**差一点**'))+' · 答对 '+okN+' / '+items.length;
+  if(!onlyIds) sum+='<br>本章最好成绩 '+Math.max(best,Math.round(pct*100))+'%'+(pass?'':' · 答对 70% 即可点亮本章');
+  if(wrongList.length){
+    const byK={}; wrongList.forEach(x=>byK[x.ksa]=(byK[x.ksa]||0)+1);
+    sum+='<br>'+Object.keys(byK).map(k=>'错了 '+byK[k]+' 道'+KSA_NAME[k]+'题——'+KSA_FIX[k]).join('<br>');
+  }
+  bot(sum);
+  if(!onlyIds) saveAttempt(ch,okN,items.length);
+  renderTree($('#q').value);
+
+  /* ── A 段:判断力题,LLM 接管 ── */
+  if(onlyIds || !aPool.length){ actions(); return; }
+  await sleep(600);
+  if(!loggedIn()){
+    const b=bot('接下来本来还有 '+aPool.length+' 道**判断力题**——那部分不打分,是聊出来的,要登录才能开。');
+    const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
+    lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
+    actions(); return;
+  }
+  const aIds=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
+  bot('选择题到此为止。接下来 **'+aIds.length+' 道判断力题**——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
+  const hist=[];
+  const sendA=async(text,silent)=>{
+    if(!silent) me(text);
+    hist.push({role:'user',content:text});
+    ta.disabled=true; sendBtn.disabled=true;
+    const bub=bot('<span class="hqc-typing">Sparky 正在想…</span>');
+    let reply='', started=false;
+    try{
+      const r=await fetch(QAPI+'/api/sparky/chat',{method:'POST',
+        headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem(TK)},
+        body:JSON.stringify({messages:hist.slice(-10),
+          ctx:{page:'learn',mode:'quizA',quiz_ids:aIds,done:[],visitor:(localStorage.getItem('hab_vid')||'')}})});
+      if(!r.ok){ let dd=''; try{ dd=(await r.json()).detail||''; }catch(e){}
+        bub.textContent=dd||'连不上了,过会儿再点「收尾」旁边继续说。'; ta.disabled=false; sendBtn.disabled=false; return; }
+      const rd=r.body.getReader(), dec=new TextDecoder(); let buf='';
+      while(true){ const x=await rd.read(); if(x.done) break;
+        buf+=dec.decode(x.value,{stream:true});
+        const lines=buf.split('\n\n'); buf=lines.pop();
+        for(const ln of lines){ if(ln.slice(0,6)!=='data: ') continue;
+          let ev; try{ ev=JSON.parse(ln.slice(6)); }catch(e){ continue; }
+          if(ev.t==='delta'){ reply+=ev.text; bub.innerHTML=md(reply); if(!started){started=true;} scroll(); }
+          else if(ev.t==='refs'&&(ev.items||[]).length){
+            const rw=document.createElement('div'); rw.className='hqc-refs';
+            rw.innerHTML=ev.items.map(it=>'<a href="#'+encodeURIComponent(it.file)+'">📖 '+esc(it.title)+' · '+it.min+"′</a>").join('');
+            logEl.appendChild(rw); scroll(); }
+          else if(ev.t==='err'){ bub.textContent=ev.msg; } } }
+      if(reply) hist.push({role:'assistant',content:reply});
+    }catch(e){ bub.textContent='网络断了一下——再发一次就行。'; }
+    ta.disabled=false; sendBtn.disabled=false; ta.focus();
+  };
+  inpRow.style.display='flex';
+  const submitA=()=>{ const v=ta.value.trim(); if(!v||ta.disabled) return; ta.value=''; sendA(v); };
+  sendBtn.onclick=submitA;
+  ta.onkeydown=e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); submitA(); } };
+  endBtn.onclick=()=>{ inpRow.style.display='none';
+    bot('好,这轮到这。判断力没有分数——上面每道题你和参照的差别,就是下一步该看的方向。'); actions(); };
+  sendA('开始吧,出第一道',true);
 }
 
 /* iframe 内按 ←/→ 也能翻节：same-origin，把按键转发到父页 */
