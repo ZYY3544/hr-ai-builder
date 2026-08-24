@@ -47,6 +47,9 @@ _hits: dict = defaultdict(lambda: deque(maxlen=200))
 # 与 IP 限流叠加生效（都过才放行），额度独立核算。
 _OPC_DAY = int(os.getenv("SPARKY_OPC_RPD", "30"))
 _opc_hits: dict = defaultdict(lambda: deque(maxlen=100))
+# 判断题对话（本章小测 A 层）：同样是长对话场景，独立于 OPC 记账
+_QUIZA_DAY = int(os.getenv("SPARKY_QUIZ_RPD", "45"))
+_quiza_hits: dict = defaultdict(lambda: deque(maxlen=150))
 
 
 def _limited(ip: str) -> Optional[str]:
@@ -171,8 +174,10 @@ def _site_map(jobs: list) -> str:
   右上角圆形头像是登录入口；登录后点头像也能进「成长地图」。
 - **登录与解锁**：微信扫码登录，免费。不登录可以直接读第零、第一篇章；
   登录后解锁全部课程 + 实战任务 + 岗位机会。登录服务偶尔要冷启动 20-40 秒，等一下就好，不是坏了。
-- **本章小测**：每个篇章末尾有「本章小测」卡片，答对 70% 点亮本章；
-  错题自动进错题本，可以只重练错题，也可以整章再抽一轮。
+- **本章小测**：每个篇章末尾有「本章小测」卡片。知识与技能题（K/S）是选择题、
+  机器判分，答对 70% 点亮本章，错题自动进错题本、可只重练错题；
+  判断力题（A）**不打分**——在小测页点「跟 Sparky 过判断题」，你跟对方一问一答地过，
+  聊完给一段思维画像（登录专属、每天限量）。分开是因为：识别对错测得出 K/S，判断力测不出。
 - **成长地图**（顶部 tab，需登录）：章节通关状态、任务进度、小测成绩曲线、错题本都在这。
 - **实战任务**：真实 HR 场景的练手任务包，做完可以走「作品评审」交作业。
 - **作品评审**（入口在「实战任务」页）：把做完的作品交上来，meansights 团队用更强的模型
@@ -276,6 +281,45 @@ APPLY: {"kind":"review","note":"你整理的提交摘要（任务/进度/作品�
    并提醒：聊天磨的是想法，产品要回 Claude Code 做，客户要自己开口去找。
    《把你的 agent 变成一人公司》是本模式的地基，对方没读过先指过去。REFS 规则照常。""",
 }
+_QUIZA_RULES = """
+
+## 本轮处于「判断题对话」模式（本章小测的 A 层，小测页替用户唤起）
+判断力题没有宣判——你是出题人和镜子，不是判卷人。铁律：
+- **绝不说「对了/错了/正确/不正确」，绝不打分**，不出现百分数、不排名。
+  学没学会由对方自己照镜子得出；你宣判一次，这个站「不替人做判断」的骨架就塌一次。
+- 「指路不讲课」在本模式放宽：下面的题面、参照思路、解析都是人工校验过的教学材料，可以引用展开。
+流程（每道题走完再下一道，一次只处理一道）：
+1. 把题干当开放场景抛给对方，**不要展示任何选项**——选项是给你自己对照用的常见思路，念出来就变成选择题了。
+2. 对方作答后，先追问一层把回答逼具体（时间窗多长？谁来承担？按什么抽样？）。
+   对方暴露明显盲区时可以再追一层，最多两层，别变成审讯。
+3. 然后给「课程的参照思路」：基于题面下方的参照与解析，说清参照怎么想、
+   对方的回答与它差在哪个环节——是事实性差异就直说，是取舍差异就把两条路的代价摆出来。
+   **呈现差异，不下判决。**对方的思路比参照更好也完全可能，值得就直说值得。
+4. 收尾这道题，进入下一道。
+全部聊完后：给一段**思维画像**——从这几轮回答里你观察到的思考模式
+（比如「你习惯先动系统再找根因」），必须引用 ta 说过的原话作证据，不贴标签、不打分；
+最后按 REFS 规则推荐 1-3 节最值得回看的课。"""
+
+
+def _quiza_block(quiz_by_id: dict, ids: list) -> str:
+    """把抽中的 A 题（含参照答案与解析——服务端才有）注入模式块。"""
+    rows = []
+    for i, qid in enumerate((ids or [])[:3], 1):
+        q = quiz_by_id.get(str(qid))
+        if not q or q.get("ksa") != "A":
+            continue
+        opts = "\n".join(
+            f"  {'★' if j == q.get('ans') else '·'} {o}"
+            for j, o in enumerate(q.get("opts", [])))
+        rows.append(f"【第{i}题 · 考点:{q.get('tag','')}】{q['q']}\n"
+                    f"常见思路（★=课程参照，只给你对照，绝不展示）：\n{opts}\n"
+                    f"参照解析：{q.get('exp','')}")
+    if not rows:
+        return ""
+    return (_QUIZA_RULES + "\n\n### 本轮的题（只聊这几道，按顺序，聊完就收）\n"
+            + "\n\n".join(rows))
+
+
 _MODE_KINDS = {"coach", "review"}          # APPLY 只认这两类
 
 
@@ -365,7 +409,8 @@ def _extras(terms: list, jobs: list, term_lessons: dict) -> str:
 # ---------------------------------------------------------------- 请求协议
 class ChatCtx(BaseModel):
     page: Optional[str] = None          # index/learn/quiz/jobs/tasks/review/coach/growth/about
-    mode: Optional[str] = None          # / 指令模式：coach / review / opc，无指令时为空
+    mode: Optional[str] = None          # / 指令模式：coach/review/opc/quizA，无指令时为空
+    quiz_ids: Optional[list] = None     # quizA 专用：本轮对话抽中的 A 题 id（服务端校验后注入题面）
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
     trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
@@ -400,7 +445,7 @@ class SignalBody(BaseModel):
 
 
 def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
-                LESSON_SKEL=None, LESSON_TEXT=None) -> APIRouter:
+                LESSON_SKEL=None, LESSON_TEXT=None, QUIZ_ITEMS=None) -> APIRouter:
     router = APIRouter()
     # 标题→文件名反查，给回补闸用。149 个标题已验证全站唯一。
     # 按长度倒序：先匹配长标题，避免短标题是长标题子串时把位置认错。
@@ -409,6 +454,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
 
     SKEL = LESSON_SKEL or {}
     TEXT = LESSON_TEXT or {}
+    QUIZ_BY_ID = {str(q['id']): q for q in (QUIZ_ITEMS or [])}
     system_static = (_PERSONA + "\n\n" + _DISCIPLINE + "\n\n"
                      + _site_map(JOBS) + "\n\n"
                      + _catalog(LESSON_IDX) + "\n\n"
@@ -513,10 +559,10 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
 
         # / 指令模式：不认识的值静默当无模式，老前端/伪造值都不至于挂
         mode = (body.ctx.mode or "").strip() if (body.ctx and body.ctx.mode) else ""
-        if mode not in _MODE_BLOCKS:
+        if mode not in _MODE_BLOCKS and mode != "quizA":
             mode = ""
-        if mode == "opc":
-            # 登录专属 + 独立日额度。挡在这里而不是前端：前端的检查挡君子，这道挡直连的
+        if mode in ("opc", "quizA"):
+            # 登录专属 + 各自独立的日额度。挡在这里而不是前端：前端的检查挡君子，这道挡直连的
             import auth as _auth
             tok = request.headers.get("authorization") or ""
             claims = None
@@ -526,12 +572,23 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
                 except Exception:
                     claims = None
             if not claims:
-                raise HTTPException(401, "「一人公司陪练」要登录后用——点右上角头像登录，回来再发一次 /一人公司。")
+                raise HTTPException(401, "「一人公司陪练」要登录后用——点右上角头像登录，回来再发一次 /一人公司。"
+                                    if mode == "opc" else
+                                    "判断题对话要登录后用——点右上角头像登录，回来再点一次「跟 Sparky 过判断题」。")
             uid = str(claims.get("sub") or ip)
-            q2, now2 = _opc_hits[uid], time.time()
-            if sum(1 for t2 in q2 if now2 - t2 < 86400) >= _OPC_DAY:
-                raise HTTPException(429, "今天的陪练额度用完了——先把聊出来的那个下一步做掉，明天再来。")
+            hits2, cap2 = ((_opc_hits, _OPC_DAY) if mode == "opc" else (_quiza_hits, _QUIZA_DAY))
+            q2, now2 = hits2[uid], time.time()
+            if sum(1 for t2 in q2 if now2 - t2 < 86400) >= cap2:
+                raise HTTPException(429, "今天的陪练额度用完了——先把聊出来的那个下一步做掉，明天再来。"
+                                    if mode == "opc" else
+                                    "今天的判断题对话额度用完了——消化一下聊过的，明天再来一轮。")
             q2.append(now2)
+
+        # quizA 的模式块是动态的：含本轮抽中的题（答案与解析只在服务端）
+        mode_block = (_quiza_block(QUIZ_BY_ID, body.ctx.quiz_ids if body.ctx else [])
+                      if mode == "quizA" else _MODE_BLOCKS.get(mode, ""))
+        if mode == "quizA" and not mode_block:
+            raise HTTPException(400, "这轮判断题没抽到有效题目——回小测页重新点一次入口。")
 
         # 载荷收口：只认 user/assistant，截最近 12 条，总字数封顶
         msgs = [{"role": m.get("role"), "content": str(m.get("content", ""))[:2000]}
@@ -552,7 +609,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
             "messages": [{"role": "system",
                           "content": system_static + _ctx_block(body.ctx)
                           + _fulltext_block(body.ctx, _last_user)
-                          + _MODE_BLOCKS.get(mode, "")}] + msgs,
+                          + mode_block}] + msgs,
             "stream": True,
             # 1200 而非 900：REFS 是全文最后一行，正文一长就可能在它写出来之前被截断，
             # 而截断了系统这边完全无感——用户就拿到零个可点入口。

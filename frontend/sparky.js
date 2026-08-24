@@ -572,7 +572,9 @@
     if (PAGE === 'learn' && location.hash) {
       lesson = decodeURIComponent(location.hash.slice(1));
     }
-    return { page: PAGE, lesson: lesson, done: done, visitor: vid(), mode: chatMode };
+    var c = { page: PAGE, lesson: lesson, done: done, visitor: vid(), mode: chatMode };
+    if (chatMode === 'quizA' && quizA) c.quiz_ids = quizA.ids;
+    return c;
   }
   // 复用 track.js 的匿名访客 id（随机串，不含任何个人信息），别再造一个
   function vid() { try { return localStorage.getItem('hab_vid') || ''; } catch (e) { return ''; } }
@@ -743,6 +745,7 @@
   /* ---------------- / 指令 ---------------- */
   var chatMode = null;      // coach / review / opc;换页即清(模式块只影响当下这段对话)
   var appliedKinds = {};    // 已递交的申请类型:模型若重复吐 APPLY(确认轮又吐一次),这里挡住不重复落库
+  var quizA = null;         // 判断题对话上下文 {ch, ids};小测页经 window.SparkyQuizA 唤起,/退出 即清
   var CMDS = [
     { c: '/就业辅导', m: 'coach',  msg: '我想申请就业辅导', d: '聊两句，我帮你递申请' },
     { c: '/交作业',   m: 'review', msg: '我想提交作品评审', d: '做完任务，交作品换报告' },
@@ -765,17 +768,27 @@
   }
   function pickCmd(x) {
     hideCmds(); ta.value = '';
-    if (!x.m) { if (chatMode) { chatMode = null; note('已回到普通对话。'); } return; }
+    if (!x.m) { if (chatMode) { chatMode = null; quizA = null; note('已回到普通对话。'); } return; }
     if (x.m === 'opc') {
       var t3 = null; try { t3 = localStorage.getItem('hab_token'); } catch (e) {}
       if (!t3) { note('「一人公司陪练」要登录后用——点右上角头像登录再来。'); return; }
     }
-    chatMode = x.m;
+    chatMode = x.m; quizA = null;
     note(x.m === 'coach' ? '已进入就业辅导申请——聊两句，确认后我帮你递上去。发 /退出 可随时离开。'
        : x.m === 'review' ? '已进入作品评审提交——说说你做的哪个任务、放在哪。发 /退出 可随时离开。'
        : '已进入一人公司想法陪练——从「谁付钱」开始磨。发 /退出 可随时离开。');
     ta.value = x.msg; submit();
   }
+  /* 小测页的 A 层入口:抽好的题 id 从这儿进来,服务端按 id 注入题面与参照 */
+  window.SparkyQuizA = function (ch, ids) {
+    var t = null; try { t = localStorage.getItem('hab_token'); } catch (e) {}
+    if (!t) { note('判断题对话要登录后用——点右上角头像登录再来。'); openPanel(); return; }
+    chatMode = 'quizA'; quizA = { ch: ch, ids: ids || [] };
+    openPanel();
+    note('已进入判断题对话——不打分,聊完给你一段思维画像。发 /退出 可随时离开。');
+    ta.value = '开始吧,出第一道'; submit();
+  };
+
   ta.addEventListener('input', function () {
     var v = ta.value;
     if (v.charAt(0) === '/') renderCmds(v.trim());

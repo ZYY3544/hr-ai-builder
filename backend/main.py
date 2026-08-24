@@ -1106,7 +1106,8 @@ _LESSON_TEXT = _load_layer("_text.json")
 
 import sparky as _sparky
 app.include_router(_sparky.make_router(TERMS, JOBS, TERM_LESSONS, _LESSON_IDX,
-                                       _LESSON_SKEL, _LESSON_TEXT))
+                                       _LESSON_SKEL, _LESSON_TEXT,
+                                       QUIZ_ITEMS=_QUIZ["items"]))
 
 
 # ══════════════════════════════════════════════════════════════════

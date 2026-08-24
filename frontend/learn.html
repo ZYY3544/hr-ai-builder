@@ -101,6 +101,12 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .quizls.on{background:linear-gradient(135deg,rgba(0,168,138,.13),rgba(8,145,178,.13))}
 .quizls .sc{margin-left:auto;font-weight:500;font-size:11.5px;color:var(--muted)}
 .quizls .sc.pass{color:#00795F;font-weight:600}
+#quizpane .hq-acard{border:1.5px solid rgba(0,168,138,.35);border-radius:12px;padding:15px 18px;margin:6px 0 22px;
+  background:linear-gradient(135deg,rgba(0,168,138,.05),rgba(8,145,178,.05))}
+#quizpane .hq-acard .t{font-size:13.5px;font-weight:600;color:#0F172A}
+#quizpane .hq-acard .d{font-size:12.5px;color:#64748B;margin-top:5px;line-height:1.8}
+#quizpane .hq-ago{margin-top:10px;font:inherit;font-size:12.5px;font-weight:600;padding:7px 16px;border:none;
+  border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
 #quizpane{flex:1;overflow-y:auto;display:none;background:#fff}
 #quizpane .hq-in{max-width:820px;margin:36px auto 80px;padding:0 28px;color:#0F172A}
 #quizpane .hq-h{font-size:13px;font-weight:600;color:#00795F;letter-spacing:.06em;margin:0 0 4px}
@@ -448,16 +454,32 @@ async function renderQuizView(ch, onlyIds){
   let pool=[];
   try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
   if(!pool.length){ pane.querySelector('.hq-sub').textContent='题目没取到——网络抖了下，切走再切回来重试。'; return; }
+  /* 判断力题(A)退出静态卷:识别对错测得出 K/S,判断力测不出——A 层走 Sparky 对话,不打分 */
+  const aPool=pool.filter(x=>x.ksa==='A');
   const items = onlyIds && onlyIds.length
       ? pool.filter(x=>onlyIds.includes(x.id))
-      : pool.sort(()=>Math.random()-.5).slice(0,8);
+      : pool.filter(x=>x.ksa!=='A').sort(()=>Math.random()-.5).slice(0,8);
   if(!items.length){ pane.innerHTML='<div class="hq-in"><p class="hq-h">本章小测 · '+part+
     '</p><p class="hq-sub">这些错题在本章题库里找不到了（题库更新过）。换一轮吧。</p></div>'; return; }
   const box=document.createElement('div'); box.className='hq-in';
   box.innerHTML='<p class="hq-h">'+(onlyIds?'只练错题 · ':'本章小测 · ')+part+'</p>'+
     '<p class="hq-sub">'+(onlyIds
       ? '这 '+items.length+' 道是你上次错的。练对了就从错题本里划掉。'
-      : '从本章题库随机抽 '+items.length+' 道——答错也没关系，解析比对错有用。答对 70% 点亮本章。')+'</p>';
+      : '知识与技能题随机抽 '+items.length+' 道——答错也没关系，解析比对错有用。答对 70% 点亮本章。')+'</p>';
+  /* A 层入口:判断力题跟 Sparky 一问一答地过——不打分,不进通关 */
+  if(!onlyIds && aPool.length && window.SparkyQuizA){
+    const ac=document.createElement('div'); ac.className='hq-acard';
+    ac.innerHTML='<div class="t">✦ 判断力题不打分——跟 Sparky 过</div>'+
+      '<div class="d">本章还有 '+aPool.length+' 道判断力题（A）。这类题没有标准答案的宣判：'+
+      'Sparky 抛场景、追问你的思路、给课程的参照判断让你自己比，聊完给一段思维画像。</div>';
+    const ab=document.createElement('button'); ab.className='hq-ago'; ab.textContent='开始对话（抽 3 道）';
+    ab.onclick=()=>{
+      if(!loggedIn()){ gateTo('quiz:'+ch); return; }
+      const ids=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
+      window.SparkyQuizA(ch, ids);
+    };
+    ac.appendChild(ab); box.appendChild(ac);
+  }
   let ansN=0, okN=0; const wrongList=[];
   /* 收尾。做完一定要给三样东西，缺一样这一轮就是白做的：
      ① 结论（通没通关） ② 错在哪、这类差距补不补得上（按 K/S/A 分，跟全站口径一致）
