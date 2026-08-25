@@ -781,7 +781,7 @@ TERM_LESSONS = {
  "comp_design":    ["hr-caliber-2.html","hr-caliber-1.html"],
  "ship":           ["vibe-safety.html","hr-rollout.html","cc-permissions.html"],
  "logic":          ["hr-elicitation-1.html","hr-elicitation-2.html","ai-tips-boundary.html"],
- "product":        ["hr-inventory-2.html","ai-tips-scenarios.html"],
+ "product":        ["hr-inventory-2.html","ai-tips-boundary.html"],
  "structured":     ["hr-project-tell.html","psy-error-comms.html","taste-spec.html"],
  "learning_agility":["ai-tips-iterate.html","start-how-to-learn.html","hr-org-3.html"],
  "influence":      ["hr-inventory-3.html","psy-captive.html","hr-rollout.html"],

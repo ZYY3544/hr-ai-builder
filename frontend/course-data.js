@@ -16,16 +16,16 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 148,
+   "lessons": 145,
    "copy": 40,
    "adapt": 20,
    "new": 96,
    "ready": 149,
    "todo": 0,
-   "minutes": 584
+   "minutes": 577
   },
   "access": {
-   "free": 129,
+   "free": 126,
    "locked": 19,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -164,17 +164,7 @@ window.COURSE = {
      "title": "HR 三千问",
      "desc": "一页一问，把最常见的疑惑一次说清",
      "lessons": [
-      {
-       "file": "zero-q-prompt.html",
-       "action": "copy",
-       "ksa": "S",
-       "title": "提示词到底怎么写才好？",
-       "seo": "提示词到底怎么写才好？",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 4
-      },
+      
       {
        "file": "zero-q-prompt-engineering.html",
        "action": "copy",
@@ -257,18 +247,7 @@ window.COURSE = {
        "desc": "",
        "free": true,
        "ready": true,
-       "min": 3
-      },
-      {
-       "file": "ai-tips-context.html",
-       "action": "copy",
-       "ksa": "S",
-       "title": "好提问 vs 坏提问",
-       "seo": "同一个问题，怎么问 AI 才给得出好答案",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 3
+       "min": 6
       },
       {
        "file": "ai-tips-verify.html",
@@ -287,17 +266,6 @@ window.COURSE = {
        "ksa": "A",
        "title": "迭代的艺术：知道何时收手",
        "seo": "跟 AI 来回改了十轮还不满意，什么时候该收手",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 3
-      },
-      {
-       "file": "ai-tips-scenarios.html",
-       "action": "copy",
-       "ksa": "A",
-       "title": "场景速查：什么时候放心用",
-       "seo": "哪些场景可以放心用 AI，哪些必须人工复核",
        "desc": "",
        "free": true,
        "ready": true,
