@@ -162,6 +162,28 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 6px 18px}
 #quizpane .hqc-refs a{font-size:12px;font-weight:500;color:#00795F;border:1px solid rgba(0,168,138,.4);
   border-radius:8px;padding:5px 11px;background:#F0FDF9}
+/* 右上角工具:+ 新开一场 / 时钟看历史(同 Sparky 浮窗的交互语言) */
+#quizpane .hqc-tools{position:sticky;top:8px;z-index:6;height:0;display:flex;justify-content:flex-end;gap:6px}
+#quizpane .hqc-ib{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:none;
+  border-radius:9px;background:rgba(255,255,255,.92);color:#94A3B8;cursor:pointer;transition:.13s;
+  box-shadow:0 1px 3px rgba(15,23,42,.08)}
+#quizpane .hqc-ib:hover{color:#00795F;background:#F0FDF9}
+#quizpane .hqc-ib svg{width:16px;height:16px}
+/* 历史浮层:盖在对话区上面,活会话的 DOM 原封不动躺在下面 */
+#quizpane .hqc-histp{position:fixed;display:none;z-index:40;background:#fff;overflow-y:auto;padding:18px 30px 30px 44px}
+#quizpane .hqc-histp.on{display:block}
+#quizpane .hqc-hhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+#quizpane .hqc-hhead b{font-size:13.5px;color:#0F172A}
+#quizpane .hqc-hback{font:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:8px;
+  border:1.5px solid rgba(0,168,138,.45);background:#fff;color:#00795F;cursor:pointer}
+#quizpane .hqc-hrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;font-size:13px;
+  padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:11px;background:#fff;cursor:pointer;margin-bottom:8px}
+#quizpane .hqc-hrow:hover{border-color:#00A88A;background:#F0FDF9}
+#quizpane .hqc-hrow .hd{color:#94A3B8;font-size:12px;flex-shrink:0}
+#quizpane .hqc-hrow .hs{color:#0F172A;font-weight:600;flex:1}
+#quizpane .hqc-hrow .hp{color:#00795F;font-size:12px;font-weight:700}
+#quizpane .hqc-hempty{color:#94A3B8;font-size:13px;padding:20px 0}
+#quizpane .hqc-hview .hqc-inp{display:none!important}
 #quizpane{flex:1;overflow-y:auto;display:none;background:#fff}
 #quizpane .hq-in{max-width:820px;margin:36px auto 80px;padding:0 28px;color:#0F172A}
 #quizpane .hq-h{font-size:13px;font-weight:600;color:#00795F;letter-spacing:.06em;margin:0 0 4px}
@@ -476,6 +498,31 @@ const KSA_FIX={K:'回去读就能补，几天的事',
                S:'得动手做一遍才补得上，几周到几个月',
                A:'补不了，只能拿真实经历重新证明'};
 
+/* ── 小测会话档案:一条规则管全部 ─────────────────────────────
+   会话永远都在,只有两种结束方式:做完了,或用户自己点「+/再抽一轮」。
+   切课、跨页、刷新、隔天回来,一律接着上回——系统没有任何"主动刷新"的分支。
+   结构:{ [章]: { cur:会话|null, hist:[已归档会话...] } }
+   会话={id,ts,wrongMode,done,score,html(对话快照),state(引擎断点)}
+   快照只在"干净边界"打(开场完/每题判完/每轮对话完):题中间的半截恢复不了,
+   跨页回来那道题会重出一遍——这是存档粒度,不是丢失。 */
+const QS_KEY='hab_quiz_sess';
+const qsLoad=()=>{ try{ return JSON.parse(localStorage.getItem(QS_KEY)||'{}'); }catch(e){ return {}; } };
+function qsPersist(store){
+  /* 配额保护:超限先丢最老的归档场次,再不行丢最大的,活会话最后保 */
+  for(let t=0;t<8;t++){
+    try{ localStorage.setItem(QS_KEY,JSON.stringify(store)); return; }
+    catch(e){
+      let oldest=null;
+      Object.values(store).forEach(c=>{ (c.hist||[]).forEach(s=>{ if(!oldest||s.ts<oldest.ts) oldest=s; }); });
+      if(oldest){ Object.values(store).forEach(c=>{ c.hist=(c.hist||[]).filter(s=>s!==oldest); }); }
+      else return;   // 连归档都没了还存不下——放弃这次落盘,内存里的会话不受影响
+    } }
+}
+function qsArchive(chSt){
+  if(chSt.cur){ const c=chSt.cur; delete c.state;   // 归档=只读档案,断点状态不再需要
+    chSt.hist=[c,...(chSt.hist||[])].slice(0,5); chSt.cur=null; }
+}
+
 async function renderQuizView(ch, onlyIds, fresh){
   /* ── 对话式测评引擎 ──────────────────────────────────────────
      形态抄自我们自己的调研 agent(gaode-survey-agent),同一条架构铁律:
@@ -496,22 +543,74 @@ async function renderQuizView(ch, onlyIds, fresh){
   window.goPrev=()=>location.hash='#'+encodeURIComponent(inCh[inCh.length-1].file);
   window.goNext=()=>next&&(location.hash='#'+encodeURIComponent(next.file));
 
-  /* 会话保活:切去看某节课再切回来,同一章的对话还活在 pane 里(load() 只是隐藏它),
-     直接亮出来接着聊——不重建、不重调 LLM 开场、答题进度不丢。
-     只有「再抽一轮/只练错题」按钮传 fresh 才真正重开一场。 */
-  const skey=ch+(onlyIds&&onlyIds.length?':wrong':'');
-  if(!fresh && pane.dataset.live===skey && pane.querySelector('.hqc')){
+  /* 内存快路径:本页内切课再切回,对话 DOM 原封活着(load() 只藏不毁),直接亮出来。
+     只要还是这一章,不管当前场是常规还是错题重练,都接着聊。 */
+  const wantWrong=!!(onlyIds&&onlyIds.length);
+  if(!fresh && !wantWrong && (pane.dataset.live||'').split(':')[0]===ch && pane.querySelector('.hqc')){
     $('#side').classList.remove('show'); return; }
-  pane.dataset.live=skey;
+
+  /* 档案:fresh(+/再抽一轮)或明确点了错题重练=用户亲手重开,旧场归档;其余一律接上回 */
+  const qstore=qsLoad(); const chSt=qstore[ch]||(qstore[ch]={cur:null,hist:[]});
+  if(fresh||wantWrong) qsArchive(chSt);
+  const resumed=!!chSt.cur;
+  const SESS=resumed?chSt.cur
+    :{id:Date.now(),ts:Date.now(),wrongMode:wantWrong,done:false,score:null,html:'',
+      state:{phase:'open',ids:[],idx:0,total:0,ansN:0,okN:0,wrongL:[],wrongTags:[],streak:0,misses:0,kHist:[],
+             extras:null,eidx:0,aIds:null,aHist:[]}};
+  chSt.cur=SESS;
+  const st=SESS.state||(SESS.state={phase:'done',ids:[],idx:0,total:0,ansN:0,okN:0,wrongL:[],wrongTags:[],
+             streak:0,misses:0,kHist:[],extras:null,eidx:0,aIds:null,aHist:[]});
+  const onlyWrong=SESS.wrongMode;   // 模式跟着会话走,不跟入口参数走(断点续传时入口没带 ids)
+  pane.dataset.live=ch+(onlyWrong?':wrong':'');
 
   pane.innerHTML='<div class="hqc">'+
+    '<div class="hqc-tools">'+
+      '<button class="hqc-ib" id="hq-new" title="新开一场"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>'+
+      '<button class="hqc-ib" id="hq-hi" title="过往场次"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button>'+
+    '</div>'+
     '<div class="hqc-log"></div>'+
     '<div class="hqc-inp"><div class="hqc-shell"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
     '<div class="hqc-btm"><button class="hqc-end">聊完了,收尾</button><span style="flex:1"></span>'+
-    '<button class="hqc-send" title="发送"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></div></div>';
+    '<button class="hqc-send" title="发送"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></div></div>'+
+    '<div class="hqc-histp"></div>';
   const logEl=pane.querySelector('.hqc-log'), inpRow=pane.querySelector('.hqc-inp'),
         ta=pane.querySelector('.hqc-inp textarea'), sendBtn=pane.querySelector('.hqc-send'),
-        endBtn=pane.querySelector('.hqc-end');
+        endBtn=pane.querySelector('.hqc-end'), histp=pane.querySelector('.hqc-histp');
+
+  /* 快照落盘:引擎在每个"干净边界"调它。counters 是闭包本地变量,落盘时同步进 state */
+  const save=()=>{
+    Object.assign(st,{ansN,okN,streak,misses,wrongL:wrongList.map(x=>x.ksa),
+      wrongTags:wrongTags.slice(),kHist:kHist.slice(-6)});
+    SESS.html=logEl.innerHTML; SESS.ts=Date.now(); qsPersist(qstore); };
+
+  /* 右上角工具:+ 新开一场 / 时钟看过往(同 Sparky 浮窗) */
+  pane.querySelector('#hq-new').onclick=()=>renderQuizView(ch,null,true);
+  const fmtT=ts=>{ const d=new Date(ts);
+    return (d.getMonth()+1)+'-'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
+  const openHist=()=>{
+    if(histp.classList.contains('on')){ histp.classList.remove('on'); return; }
+    const r=pane.getBoundingClientRect();
+    histp.style.left=r.left+'px'; histp.style.top=r.top+'px';
+    histp.style.width=r.width+'px'; histp.style.height=r.height+'px';
+    const rows=chSt.hist||[];
+    histp.innerHTML='<div class="hqc-hhead"><b>过往场次</b><span style="flex:1"></span><button class="hqc-hback">✕ 关闭</button></div>'+
+      (rows.length? rows.map((s,i)=>'<button class="hqc-hrow" data-i="'+i+'"><span class="hd">'+fmtT(s.ts)+'</span>'+
+          '<span class="hs">'+(s.wrongMode?'错题重练':'本章小测')+(s.done?'':' · 没做完')+'</span>'+
+          (s.score?'<span class="hp">'+s.score.ok+' / '+s.score.n+(s.score.n&&s.score.ok/s.score.n>=0.7?' · 通关':'')+'</span>':'')+
+        '</button>').join('')
+      :'<div class="hqc-hempty">还没有归档的场次——点「+」新开一场时,当前这场会存到这里。</div>');
+    histp.querySelector('.hqc-hback').onclick=()=>histp.classList.remove('on');
+    histp.querySelectorAll('.hqc-hrow').forEach(rw=>rw.onclick=()=>{
+      const s=rows[+rw.dataset.i];
+      histp.innerHTML='<div class="hqc-hhead"><button class="hqc-hback" id="hq-hls">← 场次列表</button>'+
+        '<b>'+fmtT(s.ts)+' 的一场(只读)</b><span style="flex:1"></span><button class="hqc-hback" id="hq-hx">✕ 关闭</button></div>'+
+        '<div class="hqc hqc-hview">'+s.html+'</div>';
+      histp.querySelectorAll('.hqc-hview button').forEach(b=>b.disabled=true);
+      histp.querySelector('#hq-hls').onclick=()=>{ histp.classList.remove('on'); openHist(); };
+      histp.querySelector('#hq-hx').onclick=()=>histp.classList.remove('on');
+    });
+    histp.classList.add('on'); histp.scrollTop=0; };
+  pane.querySelector('#hq-hi').onclick=openHist;
   const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
   const scroll=()=>{ pane.scrollTop=pane.scrollHeight; };
@@ -543,7 +642,7 @@ async function renderQuizView(ch, onlyIds, fresh){
     m.innerHTML='<div class="hqb"><span class="hq-umark">›</span><span class="hq-ubody">'+esc(text)+'</span></div>';
     logEl.appendChild(m); scroll(); };
   /* 反馈不念稿:按对错、连对连错、进度挑话说——还是状态机,只是不机械 */
-  let streak=0, misses=0;
+  let streak=st.streak||0, misses=st.misses||0;
   const pick=a=>a[Math.floor(Math.random()*a.length)];
   const okLine=()=>{ streak++; misses=0;
     if(streak>=3) return pick(['✓ '+streak+' 连对,手感来了。','✓ 又对——连着 '+streak+' 道了。']);
@@ -554,18 +653,31 @@ async function renderQuizView(ch, onlyIds, fresh){
     if(misses>=2) return pick(['✗ 这道也不对——别急,解析里有钩子:','✗ 又差一点。这道的关键:']);
     return pick(['✗ 不对。','✗ 差一点。','✗ 这道不对——']); };
 
-  let pool=[];
-  botNow('<span class="hqc-typing">Musing…</span>');
-  try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
-  logEl.innerHTML='';
-  if(!pool.length){ pane.dataset.live=''; botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
-  const aPool=pool.filter(x=>x.ksa==='A');
-  const items = onlyIds && onlyIds.length
-      ? pool.filter(x=>onlyIds.includes(x.id))
-      : pool.filter(x=>x.ksa!=='A').sort(()=>Math.random()-.5).slice(0,8);
-  if(!items.length){ pane.dataset.live=''; botNow('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
+  const doneReplay=resumed&&SESS.done;
+  let pool=[], aPool=[], items=[], total=0;
+  if(!doneReplay){
+    botNow('<span class="hqc-typing">Musing…</span>');
+    try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
+    logEl.innerHTML='';
+    if(!pool.length){ pane.dataset.live=''; botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
+    aPool=pool.filter(x=>x.ksa==='A');
+    if(resumed&&st.ids.length){
+      /* 断点续传:按存档题序复原。题库更新对不上号时这场接不上——归档留档,重开新场 */
+      items=st.ids.map(id=>pool.find(x=>x.id===id));
+      if(items.some(x=>!x)){ qsArchive(chSt); qsPersist(qstore); pane.dataset.live='';
+        return renderQuizView(ch,null,true); }
+      total=st.total||items.length;
+    } else {
+      items = onlyIds && onlyIds.length
+          ? pool.filter(x=>onlyIds.includes(x.id))
+          : pool.filter(x=>x.ksa!=='A').sort(()=>Math.random()-.5).slice(0,8);
+      if(!items.length){ pane.dataset.live=''; botNow('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
+      st.ids=items.map(x=>x.id); st.total=total=items.length;
+    }
+  }
 
-  let ansN=0, okN=0; const wrongList=[], wrongTags=[];
+  let ansN=st.ansN||0, okN=st.okN||0;
+  const wrongList=(st.wrongL||[]).map(k=>({ksa:k})), wrongTags=(st.wrongTags||[]).slice();
   let pendingQ=null;   // 正在作答、还没判分的题——此时答疑要拦,防泄答案
 
   /* ── 共用 SSE:quizA(判断题)与 quizK(选择题伴考)都走这条管道 ── */
@@ -598,6 +710,8 @@ async function renderQuizView(ch, onlyIds, fresh){
   let curQ=null;                       // 最近一道判过的题,输入框答疑用
   let curReprobe=null, rHist=[];       // 反问进行中的题与对话——打字回应反问要接得住,不能拦
   const askKS=(q,qi,extra)=>new Promise(async resolve=>{
+    if(extra) st.eidx=qi; else st.idx=qi;
+    save();   /* 干净边界:这道题还没出,快照停在上一题判完处 */
     if(!extra&&qi===Math.floor(items.length/2)&&qi>1){
       await bot(okN>=qi-1?'过半了,一道没丢——继续。':(okN>=qi/2?'过半了,状态在线。':'过半了。前面错的那几道,解析别跳过——后半段还会碰到同类。'));
       await sleep(300); }
@@ -632,7 +746,10 @@ async function renderQuizView(ch, onlyIds, fresh){
       if(!firstCorrect){ wrongList.push({ksa:d.ksa||q.ksa||'K'}); wrongTags.push(q.tag||''); }
       markWrong(ch,{id:q.id,ksa:d.ksa||q.ksa||'K'},!firstCorrect);
       if(!extra){ ansN++; okN+=firstCorrect?1:0; }
-      curQ=q; pendingQ=null; curReprobe=null; rHist=[]; await sleep(400); resolve(); };
+      curQ=q; pendingQ=null; curReprobe=null; rHist=[];
+      if(extra) st.eidx=qi+1; else st.idx=qi+1;
+      save();   /* 判完+解析已上屏,又一个干净边界 */
+      await sleep(400); resolve(); };
     const judge=async given=>{
       tries++;
       row.classList.add('answered');
@@ -678,31 +795,49 @@ async function renderQuizView(ch, onlyIds, fresh){
     if(next) mk('去下一章 →','pri',()=>location.hash='#'+encodeURIComponent(next.file));
     mk('回本章第一节','ghost',()=>location.hash='#'+encodeURIComponent(inCh[0].file));
     logEl.appendChild(acts); scroll(); };
+  const finish=()=>{ actions(); SESS.done=true; SESS.score={ok:okN,n:total||1}; st.phase='done'; save(); };
+
+  /* 完结场次回放:成绩单原样躺回来;动作行重建(按钮要活的) */
+  if(doneReplay){
+    logEl.innerHTML=SESS.html;
+    logEl.querySelectorAll('button').forEach(b=>b.disabled=true);
+    logEl.querySelectorAll('.hqc-acts').forEach(a=>a.remove());
+    actions(); scroll(); return;
+  }
+  /* 未完结断点:对话记录静态躺回(已判的题本来就是锁死的),引擎从断点接着跑 */
+  if(resumed){
+    logEl.innerHTML=SESS.html;
+    logEl.querySelectorAll('button').forEach(b=>b.disabled=true);
+    scroll();
+  }
 
   /* ── 开场 ── */
   /* 开场:交给模型当这场巩固的主持人(定位=巩固不是考试,见后端 open 场景)。
      真值情况(读了几节/上回成绩/首次或重练)由系统消息给它,话让它自己说。
      匿名无 LLM,一句脚本兜底,不装腔。 */
-  const readN=inCh.filter(l=>done.has(l.file)).length;
-  const prevBest=Math.round((QBEST[ch]||0)*100);
-  if(loggedIn()){
-    const situ='(系统:用户进入「'+part+'」的本章巩固。'+
-      (onlyIds
-        ? '这次是错题重练,共 '+items.length+' 道上回错的题。'
-        : '本章 '+inCh.length+' 节已读 '+readN+' 节;'+
-          (prevBest>0?'上回小测最好 '+prevBest+'%'+(prevBest>=70?'(已通关)':'(未通关)'):'第一次做本章小测')+
-          ';本轮知识与技能题 '+items.length+' 道'+(aPool.length?',之后还有判断力对话':'')+'。')+
-      '请按 open 场景开场。)';
-    const bub=botNow('<span class="hqc-typing">Musing…</span>');
-    await sseChat([{role:'user',content:situ}],{mode:'quizK',quiz_stage:'open',quiz_chapter:ch},bub);
-  } else {
-    await bot(onlyIds
-      ? '错题重练——这 '+items.length+' 道是你上次错的,练对就划掉。'
-      : '来把这章钉扎实。<b>知识与技能题 '+items.length+' 道</b>,答对 70% 点亮本章,答错看解析。');
+  if(st.phase==='open'){
+    const readN=inCh.filter(l=>done.has(l.file)).length;
+    const prevBest=Math.round((QBEST[ch]||0)*100);
+    if(loggedIn()){
+      const situ='(系统:用户进入「'+part+'」的本章巩固。'+
+        (onlyWrong
+          ? '这次是错题重练,共 '+items.length+' 道上回错的题。'
+          : '本章 '+inCh.length+' 节已读 '+readN+' 节;'+
+            (prevBest>0?'上回小测最好 '+prevBest+'%'+(prevBest>=70?'(已通关)':'(未通关)'):'第一次做本章小测')+
+            ';本轮知识与技能题 '+items.length+' 道'+(aPool.length?',之后还有判断力对话':'')+'。')+
+        '请按 open 场景开场。)';
+      const bub=botNow('<span class="hqc-typing">Musing…</span>');
+      await sseChat([{role:'user',content:situ}],{mode:'quizK',quiz_stage:'open',quiz_chapter:ch},bub);
+    } else {
+      await bot(onlyWrong
+        ? '错题重练——这 '+items.length+' 道是你上次错的,练对就划掉。'
+        : '来把这章钉扎实。<b>知识与技能题 '+items.length+' 道</b>,答对 70% 点亮本章,答错看解析。');
+    }
+    await sleep(300);
+    st.phase='ks'; save();
   }
-  await sleep(300);
   /* K/S 段:答疑输入框常开(登录时)——单行道变双行道 */
-  let phase='ks'; const kHist=[];
+  let phase='ks'; const kHist=(st.kHist||[]).slice(); let sendA=null;
   const kAsk=async v=>{
     me(v);
     /* 反问进行中:用户打字回应反问 → 顺着掰扯(同一场 reprobe 对话),别拦 */
@@ -723,6 +858,7 @@ async function renderQuizView(ch, onlyIds, fresh){
     const bub=botNow('<span class="hqc-typing">Musing…</span>');
     const reply=await sseChat(kHist.slice(-6),{mode:'quizK',quiz_qid:qid,quiz_stage:stage},bub);
     if(reply) kHist.push({role:'assistant',content:reply});
+    if(!pendingQ) save();   /* 判分后的答疑落快照;作答前的 preask 不落(题开着,非边界) */
     ta.disabled=false; sendBtn.disabled=false; };
   const submitMsg=()=>{ const v=ta.value.trim(); if(!v||ta.disabled) return; ta.value='';
     if(phase==='a') sendA(v); else kAsk(v); };
@@ -730,67 +866,93 @@ async function renderQuizView(ch, onlyIds, fresh){
   ta.onkeydown=e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); submitMsg(); } };
   if(loggedIn()){ inpRow.style.display='flex'; endBtn.style.display='none';
     ta.placeholder='对题目或解析有疑问?随时打字问我,不影响考试'; }
-  for(let i=0;i<items.length;i++) await askKS(items[i],i);
+  if(st.phase==='ks'){
+    for(let i=st.idx;i<items.length;i++) await askKS(items[i],i);
+    st.phase='extras'; st.eidx=0; save();
+  }
 
-  /* 自适应加练:栽过的考点,抽同类题再验一遍(不计分,纯状态机) */
-  if(!onlyIds){
-    const seen=new Set(items.map(x=>x.id));
-    const tagsLeft=[...new Set(wrongTags.filter(Boolean))];
-    const extras=[];
-    for(const tg of tagsLeft){
-      const cand=pool.filter(x=>x.ksa!=='A'&&!seen.has(x.id)&&(x.tag||'')===tg);
-      if(cand.length&&extras.length<2){ const pk=cand[Math.floor(Math.random()*cand.length)];
-        extras.push(pk); seen.add(pk.id); } }
-    if(extras.length){
-      await bot('等下,先别看总分——「'+extras.map(x=>esc(x.tag||'同类')).join('」和「')+
-        '」这'+(extras.length>1?'几':'')+'个考点你刚栽过。我从题库再抽'+extras.length+'道同类的,验一下是真懂了还是碰巧——<b>不计分</b>。');
-      await sleep(300);
-      for(let i=0;i<extras.length;i++) await askKS(extras[i],i,true);
+  /* 自适应加练:栽过的考点,抽同类题再验一遍(不计分,纯状态机)。
+     抽了哪几道记进存档,断点回来不换题、不重发开场白 */
+  if(st.phase==='extras'){
+    if(!onlyWrong){
+      let extras;
+      if(st.extras){ extras=st.extras.map(id=>pool.find(x=>x.id===id)).filter(Boolean); }
+      else{
+        const seen=new Set(items.map(x=>x.id));
+        const tagsLeft=[...new Set(wrongTags.filter(Boolean))];
+        extras=[];
+        for(const tg of tagsLeft){
+          const cand=pool.filter(x=>x.ksa!=='A'&&!seen.has(x.id)&&(x.tag||'')===tg);
+          if(cand.length&&extras.length<2){ const pk=cand[Math.floor(Math.random()*cand.length)];
+            extras.push(pk); seen.add(pk.id); } }
+        st.extras=extras.map(x=>x.id); save();
+        if(extras.length){
+          await bot('等下,先别看总分——「'+extras.map(x=>esc(x.tag||'同类')).join('」和「')+
+            '」这'+(extras.length>1?'几':'')+'个考点你刚栽过。我从题库再抽'+extras.length+'道同类的,验一下是真懂了还是碰巧——<b>不计分</b>。');
+          await sleep(300);
+        }
+      }
+      for(let i=st.eidx;i<extras.length;i++) await askKS(extras[i],i,true);
     }
+    st.phase='sum'; save();
   }
 
   /* ── K/S 小结:通关判定与落库,全部照旧 ── */
-  const pct=okN/items.length, pass=pct>=0.7;
-  const best=Math.round((QBEST[ch]||0)*100);
-  let sum=(pass?'🎉 <b>本章通关</b>':(onlyIds?'错题重练完成':'<b>差一点</b>'))+' · 答对 '+okN+' / '+items.length;
-  if(!onlyIds) sum+='<br>本章最好成绩 '+Math.max(best,Math.round(pct*100))+'%'+(pass?'':' · 答对 70% 即可点亮本章');
-  if(wrongList.length){
-    const byK={}; wrongList.forEach(x=>byK[x.ksa]=(byK[x.ksa]||0)+1);
-    sum+='<br>'+Object.keys(byK).map(k=>'错了 '+byK[k]+' 道'+KSA_NAME[k]+'题——'+KSA_FIX[k]).join('<br>');
-  }
-  await bot(sum);
-  if(!onlyIds) saveAttempt(ch,okN,items.length);
-  renderTree($('#q').value);
+  let firstA=false;
+  if(st.phase==='sum'){
+    const pct=okN/total, pass=pct>=0.7;
+    const best=Math.round((QBEST[ch]||0)*100);
+    let sum=(pass?'🎉 <b>本章通关</b>':(onlyWrong?'错题重练完成':'<b>差一点</b>'))+' · 答对 '+okN+' / '+total;
+    if(!onlyWrong) sum+='<br>本章最好成绩 '+Math.max(best,Math.round(pct*100))+'%'+(pass?'':' · 答对 70% 即可点亮本章');
+    if(wrongList.length){
+      const byK={}; wrongList.forEach(x=>byK[x.ksa]=(byK[x.ksa]||0)+1);
+      sum+='<br>'+Object.keys(byK).map(k=>'错了 '+byK[k]+' 道'+KSA_NAME[k]+'题——'+KSA_FIX[k]).join('<br>');
+    }
+    await bot(sum);
+    if(!onlyWrong) saveAttempt(ch,okN,total);
+    renderTree($('#q').value);
 
-  /* ── A 段:判断力题,LLM 接管 ── */
-  if(onlyIds || !aPool.length){ actions(); return; }
-  await sleep(600);
-  if(!loggedIn()){
-    const b=await bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分,是聊出来的,要登录才能开。');
-    const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
-    lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
-    actions(); return;
+    if(onlyWrong || !aPool.length){ finish(); return; }
+    await sleep(600);
+    if(!loggedIn()){
+      const b=await bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分,是聊出来的,要登录才能开。');
+      const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
+      lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
+      finish(); return;
+    }
+    st.aIds=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
+    await bot('选择题到此为止。接下来 <b>'+st.aIds.length+' 道判断力题</b>——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
+    st.phase='a'; save(); firstA=true;
   }
-  const aIds=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
-  await bot('选择题到此为止。接下来 <b>'+aIds.length+' 道判断力题</b>——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
-  const hist=[];
-  const sendA=async(text,silent)=>{
-    if(!silent) me(text);
-    hist.push({role:'user',content:text});
-    ta.disabled=true; sendBtn.disabled=true;
-    const bub=botNow('<span class="hqc-typing">Musing…</span>');
-    try{
-      const reply=await sseChat(hist.slice(-10),{mode:'quizA',quiz_ids:aIds},bub);
-      if(reply) hist.push({role:'assistant',content:reply});
-    }catch(e){ bub.textContent='网络断了一下——再发一次就行。'; }
-    ta.disabled=false; sendBtn.disabled=false; ta.focus();
-  };
-  phase='a';
-  inpRow.style.display='flex'; endBtn.style.display='';
-  ta.placeholder='说说你的思路…';
-  endBtn.onclick=async()=>{ inpRow.style.display='none';
-    await bot('好,这轮到这。判断力没有分数——上面每道题你和参照的差别,就是下一步该看的方向。'); actions(); };
-  sendA('开始吧,出第一道',true);
+
+  /* ── A 段:判断力题,LLM 接管(新进入或断点续上——续上时上一轮对话已在快照里,话筒直接递回用户) ── */
+  if(st.phase==='a'){
+    if(!loggedIn()){
+      const b=await bot('这场聊到一半的判断力对话,要登录才能继续。');
+      const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
+      lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
+      return;
+    }
+    const aIds=st.aIds||[], hist=(st.aHist||[]).slice();
+    sendA=async(text,silent)=>{
+      if(!silent) me(text);
+      hist.push({role:'user',content:text});
+      ta.disabled=true; sendBtn.disabled=true;
+      const bub=botNow('<span class="hqc-typing">Musing…</span>');
+      try{
+        const reply=await sseChat(hist.slice(-10),{mode:'quizA',quiz_ids:aIds},bub);
+        if(reply) hist.push({role:'assistant',content:reply});
+      }catch(e){ bub.textContent='网络断了一下——再发一次就行。'; }
+      st.aHist=hist.slice(-10); save();
+      ta.disabled=false; sendBtn.disabled=false; ta.focus();
+    };
+    phase='a';
+    inpRow.style.display='flex'; endBtn.style.display='';
+    ta.placeholder='说说你的思路…';
+    endBtn.onclick=async()=>{ inpRow.style.display='none';
+      await bot('好,这轮到这。判断力没有分数——上面每道题你和参照的差别,就是下一步该看的方向。'); finish(); };
+    if(firstA) sendA('开始吧,出第一道',true);
+  }
 }
 
 /* iframe 内按 ←/→ 也能翻节：same-origin，把按键转发到父页 */
