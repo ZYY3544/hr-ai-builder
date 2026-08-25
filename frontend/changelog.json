@@ -618,6 +618,27 @@
    "level": "L0",
    "hash": "7435edc30e9d",
    "note": "对比标题年份2025→2026(表内数据本就是2026年初口径,标题滞后)"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "agent-stuck.html",
+   "level": "L0",
+   "hash": "ed8e17c4bb16",
+   "note": "补挂lesson.js(此前漏引,.say复制按钮注入不了)"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "hallu-first-scene.html",
+   "level": "L0",
+   "hash": "76cb33d81f85",
+   "note": "补挂lesson.js(此前漏引,.say复制按钮注入不了)"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "prompt-advanced.html",
+   "level": "L0",
+   "hash": "42075f38de4d",
+   "note": "补挂lesson.js(此前漏引,.say复制按钮注入不了)"
   }
  ]
 }
