@@ -613,11 +613,12 @@ async function renderQuizView(ch, onlyIds){
       await bot(okN>=qi-1?'过半了,一道没丢——继续。':(okN>=qi/2?'过半了,状态在线。':'过半了。前面错的那几道,解析别跳过——后半段还会碰到同类。'));
       await sleep(300); }
     /* 出题引导语:自然语言带出来,不用「第N/M题」标签;题干高亮让人一眼认出问的是什么 */
-    const ty=q.type==='multi'?'这道是多选,选完点确认——':'';
-    const lead = extra ? '这道不计分——「'+esc(q.tag||'刚才那个')+'」考点的同类题,验一下是真懂了还是碰巧。'+ty
-      : qi===0 ? pick(['好,咱们开始。第一道'+(q.type==='multi'?',是道多选':'')+':','先来第一道'+(q.type==='multi'?',多选题':'')+':'])
-      : qi===items.length-1 ? pick(['最后一道了'+(q.type==='multi'?',多选':'')+':','收官这道'+(q.type==='multi'?'(多选)':'')+':'])
-      : pick(['下一道:','继续:','接着来:','再来:'])+(q.type==='multi'?'(多选,选完点确认)':'');
+    const tyName=q.type==='multi'?'多选题':(q.type==='judge'?'判断题':'单选题');
+    const tyNote=q.type==='multi'?',选完点确认':'';
+    const lead = extra ? '这道不计分——「'+esc(q.tag||'刚才那个')+'」考点的同类'+tyName+',验一下是真懂了还是碰巧'+tyNote+':'
+      : qi===0 ? pick(['好,咱们开始。第一道,是道'+tyName+tyNote+':','先来第一道,'+tyName+tyNote+':'])
+      : qi===items.length-1 ? pick(['最后一道了,'+tyName+tyNote+':','收官这道,'+tyName+tyNote+':'])
+      : pick(['下一道,','继续,','接着来,','再来,'])+tyName+tyNote+':';
     await bot(lead+'<div class="hqc-q">'+q.q+'</div>');
     const row=document.createElement('div'); row.className='hqc-opts';
     const btns=q.opts.map(o=>{ const b=document.createElement('button');
@@ -724,12 +725,14 @@ async function renderQuizView(ch, onlyIds){
         {mode:'quizK',quiz_qid:pendingQ.id,quiz_picked:curReprobe.picked,quiz_stage:'reprobe'},bub2);
       if(r2) rHist.push({role:'assistant',content:r2});
       ta.disabled=false; sendBtn.disabled=false; ta.focus(); return; }
-    if(pendingQ){ await bot('先把这道答了——答完随便问,我都在。'); return; }
-    if(!curQ){ await bot('还没开考呢。开始做题后,随时来问。'); return; }
+    /* 作答前的提问(题型/题意/概念)也正面回答——preask 场景零泄题;判分后走 ask 可放开讲 */
+    const stage=pendingQ?'preask':'ask';
+    const qid=pendingQ?pendingQ.id:(curQ?curQ.id:null);
+    if(!qid){ await bot('还没开考呢。开始做题后,随时来问。'); return; }
     kHist.push({role:'user',content:v});
     ta.disabled=true; sendBtn.disabled=true;
     const bub=botNow('<span class="hqc-typing">Musing…</span>');
-    const reply=await sseChat(kHist.slice(-6),{mode:'quizK',quiz_qid:curQ.id,quiz_stage:'ask'},bub);
+    const reply=await sseChat(kHist.slice(-6),{mode:'quizK',quiz_qid:qid,quiz_stage:stage},bub);
     if(reply) kHist.push({role:'assistant',content:reply});
     ta.disabled=false; sendBtn.disabled=false; };
   const submitMsg=()=>{ const v=ta.value.trim(); if(!v||ta.disabled) return; ta.value='';

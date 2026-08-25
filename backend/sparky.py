@@ -353,6 +353,13 @@ REFS 固定写 []。"""
             f"当前题：{q['q']}\n选项（✓=参照答案，仅你可见）：\n{opts}\n"
             f"参照解析：{q.get('exp','')}\n"
             f"对方刚才选的是：{picked_txt or '（还没选）'}\n")
+    if stage == "preask":
+        return base + (
+            "任务：这道题对方**还没作答**，ta 在作答前提了个问题（问题型、问某个词什么意思、问题干场景）。\n"
+            "正面回答 ta 的问题——题型、题意澄清、概念解释都可以答，答完一句话把 ta 引回作答。\n"
+            "**铁律与 reprobe 同级：绝不许透露或暗示哪个是参照答案**——不点评任何选项的对错、"
+            "不说「可以往 X 方向想」这种把答案圈小的话；对方直接问「选哪个」，就说这题得 ta 自己选，"
+            "选完你们再对——这是巩固不是问答案。\n这一轮 REFS 固定写 []。")
     if stage == "reprobe":
         return base + (
             "任务：对方选错了，你来当那个不直接念答案的老师。两三句话：\n"
@@ -465,7 +472,7 @@ class ChatCtx(BaseModel):
     quiz_ids: Optional[list] = None     # quizA 专用：本轮对话抽中的 A 题 id（服务端校验后注入题面）
     quiz_qid: Optional[str] = None      # quizK 专用：当前这道 K/S 题的 id
     quiz_picked: Optional[list] = None  # quizK 专用：用户选了哪几个选项（下标）
-    quiz_stage: Optional[str] = None    # quizK 专用：open=开场 | reprobe=答错反问（不许漏答案）| ask=判分后答疑
+    quiz_stage: Optional[str] = None    # quizK 专用：open=开场 | preask=作答前提问（零泄题）| reprobe=答错反问 | ask=判分后答疑
     quiz_chapter: Optional[str] = None  # quizK open 专用：篇章代码（p-zero/p-1/…）
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
@@ -601,7 +608,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 7}   # 模式块版本：v7=reprobe 接住文字回应
+                "mode_ver": 8}   # 模式块版本：v8=preask 作答前提问交模型
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
