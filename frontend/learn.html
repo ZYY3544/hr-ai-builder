@@ -356,36 +356,11 @@ function renderTree(filter){
   $('#tree').querySelectorAll('.tp-h').forEach(h=>h.onclick=()=>h.parentNode.classList.toggle('open'));
 }
 
-/* ── 自动记「读过」──────────────────────────────────────────
-   判据是两个条件的与：滚到正文 90% + 停留 ≥ 该节声明时长的一半
-   （course-data 的 min 字段是现成真值锚，比拍脑袋定 3 分钟准）。
-   ⚠️ 它只声称「你打开并读到了底」，绝不声称「你学会了」——所以叫「读过」
-   不叫「学完」，也不汇总成任何数字。学没学会由本章小测和实战战役说话，
-   成长地图上那句「点亮是测出来的不是点出来的」才立得住。
-   宁可少记不可虚记：条件不满足就不记，挂着标签页刷不出进度。 */
-let readTimer=null;
-function watchRead(l){
-  clearInterval(readTimer);
-  if(done.has(l.file)) return;                       // 已经读过，不用再盯
-  const need=Math.max(30,(l.min||3)*30);             // 声明时长的一半（秒），下限 30 秒
-  const fr=$('#frame');
-  let maxBottom=0;                                   // 曾到过的最深处——读到底再滚回上面细读,不该被清零
-  let acc=0;                                         // 只累计「页面在前台」的秒数——切去别的标签页即停表,回来接着计
-  readTimer=setInterval(()=>{
-    if(cur()!==l.file){ clearInterval(readTimer); return; }   // 翻到别节了，自行了断
-    if(document.hidden) return;                       // 挂在后台的时间不充数
-    acc+=3;
-    let d,w; try{ d=fr.contentDocument; w=fr.contentWindow; }catch(e){ return; }
-    if(!d||!d.documentElement||!w) return;
-    const el=d.documentElement;
-    const bottom=(w.scrollY||el.scrollTop||0)+(w.innerHeight||0);
-    if(bottom>maxBottom) maxBottom=bottom;
-    const total=Math.max(el.scrollHeight||0,(d.body&&d.body.scrollHeight)||0);
-    /* 0.85 而非 0.9:课件底部有 110px 悬浮按钮留白+收尾块,0.9 实际=必须贴到最底那一屏 */
-    const deep=total>0 && maxBottom/total>=0.85;
-    if(deep && acc>=need){ clearInterval(readTimer); markRead(l.file); }
-  },3000);
-}
+/* ── 「看过」标记:点开这一节就算 ────────────────────────────
+   绿点=纯导航痕迹(浏览器 :visited 的意思):只区分「哪些你打开过」,
+   不表示看了多久,更不表示学没学会——那由本章小测说话。
+   曾经用「滚动深度+停留时长」判,用户看了很久没点亮会纳闷,算法还偶尔不 work;
+   规则能被用户一句话说清,本身就是价值(2026-08-25 用户拍板收敛)。 */
 function markRead(file){
   if(done.has(file)) return;
   done.add(file); saveDone(); renderTree($('#q').value);
@@ -421,7 +396,7 @@ function load(){
   window.goPrev=()=>p&&(location.hash='#'+encodeURIComponent(p.file));
   window.goNext=()=>n&&(location.hash='#'+encodeURIComponent(n.file));
 
-  watchRead(l);          /* 「读过」改为自动记，不再让用户点 */
+  markRead(l.file);      /* 点开即记「看过」——纯 :visited 语义 */
 
   renderTree($('#q').value);
   const on=$('#tree .ls.on'); if(on) on.scrollIntoView({block:'nearest'});
