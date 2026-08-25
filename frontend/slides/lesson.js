@@ -40,9 +40,37 @@
   };
 
 
+  /* .say 素材块右上角复制按钮（2026-08-26 用户拍板，替代「可以整段抄走」标签）。
+     文本在插按钮前取（innerText 在 pre-wrap 下保留换行）；clipboard 不可用时走 textarea 兜底。 */
+  function initSayCopy() {
+    var blocks = document.querySelectorAll('.say');
+    Array.prototype.forEach.call(blocks, function (b) {
+      var txt = b.innerText;
+      var btn = document.createElement('button');
+      btn.className = 'say-copy'; btn.type = 'button'; btn.textContent = '复制';
+      btn.addEventListener('click', function () {
+        var done = function () {
+          btn.textContent = '✓ 已复制'; btn.classList.add('ok');
+          setTimeout(function () { btn.textContent = '复制'; btn.classList.remove('ok'); }, 1600);
+        };
+        var fallback = function () {
+          var ta = document.createElement('textarea'); ta.value = txt;
+          ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); done(); } catch (e) {}
+          document.body.removeChild(ta);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(done).catch(fallback);
+        } else fallback();
+      });
+      b.appendChild(btn);
+    });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { initReveal(); });
+    document.addEventListener('DOMContentLoaded', function() { initReveal(); initSayCopy(); });
   } else {
-    initReveal();
+    initReveal(); initSayCopy();
   }
 })();

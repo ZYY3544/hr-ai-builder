@@ -179,8 +179,13 @@ code {
 .good .t{color:var(--success)}
 
 /* 可整段抄走的话术 */
-.say{background:#0F172A;color:#E2E8F0;border-radius:var(--radius);padding:18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
-.say::before{content:'可以整段抄走';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0F172A;background:#A3E635;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+/* .say = 可抄走的 prompt 素材块。2026-08-26 用户拍板:深色终端风改 GitHub markdown 代码块风,
+   「可以整段抄走」::before 标签退役,换 lesson.js 注入的右上角复制按钮(.say-copy)。
+   73 个课件内联的旧 .say/.say::before 定义已同批删除,本文件是唯一定义处。 */
+.say{background:#F6F8FA;color:#1F2937;border:1px solid #E2E8F0;border-radius:var(--radius);padding:18px 70px 18px 20px;margin:16px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative}
+.say-copy{position:absolute;top:8px;right:8px;font-size:11px;font-weight:600;padding:4px 10px;border:1px solid #E2E8F0;border-radius:7px;background:#fff;color:#64748B;cursor:pointer;font-family:-apple-system,"PingFang SC",sans-serif;transition:.13s;white-space:nowrap}
+.say-copy:hover{color:#00795F;border-color:rgba(0,168,138,.45)}
+.say-copy.ok{color:#00795F;border-color:rgba(0,168,138,.45);background:#F0FDF9}
 
 /* 今天就试 */
 .try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}

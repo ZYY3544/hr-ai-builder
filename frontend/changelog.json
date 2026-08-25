@@ -100,6 +100,517 @@
    "level": "L0",
    "hash": "954ab0d2c776",
    "note": "互动demo首条渲染不再scrollIntoView(加了interacted闸):修点开这节落在页面中间而非顶部"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-claude-md.html",
+   "level": "L0",
+   "hash": "86c609cde458",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-data-path.html",
+   "level": "L0",
+   "hash": "d4d6e93d8946",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-first-agent.html",
+   "level": "L0",
+   "hash": "c595635c5d6f",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-first-talk.html",
+   "level": "L0",
+   "hash": "af7281203493",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-install-guide.html",
+   "level": "L0",
+   "hash": "33c661d10495",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-install.html",
+   "level": "L0",
+   "hash": "a836e93567d9",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-permissions.html",
+   "level": "L0",
+   "hash": "c586ebcf06fd",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-project-layout.html",
+   "level": "L0",
+   "hash": "9b8ac8f5c88e",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-tools.html",
+   "level": "L0",
+   "hash": "18b6f57b9220",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "cc-why-terminal.html",
+   "level": "L0",
+   "hash": "72eb1178e9b7",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-auto-three.html",
+   "level": "L0",
+   "hash": "c61969c627f6",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-check-canary.html",
+   "level": "L0",
+   "hash": "c8f53317b213",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-check-three.html",
+   "level": "L0",
+   "hash": "5b7964ab67af",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-ci-first.html",
+   "level": "L0",
+   "hash": "6630542bc8b1",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-ci-how.html",
+   "level": "L0",
+   "hash": "09e7beb981dc",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-ci-sandbox.html",
+   "level": "L0",
+   "hash": "a337125982f5",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-ci-where.html",
+   "level": "L0",
+   "hash": "e2824e4d572b",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-gen-vs-exec.html",
+   "level": "L0",
+   "hash": "447ce3c9baf9",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-human.html",
+   "level": "L0",
+   "hash": "bcc4cf493e3e",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-monthly.html",
+   "level": "L0",
+   "hash": "9f67a7e702b2",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-output.html",
+   "level": "L0",
+   "hash": "1f60006f2452",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-pattern.html",
+   "level": "L0",
+   "hash": "1ac0e73e693b",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-spec-cleaning.html",
+   "level": "L0",
+   "hash": "0bb00718d4e4",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-spec-four.html",
+   "level": "L0",
+   "hash": "a62a0d04192e",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-token.html",
+   "level": "L0",
+   "hash": "88f8bca94c9d",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-two-stage.html",
+   "level": "L0",
+   "hash": "d789b4c54803",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "data-when-code.html",
+   "level": "L0",
+   "hash": "4ab322e77515",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-audit.html",
+   "level": "L0",
+   "hash": "837457b75e70",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-closing.html",
+   "level": "L0",
+   "hash": "f554a52375ce",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-eval-loop.html",
+   "level": "L0",
+   "hash": "35e4ca9bcfe2",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-loop.html",
+   "level": "L0",
+   "hash": "218c35c1f602",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-memory.html",
+   "level": "L0",
+   "hash": "9d1af8097cf7",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-subagent.html",
+   "level": "L0",
+   "hash": "410369d66bb5",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-tradeoff.html",
+   "level": "L0",
+   "hash": "4c75c4a7f4f7",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-what.html",
+   "level": "L0",
+   "hash": "a1b7bafaab7e",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "harness-why-unstable.html",
+   "level": "L0",
+   "hash": "1fcee6af03d8",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-deploy.html",
+   "level": "L0",
+   "hash": "b2d3bf8901da",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-eval.html",
+   "level": "L0",
+   "hash": "a24b58f7f497",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-rag.html",
+   "level": "L0",
+   "hash": "da100090a098",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-table.html",
+   "level": "L0",
+   "hash": "5bdeb2fc0016",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-tools.html",
+   "level": "L0",
+   "hash": "bd503151675e",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-training.html",
+   "level": "L0",
+   "hash": "d3cd2f092b98",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "jargon-why.html",
+   "level": "L0",
+   "hash": "1e3cda5fc103",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "prompt-hr-cases.html",
+   "level": "L0",
+   "hash": "d780a33ea77e",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "prompt-skeleton.html",
+   "level": "L0",
+   "hash": "4fac565ed422",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-ai-discount.html",
+   "level": "L0",
+   "hash": "fa3b502a5a02",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-aversion.html",
+   "level": "L0",
+   "hash": "79fd82a227da",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-captive.html",
+   "level": "L0",
+   "hash": "2a5f1d873104",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-checklist.html",
+   "level": "L0",
+   "hash": "598902d8d27c",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-defense.html",
+   "level": "L0",
+   "hash": "0cae2facac50",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-error-comms.html",
+   "level": "L0",
+   "hash": "f339e69cb676",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-feedback.html",
+   "level": "L0",
+   "hash": "ed27daec0f69",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-honeymoon.html",
+   "level": "L0",
+   "hash": "53971297d090",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-labor.html",
+   "level": "L0",
+   "hash": "6d1858f45346",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-mental-model.html",
+   "level": "L0",
+   "hash": "d2ddc986372d",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-offload.html",
+   "level": "L0",
+   "hash": "b5b918e42e9b",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-peak-end.html",
+   "level": "L0",
+   "hash": "708c626e5175",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-perceived.html",
+   "level": "L0",
+   "hash": "80cb73762bdb",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-trust-calib.html",
+   "level": "L0",
+   "hash": "b2880e2c32be",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "psy-waiting.html",
+   "level": "L0",
+   "hash": "8a651d0770d8",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-ai-flavor.html",
+   "level": "L0",
+   "hash": "c2393f0b21d8",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-bottleneck.html",
+   "level": "L0",
+   "hash": "a5f8bf91589a",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-chart-quality.html",
+   "level": "L0",
+   "hash": "712c3af1634c",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-chart-type.html",
+   "level": "L0",
+   "hash": "9a600e3f7dcf",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-checklist.html",
+   "level": "L0",
+   "hash": "3d2068accf50",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-consistency.html",
+   "level": "L0",
+   "hash": "317e118b8e16",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-hierarchy.html",
+   "level": "L0",
+   "hash": "866e0b0db554",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-hr-outputs.html",
+   "level": "L0",
+   "hash": "217fe9302df8",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-reference.html",
+   "level": "L0",
+   "hash": "f1374d0d19eb",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-restraint.html",
+   "level": "L0",
+   "hash": "796a82c80bb6",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-spec.html",
+   "level": "L0",
+   "hash": "6997c2af2e48",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-vocab.html",
+   "level": "L0",
+   "hash": "5e19595cbbb8",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "taste-whitespace.html",
+   "level": "L0",
+   "hash": "d6feab78f138",
+   "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
   }
  ]
 }
