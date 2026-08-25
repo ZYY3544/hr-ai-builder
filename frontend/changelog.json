@@ -86,6 +86,13 @@
    "level": "L0",
    "hash": "2a7f387546b2",
    "note": "迭代演示改静态直出:删逐轮播放动画/渐显过渡/重来按钮,加载即整篇渲染,评分条宽度直写"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "start-how-to-learn.html",
+   "level": "L0",
+   "hash": "8ad3acdbf0aa",
+   "note": "补.sec-title定义(全站从未定义过):flex垂直居中,修小节标题图标与文字不对齐"
   }
  ]
 }

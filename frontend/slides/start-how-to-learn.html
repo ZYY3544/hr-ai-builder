@@ -14,6 +14,9 @@
 <style>@keyframes _si{from{opacity:0}to{opacity:1}}body{opacity:0;animation:_si 0.15s ease 0.08s forwards}</style>
 <link rel="stylesheet" href="lesson.css">
 <style>
+/* 小节标题带图标:flex 垂直居中,不然 svg 按默认基线排会骑高 */
+.sec-title{display:flex;align-items:center;gap:10px}
+.sec-title svg{flex-shrink:0}
 .warn-card {
   background: linear-gradient(135deg, #fef2f2, #fff1f2);
   border: 1.5px solid #fecaca;
