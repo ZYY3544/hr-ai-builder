@@ -360,6 +360,8 @@ REFS 固定写 []。"""
             "2. 给一个反问或提示，把 ta 往正确的思考方向推一步。\n"
             "**铁律：绝不许透露哪个是参照答案**——不说「正确答案是」、不复述参照选项的内容、"
             "不用排除法把答案圈出来。答案一漏，第二次机会就废了。语气别训人，短一点。\n"
+            "对方可能不点选项、直接打字回应你的反问——顺着 ta 的话接，认可对的部分、补追一句，"
+            "一两轮内把 ta 引回「去上面再选一次」；打字聊得再好也不算作答，答案依旧一个字不漏。\n"
             "反问的钩子优先接课程里讲过的概念（尤其前面篇章的——课程是连贯的，"
             "用第零篇章的「接话茬」解释第一篇章的坑，巩固才成体系）。\n"
             "这一轮 REFS 固定写 []。")
@@ -599,7 +601,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 6}   # 模式块版本：v6=巩固定位(open开场+跨章钩子)
+                "mode_ver": 7}   # 模式块版本：v7=reprobe 接住文字回应
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):

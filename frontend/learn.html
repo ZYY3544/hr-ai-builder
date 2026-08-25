@@ -105,20 +105,23 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
    整个画布就是对话:无气泡无卡片,Sparky 的话直接落在页面上;
    用户输入左对齐,贴文字一条品牌色底纹;猫头像顶对齐第一行文字。 ── */
 #quizpane{background:#fff}
-#quizpane .hqc{max-width:980px;margin:0;padding:22px 26px 34px;min-height:100%;display:flex;flex-direction:column}
+#quizpane .hqc{max-width:980px;margin:0;padding:22px 30px 34px 44px;min-height:100%;display:flex;flex-direction:column}
 #quizpane .hqc-log{flex:1}
 #quizpane .hqm{display:flex;gap:8px;margin:13px 0;align-items:flex-start}
 #quizpane .hqm.me{margin:24px 0 10px}   /* 用户消息=新一轮开头,轮前多留空 */
-#quizpane .hq-dot{flex-shrink:0;margin-top:7px;color:#00A88A;font-size:10px;line-height:1}   /* ● 对首行行盒中心 */
+#quizpane .hq-dot{flex-shrink:0;width:14px;margin-top:7px;color:#00A88A;font-size:10px;line-height:1}
+/* ●与›同占14px列宽 → 用户消息首字和 Sparky 首字对齐 */
 #quizpane .hqb{flex:1;min-width:0;max-width:100%;padding:0;background:transparent;border:none;box-shadow:none;
   font-size:13.5px;line-height:1.85;color:#0F172A}
 #quizpane .hqm.me .hqb{display:flex;gap:8px;align-items:flex-start;font-weight:500}
-#quizpane .hq-umark{flex-shrink:0;color:#00A88A;font-weight:700;margin-top:0}
+#quizpane .hq-umark{flex-shrink:0;width:14px;color:#00A88A;font-weight:800;font-size:15px;line-height:1.5;margin-top:0}
 #quizpane .hq-ubody{flex:0 1 auto;min-width:0;background:#DCF3ED;border-radius:8px;line-height:1.7;
   padding:2px 8px 3px;margin:-2px -8px -3px}   /* 底纹贴文字:padding 撑色、负 margin 收位,文字坐标不动 */
 #quizpane .hqb.live::after{content:'▍';color:#00A88A;margin-left:1px;animation:hqcblink 1s steps(1) infinite}
 @keyframes hqcblink{50%{opacity:0}}
-#quizpane .hqc-no{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#00795F;margin-bottom:4px}
+#quizpane .hqc-q{font-size:14.5px;font-weight:650;color:#0F172A;margin-top:6px;line-height:1.75}
+#quizpane .hqc-x{color:#DC2626;font-weight:700}
+#quizpane .hqc-hint{font-size:12px;color:#94A3B8;margin:2px 0 4px 22px}
 #quizpane .hqc-opts{display:flex;flex-direction:column;gap:7px;margin:2px 0 6px 18px;max-width:calc(100% - 18px)}
 #quizpane .hqc-opt{text-align:left;font:inherit;font-size:13.5px;padding:10px 15px;border:1.5px solid rgba(0,168,138,.35);
   border-radius:11px;background:#fff;cursor:pointer;line-height:1.7;color:#0F172A;font-weight:500;transition:.13s;
@@ -605,12 +608,18 @@ async function renderQuizView(ch, onlyIds){
      给第二次机会;二次作答后才揭参照。计分与错题本都按第一次(否则闸变松)。
      加练题(extra)不计分——目的是掌握,不是分数。 ── */
   let curQ=null;                       // 最近一道判过的题,输入框答疑用
+  let curReprobe=null, rHist=[];       // 反问进行中的题与对话——打字回应反问要接得住,不能拦
   const askKS=(q,qi,extra)=>new Promise(async resolve=>{
     if(!extra&&qi===Math.floor(items.length/2)&&qi>1){
       await bot(okN>=qi-1?'过半了,一道没丢——继续。':(okN>=qi/2?'过半了,状态在线。':'过半了。前面错的那几道,解析别跳过——后半段还会碰到同类。'));
       await sleep(300); }
-    await bot('<span class="hqc-no">'+(extra?'加练 · 不计分 · 考点:'+esc(q.tag||'同类')
-        :'第 '+(qi+1)+' / '+items.length+' 题')+(q.type==='multi'?' · 多选':'')+'</span>'+q.q);
+    /* 出题引导语:自然语言带出来,不用「第N/M题」标签;题干高亮让人一眼认出问的是什么 */
+    const ty=q.type==='multi'?'这道是多选,选完点确认——':'';
+    const lead = extra ? '这道不计分——「'+esc(q.tag||'刚才那个')+'」考点的同类题,验一下是真懂了还是碰巧。'+ty
+      : qi===0 ? pick(['好,咱们开始。第一道'+(q.type==='multi'?',是道多选':'')+':','先来第一道'+(q.type==='multi'?',多选题':'')+':'])
+      : qi===items.length-1 ? pick(['最后一道了'+(q.type==='multi'?',多选':'')+':','收官这道'+(q.type==='multi'?'(多选)':'')+':'])
+      : pick(['下一道:','继续:','接着来:','再来:'])+(q.type==='multi'?'(多选,选完点确认)':'');
+    await bot(lead+'<div class="hqc-q">'+q.q+'</div>');
     const row=document.createElement('div'); row.className='hqc-opts';
     const btns=q.opts.map(o=>{ const b=document.createElement('button');
       b.className='hqc-opt'; b.innerHTML=o; row.appendChild(b); return b; });
@@ -634,7 +643,7 @@ async function renderQuizView(ch, onlyIds){
       if(!firstCorrect){ wrongList.push({ksa:d.ksa||q.ksa||'K'}); wrongTags.push(q.tag||''); }
       markWrong(ch,{id:q.id,ksa:d.ksa||q.ksa||'K'},!firstCorrect);
       if(!extra){ ansN++; okN+=firstCorrect?1:0; }
-      curQ=q; pendingQ=null; await sleep(400); resolve(); };
+      curQ=q; pendingQ=null; curReprobe=null; rHist=[]; await sleep(400); resolve(); };
     const judge=async given=>{
       tries++;
       row.classList.add('answered');
@@ -647,17 +656,23 @@ async function renderQuizView(ch, onlyIds){
       if(!d){ botNow('这题没判上——网络抖了,跳过它继续。'); resolve(); return; }
       if(tries===1) firstCorrect=d.correct;
       if(d.correct || tries>1 || !loggedIn()){ await finalize(d,given); return; }
-      /* 答错第一次:不念答案,反问一句,给第二次机会 */
+      /* 答错第一次:先给一个不含糊的信号,再掰扯,最后说清怎么继续——if/then 要闭环 */
       const pickedArr=Array.isArray(given)?given:[given];
+      botNow('<b class="hqc-x">✗ 这个不对。</b>先别看答案,咱们掰扯一下:');
+      curReprobe={q:q, picked:pickedArr};
+      rHist=[{role:'user',content:'这道题我选了:'+pickedArr.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join('、')}];
       const bub=botNow('<span class="hqc-typing">Musing…</span>');
-      await sseChat([{role:'user',content:'这道题我选了:'+pickedArr.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join('、')}],
+      const rr=await sseChat(rHist.slice(-8),
         {mode:'quizK',quiz_qid:q.id,quiz_picked:pickedArr,quiz_stage:'reprobe'},bub);
+      if(rr) rHist.push({role:'assistant',content:rr});
       /* 重开选项:错选保持红、锁死;其余恢复可点 */
       row.classList.remove('answered');
       btns.forEach((b,i)=>{ if(pickedArr.includes(i)){ b.classList.add('bad'); b.disabled=true; }
         b.classList.remove('sel'); });
       if(q.type==='multi') mkConfirm();
-      scroll(); };
+      const hint=document.createElement('div'); hint.className='hqc-hint';
+      hint.textContent='想好了就回上面再选一次;也可以直接打字跟我说你的想法。';
+      logEl.appendChild(hint); scroll(); };
     if(q.type==='multi'){ btns.forEach(b=>b.onclick=()=>{ if(!b.disabled) b.classList.toggle('sel'); }); mkConfirm(); }
     else btns.forEach((b,i)=>b.onclick=()=>{ if(b.disabled||row.classList.contains('answered'))return;
       b.classList.add('sel'); judge(i); });
@@ -701,6 +716,15 @@ async function renderQuizView(ch, onlyIds){
   let phase='ks'; const kHist=[];
   const kAsk=async v=>{
     me(v);
+    /* 反问进行中:用户打字回应反问 → 顺着掰扯(同一场 reprobe 对话),别拦 */
+    if(pendingQ && curReprobe && curReprobe.q===pendingQ){
+      rHist.push({role:'user',content:v});
+      ta.disabled=true; sendBtn.disabled=true;
+      const bub2=botNow('<span class="hqc-typing">Musing…</span>');
+      const r2=await sseChat(rHist.slice(-8),
+        {mode:'quizK',quiz_qid:pendingQ.id,quiz_picked:curReprobe.picked,quiz_stage:'reprobe'},bub2);
+      if(r2) rHist.push({role:'assistant',content:r2});
+      ta.disabled=false; sendBtn.disabled=false; ta.focus(); return; }
     if(pendingQ){ await bot('先把这道答了——答完随便问,我都在。'); return; }
     if(!curQ){ await bot('还没开考呢。开始做题后,随时来问。'); return; }
     kHist.push({role:'user',content:v});
