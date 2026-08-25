@@ -170,9 +170,13 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
   box-shadow:0 1px 3px rgba(15,23,42,.08)}
 #quizpane .hqc-ib:hover{color:#00795F;background:#F0FDF9}
 #quizpane .hqc-ib svg{width:16px;height:16px}
-/* 历史浮层：盖在对话区上面，活会话的 DOM 原封不动躺在下面 */
-#quizpane .hqc-histp{position:fixed;display:none;z-index:40;background:#fff;overflow-y:auto;padding:18px 30px 30px 44px}
+/* 历史=锚在时钟按钮下的弹窗卡片：对话界面原地不动,点外面或再点时钟关闭 */
+#quizpane .hqc-histp{position:absolute;top:38px;right:0;width:min(420px,90vw);max-height:min(560px,68vh);
+  display:none;z-index:40;background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;
+  box-shadow:0 12px 32px rgba(15,23,42,.16);overflow-y:auto;padding:14px 16px;text-align:left;cursor:default}
 #quizpane .hqc-histp.on{display:block}
+#quizpane .hqc-histp.wide{width:min(720px,92vw)}
+#quizpane .hqc-histp .hqm{margin:10px 0}
 #quizpane .hqc-hhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 #quizpane .hqc-hhead b{font-size:13.5px;color:#0F172A}
 #quizpane .hqc-hback{font:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:8px;
@@ -568,12 +572,12 @@ async function renderQuizView(ch, onlyIds, fresh){
     '<div class="hqc-tools">'+
       '<button class="hqc-ib" id="hq-new" title="新开一场"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>'+
       '<button class="hqc-ib" id="hq-hi" title="过往场次"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button>'+
+      '<div class="hqc-histp"></div>'+
     '</div>'+
     '<div class="hqc-log"></div>'+
     '<div class="hqc-inp"><div class="hqc-shell"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
     '<div class="hqc-btm"><button class="hqc-end">聊完了，收尾</button><span style="flex:1"></span>'+
-    '<button class="hqc-send" title="发送"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></div></div>'+
-    '<div class="hqc-histp"></div>';
+    '<button class="hqc-send" title="发送"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></div></div>';
   const logEl=pane.querySelector('.hqc-log'), inpRow=pane.querySelector('.hqc-inp'),
         ta=pane.querySelector('.hqc-inp textarea'), sendBtn=pane.querySelector('.hqc-send'),
         endBtn=pane.querySelector('.hqc-end'), histp=pane.querySelector('.hqc-histp');
@@ -588,29 +592,34 @@ async function renderQuizView(ch, onlyIds, fresh){
   pane.querySelector('#hq-new').onclick=()=>renderQuizView(ch,null,true);
   const fmtT=ts=>{ const d=new Date(ts);
     return (d.getMonth()+1)+'-'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
-  const openHist=()=>{
-    if(histp.classList.contains('on')){ histp.classList.remove('on'); return; }
-    const r=pane.getBoundingClientRect();
-    histp.style.left=r.left+'px'; histp.style.top=r.top+'px';
-    histp.style.width=r.width+'px'; histp.style.height=r.height+'px';
+  /* 历史弹窗：小卡片挂在时钟下面,对话界面原地不动;点外面或再点时钟关闭 */
+  const closeHist=e=>{
+    if(e&&(histp.contains(e.target)||(e.target.closest&&e.target.closest('#hq-hi')))) return;
+    if(e) e.stopPropagation();   /* 关弹窗的那一下点击只负责关,别顺手触发底下的选项 */
+    histp.classList.remove('on','wide');
+    document.removeEventListener('click',closeHist,true); };
+  const histList=()=>{
     const rows=chSt.hist||[];
-    histp.innerHTML='<div class="hqc-hhead"><b>过往场次</b><span style="flex:1"></span><button class="hqc-hback">✕ 关闭</button></div>'+
+    histp.classList.remove('wide');
+    histp.innerHTML='<div class="hqc-hhead"><b>过往场次</b></div>'+
       (rows.length? rows.map((s,i)=>'<button class="hqc-hrow" data-i="'+i+'"><span class="hd">'+fmtT(s.ts)+'</span>'+
           '<span class="hs">'+(s.wrongMode?'错题重练':'本章小测')+(s.done?'':' · 没做完')+'</span>'+
           (s.score?'<span class="hp">'+s.score.ok+' / '+s.score.n+(s.score.n&&s.score.ok/s.score.n>=0.7?' · 通关':'')+'</span>':'')+
         '</button>').join('')
       :'<div class="hqc-hempty">还没有归档的场次——点「+」新开一场时，当前这场会存到这里。</div>');
-    histp.querySelector('.hqc-hback').onclick=()=>histp.classList.remove('on');
     histp.querySelectorAll('.hqc-hrow').forEach(rw=>rw.onclick=()=>{
       const s=rows[+rw.dataset.i];
+      histp.classList.add('wide');
       histp.innerHTML='<div class="hqc-hhead"><button class="hqc-hback" id="hq-hls">← 场次列表</button>'+
-        '<b>'+fmtT(s.ts)+' 的一场(只读)</b><span style="flex:1"></span><button class="hqc-hback" id="hq-hx">✕ 关闭</button></div>'+
-        '<div class="hqc hqc-hview">'+s.html+'</div>';
+        '<b>'+fmtT(s.ts)+' · 只读</b></div><div class="hqc-hview">'+s.html+'</div>';
       histp.querySelectorAll('.hqc-hview button').forEach(b=>b.disabled=true);
-      histp.querySelector('#hq-hls').onclick=()=>{ histp.classList.remove('on'); openHist(); };
-      histp.querySelector('#hq-hx').onclick=()=>histp.classList.remove('on');
-    });
-    histp.classList.add('on'); histp.scrollTop=0; };
+      histp.querySelector('#hq-hls').onclick=histList;
+      histp.scrollTop=0;
+    }); };
+  const openHist=()=>{
+    if(histp.classList.contains('on')){ closeHist(); return; }
+    histList(); histp.classList.add('on'); histp.scrollTop=0;
+    document.addEventListener('click',closeHist,true); };
   pane.querySelector('#hq-hi').onclick=openHist;
   const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
