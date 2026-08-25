@@ -761,10 +761,11 @@ async function renderQuizView(ch, onlyIds, fresh){
         if(res.ok) d=(await res.json()).details[0]; }catch(e){}
       if(!d){ botNow('这题没判上——网络抖了,跳过它继续。'); resolve(); return; }
       if(tries===1) firstCorrect=d.correct;
-      if(d.correct || tries>1 || !loggedIn()){ await finalize(d,given); return; }
-      /* 答错第一次:先给一个不含糊的信号,再掰扯,最后说清怎么继续——if/then 要闭环 */
+      /* 判断题二选一:说「不对」就等于报答案,「再选一次」毫无信息量——答错直接揭参照讲为什么 */
+      if(d.correct || tries>1 || !loggedIn() || q.type==='judge'){ await finalize(d,given); return; }
+      /* 答错第一次:不再垫固定句,判定信号交给 Sparky 用自己的话在同一条消息里说清(后端 reprobe 场景要求开头亮信号);
+         视觉信号由错选项标红兜底 */
       const pickedArr=Array.isArray(given)?given:[given];
-      botNow('<b class="hqc-x">✗ 这个不对。</b>先别看答案,咱们掰扯一下:');
       curReprobe={q:q, picked:pickedArr};
       rHist=[{role:'user',content:'这道题我选了:'+pickedArr.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join('、')}];
       const bub=botNow('<span class="hqc-typing">Musing…</span>');
