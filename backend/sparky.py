@@ -570,9 +570,9 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         done = [f for f in (ctx.done or []) if f in LESSON_IDX][:60]
         if done:
             names = "、".join(LESSON_IDX[f]["title"] for f in done[-8:])
-            bits.append(f"已读完 {len(done)} 节，最近读的：{names}")
+            bits.append(f"看过 {len(done)} 节（打开过≠读透了），最近看的：{names}")
         elif ctx.done is not None:
-            bits.append("还一节都没读过（新访客）")
+            bits.append("还一节都没打开过（新访客）")
         if ctx.page:
             bits.append(f"当前页面：{ctx.page}")
         if ctx.behavior:
