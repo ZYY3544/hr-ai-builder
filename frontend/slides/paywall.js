@@ -71,19 +71,10 @@
     LOCK.parentNode.insertBefore(box, LOCK);
   }
 
-  function hint() {
-    // 闸门关闭时的轻提示：不遮挡，只说明这一节属于登录内容
-    if (document.getElementById('xa-hint')) return;
-    var h = document.createElement('div');
-    h.id = 'xa-hint';
-    h.innerHTML = '🔓 这一节不登录也能读完。登录（免费）可同步进度、记录小测成绩、点亮成长地图。' +
-                  '<span>右上角即可登录</span>';
-    var hd = document.querySelector('.lesson-header');
-    if (hd && hd.parentNode) hd.parentNode.insertBefore(h, hd.nextSibling);
-  }
-
+  /* 「这一节不登录也能读完」软提示已删（2026-08-26 用户拍板）：句式+锁图标反而暗示
+     别的节要解锁，是付费墙误导；登录入口右上角常驻，不缺这条。gate 机制本身保留。 */
   gateOn(function (on) {
-    if (!on) { reveal(); hint(); return; }
+    if (!on) { reveal(); return; }
     if (tokenOK()) { reveal(); return; }
     lock();
   });
