@@ -17,26 +17,17 @@
 /* 系统色板别名（沿用交互数据中的变量名） */
 :root{--green:var(--success);--red:var(--danger);--muted:var(--sub)}
 
-/* 质量仪表（sticky 保持可见） */
-.btn-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:5px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
-.btn-reset:hover{border-color:var(--accent);color:var(--accent)}
 /* 每轮评分卡:分数长在这一轮里,因果同点 */
 .rs{display:flex;flex-direction:column;gap:5px;margin:2px 0 10px;padding:10px 12px;background:rgba(0,0,0,.02);border-radius:10px}
 .rs-row{display:flex;align-items:center;gap:8px}
 .rs-lb{flex:0 0 44px;font-size:11px;font-weight:600;color:var(--sub)}
 .rs-bg{flex:1;height:7px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden}
-.rs-bar{height:100%;border-radius:4px;width:0;transition:width .7s ease}
+.rs-bar{height:100%;border-radius:4px}
 .rs-val{flex:0 0 74px;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
 /* 四轮轨迹小图 */
-.traj-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 18px 10px;margin:14px 0 8px;opacity:0;transform:translateY(8px);transition:all .4s}
-.traj-card.show{opacity:1;transform:translateY(0)}
+.traj-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 18px 10px;margin:14px 0 8px}
 .traj-t{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
 .traj-card svg{width:100%;height:auto;display:block}
-.meter-row:last-child{margin-bottom:0}
-.meter-label{font-size:12px;font-weight:700;color:var(--sub);min-width:56px;text-align:right}
-.meter-bar-bg{flex:1;height:12px;background:rgba(0,0,0,.04);border-radius:6px;overflow:hidden}
-.meter-bar{height:100%;border-radius:6px;transition:width .8s ease,background .5s}
-.meter-val{font-size:13px;font-weight:800;min-width:36px;transition:color .5s}
 
 /* 对话流 */
 #chatPanel{min-height:60px}
@@ -44,8 +35,7 @@
 .round-badge{padding:3px 12px;border-radius:6px;font-size:12px;font-weight:800;white-space:nowrap}
 .round-line{flex:1;height:1px;background:var(--border)}
 
-.msg{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.7;margin-bottom:10px;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
-.msg.show{opacity:1;transform:translateY(0)}
+.msg{border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;line-height:1.7;margin-bottom:10px}
 .msg-lbl{font-size:11px;font-weight:800;opacity:.6;margin-bottom:5px;letter-spacing:.3px}
 .msg-user{background:rgba(8,145,178,.07);color:#0e7490;border:1.5px solid rgba(8,145,178,.18)}
 .msg-ai{background:var(--card);border:1.5px solid var(--border);color:var(--text);box-shadow:var(--shadow-card)}
@@ -54,8 +44,7 @@
 .msg-ai .bad{background:rgba(220,38,38,.1);padding:1px 4px;border-radius:3px;font-weight:700;color:var(--danger)}
 
 /* 每轮分析卡 */
-.analysis-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:6px;opacity:0;transform:translateY(8px);transition:all .4s;box-shadow:var(--shadow-card)}
-.analysis-card.show{opacity:1;transform:translateY(0)}
+.analysis-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:6px;box-shadow:var(--shadow-card)}
 .ac-label{font-size:11px;font-weight:800;letter-spacing:.4px;margin-bottom:6px;text-transform:uppercase}
 .ac-delta{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;margin-bottom:6px;line-height:1.8}
 .ac-body{font-size:14px;color:var(--sub);line-height:1.7}
@@ -63,12 +52,7 @@
 .ac-body em{font-style:normal;font-weight:700;color:var(--cyan)}
 
 /* 结论框 */
-.final-box{border-radius:var(--radius);padding:18px 22px;font-size:14px;line-height:1.8;margin-top:20px;opacity:0;transition:opacity .5s}
-.final-box.show{opacity:1}
-
-@media (max-width:768px){
-  .meter-label{min-width:48px;font-size:11px}
-}
+.final-box{border-radius:var(--radius);padding:18px 22px;font-size:14px;line-height:1.8;margin-top:20px}
 </style>
 <!-- SEO Start -->
 <meta name="description" content="AI 使用实用技巧：迭代的艺术。通过一个营销文案的 4 轮迭代演示，学会判断什么时候该继续磨、什么时候该收手。三轮内解决问题是高手，能在第三轮停住是顶级高手。">
@@ -110,7 +94,7 @@
     <p class="subtitle">跟着一个真实的文案迭代过程走 4 轮，每一轮下面都有它的质量评分——看它怎么先涨后跌，以及第 3 轮之后为什么该收手。</p>
   </header>
 
-  <div class="sec-label">迭代过程<button class="btn-reset" onclick="resetDemo()">↺ 重来</button></div>
+  <div class="sec-label">迭代过程</div>
   <div id="chatPanel"></div>
 
   <div class="sec-label">为什么第四轮反而变差</div>
@@ -195,7 +179,7 @@ function roundScoreHTML(scores, prev) {
     const o = prev ? prev[i] : null;
     const d = o === null ? '' : (v > o ? ' ↑' : v < o ? ' ↓' : ' —');
     return `<div class="rs-row"><span class="rs-lb">${DIMS[i]}</span>` +
-      `<div class="rs-bg"><div class="rs-bar" data-w="${v}" style="background:${barColor(v)}"></div></div>` +
+      `<div class="rs-bg"><div class="rs-bar" style="width:${v}%;background:${barColor(v)}"></div></div>` +
       `<span class="rs-val" style="color:${barColor(v)}">${o===null?'':o+'→'}${v}${d}</span></div>`;
   }).join('') + '</div>';
 }
@@ -215,82 +199,21 @@ function trajHTML() {
     `<text x="200" y="${Y[2]+18}" text-anchor="middle" font-size="10" font-weight="800" fill="var(--green)">✋ 该收手</text></svg></div>`;
 }
 
-/* 自动播放：进入视野后逐轮渲染，用 playId 让"重来"能中断旧的播放序列 */
-let playId = 0;
-
-function playRound(idx, myId) {
-  if (myId !== playId || idx >= STEPS.length) return;
-  const s = STEPS[idx];
-  const chat = document.getElementById('chatPanel');
-
+/* 静态直出：加载即整篇渲染，不做逐轮播放 */
+document.getElementById('chatPanel').innerHTML = STEPS.map((s, idx) => {
   if (s.final) {
-    const tw = document.createElement('div');
-    tw.innerHTML = trajHTML();
-    const tc = tw.firstChild;
-    chat.appendChild(tc);
-    setTimeout(() => tc.classList.add('show'), 50);
-    const box = document.createElement('div');
-    box.className = 'final-box';
-    box.style.background = s.finalContent.bg;
-    box.style.border = '1.5px solid ' + s.finalContent.border;
-    box.style.color = s.finalContent.color;
-    box.innerHTML = s.finalContent.text.replace(/\n/g,'<br>');
-    chat.appendChild(box);
-    setTimeout(() => box.classList.add('show'), 350);
-    return;
+    return trajHTML() +
+      `<div class="final-box" style="background:${s.finalContent.bg};border:1.5px solid ${s.finalContent.border};color:${s.finalContent.color}">${s.finalContent.text.replace(/\n/g,'<br>')}</div>`;
   }
-
-  if (s.divider) {
-    const div = document.createElement('div');
-    div.className = 'round-divider';
-    div.innerHTML = `<span class="round-badge" style="background:${s.divider.bg};color:${s.divider.color}">${s.divider.text}</span><div class="round-line"></div>`;
-    chat.appendChild(div);
-  }
-
-  const userMsg = document.createElement('div');
-  userMsg.className = 'msg msg-user';
-  userMsg.innerHTML = `<div class="msg-lbl">你说</div>${s.user.replace(/\n/g,'<br>')}`;
-  chat.appendChild(userMsg);
-  setTimeout(() => userMsg.classList.add('show'), 50);
-
-  setTimeout(() => {
-    if (myId !== playId) return;
-    const aiMsg = document.createElement('div');
-    aiMsg.className = 'msg msg-ai';
-    aiMsg.innerHTML = `<div class="msg-lbl">AI 输出</div>${s.ai.replace(/\n/g,'<br>')}`;
-    chat.appendChild(aiMsg);
-    setTimeout(() => aiMsg.classList.add('show'), 50);
-
-    setTimeout(() => {
-      if (myId !== playId) return;
-      const card = document.createElement('div');
-      card.className = 'analysis-card';
-      let prev = null;
-      for (let k = idx - 1; k >= 0; k--) if (STEPS[k].scores) { prev = STEPS[k].scores; break; }
-      card.innerHTML = `<div class="ac-label" style="color:${s.analysis.color}">${s.analysis.label}</div>` +
-        roundScoreHTML(s.scores, prev) +
-        `<div class="ac-body">${s.analysis.body}</div>`;
-      chat.appendChild(card);
-      setTimeout(() => { card.classList.add('show');
-        card.querySelectorAll('.rs-bar').forEach(b => { b.style.width = b.dataset.w + '%'; }); }, 50);
-
-      // 间隔 1.2s 播放下一轮
-      setTimeout(() => playRound(idx + 1, myId), 1200);
-    }, 700);
-  }, 800);
-}
-
-function startDemo() {
-  playId++;
-  document.getElementById('chatPanel').innerHTML = '';
-  playRound(0, playId);
-}
-
-function resetDemo() {
-  startDemo();
-}
-
-lessonOnView(document.getElementById('chatPanel'), startDemo, 0.4);   /* 对话区可见四成再开播——首屏只见仪表在动、原因在屏下,就是看不懂的来源 */
+  let prev = null;
+  for (let k = idx - 1; k >= 0; k--) if (STEPS[k].scores) { prev = STEPS[k].scores; break; }
+  return `<div class="round-divider"><span class="round-badge" style="background:${s.divider.bg};color:${s.divider.color}">${s.divider.text}</span><div class="round-line"></div></div>` +
+    `<div class="msg msg-user"><div class="msg-lbl">你说</div>${s.user.replace(/\n/g,'<br>')}</div>` +
+    `<div class="msg msg-ai"><div class="msg-lbl">AI 输出</div>${s.ai.replace(/\n/g,'<br>')}</div>` +
+    `<div class="analysis-card"><div class="ac-label" style="color:${s.analysis.color}">${s.analysis.label}</div>` +
+    roundScoreHTML(s.scores, prev) +
+    `<div class="ac-body">${s.analysis.body}</div></div>`;
+}).join('');
 </script>
 <!--seo:begin--><!--seo:end-->
 <script src="../track.js"></script>
