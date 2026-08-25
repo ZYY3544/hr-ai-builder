@@ -688,6 +688,8 @@ async function renderQuizView(ch, onlyIds, fresh){
   let ansN=st.ansN||0, okN=st.okN||0;
   const wrongList=(st.wrongL||[]).map(k=>({ksa:k})), wrongTags=(st.wrongTags||[]).slice();
   let pendingQ=null;   // 正在作答、还没判分的题——此时答疑要拦，防泄答案
+  /* 这些被 save() 引用,必须先于第一次 save()(开场块里)声明——否则 TDZ 抛错,引擎静默中断 */
+  let phase='ks'; const kHist=(st.kHist||[]).slice(); let sendA=null;
 
   /* ── 共用 SSE:quizA(判断题)与 quizK(选择题伴考)都走这条管道 ── */
   const sseChat=async(messages,ctxExtra,bub)=>{
@@ -847,7 +849,6 @@ async function renderQuizView(ch, onlyIds, fresh){
     st.phase='ks'; save();
   }
   /* K/S 段：答疑输入框常开(登录时)——单行道变双行道 */
-  let phase='ks'; const kHist=(st.kHist||[]).slice(); let sendA=null;
   const kAsk=async v=>{
     me(v);
     /* 反问进行中：用户打字回应反问 → 顺着掰扯(同一场 reprobe 对话)，别拦 */
