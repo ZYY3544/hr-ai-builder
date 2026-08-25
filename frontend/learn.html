@@ -581,6 +581,12 @@ async function renderQuizView(ch, onlyIds, fresh){
     logEl.innerHTML=chSt.past||'';
     logEl.querySelectorAll('.hqc-acts').forEach(a=>a.remove());
     logEl.querySelectorAll('button').forEach(b=>b.disabled=true);
+    if(chSt.past){ /* 有历史时给当前场也标一条时间线,否则新旧两场文字直接连着分不清。
+                      只进 DOM 不进快照(pastLen 量在它之后),归档时 qsArchive 写入同款,不会双份 */
+      const d=new Date(SESS.ts);
+      logEl.insertAdjacentHTML('beforeend','<div class="hqc-sep">'+(d.getMonth()+1)+'-'+d.getDate()+' '
+        +String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')
+        +' · '+(SESS.wrongMode?'错题重练':'一场小测')+'</div>'); }
     pastLen=logEl.innerHTML.length;
     if(html) logEl.insertAdjacentHTML('beforeend',html);
     logEl.querySelectorAll('button').forEach(b=>b.disabled=true);

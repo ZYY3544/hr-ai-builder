@@ -280,12 +280,13 @@ const restartWrap = document.getElementById('dialogRestart');
 let answers = [];
 let qIdx = 0;
 
+let interacted = false;   // 加载时的首条渲染不许滚页面——否则整页一打开就被拽到 demo 中间
 function addRow(role, html) {
   const row = document.createElement('div');
   row.className = 'd-row ' + role;
   row.innerHTML = `<div class="d-avatar">${role === 'ai' ? 'AI' : '你'}</div><div class="d-bubble">${html}</div>`;
   body.appendChild(row);
-  row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  if (interacted) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
 function addChoices(q) {
@@ -296,6 +297,7 @@ function addChoices(q) {
     b.className = 'd-choice';
     b.textContent = c.label;
     b.addEventListener('click', () => {
+      interacted = true;
       wrap.remove();
       addRow('user', c.label);
       answers.push(c.key);

@@ -93,6 +93,13 @@
    "level": "L0",
    "hash": "8ad3acdbf0aa",
    "note": "补.sec-title定义(全站从未定义过):flex垂直居中,修小节标题图标与文字不对齐"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "zero-5.html",
+   "level": "L0",
+   "hash": "954ab0d2c776",
+   "note": "互动demo首条渲染不再scrollIntoView(加了interacted闸):修点开这节落在页面中间而非顶部"
   }
  ]
 }
