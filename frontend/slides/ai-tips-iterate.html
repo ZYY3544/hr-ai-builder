@@ -23,7 +23,8 @@
   background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
   padding:16px 18px;box-shadow:var(--shadow-card);margin-bottom:20px;
 }
-.meter-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.meter-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.meter-note{font-size:12px;color:var(--sub);line-height:1.7;margin-bottom:12px}
 .meter-title{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
 .btn-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:5px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
 .btn-reset:hover{border-color:var(--accent);color:var(--accent)}
@@ -53,6 +54,7 @@
 .analysis-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:6px;opacity:0;transform:translateY(8px);transition:all .4s;box-shadow:var(--shadow-card)}
 .analysis-card.show{opacity:1;transform:translateY(0)}
 .ac-label{font-size:11px;font-weight:800;letter-spacing:.4px;margin-bottom:6px;text-transform:uppercase}
+.ac-delta{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;margin-bottom:6px;line-height:1.8}
 .ac-body{font-size:14px;color:var(--sub);line-height:1.7}
 .ac-body strong{color:var(--text)}
 .ac-body em{font-style:normal;font-weight:700;color:var(--cyan)}
@@ -112,6 +114,7 @@
       <div class="meter-title">输出质量仪表</div>
       <button class="btn-reset" onclick="resetDemo()">↺ 重来</button>
     </div>
+    <div class="meter-note">下面的对话每走一轮，这块仪表就重新打分——它会一直悬在顶部，陪你看完四轮。</div>
     <div class="meter-row"><span class="meter-label">相关性</span><div class="meter-bar-bg"><div class="meter-bar" id="bar0" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val0">—</span></div>
     <div class="meter-row"><span class="meter-label">具体性</span><div class="meter-bar-bg"><div class="meter-bar" id="bar1" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val1">—</span></div>
     <div class="meter-row"><span class="meter-label">可用性</span><div class="meter-bar-bg"><div class="meter-bar" id="bar2" style="width:0;background:#ccc"></div></div><span class="meter-val" id="val2">—</span></div>
@@ -254,7 +257,18 @@ function playRound(idx, myId) {
       if (myId !== playId) return;
       const card = document.createElement('div');
       card.className = 'analysis-card';
-      card.innerHTML = `<div class="ac-label" style="color:${s.analysis.color}">${s.analysis.label}</div><div class="ac-body">${s.analysis.body}</div>`;
+      const DIMS = ['相关性','具体性','可用性','风格'];
+      let prev = null;
+      for (let k = idx - 1; k >= 0; k--) if (STEPS[k].scores) { prev = STEPS[k].scores; break; }
+      const delta = s.scores.map((v, i) => {
+        const o = prev ? prev[i] : null;
+        const up = o === null ? '' : (v > o ? ' ↑' : v < o ? ' ↓' : ' —');
+        const col = o === null ? 'var(--sub)' : (v > o ? '#16a34a' : v < o ? '#dc2626' : 'var(--sub)');
+        return `<span style="color:${col}">${DIMS[i]} ${o === null ? '' : o + '→'}${v}${up}</span>`;
+      }).join('<span style="color:var(--border)"> · </span>');
+      card.innerHTML = `<div class="ac-label" style="color:${s.analysis.color}">${s.analysis.label}</div>` +
+        `<div class="ac-delta">${delta}</div>` +
+        `<div class="ac-body">${s.analysis.body}</div>`;
       chat.appendChild(card);
       setTimeout(() => card.classList.add('show'), 50);
 
@@ -280,7 +294,7 @@ function resetDemo() {
   startDemo();
 }
 
-lessonOnView(document.getElementById('chatPanel'), startDemo, 0.05);
+lessonOnView(document.getElementById('chatPanel'), startDemo, 0.4);   /* 对话区可见四成再开播——首屏只见仪表在动、原因在屏下,就是看不懂的来源 */
 </script>
 <!--seo:begin--><!--seo:end-->
 <script src="../track.js"></script>
