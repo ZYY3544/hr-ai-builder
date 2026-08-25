@@ -476,7 +476,7 @@ const KSA_FIX={K:'回去读就能补，几天的事',
                S:'得动手做一遍才补得上，几周到几个月',
                A:'补不了，只能拿真实经历重新证明'};
 
-async function renderQuizView(ch, onlyIds){
+async function renderQuizView(ch, onlyIds, fresh){
   /* ── 对话式测评引擎 ──────────────────────────────────────────
      形态抄自我们自己的调研 agent(gaode-survey-agent),同一条架构铁律:
      **状态机管流程,LLM 只填空。**
@@ -495,6 +495,14 @@ async function renderQuizView(ch, onlyIds){
   const lastIdx=find(inCh[inCh.length-1].file), next=FLAT[lastIdx+1];
   window.goPrev=()=>location.hash='#'+encodeURIComponent(inCh[inCh.length-1].file);
   window.goNext=()=>next&&(location.hash='#'+encodeURIComponent(next.file));
+
+  /* 会话保活:切去看某节课再切回来,同一章的对话还活在 pane 里(load() 只是隐藏它),
+     直接亮出来接着聊——不重建、不重调 LLM 开场、答题进度不丢。
+     只有「再抽一轮/只练错题」按钮传 fresh 才真正重开一场。 */
+  const skey=ch+(onlyIds&&onlyIds.length?':wrong':'');
+  if(!fresh && pane.dataset.live===skey && pane.querySelector('.hqc')){
+    $('#side').classList.remove('show'); return; }
+  pane.dataset.live=skey;
 
   pane.innerHTML='<div class="hqc">'+
     '<div class="hqc-log"></div>'+
@@ -550,12 +558,12 @@ async function renderQuizView(ch, onlyIds){
   botNow('<span class="hqc-typing">Musing…</span>');
   try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
   logEl.innerHTML='';
-  if(!pool.length){ botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
+  if(!pool.length){ pane.dataset.live=''; botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
   const aPool=pool.filter(x=>x.ksa==='A');
   const items = onlyIds && onlyIds.length
       ? pool.filter(x=>onlyIds.includes(x.id))
       : pool.filter(x=>x.ksa!=='A').sort(()=>Math.random()-.5).slice(0,8);
-  if(!items.length){ botNow('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
+  if(!items.length){ pane.dataset.live=''; botNow('这些错题在本章题库里找不到了（题库更新过）。换一轮吧。'); return; }
 
   let ansN=0, okN=0; const wrongList=[], wrongTags=[];
   let pendingQ=null;   // 正在作答、还没判分的题——此时答疑要拦,防泄答案
@@ -664,8 +672,8 @@ async function renderQuizView(ch, onlyIds){
     const mk=(t,cls,fn)=>{ const b=document.createElement('button');
       b.className='hqc-act'+(cls?' '+cls:''); b.textContent=t; b.onclick=fn; acts.appendChild(b); };
     const w=loadWrong(), wIds=Object.keys(w).filter(id=>w[id].ch===ch);
-    if(wIds.length) mk('只练错题（'+wIds.length+'）','',()=>{ renderQuizView(ch,wIds); });
-    mk('再抽一轮','',()=>renderQuizView(ch));
+    if(wIds.length) mk('只练错题（'+wIds.length+'）','',()=>{ renderQuizView(ch,wIds,true); });
+    mk('再抽一轮','',()=>renderQuizView(ch,null,true));
     const nextCh=next&&next.part!==part?next:null;
     if(next) mk('去下一章 →','pri',()=>location.hash='#'+encodeURIComponent(next.file));
     mk('回本章第一节','ghost',()=>location.hash='#'+encodeURIComponent(inCh[0].file));
