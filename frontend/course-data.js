@@ -16,16 +16,16 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 150,
+   "lessons": 148,
    "copy": 40,
    "adapt": 20,
    "new": 96,
    "ready": 149,
    "todo": 0,
-   "minutes": 590
+   "minutes": 584
   },
   "access": {
-   "free": 131,
+   "free": 129,
    "locked": 19,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -305,35 +305,6 @@ window.COURSE = {
       }
      ],
      "min": 15
-    },
-    {
-     "title": "什么能放心交给它",
-     "desc": "一套三秒钟的信任判断法",
-     "lessons": [
-      {
-       "file": "zero-6.html",
-       "action": "copy",
-       "ksa": "A",
-       "title": "放心用，还是要核实？",
-       "seo": "什么活能放心交给 AI？一套三秒判断法",
-       "desc": "全章对 HR 最有价值的两节之一",
-       "free": true,
-       "ready": true,
-       "min": 3
-      },
-      {
-       "file": "zero-final.html",
-       "action": "copy",
-       "ksa": "K",
-       "title": "你的下一步",
-       "seo": "零基础学完 AI 之后，下一步该学什么",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 3
-      }
-     ],
-     "min": 6
     }
    ],
    "color": "#0891B2",

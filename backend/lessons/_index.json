@@ -230,28 +230,6 @@
   "topic": "日常用它的手感",
   "seo": "哪些场景可以放心用 AI，哪些必须人工复核"
  },
- "zero-6.html": {
-  "title": "放心用，还是要核实？",
-  "free": true,
-  "ready": true,
-  "ksa": "A",
-  "min": 3,
-  "part": "第零篇章",
-  "part_title": "写给第一次接触 AI 的 HR",
-  "topic": "什么能放心交给它",
-  "seo": "什么活能放心交给 AI？一套三秒判断法"
- },
- "zero-final.html": {
-  "title": "你的下一步",
-  "free": true,
-  "ready": true,
-  "ksa": "K",
-  "min": 3,
-  "part": "第零篇章",
-  "part_title": "写给第一次接触 AI 的 HR",
-  "topic": "什么能放心交给它",
-  "seo": "零基础学完 AI 之后，下一步该学什么"
- },
  "training-data.html": {
   "title": "AI 的食物：训练数据",
   "free": true,
