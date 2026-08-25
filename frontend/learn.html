@@ -100,14 +100,14 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .quizls.on{background:linear-gradient(135deg,rgba(0,168,138,.13),rgba(8,145,178,.13))}
 .quizls .sc{margin-left:auto;font-weight:500;font-size:11.5px;color:var(--muted)}
 .quizls .sc.pass{color:#00795F;font-weight:600}
-/* ── 对话式测评(hqc 系):终端化纯文字流,同 meansights 主产品 .sparky-messages ——
-   整个画布就是对话:无气泡无卡片,Sparky 的话直接落在页面上;
-   用户输入左对齐,贴文字一条品牌色底纹;猫头像顶对齐第一行文字。 ── */
+/* ── 对话式测评(hqc 系)：终端化纯文字流，同 meansights 主产品 .sparky-messages ——
+   整个画布就是对话：无气泡无卡片，Sparky 的话直接落在页面上；
+   用户输入左对齐，贴文字一条品牌色底纹；猫头像顶对齐第一行文字。 ── */
 #quizpane{background:#fff}
 #quizpane .hqc{max-width:980px;margin:0;padding:22px 30px 34px 44px;min-height:100%;display:flex;flex-direction:column}
 #quizpane .hqc-log{flex:1}
 #quizpane .hqm{display:flex;gap:8px;margin:13px 0;align-items:flex-start}
-#quizpane .hqm.me{margin:24px 0 10px}   /* 用户消息=新一轮开头,轮前多留空 */
+#quizpane .hqm.me{margin:24px 0 10px}   /* 用户消息=新一轮开头，轮前多留空 */
 #quizpane .hq-dot{flex-shrink:0;width:14px;margin-top:7px;color:#00A88A;font-size:10px;line-height:1}
 /* ●与›同占14px列宽 → 用户消息首字和 Sparky 首字对齐 */
 #quizpane .hqb{flex:1;min-width:0;max-width:100%;padding:0;background:transparent;border:none;box-shadow:none;
@@ -115,7 +115,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqm.me .hqb{display:flex;gap:8px;align-items:flex-start;font-weight:500}
 #quizpane .hq-umark{flex-shrink:0;width:14px;color:#00A88A;font-weight:800;font-size:15px;line-height:1.5;margin-top:0}
 #quizpane .hq-ubody{flex:0 1 auto;min-width:0;background:#DCF3ED;border-radius:8px;line-height:1.7;
-  padding:2px 8px 3px;margin:-2px -8px -3px}   /* 底纹贴文字:padding 撑色、负 margin 收位,文字坐标不动 */
+  padding:2px 8px 3px;margin:-2px -8px -3px}   /* 底纹贴文字：padding 撑色、负 margin 收位，文字坐标不动 */
 #quizpane .hqb.live::after{content:'▍';color:#00A88A;margin-left:1px;animation:hqcblink 1s steps(1) infinite}
 @keyframes hqcblink{50%{opacity:0}}
 #quizpane .hqc-q{font-size:14.5px;font-weight:650;color:#0F172A;margin-top:6px;line-height:1.75}
@@ -151,7 +151,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-send:disabled{opacity:.4;cursor:default}
 #quizpane .hqc-end{font:inherit;font-size:12px;padding:4px 8px;border:none;background:none;color:#94A3B8;cursor:pointer}
 #quizpane .hqc-end:hover{color:#00795F}
-/* 思考态:Musing… 扫光(品牌绿高光扫过灰字,同主产品 thinking-shimmer)+ 行首点呼吸 */
+/* 思考态：Musing… 扫光(品牌绿高光扫过灰字，同主产品 thinking-shimmer)+ 行首点呼吸 */
 @keyframes hqshimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 @keyframes hqbreathe{0%,100%{opacity:.45}50%{opacity:1}}
 #quizpane .hqc-typing{font-size:12.5px;
@@ -162,14 +162,14 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hqc-refs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 6px 18px}
 #quizpane .hqc-refs a{font-size:12px;font-weight:500;color:#00795F;border:1px solid rgba(0,168,138,.4);
   border-radius:8px;padding:5px 11px;background:#F0FDF9}
-/* 右上角工具:+ 新开一场 / 时钟看历史(同 Sparky 浮窗的交互语言) */
+/* 右上角工具：+ 新开一场 / 时钟看历史(同 Sparky 浮窗的交互语言) */
 #quizpane .hqc-tools{position:sticky;top:8px;z-index:6;height:0;display:flex;justify-content:flex-end;gap:6px}
 #quizpane .hqc-ib{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:none;
   border-radius:9px;background:rgba(255,255,255,.92);color:#94A3B8;cursor:pointer;transition:.13s;
   box-shadow:0 1px 3px rgba(15,23,42,.08)}
 #quizpane .hqc-ib:hover{color:#00795F;background:#F0FDF9}
 #quizpane .hqc-ib svg{width:16px;height:16px}
-/* 历史浮层:盖在对话区上面,活会话的 DOM 原封不动躺在下面 */
+/* 历史浮层：盖在对话区上面，活会话的 DOM 原封不动躺在下面 */
 #quizpane .hqc-histp{position:fixed;display:none;z-index:40;background:#fff;overflow-y:auto;padding:18px 30px 30px 44px}
 #quizpane .hqc-histp.on{display:block}
 #quizpane .hqc-hhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
@@ -265,7 +265,7 @@ body.dragging iframe{pointer-events:none}
   font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#00A88A,#0891B2)}
 .uava .ph svg{width:15px;height:15px}
 @media(max-width:1402px){.brand{margin-left:0}}
-/* 窗口收窄时导航同步收紧:六个 tab 在 960-1250 区间字号与间距两档降,960 以下才隐藏 */
+/* 窗口收窄时导航同步收紧：六个 tab 在 960-1250 区间字号与间距两档降，960 以下才隐藏 */
 @media(max-width:1250px){.glinks{gap:8px}.glinks a{font-size:13px;padding:6px 8px}}
 @media(max-width:1080px){.glinks{gap:2px}.glinks a{font-size:12.5px;padding:6px 6px;letter-spacing:0}}
 @media(max-width:960px){.glinks{display:none}}
@@ -378,11 +378,11 @@ function renderTree(filter){
   $('#tree').querySelectorAll('.tp-h').forEach(h=>h.onclick=()=>h.parentNode.classList.toggle('open'));
 }
 
-/* ── 「看过」标记:点开这一节就算 ────────────────────────────
-   绿点=纯导航痕迹(浏览器 :visited 的意思):只区分「哪些你打开过」,
-   不表示看了多久,更不表示学没学会——那由本章小测说话。
-   曾经用「滚动深度+停留时长」判,用户看了很久没点亮会纳闷,算法还偶尔不 work;
-   规则能被用户一句话说清,本身就是价值(2026-08-25 用户拍板收敛)。 */
+/* ── 「看过」标记：点开这一节就算 ────────────────────────────
+   绿点=纯导航痕迹(浏览器 :visited 的意思)：只区分「哪些你打开过」，
+   不表示看了多久，更不表示学没学会——那由本章小测说话。
+   曾经用「滚动深度+停留时长」判，用户看了很久没点亮会纳闷，算法还偶尔不 work;
+   规则能被用户一句话说清，本身就是价值(2026-08-25 用户拍板收敛)。 */
 function markRead(file){
   if(done.has(file)) return;
   done.add(file); saveDone(); renderTree($('#q').value);
@@ -460,7 +460,7 @@ const QAPI=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-
 const QCH={'第零篇章':'p-zero','第一篇章':'p-1','第二篇章':'p-2','第三篇章':'p-3','第四篇章':'p-4',
            '第五篇章':'p-5','第六篇章':'p-6','第七篇章':'p-7','第八篇章':'p-8','第九篇章':'p-9'};
 const QBEST_KEY='hab_quiz_best';
-const QBEST=JSON.parse(localStorage.getItem(QBEST_KEY)||'{}');   // {章代码: 最好正确率}
+const QBEST=JSON.parse(localStorage.getItem(QBEST_KEY)||'{}');   // {章代码： 最好正确率}
 function saveBest(ch,pct){
   if(pct>(QBEST[ch]||0)){ QBEST[ch]=pct; localStorage.setItem(QBEST_KEY,JSON.stringify(QBEST)); }
 }
@@ -498,40 +498,40 @@ const KSA_FIX={K:'回去读就能补，几天的事',
                S:'得动手做一遍才补得上，几周到几个月',
                A:'补不了，只能拿真实经历重新证明'};
 
-/* ── 小测会话档案:一条规则管全部 ─────────────────────────────
-   会话永远都在,只有两种结束方式:做完了,或用户自己点「+/再抽一轮」。
-   切课、跨页、刷新、隔天回来,一律接着上回——系统没有任何"主动刷新"的分支。
-   结构:{ [章]: { cur:会话|null, hist:[已归档会话...] } }
+/* ── 小测会话档案：一条规则管全部 ─────────────────────────────
+   会话永远都在，只有两种结束方式：做完了，或用户自己点「+/再抽一轮」。
+   切课、跨页、刷新、隔天回来，一律接着上回——系统没有任何"主动刷新"的分支。
+   结构：{ [章]: { cur：会话|null, hist:[已归档会话...] } }
    会话={id,ts,wrongMode,done,score,html(对话快照),state(引擎断点)}
-   快照只在"干净边界"打(开场完/每题判完/每轮对话完):题中间的半截恢复不了,
-   跨页回来那道题会重出一遍——这是存档粒度,不是丢失。 */
+   快照只在"干净边界"打(开场完/每题判完/每轮对话完)：题中间的半截恢复不了，
+   跨页回来那道题会重出一遍——这是存档粒度，不是丢失。 */
 const QS_KEY='hab_quiz_sess';
 const qsLoad=()=>{ try{ return JSON.parse(localStorage.getItem(QS_KEY)||'{}'); }catch(e){ return {}; } };
 function qsPersist(store){
-  /* 配额保护:超限先丢最老的归档场次,再不行丢最大的,活会话最后保 */
+  /* 配额保护：超限先丢最老的归档场次，再不行丢最大的，活会话最后保 */
   for(let t=0;t<8;t++){
     try{ localStorage.setItem(QS_KEY,JSON.stringify(store)); return; }
     catch(e){
       let oldest=null;
       Object.values(store).forEach(c=>{ (c.hist||[]).forEach(s=>{ if(!oldest||s.ts<oldest.ts) oldest=s; }); });
       if(oldest){ Object.values(store).forEach(c=>{ c.hist=(c.hist||[]).filter(s=>s!==oldest); }); }
-      else return;   // 连归档都没了还存不下——放弃这次落盘,内存里的会话不受影响
+      else return;   // 连归档都没了还存不下——放弃这次落盘，内存里的会话不受影响
     } }
 }
 function qsArchive(chSt){
-  if(chSt.cur){ const c=chSt.cur; delete c.state;   // 归档=只读档案,断点状态不再需要
+  if(chSt.cur){ const c=chSt.cur; delete c.state;   // 归档=只读档案，断点状态不再需要
     chSt.hist=[c,...(chSt.hist||[])].slice(0,5); chSt.cur=null; }
 }
 
 async function renderQuizView(ch, onlyIds, fresh){
   /* ── 对话式测评引擎 ──────────────────────────────────────────
-     形态抄自我们自己的调研 agent(gaode-survey-agent),同一条架构铁律:
-     **状态机管流程,LLM 只填空。**
-     - K/S 选择题:选项按钮嵌在对话流里,点选变成一条"我"的气泡;
-       判分永远走服务端 /api/quiz/submit(答案不在前端),零 LLM 成本,
+     形态抄自我们自己的调研 agent(gaode-survey-agent)，同一条架构铁律：
+     **状态机管流程，LLM 只填空。**
+     - K/S 选择题：选项按钮嵌在对话流里，点选变成一条"我"的气泡；
+       判分永远走服务端 /api/quiz/submit(答案不在前端)，零 LLM 成本，
        70% 通关闸、错题本、成绩曲线全部照旧——"点亮是测出来的"没动。
-     - A 判断力题:无缝切到 quizA 模式(登录专属),Sparky 抛场景、追问、
-       给参照,不打分;未登录给登录出口,不挡 K/S 完卷。 */
+     - A 判断力题：无缝切到 quizA 模式(登录专属),Sparky 抛场景、追问、
+       给参照，不打分；未登录给登录出口，不挡 K/S 完卷。 */
   const part=Object.keys(QCH).find(p=>QCH[p]===ch);
   if(!part){ location.replace('#'+encodeURIComponent(FLAT[0].file)); return; }
   $('#frame').style.display='none';
@@ -543,13 +543,13 @@ async function renderQuizView(ch, onlyIds, fresh){
   window.goPrev=()=>location.hash='#'+encodeURIComponent(inCh[inCh.length-1].file);
   window.goNext=()=>next&&(location.hash='#'+encodeURIComponent(next.file));
 
-  /* 内存快路径:本页内切课再切回,对话 DOM 原封活着(load() 只藏不毁),直接亮出来。
-     只要还是这一章,不管当前场是常规还是错题重练,都接着聊。 */
+  /* 内存快路径：本页内切课再切回，对话 DOM 原封活着(load() 只藏不毁)，直接亮出来。
+     只要还是这一章，不管当前场是常规还是错题重练，都接着聊。 */
   const wantWrong=!!(onlyIds&&onlyIds.length);
   if(!fresh && !wantWrong && (pane.dataset.live||'').split(':')[0]===ch && pane.querySelector('.hqc')){
     $('#side').classList.remove('show'); return; }
 
-  /* 档案:fresh(+/再抽一轮)或明确点了错题重练=用户亲手重开,旧场归档;其余一律接上回 */
+  /* 档案：fresh(+/再抽一轮)或明确点了错题重练=用户亲手重开，旧场归档；其余一律接上回 */
   const qstore=qsLoad(); const chSt=qstore[ch]||(qstore[ch]={cur:null,hist:[]});
   if(fresh||wantWrong) qsArchive(chSt);
   const resumed=!!chSt.cur;
@@ -560,7 +560,7 @@ async function renderQuizView(ch, onlyIds, fresh){
   chSt.cur=SESS;
   const st=SESS.state||(SESS.state={phase:'done',ids:[],idx:0,total:0,ansN:0,okN:0,wrongL:[],wrongTags:[],
              streak:0,misses:0,kHist:[],extras:null,eidx:0,aIds:null,aHist:[]});
-  const onlyWrong=SESS.wrongMode;   // 模式跟着会话走,不跟入口参数走(断点续传时入口没带 ids)
+  const onlyWrong=SESS.wrongMode;   // 模式跟着会话走，不跟入口参数走(断点续传时入口没带 ids)
   pane.dataset.live=ch+(onlyWrong?':wrong':'');
 
   pane.innerHTML='<div class="hqc">'+
@@ -570,20 +570,20 @@ async function renderQuizView(ch, onlyIds, fresh){
     '</div>'+
     '<div class="hqc-log"></div>'+
     '<div class="hqc-inp"><div class="hqc-shell"><textarea rows="1" placeholder="说说你的思路…"></textarea>'+
-    '<div class="hqc-btm"><button class="hqc-end">聊完了,收尾</button><span style="flex:1"></span>'+
+    '<div class="hqc-btm"><button class="hqc-end">聊完了，收尾</button><span style="flex:1"></span>'+
     '<button class="hqc-send" title="发送"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></div></div>'+
     '<div class="hqc-histp"></div>';
   const logEl=pane.querySelector('.hqc-log'), inpRow=pane.querySelector('.hqc-inp'),
         ta=pane.querySelector('.hqc-inp textarea'), sendBtn=pane.querySelector('.hqc-send'),
         endBtn=pane.querySelector('.hqc-end'), histp=pane.querySelector('.hqc-histp');
 
-  /* 快照落盘:引擎在每个"干净边界"调它。counters 是闭包本地变量,落盘时同步进 state */
+  /* 快照落盘：引擎在每个"干净边界"调它。counters 是闭包本地变量，落盘时同步进 state */
   const save=()=>{
     Object.assign(st,{ansN,okN,streak,misses,wrongL:wrongList.map(x=>x.ksa),
       wrongTags:wrongTags.slice(),kHist:kHist.slice(-6)});
     SESS.html=logEl.innerHTML; SESS.ts=Date.now(); qsPersist(qstore); };
 
-  /* 右上角工具:+ 新开一场 / 时钟看过往(同 Sparky 浮窗) */
+  /* 右上角工具：+ 新开一场 / 时钟看过往(同 Sparky 浮窗) */
   pane.querySelector('#hq-new').onclick=()=>renderQuizView(ch,null,true);
   const fmtT=ts=>{ const d=new Date(ts);
     return (d.getMonth()+1)+'-'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
@@ -598,7 +598,7 @@ async function renderQuizView(ch, onlyIds, fresh){
           '<span class="hs">'+(s.wrongMode?'错题重练':'本章小测')+(s.done?'':' · 没做完')+'</span>'+
           (s.score?'<span class="hp">'+s.score.ok+' / '+s.score.n+(s.score.n&&s.score.ok/s.score.n>=0.7?' · 通关':'')+'</span>':'')+
         '</button>').join('')
-      :'<div class="hqc-hempty">还没有归档的场次——点「+」新开一场时,当前这场会存到这里。</div>');
+      :'<div class="hqc-hempty">还没有归档的场次——点「+」新开一场时，当前这场会存到这里。</div>');
     histp.querySelector('.hqc-hback').onclick=()=>histp.classList.remove('on');
     histp.querySelectorAll('.hqc-hrow').forEach(rw=>rw.onclick=()=>{
       const s=rows[+rw.dataset.i];
@@ -615,12 +615,12 @@ async function renderQuizView(ch, onlyIds, fresh){
   const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
   const scroll=()=>{ pane.scrollTop=pane.scrollHeight; };
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-  /* bot 气泡带 Sparky 头像;botNow 立即渲染(SSE 流式自己写字),bot 走打字机 */
+  /* bot 气泡带 Sparky 头像；botNow 立即渲染(SSE 流式自己写字),bot 走打字机 */
   const mkBot=()=>{ const m=document.createElement('div'); m.className='hqm bot';
     m.innerHTML='<span class="hq-dot">●</span><div class="hqb"></div>';
     logEl.appendChild(m); scroll(); return m.querySelector('.hqb'); };
   const botNow=html=>{ const b=mkBot(); b.innerHTML=html; scroll(); return b; };
-  /* 打字机:富文本按 DOM 结构逐字符流出,<b> 等标签结构保留 */
+  /* 打字机：富文本按 DOM 结构逐字符流出，<b> 等标签结构保留 */
   const typeHTML=(el,html)=>new Promise(res=>{
     const tpl=document.createElement('div'); tpl.innerHTML=html;
     el.classList.add('live');
@@ -641,16 +641,16 @@ async function renderQuizView(ch, onlyIds, fresh){
   const me=text=>{ const m=document.createElement('div'); m.className='hqm me';
     m.innerHTML='<div class="hqb"><span class="hq-umark">›</span><span class="hq-ubody">'+esc(text)+'</span></div>';
     logEl.appendChild(m); scroll(); };
-  /* 反馈不念稿:按对错、连对连错、进度挑话说——还是状态机,只是不机械 */
+  /* 反馈不念稿：按对错、连对连错、进度挑话说——还是状态机，只是不机械 */
   let streak=st.streak||0, misses=st.misses||0;
   const pick=a=>a[Math.floor(Math.random()*a.length)];
   const okLine=()=>{ streak++; misses=0;
-    if(streak>=3) return pick(['✓ '+streak+' 连对,手感来了。','✓ 又对——连着 '+streak+' 道了。']);
-    if(streak===2) return pick(['✓ 连着两道,稳。','✓ 又对。']);
+    if(streak>=3) return pick(['✓ '+streak+' 连对，手感来了。','✓ 又对——连着 '+streak+' 道了。']);
+    if(streak===2) return pick(['✓ 连着两道，稳。','✓ 又对。']);
     return pick(['✓ 对了。','✓ 没错。','✓ 就是这个。']); };
   const badLine=()=>{ const wasStreak=streak>=2; streak=0; misses++;
-    if(wasStreak) return '✗ 断在这道——看看差在哪:';
-    if(misses>=2) return pick(['✗ 这道也不对——别急,解析里有钩子:','✗ 又差一点。这道的关键:']);
+    if(wasStreak) return '✗ 断在这道——看看差在哪：';
+    if(misses>=2) return pick(['✗ 这道也不对——别急，解析里有钩子：','✗ 又差一点。这道的关键：']);
     return pick(['✗ 不对。','✗ 差一点。','✗ 这道不对——']); };
 
   const doneReplay=resumed&&SESS.done;
@@ -659,10 +659,10 @@ async function renderQuizView(ch, onlyIds, fresh){
     botNow('<span class="hqc-typing">Musing…</span>');
     try{ const r=await fetch(QAPI+'/api/quiz?chapter='+ch); if(r.ok) pool=(await r.json()).items||[]; }catch(e){}
     logEl.innerHTML='';
-    if(!pool.length){ pane.dataset.live=''; botNow('题目没取到——网络抖了下,切走再切回来重试。'); return; }
+    if(!pool.length){ pane.dataset.live=''; botNow('题目没取到——网络抖了下，切走再切回来重试。'); return; }
     aPool=pool.filter(x=>x.ksa==='A');
     if(resumed&&st.ids.length){
-      /* 断点续传:按存档题序复原。题库更新对不上号时这场接不上——归档留档,重开新场 */
+      /* 断点续传：按存档题序复原。题库更新对不上号时这场接不上——归档留档，重开新场 */
       items=st.ids.map(id=>pool.find(x=>x.id===id));
       if(items.some(x=>!x)){ qsArchive(chSt); qsPersist(qstore); pane.dataset.live='';
         return renderQuizView(ch,null,true); }
@@ -678,7 +678,7 @@ async function renderQuizView(ch, onlyIds, fresh){
 
   let ansN=st.ansN||0, okN=st.okN||0;
   const wrongList=(st.wrongL||[]).map(k=>({ksa:k})), wrongTags=(st.wrongTags||[]).slice();
-  let pendingQ=null;   // 正在作答、还没判分的题——此时答疑要拦,防泄答案
+  let pendingQ=null;   // 正在作答、还没判分的题——此时答疑要拦，防泄答案
 
   /* ── 共用 SSE:quizA(判断题)与 quizK(选择题伴考)都走这条管道 ── */
   const sseChat=async(messages,ctxExtra,bub)=>{
@@ -687,7 +687,7 @@ async function renderQuizView(ch, onlyIds, fresh){
       headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem(TK)},
       body:JSON.stringify({messages,ctx:Object.assign({page:'learn',done:[],visitor:(localStorage.getItem('hab_vid')||'')},ctxExtra)})});
     if(!r.ok){ let dd=''; try{ dd=(await r.json()).detail||''; }catch(e){}
-      bub.textContent=dd||'连不上了——继续做题,不影响。'; return ''; }
+      bub.textContent=dd||'连不上了——继续做题，不影响。'; return ''; }
     const rd=r.body.getReader(), dec=new TextDecoder(); let buf='';
     while(true){ const x=await rd.read(); if(x.done) break;
       buf+=dec.decode(x.value,{stream:true});
@@ -703,25 +703,25 @@ async function renderQuizView(ch, onlyIds, fresh){
     return reply; };
 
   /* ── 每道 K/S 题 ─────────────────────────────────────────────
-     真对话和「问卷套皮」的分水岭:你的回答有没有被听见。
-     所以:答错(登录时)不直接念解析——Sparky 针对你选的那个错项反问一句,
-     给第二次机会;二次作答后才揭参照。计分与错题本都按第一次(否则闸变松)。
-     加练题(extra)不计分——目的是掌握,不是分数。 ── */
-  let curQ=null;                       // 最近一道判过的题,输入框答疑用
-  let curReprobe=null, rHist=[];       // 反问进行中的题与对话——打字回应反问要接得住,不能拦
+     真对话和「问卷套皮」的分水岭：你的回答有没有被听见。
+     所以：答错(登录时)不直接念解析——Sparky 针对你选的那个错项反问一句，
+     给第二次机会；二次作答后才揭参照。计分与错题本都按第一次(否则闸变松)。
+     加练题(extra)不计分——目的是掌握，不是分数。 ── */
+  let curQ=null;                       // 最近一道判过的题，输入框答疑用
+  let curReprobe=null, rHist=[];       // 反问进行中的题与对话——打字回应反问要接得住，不能拦
   const askKS=(q,qi,extra)=>new Promise(async resolve=>{
     if(extra) st.eidx=qi; else st.idx=qi;
-    save();   /* 干净边界:这道题还没出,快照停在上一题判完处 */
+    save();   /* 干净边界：这道题还没出，快照停在上一题判完处 */
     if(!extra&&qi===Math.floor(items.length/2)&&qi>1){
-      await bot(okN>=qi-1?'过半了,一道没丢——继续。':(okN>=qi/2?'过半了,状态在线。':'过半了。前面错的那几道,解析别跳过——后半段还会碰到同类。'));
+      await bot(okN>=qi-1?'过半了，一道没丢——继续。':(okN>=qi/2?'过半了，状态在线。':'过半了。前面错的那几道，解析别跳过——后半段还会碰到同类。'));
       await sleep(300); }
-    /* 出题引导语:自然语言带出来,不用「第N/M题」标签;题干高亮让人一眼认出问的是什么 */
+    /* 出题引导语：自然语言带出来，不用「第N/M题」标签；题干高亮让人一眼认出问的是什么 */
     const tyName=q.type==='multi'?'多选题':(q.type==='judge'?'判断题':'单选题');
-    const tyNote=q.type==='multi'?',选完点确认':'';
-    const lead = extra ? '这道不计分——「'+esc(q.tag||'刚才那个')+'」考点的同类'+tyName+',验一下是真懂了还是碰巧'+tyNote+':'
-      : qi===0 ? pick(['好,咱们开始。第一道,是道'+tyName+tyNote+':','先来第一道,'+tyName+tyNote+':'])
-      : qi===items.length-1 ? pick(['最后一道了,'+tyName+tyNote+':','收官这道,'+tyName+tyNote+':'])
-      : pick(['下一道,','继续,','接着来,','再来,'])+tyName+tyNote+':';
+    const tyNote=q.type==='multi'?'，选完点确认':'';
+    const lead = extra ? '这道不计分——「'+esc(q.tag||'刚才那个')+'」考点的同类'+tyName+'，验一下是真懂了还是碰巧'+tyNote+'：'
+      : qi===0 ? pick(['好，咱们开始。第一道，是道'+tyName+tyNote+'：','先来第一道，'+tyName+tyNote+'：'])
+      : qi===items.length-1 ? pick(['最后一道了，'+tyName+tyNote+'：','收官这道，'+tyName+tyNote+'：'])
+      : pick(['下一道，','继续，','接着来，','再来，'])+tyName+tyNote+'：';
     await bot(lead+'<div class="hqc-q">'+q.q+'</div>');
     const row=document.createElement('div'); row.className='hqc-opts';
     const btns=q.opts.map(o=>{ const b=document.createElement('button');
@@ -733,13 +733,13 @@ async function renderQuizView(ch, onlyIds, fresh){
       go.onclick=()=>{ const sel=btns.map((b,i)=>b.classList.contains('sel')?i:-1).filter(i=>i>=0);
         if(!sel.length) return; go.remove(); judge(sel); };
       row.appendChild(go); scroll(); };
-    const finalize=async(d,given)=>{ /* 揭晓:标参照、给解析、落账 */
+    const finalize=async(d,given)=>{ /* 揭晓：标参照、给解析、落账 */
       const ans=Array.isArray(d.ans)?d.ans:[d.ans];
       row.classList.add('answered');
       btns.forEach((b,i)=>{ if(ans.includes(i)) b.classList.add('ok');
         else if(b.classList.contains('sel')||(!Array.isArray(given)&&i===given)) b.classList.add('bad'); });
       const head = firstCorrect ? okLine()
-        : (tries>1&&d.correct ? '✓ 这回对了——第一下踩的坑记住,它才是这道题的价值。'
+        : (tries>1&&d.correct ? '✓ 这回对了——第一下踩的坑记住，它才是这道题的价值。'
         : badLine());
       await bot(head+' '+(d.exp||''));
       if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:!!firstCorrect,extra:!!extra}});
@@ -748,7 +748,7 @@ async function renderQuizView(ch, onlyIds, fresh){
       if(!extra){ ansN++; okN+=firstCorrect?1:0; }
       curQ=q; pendingQ=null; curReprobe=null; rHist=[];
       if(extra) st.eidx=qi+1; else st.idx=qi+1;
-      save();   /* 判完+解析已上屏,又一个干净边界 */
+      save();   /* 判完+解析已上屏，又一个干净边界 */
       await sleep(400); resolve(); };
     const judge=async given=>{
       tries++;
@@ -759,26 +759,26 @@ async function renderQuizView(ch, onlyIds, fresh){
       try{ const res=await fetch(QAPI+'/api/quiz/submit',{method:'POST',
         headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:{[q.id]:given}})});
         if(res.ok) d=(await res.json()).details[0]; }catch(e){}
-      if(!d){ botNow('这题没判上——网络抖了,跳过它继续。'); resolve(); return; }
+      if(!d){ botNow('这题没判上——网络抖了，跳过它继续。'); resolve(); return; }
       if(tries===1) firstCorrect=d.correct;
-      /* 判断题二选一:说「不对」就等于报答案,「再选一次」毫无信息量——答错直接揭参照讲为什么 */
+      /* 判断题二选一：说「不对」就等于报答案，「再选一次」毫无信息量——答错直接揭参照讲为什么 */
       if(d.correct || tries>1 || !loggedIn() || q.type==='judge'){ await finalize(d,given); return; }
-      /* 答错第一次:不再垫固定句,判定信号交给 Sparky 用自己的话在同一条消息里说清(后端 reprobe 场景要求开头亮信号);
+      /* 答错第一次：不再垫固定句，判定信号交给 Sparky 用自己的话在同一条消息里说清(后端 reprobe 场景要求开头亮信号);
          视觉信号由错选项标红兜底 */
       const pickedArr=Array.isArray(given)?given:[given];
       curReprobe={q:q, picked:pickedArr};
-      rHist=[{role:'user',content:'这道题我选了:'+pickedArr.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join('、')}];
+      rHist=[{role:'user',content:'这道题我选了：'+pickedArr.map(i=>q.opts[i].replace(/<[^>]+>/g,'')).join('、')}];
       const bub=botNow('<span class="hqc-typing">Musing…</span>');
       const rr=await sseChat(rHist.slice(-8),
         {mode:'quizK',quiz_qid:q.id,quiz_picked:pickedArr,quiz_stage:'reprobe'},bub);
       if(rr) rHist.push({role:'assistant',content:rr});
-      /* 重开选项:错选保持红、锁死;其余恢复可点 */
+      /* 重开选项：错选保持红、锁死；其余恢复可点 */
       row.classList.remove('answered');
       btns.forEach((b,i)=>{ if(pickedArr.includes(i)){ b.classList.add('bad'); b.disabled=true; }
         b.classList.remove('sel'); });
       if(q.type==='multi') mkConfirm();
       const hint=document.createElement('div'); hint.className='hqc-hint';
-      hint.textContent='想好了就回上面再选一次;也可以直接打字跟我说你的想法。';
+      hint.textContent='想好了就回上面再选一次；也可以直接打字跟我说你的想法。';
       logEl.appendChild(hint); scroll(); };
     if(q.type==='multi'){ btns.forEach(b=>b.onclick=()=>{ if(!b.disabled) b.classList.toggle('sel'); }); mkConfirm(); }
     else btns.forEach((b,i)=>b.onclick=()=>{ if(b.disabled||row.classList.contains('answered'))return;
@@ -798,14 +798,14 @@ async function renderQuizView(ch, onlyIds, fresh){
     logEl.appendChild(acts); scroll(); };
   const finish=()=>{ actions(); SESS.done=true; SESS.score={ok:okN,n:total||1}; st.phase='done'; save(); };
 
-  /* 完结场次回放:成绩单原样躺回来;动作行重建(按钮要活的) */
+  /* 完结场次回放：成绩单原样躺回来；动作行重建(按钮要活的) */
   if(doneReplay){
     logEl.innerHTML=SESS.html;
     logEl.querySelectorAll('button').forEach(b=>b.disabled=true);
     logEl.querySelectorAll('.hqc-acts').forEach(a=>a.remove());
     actions(); scroll(); return;
   }
-  /* 未完结断点:对话记录静态躺回(已判的题本来就是锁死的),引擎从断点接着跑 */
+  /* 未完结断点：对话记录静态躺回(已判的题本来就是锁死的)，引擎从断点接着跑 */
   if(resumed){
     logEl.innerHTML=SESS.html;
     logEl.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -813,35 +813,35 @@ async function renderQuizView(ch, onlyIds, fresh){
   }
 
   /* ── 开场 ── */
-  /* 开场:交给模型当这场巩固的主持人(定位=巩固不是考试,见后端 open 场景)。
-     真值情况(读了几节/上回成绩/首次或重练)由系统消息给它,话让它自己说。
-     匿名无 LLM,一句脚本兜底,不装腔。 */
+  /* 开场：交给模型当这场巩固的主持人(定位=巩固不是考试，见后端 open 场景)。
+     真值情况(读了几节/上回成绩/首次或重练)由系统消息给它，话让它自己说。
+     匿名无 LLM，一句脚本兜底，不装腔。 */
   if(st.phase==='open'){
     const readN=inCh.filter(l=>done.has(l.file)).length;
     const prevBest=Math.round((QBEST[ch]||0)*100);
     if(loggedIn()){
-      const situ='(系统:用户进入「'+part+'」的本章巩固。'+
+      const situ='(系统：用户进入「'+part+'」的本章巩固。'+
         (onlyWrong
-          ? '这次是错题重练,共 '+items.length+' 道上回错的题。'
-          : '本章 '+inCh.length+' 节已读 '+readN+' 节;'+
+          ? '这次是错题重练，共 '+items.length+' 道上回错的题。'
+          : '本章 '+inCh.length+' 节已读 '+readN+' 节；'+
             (prevBest>0?'上回小测最好 '+prevBest+'%'+(prevBest>=70?'(已通关)':'(未通关)'):'第一次做本章小测')+
-            ';本轮知识与技能题 '+items.length+' 道'+(aPool.length?',之后还有判断力对话':'')+'。')+
+            '；本轮知识与技能题 '+items.length+' 道'+(aPool.length?'，之后还有判断力对话':'')+'。')+
         '请按 open 场景开场。)';
       const bub=botNow('<span class="hqc-typing">Musing…</span>');
       await sseChat([{role:'user',content:situ}],{mode:'quizK',quiz_stage:'open',quiz_chapter:ch},bub);
     } else {
       await bot(onlyWrong
-        ? '错题重练——这 '+items.length+' 道是你上次错的,练对就划掉。'
-        : '来把这章钉扎实。<b>知识与技能题 '+items.length+' 道</b>,答对 70% 点亮本章,答错看解析。');
+        ? '错题重练——这 '+items.length+' 道是你上次错的，练对就划掉。'
+        : '来把这章钉扎实。<b>知识与技能题 '+items.length+' 道</b>，答对 70% 点亮本章，答错看解析。');
     }
     await sleep(300);
     st.phase='ks'; save();
   }
-  /* K/S 段:答疑输入框常开(登录时)——单行道变双行道 */
+  /* K/S 段：答疑输入框常开(登录时)——单行道变双行道 */
   let phase='ks'; const kHist=(st.kHist||[]).slice(); let sendA=null;
   const kAsk=async v=>{
     me(v);
-    /* 反问进行中:用户打字回应反问 → 顺着掰扯(同一场 reprobe 对话),别拦 */
+    /* 反问进行中：用户打字回应反问 → 顺着掰扯(同一场 reprobe 对话)，别拦 */
     if(pendingQ && curReprobe && curReprobe.q===pendingQ){
       rHist.push({role:'user',content:v});
       ta.disabled=true; sendBtn.disabled=true;
@@ -850,30 +850,30 @@ async function renderQuizView(ch, onlyIds, fresh){
         {mode:'quizK',quiz_qid:pendingQ.id,quiz_picked:curReprobe.picked,quiz_stage:'reprobe'},bub2);
       if(r2) rHist.push({role:'assistant',content:r2});
       ta.disabled=false; sendBtn.disabled=false; ta.focus(); return; }
-    /* 作答前的提问(题型/题意/概念)也正面回答——preask 场景零泄题;判分后走 ask 可放开讲 */
+    /* 作答前的提问(题型/题意/概念)也正面回答——preask 场景零泄题；判分后走 ask 可放开讲 */
     const stage=pendingQ?'preask':'ask';
     const qid=pendingQ?pendingQ.id:(curQ?curQ.id:null);
-    if(!qid){ await bot('还没开考呢。开始做题后,随时来问。'); return; }
+    if(!qid){ await bot('还没开考呢。开始做题后，随时来问。'); return; }
     kHist.push({role:'user',content:v});
     ta.disabled=true; sendBtn.disabled=true;
     const bub=botNow('<span class="hqc-typing">Musing…</span>');
     const reply=await sseChat(kHist.slice(-6),{mode:'quizK',quiz_qid:qid,quiz_stage:stage},bub);
     if(reply) kHist.push({role:'assistant',content:reply});
-    if(!pendingQ) save();   /* 判分后的答疑落快照;作答前的 preask 不落(题开着,非边界) */
+    if(!pendingQ) save();   /* 判分后的答疑落快照；作答前的 preask 不落(题开着，非边界) */
     ta.disabled=false; sendBtn.disabled=false; };
   const submitMsg=()=>{ const v=ta.value.trim(); if(!v||ta.disabled) return; ta.value='';
     if(phase==='a') sendA(v); else kAsk(v); };
   sendBtn.onclick=submitMsg;
   ta.onkeydown=e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); submitMsg(); } };
   if(loggedIn()){ inpRow.style.display='flex'; endBtn.style.display='none';
-    ta.placeholder='对题目或解析有疑问?随时打字问我,不影响考试'; }
+    ta.placeholder='对题目或解析有疑问？随时打字问我，不影响考试'; }
   if(st.phase==='ks'){
     for(let i=st.idx;i<items.length;i++) await askKS(items[i],i);
     st.phase='extras'; st.eidx=0; save();
   }
 
-  /* 自适应加练:栽过的考点,抽同类题再验一遍(不计分,纯状态机)。
-     抽了哪几道记进存档,断点回来不换题、不重发开场白 */
+  /* 自适应加练：栽过的考点，抽同类题再验一遍(不计分，纯状态机)。
+     抽了哪几道记进存档，断点回来不换题、不重发开场白 */
   if(st.phase==='extras'){
     if(!onlyWrong){
       let extras;
@@ -888,8 +888,8 @@ async function renderQuizView(ch, onlyIds, fresh){
             extras.push(pk); seen.add(pk.id); } }
         st.extras=extras.map(x=>x.id); save();
         if(extras.length){
-          await bot('等下,先别看总分——「'+extras.map(x=>esc(x.tag||'同类')).join('」和「')+
-            '」这'+(extras.length>1?'几':'')+'个考点你刚栽过。我从题库再抽'+extras.length+'道同类的,验一下是真懂了还是碰巧——<b>不计分</b>。');
+          await bot('等下，先别看总分——「'+extras.map(x=>esc(x.tag||'同类')).join('」和「')+
+            '」这'+(extras.length>1?'几':'')+'个考点你刚栽过。我从题库再抽'+extras.length+'道同类的，验一下是真懂了还是碰巧——<b>不计分</b>。');
           await sleep(300);
         }
       }
@@ -898,7 +898,7 @@ async function renderQuizView(ch, onlyIds, fresh){
     st.phase='sum'; save();
   }
 
-  /* ── K/S 小结:通关判定与落库,全部照旧 ── */
+  /* ── K/S 小结：通关判定与落库，全部照旧 ── */
   let firstA=false;
   if(st.phase==='sum'){
     const pct=okN/total, pass=pct>=0.7;
@@ -916,20 +916,20 @@ async function renderQuizView(ch, onlyIds, fresh){
     if(onlyWrong || !aPool.length){ finish(); return; }
     await sleep(600);
     if(!loggedIn()){
-      const b=await bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分,是聊出来的,要登录才能开。');
+      const b=await bot('接下来本来还有 '+aPool.length+' 道<b>判断力题</b>——那部分不打分，是聊出来的，要登录才能开。');
       const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
       lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
       finish(); return;
     }
     st.aIds=aPool.sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
-    await bot('选择题到此为止。接下来 <b>'+st.aIds.length+' 道判断力题</b>——这部分不打分:我抛场景,你说思路,我追问,然后给你课程的参照判断,你自己比。聊完给你一段思维画像。');
+    await bot('选择题到此为止。接下来 <b>'+st.aIds.length+' 道判断力题</b>——这部分不打分：我抛场景，你说思路，我追问，然后给你课程的参照判断，你自己比。聊完给你一段思维画像。');
     st.phase='a'; save(); firstA=true;
   }
 
-  /* ── A 段:判断力题,LLM 接管(新进入或断点续上——续上时上一轮对话已在快照里,话筒直接递回用户) ── */
+  /* ── A 段：判断力题，LLM 接管(新进入或断点续上——续上时上一轮对话已在快照里，话筒直接递回用户) ── */
   if(st.phase==='a'){
     if(!loggedIn()){
-      const b=await bot('这场聊到一半的判断力对话,要登录才能继续。');
+      const b=await bot('这场聊到一半的判断力对话，要登录才能继续。');
       const lb=document.createElement('button'); lb.className='hqc-act pri'; lb.textContent='登录后继续';
       lb.onclick=()=>gateTo('quiz:'+ch); b.appendChild(document.createElement('br')); b.appendChild(lb);
       return;
@@ -951,8 +951,8 @@ async function renderQuizView(ch, onlyIds, fresh){
     inpRow.style.display='flex'; endBtn.style.display='';
     ta.placeholder='说说你的思路…';
     endBtn.onclick=async()=>{ inpRow.style.display='none';
-      await bot('好,这轮到这。判断力没有分数——上面每道题你和参照的差别,就是下一步该看的方向。'); finish(); };
-    if(firstA) sendA('开始吧,出第一道',true);
+      await bot('好，这轮到这。判断力没有分数——上面每道题你和参照的差别，就是下一步该看的方向。'); finish(); };
+    if(firstA) sendA('开始吧，出第一道',true);
   }
 }
 
@@ -977,7 +977,7 @@ document.addEventListener('keydown',e=>{
   const show=u=>{ b.className='uava'; b.title=(u.nickname||'')+' · 我的成长';
     b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
     b.href='growth.html'; };
-  try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  // 同步先画缓存,不闪"登录"
+  try{ const c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  // 同步先画缓存，不闪"登录"
   try{
     const r=await fetch(QAPI+'/api/me',{headers:{Authorization:'Bearer '+t}});
     if(!r.ok){ if(r.status===401){ localStorage.removeItem(TK); localStorage.removeItem('hab_user');

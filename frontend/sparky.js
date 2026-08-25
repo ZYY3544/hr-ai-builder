@@ -201,7 +201,7 @@
     ' display:flex;align-items:center;justify-content:center;padding:0}',
     '#spk-send svg{width:15px;height:15px}',
     '#spk-send:disabled{opacity:.45;cursor:default}',
-    // / 指令菜单:悬浮在输入框上方
+    // / 指令菜单：悬浮在输入框上方
     '#spk-cmds{position:absolute;left:14px;right:14px;bottom:calc(100% - 2px);background:#fff;border:1px solid #E2E8F0;',
     ' border-radius:12px;box-shadow:0 10px 30px -12px rgba(15,23,42,.25);overflow:hidden;display:none;z-index:5}',
     '#spk-cmds.on{display:block}',
@@ -227,7 +227,7 @@
   /* 球和面板的底距全站统一走 CSS 默认的 --spk-bottom(20px)；
      课程页的底部翻页条已撤，不再需要动态避让。 */
 
-  /* 供页面级组件(对话式小测)取猫头像用——只读,不碰面板状态 */
+  /* 供页面级组件(对话式小测)取猫头像用——只读，不碰面板状态 */
   window.sparkyFace = function (sz) { return catSVG(sz || 26, 'still'); };
 
   var ball = document.createElement('button');
@@ -586,7 +586,7 @@
   function sendSignal(file, dwellSec) {
     // debug 模式把阈值缩到 2%，此时的"卡住"只有十几秒——那不是真卡住，
     // 是我们自己在测触发。放进去会污染"哪节最难"的排行，而排行是用来决定改哪节课的。
-    if (DBG) { console.log('[spk] debug 模式，信号不上报:', file, Math.round(dwellSec) + 's'); return; }
+    if (DBG) { console.log('[spk] debug 模式，信号不上报：', file, Math.round(dwellSec) + 's'); return; }
     try {
       fetch(API + '/api/sparky/signal', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
@@ -655,7 +655,7 @@
                    : ev.title ? '已记下·《' + ev.title + '》，会拿它改课。'
                    : '已记下——这条是对整个站的意见，没挂到具体哪一节。');
             } else if (ev.t === 'apply') {
-              // 落库走已鉴权的 /api/review/apply——聊天通道匿名,不该有写库权限
+              // 落库走已鉴权的 /api/review/apply——聊天通道匿名，不该有写库权限
               (function (kind, noteTxt) {
                 if (appliedKinds[kind]) { return; }
                 var t2 = null; try { t2 = localStorage.getItem('hab_token'); } catch (e) {}
@@ -744,8 +744,8 @@
   }
 
   /* ---------------- / 指令 ---------------- */
-  var chatMode = null;      // coach / review / opc;换页即清(模式块只影响当下这段对话)
-  var appliedKinds = {};    // 已递交的申请类型:模型若重复吐 APPLY(确认轮又吐一次),这里挡住不重复落库
+  var chatMode = null;      // coach / review / opc；换页即清(模式块只影响当下这段对话)
+  var appliedKinds = {};    // 已递交的申请类型：模型若重复吐 APPLY(确认轮又吐一次)，这里挡住不重复落库
   var CMDS = [
     { c: '/就业辅导', m: 'coach',  msg: '我想申请就业辅导', d: '聊两句，我帮你递申请' },
     { c: '/交作业',   m: 'review', msg: '我想提交作品评审', d: '做完任务，交作品换报告' },
@@ -789,7 +789,7 @@
   function submit() {
     var q = ta.value.trim();
     if (!q || busy) return;
-    // 输入的是完整指令 → 走指令,不发给模型
+    // 输入的是完整指令 → 走指令，不发给模型
     for (var ci = 0; ci < CMDS.length; ci++) {
       if (CMDS[ci].c === q) { ta.value = ''; hideCmds(); pickCmd(CMDS[ci]); return; }
     }
@@ -837,7 +837,7 @@
     clearTimeout(dozeTimer);
     dozeTimer = setTimeout(renderBall, wakeMs() + 200);
   };
-  /* 开着面板换页,新页面把面板接着打开——对话框跟着人走,不是每页重新来过。
-     用 sessionStorage:只跟当前标签页的浏览路径,新开的标签页从收起状态开始。 */
+  /* 开着面板换页，新页面把面板接着打开——对话框跟着人走，不是每页重新来过。
+     用 sessionStorage：只跟当前标签页的浏览路径，新开的标签页从收起状态开始。 */
   try { if (sessionStorage.getItem('spk_open') === '1') openPanel(); } catch (e) {}
 })();
