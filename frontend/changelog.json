@@ -611,6 +611,13 @@
    "level": "L0",
    "hash": "d6feab78f138",
    "note": "删内联旧.say深色样式与「可以整段抄走」标签,收归lesson.css浅色代码块基线+复制按钮"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "context-window.html",
+   "level": "L0",
+   "hash": "7435edc30e9d",
+   "note": "对比标题年份2025→2026(表内数据本就是2026年初口径,标题滞后)"
   }
  ]
 }
