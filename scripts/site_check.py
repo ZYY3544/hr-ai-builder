@@ -7,7 +7,7 @@ HR AI Builder 全站体检 —— 静态站没有编译期兜底，这是唯一�
 
 每次改课程/改页面后必跑。退出码非 0 表示有 FAIL。
 """
-import json, os, re, subprocess, sys, tempfile, shutil
+import hashlib, json, os, re, subprocess, sys, tempfile, shutil
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FE   = os.path.join(ROOT, 'frontend')
@@ -33,7 +33,48 @@ def load_course(fe=FE):
     return json.loads(out.stdout)
 
 
+def check_changelog(fe, sl, write=True):
+    """课程变更登记闸:课件内容一变,changelog.json 必须有匹配条目(hash 对账)。
+
+    修复流程=在 frontend/changelog.json 登记 {date,file,level,note,hash(新版前12位),why(L2)},
+    本检查确认条目 hash 与当前一致后,自动把快照刷新(write=True 时)——改课与登记从两件事变一件事。
+    级别判据见 changelog.json 顶部 _doc:锚是「旧读者会怎样」,不是改动量。L2 发通知前须用户过目。"""
+    snap_p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lesson_hashes.json')
+    log_p  = os.path.join(fe, 'changelog.json')
+    try: snap = json.load(open(snap_p, encoding='utf-8'))
+    except Exception: WARN('变更登记', 'lesson_hashes.json 缺失,跳过(首次运行?)'); return
+    try: log = json.load(open(log_p, encoding='utf-8'))
+    except Exception:
+        FAIL('变更登记', 'frontend/changelog.json 缺失或损坏'); return
+    entries = log.get('entries', [])
+    by_file = {}
+    for e in entries:                        # 同文件取最后一条(最新登记)
+        by_file[e.get('file','')] = e
+    cur = {}
+    for q in sorted(os.listdir(sl)):
+        if not q.endswith('.html'): continue
+        cur[q] = hashlib.sha256(open(os.path.join(sl,q),'rb').read()).hexdigest()[:12]
+    dirty = False
+    for f2, h in cur.items():
+        old = snap.get(f2)
+        if old == h: continue
+        e = by_file.get(f2)
+        if not e:
+            FAIL('变更登记', f'{f2} 内容变了但 changelog.json 没有条目——改课必须登记级别(L0/L1/L2)')
+        elif e.get('hash') != h:
+            FAIL('变更登记', f'{f2} 的 changelog 条目 hash 与当前不符(登记后又改了?)——更新条目 hash 为 {h}')
+        elif e.get('level') == 'L2' and not (e.get('why') or '').strip():
+            FAIL('变更登记', f'{f2} 标了 L2 却没写 why(旧读者会错在哪)——写不出 why 就不是 L2')
+        else:
+            snap[f2] = h; dirty = True       # 登记合规 → 快照自动跟上
+    for f2 in list(snap):
+        if f2 not in cur: del snap[f2]; dirty = True
+    if dirty and write:
+        json.dump(snap, open(snap_p, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+
+
 def check(fe=FE, sl=SL):
+    check_changelog(fe, sl, write=(fe == FE))
     CO = load_course(fe)
     if not CO:
         return
@@ -239,7 +280,7 @@ def negative_control():
 
     cd = os.path.join(fe2, 'course-data.js')
     s = open(cd, encoding='utf-8').read()
-    s = s.replace('"minutes": 584', '"minutes": 999', 1)                       # ① 统计
+    s = re.sub(r'"minutes": \d+', '"minutes": 999', s, count=1)               # ① 统计(动态锚,别写死数值——584 时代锚死过一次,课程一加节就落空)
     s = s.replace('"file": "jargon-why.html"', '"file": "ZZZ-nonexistent.html"', 1)  # ② 声明了不存在的文件
     open(cd, 'w', encoding='utf-8').write(s)
 
@@ -268,7 +309,7 @@ def negative_control():
     shutil.rmtree(tmp)
 
     cats = {c for c, _ in fails}
-    expect = {'统计', '对账', 'kicker', '红线', '后端映射'}
+    expect = {'统计', '对账', 'kicker', '红线', '后端映射', '变更登记'}   # 注入的课件改动都没登记 changelog,新闸必须抓到
     print('══ 阴性对照（先验刀）══')
     for c, m in fails:
         print(f'   抓到 [{c}] {m[:88]}')
