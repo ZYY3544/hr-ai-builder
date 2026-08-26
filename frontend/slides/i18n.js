@@ -6,6 +6,10 @@
 (function () {
   'use strict';
 
+  /* 本站实际存在译文的语种。fork 自带 zh/en/ko 三语框架，但我们一节译文都没做，
+     所以只声明 zh；哪天真出了英文课件（*.en.html），把 'en' 加进来即可，切换器自动出现。 */
+  var AVAILABLE = ['zh'];
+
   var m = location.pathname.match(/\.(en|ko)\.html?$/);
   var LANG = m ? m[1] : 'zh';
 
@@ -495,7 +499,11 @@
       { id: 'zh', label: '中文' },
       { id: 'en', label: 'English' },
       { id: 'ko', label: '한국어' }
-    ];
+    ].filter(function (l) { return AVAILABLE.indexOf(l.id) >= 0; });
+
+    /* 只有一种语言就别显示切换器——挂一个通向 404 的按钮，
+       比没有按钮伤得多（2026-08-26 实测：en/ko 全部 404，本站一节译文都没有）。 */
+    if (langs.length < 2) return;
 
     var box = document.createElement('div');
     box.id = 'lang-switcher';
