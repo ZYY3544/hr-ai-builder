@@ -374,7 +374,8 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 (function(){
   var m=document.getElementById('loginMask'), b=document.getElementById('loginBtn'),
       x=document.getElementById('loginClose');
-  if(b) b.onclick=function(e){e.preventDefault(); m.classList.add('on');};
+  /* 本页的 loginMask 只有骨架、没有取二维码的代码,点开是死路——统一跳首页登录(learn/jobs/review/coach/quiz 同款) */
+  if(b) b.onclick=function(e){e.preventDefault(); location.href='index.html#login';};
   if(x) x.onclick=function(){m.classList.remove('on');};
   if(m) m.onclick=function(e){if(e.target===m) m.classList.remove('on');};
 })();

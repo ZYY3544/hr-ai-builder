@@ -82,8 +82,13 @@
      是全站 9 个页面唯一都加载的脚本——各页头像代码不用再各改一份。 */
   document.addEventListener('click', function (e) {
     var menu = document.getElementById('hab-acct-menu');
-    var av = e.target.closest && e.target.closest('#loginBtn.uava');
-    if (!av) { if (menu && !menu.contains(e.target)) menu.remove(); return; }
+    var av = e.target.closest && e.target.closest('#loginBtn');
+    /* 判据必须是「有没有 token」，不能看 .uava 类——那个类未登录时也在元素上，
+       用它当判据会让退出后再点头像仍弹账户菜单，把登录入口彻底挡死（2026-08-26 用户实测抓到）。
+       未登录时这里必须原样放行，让各页自己的 onclick=openLogin 正常触发。 */
+    var authed = false;
+    try { authed = !!localStorage.getItem('hab_token'); } catch (err) {}
+    if (!av || !authed) { if (menu && !menu.contains(e.target)) menu.remove(); return; }
     e.preventDefault(); e.stopPropagation();
     if (menu) { menu.remove(); return; }
     var u = {};
