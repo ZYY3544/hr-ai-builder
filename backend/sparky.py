@@ -389,7 +389,7 @@ _QCH_NAME = {"p-zero": "第零篇章", "p-1": "第一篇章", "p-2": "第二篇�
              "p-8": "第八篇章", "p-9": "第九篇章"}
 
 
-def _recap_block(uid: str, wrong_note: str = "") -> str:
+def _recap_block(uid: str, lesson_idx: dict, wrong_note: str = "") -> str:
     """回访学习小结（recap）。数据=服务端 hab_progress 自上次小结以来的真实轨迹。
     骨架抄 CC 的会话 recap：上回→现状→下一步——为「接着学」服务，不是成绩汇报。
     成长地图 tab 已下线（2026-08-26 用户拍板），这里是它的继任者。"""
@@ -403,10 +403,11 @@ def _recap_block(uid: str, wrong_note: str = "") -> str:
                 last = t
     seg = [r for r in rows if r.get("kind") in ("done", "quiz")
            and str(r.get("created_at") or "") > last]
+    seg.sort(key=lambda r: str(r.get("created_at") or ""))   # 显式按时间升序，不赌上游返回顺序
     reads, quiz = [], {}
-    for r in reversed(seg):                     # 旧→新
+    for r in seg:
         if r.get("kind") == "done":
-            v = LESSON_IDX.get(r.get("key") or "")
+            v = lesson_idx.get(r.get("key") or "")   # 课程目录只在 make_router 作用域里，必须传进来
             if v:
                 reads.append(f"{v['part']}《{v['title']}》")
         else:
@@ -727,7 +728,8 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
             if not mode_block:
                 raise HTTPException(400, "这道题没找到——刷新小测页重试。")
         elif mode == "recap":
-            mode_block = _recap_block(uid, (body.ctx.wrong_summary or "").strip()[:600] if body.ctx else "")
+            mode_block = _recap_block(uid, LESSON_IDX,
+                                      (body.ctx.wrong_summary or "").strip()[:600] if body.ctx else "")
             try:
                 import store as _store
                 # 请求即落标记：下次小结的区间从这一刻起算。流中断顶多丢一次小结，可再点，别为它加事务
