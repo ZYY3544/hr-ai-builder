@@ -229,6 +229,9 @@ h2 .spk-face{width:34px;height:auto;vertical-align:-6px;margin-right:11px}
 .qrslot img{width:100%;height:100%;display:block;object-fit:contain}
 .qrslot.todo{border:1.5px dashed var(--line);background:var(--bg);
   color:var(--faint);font-size:13px;line-height:1.8;padding:0 18px}
+/* 邮箱：同高槽位但用整卡宽度，地址走图片(纯文本会被爬虫收走) */
+.qrslot.mail{width:100%;height:172px}
+.qrslot.mail img{width:100%;max-width:236px;height:auto;object-fit:contain}
 .telimg{height:22px;width:auto;vertical-align:-5px;margin:0 2px}
 @media(max-width:860px){.contact{grid-template-columns:1fr}}
 .cc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 24px;text-align:center;transition:.18s;text-decoration:none;color:inherit;display:block}
@@ -492,7 +495,7 @@ b.setAttribute('href','javascript:void(0)');
       <div class="cc">
         <div class="ic">✉️</div>
         <div class="n">发邮件</div>
-        <div class="qrslot todo">邮箱地址<br>待放</div>
+        <div class="qrslot mail"><a id="mailto" href="#"><img src="brand/mail.png" alt="邮箱地址"></a></div>
         <div class="d">不方便加微信的话，<br><b>把你的情况写清楚发过来</b>。</div>
       </div>
       <div class="cc">
@@ -746,5 +749,12 @@ loadMe();
 </script>
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>
+<script>
+/* 邮箱 mailto 运行时拼装：完整地址不出现在 HTML 源码里，爬邮箱的脚本抓不到，
+   人点一下照样唤起邮件客户端。显示用的是图片(brand/mail.png)，同理。 */
+(function(){var a=document.getElementById('mailto');if(!a)return;
+  var u=['zynju','2014hr'].join(''),d=['163','com'].join('.');
+  a.href='mailto:'+u+'@'+d;a.title='给我发邮件';})();
+</script>
 </body>
 </html>
