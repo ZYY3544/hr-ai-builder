@@ -675,7 +675,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 10}  # 模式块版本：v10=recap 学习小结模式(成长地图 tab 的继任者)
+                "mode_ver": 11}  # 模式块版本：v11=recap 作用域修复(LESSON_IDX 改传参)
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
