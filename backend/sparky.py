@@ -170,15 +170,17 @@ def _site_map(jobs: list) -> str:
 它是什么、在哪、多少钱，照实说清，然后指到对应页面。这张地图之外的功能才说没有。
 价格只报下面写的数，不打折、不加码、不替站主答应任何地图里没写的事。
 
-- **顶部六个 tab**：课程内容 / 实战任务 / 岗位机会 / 就业辅导 / 成长地图 / 关于我们。
-  右上角圆形头像是登录入口；登录后点头像也能进「成长地图」。
+- **顶部五个 tab**：课程内容 / 实战任务 / 岗位机会 / 就业辅导 / 关于我们。
+  右上角圆形头像是登录入口；登录后点头像弹出账户菜单（看昵称、退出登录）。
 - **登录与解锁**：微信扫码登录，免费。不登录可以直接读第零、第一篇章；
   登录后解锁全部课程 + 实战任务 + 岗位机会。登录服务偶尔要冷启动 20-40 秒，等一下就好，不是坏了。
 - **本章小测**：每个篇章末尾有「本章小测」卡片。知识与技能题（K/S）是选择题、
   机器判分，答对 70% 点亮本章，错题自动进错题本、可只重练错题；
   判断力题（A）**不打分**——在小测页点「跟 Sparky 过判断题」，你跟对方一问一答地过，
   聊完给一段思维画像（登录专属、每天限量）。分开是因为：识别对错测得出 K/S，判断力测不出。
-- **成长地图**（顶部 tab，需登录）：章节通关状态、任务进度、小测成绩曲线、错题本都在这。
+- **学习小结（recap）**：以前的「成长地图」页已下线，换成了你来做——登录用户在你的
+  对话里点「这段时间的学习小结」，你会拿到 ta 自上次小结以来的真实轨迹，出一段小结。
+  章节通关状态和最好成绩在课程目录的小测卡上就能看到；错题重练入口在每场小测收尾处。
 - **实战任务**：真实 HR 场景的练手任务包，做完可以走「作品评审」交作业。
 - **作品评审**（入口在「实战任务」页）：把做完的作品交上来，meansights 团队用更强的模型
   加专业标准出详细评估报告。评估报告 ¥50/次，**登录用户首次免费**（要求真做过：领过任务包、
@@ -382,6 +384,66 @@ REFS 固定写 []。"""
         "REFS 按正常规则（有点名才写）。")
 
 
+_QCH_NAME = {"p-zero": "第零篇章", "p-1": "第一篇章", "p-2": "第二篇章", "p-3": "第三篇章",
+             "p-4": "第四篇章", "p-5": "第五篇章", "p-6": "第六篇章", "p-7": "第七篇章",
+             "p-8": "第八篇章", "p-9": "第九篇章"}
+
+
+def _recap_block(uid: str, wrong_note: str = "") -> str:
+    """回访学习小结（recap）。数据=服务端 hab_progress 自上次小结以来的真实轨迹。
+    骨架抄 CC 的会话 recap：上回→现状→下一步——为「接着学」服务，不是成绩汇报。
+    成长地图 tab 已下线（2026-08-26 用户拍板），这里是它的继任者。"""
+    import store as _store
+    rows = _store.user_progress(uid, 2000)
+    last = ""
+    for r in rows:
+        if r.get("kind") == "recap":
+            t = str(r.get("created_at") or "")
+            if t > last:
+                last = t
+    seg = [r for r in rows if r.get("kind") in ("done", "quiz")
+           and str(r.get("created_at") or "") > last]
+    reads, quiz = [], {}
+    for r in reversed(seg):                     # 旧→新
+        if r.get("kind") == "done":
+            v = LESSON_IDX.get(r.get("key") or "")
+            if v:
+                reads.append(f"{v['part']}《{v['title']}》")
+        else:
+            ch = r.get("key") or "?"
+            val = r.get("value") or {}
+            q = quiz.setdefault(ch, {"n": 0, "ok": 0, "rounds": 0})
+            q["n"] += int(val.get("n") or 0)
+            q["ok"] += int(val.get("correct") or 0)
+            q["rounds"] += 1
+    if not reads and not quiz:
+        data = "（这段时间没有新的阅读或小测记录）"
+    else:
+        lines = []
+        if reads:
+            lines.append("读过的节（按时间序）：" + "、".join(reads[:40]) + ("…" if len(reads) > 40 else ""))
+        for ch, q in quiz.items():
+            lines.append(f"{_QCH_NAME.get(ch, ch)}小测：累计答 {q['n']} 题对 {q['ok']} 题（{q['rounds']} 条记录）")
+        data = "\n".join(lines)
+    for k, v in _QCH_NAME.items():
+        wrong_note = wrong_note.replace(k, v)     # 前端带来的是 p-1 这类章代码，转成人话
+    since = f"上次小结时间：{last}" if last else "这是对方的第一次小结（区间=全部历史）"
+    return f"""
+
+## 本轮处于「学习小结 · recap」模式（登录用户点了「这段时间的学习小结」）
+{since}
+这段时间的真实轨迹（服务端记录，绝对事实，不许添改）：
+{data}
+{("对方本地错题本摘要（前端带来，按考点聚类）：" + wrong_note) if wrong_note else ""}
+任务——照会话 recap 的骨架写，三段以内，为「接着学」服务：
+1. 上回到现在：用轨迹里的事实说 ta 走到哪了——点名读过的主题、小测表现。
+   **每句话都要能指回上面的数据**；数据里没有的不许说，没有轨迹就如实说这段时间没动静、别硬夸。
+2. 现状判断：把事实翻译成认知语言（错题聚在哪个考点，就说明哪个概念还没吃透），
+   有一说一，不夸不贬。**绝不出现完成率/百分比/进度条式表述**——小结不是成绩单。
+3. 下一步：给一个具体动作（读哪节 / 重练哪章错题 / 做哪个实战任务），REFS 带上对应的节。
+语气按你平时的样子说人话，别念数据清单。"""
+
+
 _MODE_KINDS = {"coach", "review"}          # APPLY 只认这两类
 
 
@@ -477,6 +539,7 @@ class ChatCtx(BaseModel):
     quiz_picked: Optional[list] = None  # quizK 专用：用户选了哪几个选项（下标）
     quiz_stage: Optional[str] = None    # quizK 专用：open=开场 | preask=作答前提问（零泄题）| reprobe=答错反问 | ask=判分后答疑
     quiz_chapter: Optional[str] = None  # quizK open 专用：篇章代码（p-zero/p-1/…）
+    wrong_summary: Optional[str] = None # recap 专用：前端错题本按考点聚类的摘要（服务端只有对错计数，考点在本地）
     lesson: Optional[str] = None        # learn.html 当前节文件名
     done: Optional[list] = None         # 已读完的节（文件名列表）
     trigger: Optional[str] = None       # 主动开口触发器 id（stuck/skim/comeback/…）
@@ -611,7 +674,7 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         return {"enabled": bool(_key()), "model": _DS_MODEL,
                 "prompt_chars": len(system_static),
                 "cut_ver": 2,    # 截断逻辑版本：v2 兼容 **REFS** 加粗变体
-                "mode_ver": 9}   # 模式块版本：v9=reprobe 一条消息自带判定信号(前端固定句退役)
+                "mode_ver": 10}  # 模式块版本：v10=recap 学习小结模式(成长地图 tab 的继任者)
 
     @router.post("/api/sparky/chat")
     def chat(body: ChatBody, request: Request):
@@ -625,9 +688,9 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
 
         # / 指令模式：不认识的值静默当无模式，老前端/伪造值都不至于挂
         mode = (body.ctx.mode or "").strip() if (body.ctx and body.ctx.mode) else ""
-        if mode not in _MODE_BLOCKS and mode not in ("quizA", "quizK"):
+        if mode not in _MODE_BLOCKS and mode not in ("quizA", "quizK", "recap"):
             mode = ""
-        if mode in ("opc", "quizA", "quizK"):
+        if mode in ("opc", "quizA", "quizK", "recap"):
             # 登录专属 + 各自独立的日额度。挡在这里而不是前端：前端的检查挡君子，这道挡直连的
             import auth as _auth
             tok = request.headers.get("authorization") or ""
@@ -663,6 +726,14 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
                                       body.ctx.quiz_chapter if body.ctx else None)
             if not mode_block:
                 raise HTTPException(400, "这道题没找到——刷新小测页重试。")
+        elif mode == "recap":
+            mode_block = _recap_block(uid, (body.ctx.wrong_summary or "").strip()[:600] if body.ctx else "")
+            try:
+                import store as _store
+                # 请求即落标记：下次小结的区间从这一刻起算。流中断顶多丢一次小结，可再点，别为它加事务
+                _store.add_progress(uid, "recap", "sparky", {"at": _store.now_iso()})
+            except Exception:
+                pass
         else:
             mode_block = _MODE_BLOCKS.get(mode, "")
 

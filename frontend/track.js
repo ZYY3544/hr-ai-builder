@@ -76,4 +76,34 @@
 
   send('view');
   window.habTrack = function (ev, extra) { send(ev, extra); };   // 供业务事件调用
+
+  /* ── 头像账户菜单（2026-08-26 成长地图 tab 下线后，退出登录的新家）──
+     点登录后的头像(.uava)弹一个小菜单：昵称 + 退出登录。放这里因为 track.js
+     是全站 9 个页面唯一都加载的脚本——各页头像代码不用再各改一份。 */
+  document.addEventListener('click', function (e) {
+    var menu = document.getElementById('hab-acct-menu');
+    var av = e.target.closest && e.target.closest('#loginBtn.uava');
+    if (!av) { if (menu && !menu.contains(e.target)) menu.remove(); return; }
+    e.preventDefault(); e.stopPropagation();
+    if (menu) { menu.remove(); return; }
+    var u = {};
+    try { u = JSON.parse(localStorage.getItem('hab_user') || '{}') || {}; } catch (err) {}
+    var m = document.createElement('div');
+    m.id = 'hab-acct-menu';
+    m.style.cssText = 'position:fixed;z-index:9999;background:#fff;border:1px solid #E5E7EB;' +
+      'border-radius:12px;box-shadow:0 10px 28px rgba(15,23,42,.14);padding:6px;min-width:150px;' +
+      'font-size:13px;color:#0F172A';
+    var r = av.getBoundingClientRect();
+    m.style.top = (r.bottom + 8) + 'px';
+    m.style.right = Math.max(8, window.innerWidth - r.right) + 'px';
+    m.innerHTML = '<div style="padding:8px 12px;color:#64748B;font-size:12px;border-bottom:1px solid #F1F5F9;' +
+        'white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ((u.nickname || '已登录')) + '</div>' +
+      '<button id="hab-logout" style="display:block;width:100%;text-align:left;font:inherit;padding:9px 12px;' +
+        'border:none;background:none;color:#DC2626;cursor:pointer;border-radius:8px">退出登录</button>';
+    document.body.appendChild(m);
+    m.querySelector('#hab-logout').onclick = function () {
+      try { localStorage.removeItem('hab_token'); localStorage.removeItem('hab_user'); } catch (err) {}
+      location.reload();
+    };
+  }, true);
 })();

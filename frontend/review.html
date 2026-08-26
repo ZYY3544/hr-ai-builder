@@ -132,7 +132,6 @@ section.blk{padding:34px 0 6px}
       <a href="tasks.html" class="cur">实战任务</a>
       <a href="jobs.html">岗位机会</a>
       <a href="coach.html">就业辅导</a>
-      <a href="growth.html">成长地图</a>
       <a href="about.html">关于我们</a>
     </div>
     <div class="gright"><a class="uava" href="index.html#login" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
@@ -141,9 +140,9 @@ section.blk{padding:34px 0 6px}
 <script>/* 防闪：顶栏一画出来就用缓存身份换掉登录圆标 */
 (function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
 if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
-b.title=(u.nickname||'')+' · 我的成长';
+b.title=(u.nickname||'')+' · 账户';
 b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
-b.setAttribute('href','growth.html');}}catch(e){}})();
+b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 </script>
 
 <div class="wrap">
@@ -274,9 +273,9 @@ $('#fGo').onclick=()=>{
     if(!r.ok) return;
     var u=await r.json(), b=document.getElementById('loginBtn');
     localStorage.setItem('hab_user',JSON.stringify({nickname:u.nickname,avatar:u.avatar}));
-    b.title=(u.nickname||'')+' · 我的成长';
+    b.title=(u.nickname||'')+' · 账户';
     b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
-    b.setAttribute('href','growth.html');
+    b.setAttribute('href','javascript:void(0)');
   }catch(e){}
 })();
 </script>

@@ -575,7 +575,17 @@
     if (PAGE === 'learn' && location.hash) {
       lesson = decodeURIComponent(location.hash.slice(1));
     }
-    return { page: PAGE, lesson: lesson, done: done, visitor: vid(), mode: chatMode };
+    var c = { page: PAGE, lesson: lesson, done: done, visitor: vid(), mode: chatMode };
+    if (chatMode === 'recap') {
+      /* recap 专属：错题本的考点信息只在本地，压一个按章摘要带给服务端 */
+      try {
+        var w = JSON.parse(localStorage.getItem('hab_wrong') || '{}'), by = {};
+        Object.keys(w).forEach(function (id) { var ch = (w[id] && w[id].ch) || '?'; by[ch] = (by[ch] || 0) + 1; });
+        var parts = Object.keys(by).map(function (k) { return k + ' 现存错题 ' + by[k] + ' 道'; });
+        if (parts.length) c.wrong_summary = parts.join('；');
+      } catch (e) {}
+    }
+    return c;
   }
   // 复用 track.js 的匿名访客 id（随机串，不含任何个人信息），别再造一个
   function vid() { try { return localStorage.getItem('hab_vid') || ''; } catch (e) { return ''; } }
@@ -680,6 +690,7 @@
     }).then(function () {
       if (typing.parentNode) typing.remove();
       if (reply) { hist.push({ role: 'assistant', content: reply, refs: refs }); save(); }
+      if (chatMode === 'recap') chatMode = null;   // recap 是一次性的:出完小结回普通对话
     }).catch(function (e) {
       if (typing.parentNode) typing.remove();
       bubble('assistant', e.human && e.message ? e.message
@@ -711,9 +722,11 @@
     var qs = done > 0
       ? ['我卡住了', '接下来读什么', '练习表对不上答案']
       : ['帮我挑从哪儿开始', '我每个月要做人力月报', '下个月要见 AI 供应商', '我想搭一个自己的 agent'];
+    var RECAP_Q = '这段时间的学习小结';
+    if (localStorage.getItem('hab_token')) qs.push(RECAP_Q);   // recap=成长地图的继任者,登录才有轨迹
     qs.forEach(function (q) {
       var b = document.createElement('button'); b.textContent = q;
-      b.onclick = function () { ta.value = q; submit(); };
+      b.onclick = function () { if (q === RECAP_Q) chatMode = 'recap'; ta.value = q; submit(); };
       chips.appendChild(b);
     });
     log.appendChild(chips); scroll();

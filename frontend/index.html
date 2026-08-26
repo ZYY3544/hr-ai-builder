@@ -285,7 +285,6 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
       <a href="tasks.html">实战任务</a>
       <a href="jobs.html">岗位机会</a>
       <a href="coach.html">就业辅导</a>
-      <a href="growth.html">成长地图</a>
       <a href="about.html">关于我们</a>
     </div>
     <div class="gright"><a class="uava" href="#" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
@@ -294,10 +293,10 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 <script>/* 防闪：顶栏一画出来就用缓存身份画出用户徽章，网络校验在页尾脚本 */
 (function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
 if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
-b.className='uava';b.title=(u.nickname||'')+' · 我的成长';
+b.className='uava';b.title=(u.nickname||'')+' · 账户';
 b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
-b.setAttribute('href','growth.html');
-b.onclick=function(e){e.preventDefault();location.href='growth.html';};}}catch(e){}})();
+b.setAttribute('href','javascript:void(0)');
+}}catch(e){}})();
 </script>
 
 <!-- ========== HERO ========== -->
@@ -436,7 +435,7 @@ b.onclick=function(e){e.preventDefault();location.href='growth.html';};}}catch(e
 <section class="final">
   <div class="wrap">
     <h2>准备好了吗？现在就开始</h2>
-    <p>第零、第一篇章<b>不登录直接读</b>；微信登录（免费）解锁全部课程、实战任务和岗位机会，进度和小测成绩会记进你的成长地图。</p>
+    <p>第零、第一篇章<b>不登录直接读</b>；微信登录（免费）解锁全部课程、实战任务和岗位机会，进度和小测成绩云端同步，回来时 Sparky 会给你这段时间的学习小结。</p>
     <div class="btns">
       <a class="btn pri lg" href="learn.html">进入课程</a>
       <a class="btn lg" href="tasks.html">接一个任务</a>
@@ -547,9 +546,9 @@ function setUser(u){
     b.innerHTML='<span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>';
     b.onclick=openLogin; return; }
   b.className='uava';
-  b.title=(u.nickname||'')+' · 我的成长';
+  b.title=(u.nickname||'')+' · 账户';
   b.innerHTML=u.avatar?`<img src="${u.avatar}" alt="">`:`<span class="ph">${(u.nickname||'我')[0]}</span>`;
-  b.onclick=e=>{e.preventDefault(); location.href='growth.html';};   // 退出登录在成长页里
+  // 退出登录在头像账户菜单里(track.js)
 }
 
 /* 换页闪"登录"的根子：昵称要等 /api/me 网络往返。所以本地缓存一份身份
