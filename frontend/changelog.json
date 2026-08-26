@@ -639,6 +639,13 @@
    "level": "L0",
    "hash": "42075f38de4d",
    "note": "补挂lesson.js(此前漏引,.say复制按钮注入不了)"
+  },
+  {
+   "date": "2026-08-26",
+   "file": "training-data.html",
+   "level": "L0",
+   "hash": "52d1a745dff4",
+   "note": "删尾部「今天就试」块(用户指定,「一句话」已收尾)"
   }
  ]
 }
