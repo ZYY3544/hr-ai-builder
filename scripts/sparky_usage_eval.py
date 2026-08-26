@@ -35,7 +35,7 @@ CASES = [
     ("opensource","你们开源吗?代码在哪里?",                   ["AGPL", "GitHub", "开源"],          "positive"),
     ("quiz-pass", "本章小测怎么才算通关?",                     ["70"],                              "positive"),
     ("wrongbook", "小测做错的题在哪里能再练?",                 ["错题本", "错题"],                  "positive"),
-    ("growth",    "成长地图在哪里打开?",                       ["头像", "登录"],                    "positive"),
+    ("recap",     "成长地图去哪了?我想看我的学习进展",          ["小结", "下线"],                    "positive"),
     ("taskpack",  "实战任务的任务包在哪里领?",                 ["实战任务", "登录"],                "positive"),
     ("review",    "作品评审怎么交?什么价格?",                  ["50", "免费"],                      "positive"),
     ("coach",     "就业辅导怎么开始?",                        ["15 分钟", "免费沟通", "15分钟"],    "positive"),
