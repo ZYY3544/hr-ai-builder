@@ -380,14 +380,14 @@ window.GLOBAL_ATTN = (function() {
 <article class="lesson wide">
   <header class="lesson-header">
     <div class="kicker">第一篇章 · 幻觉的四种应对</div>
-    <h1>它会编：一句简历，四种编法</h1>
-    <p class="subtitle">幻觉（Hallucination）不是它「答错了」，是它在<b>按概率往下补</b>——补出来的细节，候选人从没写过。选一个案例点「开始生成」，看编造怎么在逐词生成里长出来。</p>
+    <h1>它会编：你让它筛简历，它把理由编圆了</h1>
+    <p class="subtitle">你把简历上的一句话交给 AI，让它判断这个人行不行。它给你的理由<b>读起来完全合理</b>——但里面的公司名、职级、年限，简历上一个字都没有。幻觉（Hallucination）不是它「答错了」，是它在<b>按概率往下补</b>。选一句原文，看这些细节怎么被逐词补出来。</p>
   </header>
 
   <div class="main-area">
     <div class="left-panel">
       <div>
-        <div class="section-title">选择一个 Prompt</div>
+        <div class="section-title">简历上的一句话</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div class="case-card active" onclick="selectCase(0)">
             <div class="case-label">CASE 1 · 补公司名与职级</div>
@@ -415,10 +415,10 @@ window.GLOBAL_ATTN = (function() {
 
     <div class="right-panel">
       <div class="demo-toolbar">
-        <button class="btn-primary" id="genBtn" onclick="startGeneration()">开始生成</button>
+        <button class="btn-primary" id="genBtn" onclick="startGeneration()">让 AI 判断</button>
       </div>
       <div class="gen-header">
-        <h3>逐步生成过程</h3>
+        <h3>AI 给出的判断理由</h3>
         <div class="speed-group">
           <span class="speed-btn" data-speed="800" onclick="setSpeed(this)">慢</span>
           <span class="speed-btn active" data-speed="400" onclick="setSpeed(this)">中</span>
@@ -428,7 +428,7 @@ window.GLOBAL_ATTN = (function() {
 
       <div class="gen-output-area">
         <div class="gen-sentence-box" id="genSentence">
-          <span style="color:var(--text-sub);font-size:14px;">← 选择 Prompt，点击「开始生成」</span>
+          <span style="color:var(--text-sub);font-size:14px;">← 选一句简历原文，点「让 AI 判断」</span>
         </div>
 
         <div class="gen-bottom" id="genBottom">
@@ -584,13 +584,13 @@ function selectCase(idx) {
 function resetOutput() {
   generating = false;
   const s = document.getElementById('genSentence');
-  s.innerHTML = '<span style="color:var(--text-sub);font-size:14px;">← 点击「开始生成」查看模型续写</span>';
+  s.innerHTML = '<span style="color:var(--text-sub);font-size:14px;">← 点「让 AI 判断」，看它给出什么理由</span>';
   s.style.display = '';
   document.getElementById('stepPanel').classList.add('hidden');
   document.getElementById('factCheck').classList.add('hidden');
   document.getElementById('rootCause').classList.add('hidden');
   document.getElementById('rootCause').style.display = 'none';
-  document.getElementById('genBtn').textContent = '开始生成';
+  document.getElementById('genBtn').textContent = '让 AI 判断';
   // 清理聊天容器
   const chatBox = document.getElementById('chatContainer');
   if (chatBox) chatBox.remove();
@@ -778,7 +778,7 @@ async function startChatGeneration() {
 async function startGeneration() {
   if (generating) {
     generating = false;
-    document.getElementById('genBtn').textContent = '开始生成';
+    document.getElementById('genBtn').textContent = '让 AI 判断';
     return;
   }
 
