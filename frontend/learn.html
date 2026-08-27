@@ -389,6 +389,19 @@ function load(){
     } else renderQuizView(seg[0]);
     return; }
   $('#quizpane').style.display='none'; $('#frame').style.display='block';
+  /* course-data.js 没加载出来时(网络抖动/部署撞车),FLAT 是空的——
+     原来这里直接 FLAT[0].file 抛错,整页白屏且侧栏只显示「没有匹配的知识点」,
+     用户完全不知道发生了什么。实测撞到过一次(2026-08-27 部署期间)。 */
+  if(!FLAT.length){
+    $('#frame').style.display='none';
+    $('#quizpane').style.display='block';
+    $('#quizpane').innerHTML='<div style="max-width:520px;margin:18vh auto;text-align:center;color:#475569;'
+      +'font-size:14px;line-height:2">课程目录没加载出来——多半是网络抖了一下。<br>'
+      +'<b style="color:#0F172A">刷新一下就好</b>；要是刷新几次还这样，跟右下角的 Sparky 说一声。<br>'
+      +'<button onclick="location.reload()" style="margin-top:18px;font:inherit;font-size:13px;font-weight:600;'
+      +'padding:9px 22px;border-radius:9px;border:none;background:#00A88A;color:#fff;cursor:pointer">刷新页面</button></div>';
+    return;
+  }
   let i=find(f);
   if(i<0){ i=0; f=FLAT[0].file; location.replace('#'+encodeURIComponent(f)); }
   const l=FLAT[i];
