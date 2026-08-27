@@ -540,13 +540,188 @@ const SCENES = [
     ],
     verdictBad: '✗ 说的是改版前的旧路径。员工照着做会卡在一个已经下线的入口上，等两周才发现没进流程。',
     verdictGood: '✓ 引用当前版本的手册原文，并主动提示旧入口已失效——制度改了，答案也跟着改。',
+  }
+];
+
+let currentScene = 0;
+let currentTab = 'compare';
+let animTimers = [];
+
+function clearTimers() {
+  animTimers.forEach(t => clearTimeout(t));
+  animTimers = [];
+}
+
+function delay(fn, ms) {
+  const t = setTimeout(fn, ms);
+  animTimers.push(t);
+  return t;
+}
+
+function selectScene(i) {
+  currentScene = i;
+  document.querySelectorAll('.scene-card').forEach((c, j) => c.classList.toggle('active', j === i));
+  if (currentTab === 'compare') playAnimation();
+  else if (currentTab === 'flow') ragReset();  // 流程图的文档和问题都跟着场景走，换了就得从头演
+}
+
+function setTab(t) {
+  currentTab = t;
+  const tabs = ['compare', 'flow', 'why'];
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', tabs[i] === t));
+  document.getElementById('viewCompare').style.display = t === 'compare' ? 'flex' : 'none';
+  document.getElementById('viewFlow').style.display = t === 'flow' ? 'flex' : 'none';
+  const whyEl = document.getElementById('viewWhy');
+  whyEl.style.display = t === 'why' ? 'flex' : 'none';
+  document.getElementById('replayBtn').style.display = t === 'compare' ? 'inline-block' : 'none';
+  if (t === 'compare') playAnimation();
+  // 在别的 tab 里换过场景，回到流程图时内容已经过时，重来一遍
+  if (t === 'flow' && ragScene !== currentScene) ragReset();
+}
+
+// 把 htmlParts 展平为纯文本 tokens（含标记）
+function flattenParts(parts) {
+  const tokens = [];
+  parts.forEach(p => {
+    if (p.tag === 'source-tag') {
+      tokens.push({ html: `<span class="source-tag">${p.tagText}</span>` });
+    } else if (p.cls) {
+      // 带颜色的词，整段作为一个 token
+      tokens.push({ html: `<span class="${p.cls}">${p.text}</span>`, isSpecial: true });
+    } else {
+      // 普通文本，逐字拆分
+      const chars = [...p.text];
+      chars.forEach(c => tokens.push({ html: c === '\n' ? '<br>' : c }));
+    }
+  });
+  return tokens;
+}
+
+// 逐 token 打字
+function typeTokens(el, tokens, charDelay, onDone) {
+  el.innerHTML = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'bubble-typing';
+  el.appendChild(cursor);
+
+  let i = 0;
+  function step() {
+    if (i >= tokens.length) {
+      el.removeChild(cursor);
+      if (onDone) onDone();
+      return;
+    }
+    const tok = tokens[i++];
+    const span = document.createElement('span');
+    span.innerHTML = tok.html;
+    el.insertBefore(span, cursor);
+    el.parentElement.scrollTop = el.parentElement.scrollHeight;
+    delay(step, tok.isSpecial ? charDelay * 3 : charDelay);
+  }
+  step();
+}
+
+function playAnimation() {
+  clearTimers();
+  const s = SCENES[currentScene];
+
+  // 清空
+  const boxBad = document.getElementById('boxBad');
+  const boxGood = document.getElementById('boxGood');
+  boxBad.innerHTML = '';
+  boxGood.innerHTML = '';
+  const vBad = document.getElementById('verdictBad');
+  const vGood = document.getElementById('verdictGood');
+  vBad.textContent = '';
+  vGood.textContent = '';
+  vBad.classList.remove('show');
+  vGood.classList.remove('show');
+
+  // === 左侧：无 RAG ===
+  // 用户消息
+  const uBad = document.createElement('div');
+  uBad.className = 'bubble-user';
+  uBad.textContent = s.bad[0].text;
+  boxBad.appendChild(uBad);
+  delay(() => uBad.classList.add('show'), 100);
+
+  // AI 气泡
+  const aiBad = document.createElement('div');
+  aiBad.className = 'bubble-ai show';
+  boxBad.appendChild(aiBad);
+  const badTokens = flattenParts(s.bad[1].htmlParts);
+
+  delay(() => typeTokens(aiBad, badTokens, 28, () => {
+    vBad.textContent = s.verdictBad;
+    delay(() => vBad.classList.add('show'), 100);
+  }), 700);
+
+  // === 右侧：有 RAG ===
+  const goodMsgs = s.good;
+  // 检索消息先出现
+  const retEl = document.createElement('div');
+  retEl.className = 'bubble-retrieval';
+  retEl.textContent = '🔍 ' + goodMsgs[0].text;
+  boxGood.appendChild(retEl);
+  delay(() => retEl.classList.add('show'), 400);
+
+  // 用户消息
+  const uGood = document.createElement('div');
+  uGood.className = 'bubble-user';
+  uGood.textContent = goodMsgs[1].text;
+  boxGood.appendChild(uGood);
+  delay(() => uGood.classList.add('show'), 900);
+
+  // AI 气泡（在左侧打字开始后稍微延迟）
+  const aiGood = document.createElement('div');
+  aiGood.className = 'bubble-ai show';
+  boxGood.appendChild(aiGood);
+  const goodTokens = flattenParts(goodMsgs[2].htmlParts);
+
+  delay(() => typeTokens(aiGood, goodTokens, 22, () => {
+    vGood.textContent = s.verdictGood;
+    delay(() => vGood.classList.add('show'), 100);
+  }), 1200);
+}
+
+// ── RAG 7步交互动画（含知识库构建阶段）──
+/* 流程图 7 步用到的知识库素材，一个场景一份。三个场景走的是同一套流程，
+   变的只是文档、问题和检索结果——所以 RAG_STEPS 只留模板，内容从这里取。
+   下标与 SCENES / .scene-card 一一对应。 */
+const SCENE_KB = [
+  { // A · 法律 / 合规
+    label: '场景 A · 劳动法 / 地方社保政策助手',
+    docName: '《劳动合同法》全文及司法解释（2024 版）',
+    docPages: 186,
+    chunkTotal: 4210,
+    rawText: '第二章 劳动合同的订立<br>§19 试用期期限…§19 三个月以上不满一年的…§19 一年以上不满三年的…§19 三年以上固定期限和无固定期限的…§19 同一用人单位与同一劳动者只能约定一次试用期…',
+    chunks: [
+      { tok: 180, text: '§19 三个月以上不满一年的，试用期不得超过一个月…' },
+      { tok: 150, text: '§19 一年以上不满三年的，试用期不得超过二个月…' },
+      { tok: 200, text: '§19 三年以上固定期限和无固定期限的，不得超过六个月…' },
+    ],
+    question: '劳动合同法里，试用期最长能签几个月？',
+    hits: [
+      { score: '0.94', src: '劳动合同法 §19', quote: '「三年以上固定期限和无固定期限的，试用期不得超过六个月…」' },
+      { score: '0.82', src: '司法解释（三）第 4 条', quote: '「违法约定的试用期已经履行的，用人单位应支付赔偿金…」' },
+      { score: '0.75', src: 'HR 合规手册 p.32', quote: '「同一用人单位与同一劳动者只能约定一次试用期…」' },
+    ],
+    semanticNote: '「新员工能考察多久」和「试用期期限」的向量也会很接近。',
+    sysRole: '你是企业法务助手',
+    answerLines: [
+      '合同期 3 个月至 1 年 → 试用期<b>不超过 1 个月</b>',
+      '合同期 1 年至 3 年 → 试用期<b>不超过 2 个月</b>',
+      '3 年以上或无固定期限 → 试用期<b>不超过 6 个月</b>',
+      '同一单位与同一劳动者<b>只能约定一次</b>试用期',
+    ],
+    finalAnswer: '试用期上限按合同期分三档：3 个月至 1 年<b>不超过 1 个月</b>，1 至 3 年<b>不超过 2 个月</b>，3 年以上或无固定期限<b>不超过 6 个月</b>。同一单位与同一劳动者只能约定一次试用期。',
   },
   { // B · 薪酬福利
     label: '场景 B · 薪酬政策 / 福利细则助手',
     docName: '《薪酬管理办法 2026》+《年终奖发放细则》',
     docPages: 58,
     chunkTotal: 1730,
-    rawText: '第五章 年终奖<br>§5.1 发放对象与条件…§5.2 离职情形的处理…§5.3 计算基数与折算方式…§5.4 特殊情形与申诉…',
+    rawText: '第五章 年终奖<br>§5.1 发放对象与条件…§5.2 离职情形的处理…§5.3 计算基数与折算方式…',
     chunks: [
       { tok: 180, text: '§5.2 发放日前离职的，当年度年终奖不予发放…' },
       { tok: 150, text: '§5.2 例外：因公司原因解除劳动合同的，按在职月份折算…' },
@@ -576,7 +751,7 @@ const SCENES = [
     rawText: '第四章 费用与审批<br>§4.1 报销总则…§4.2 差旅标准…§4.3 差旅报销提交路径…§4.4 版本变更说明…',
     chunks: [
       { tok: 180, text: '§4.3 差旅报销路径：飞书审批 → 财务中心 → 差旅报销单…' },
-      { tok: 150, text: '§4.3 需附:行程单、发票、出差申请单编号，三者缺一不受理…' },
+      { tok: 150, text: '§4.3 需附：行程单、发票、出差申请单编号，三者缺一不受理…' },
       { tok: 200, text: '§4.4 v4.0 起报销从 OA「费用中心」迁至飞书审批，旧入口已下线…' },
     ],
     question: '差旅费怎么报销？在哪儿提交？',
