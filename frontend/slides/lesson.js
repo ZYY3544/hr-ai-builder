@@ -48,8 +48,9 @@
      （例如 Prompt 模板会随场景切换重写），初始化时抓等于永远抄到第一份或空。 */
   function initSayCopy() {
     var blocks = document.querySelectorAll('.say, .cmd, pre.tpl');
-    Array.prototype.forEach.call(blocks, function (b) {
-      if (b.querySelector('.say-copy')) return;
+
+    function mkBtn(b) {
+      if (b.querySelector('.say-copy')) return;          /* 已有就别重复插 */
       var btn = document.createElement('button');
       btn.className = 'say-copy' + (b.classList.contains('cmd') ? ' on-dark' : '');
       btn.type = 'button'; btn.textContent = '复制';
@@ -75,8 +76,22 @@
         } else fallback();
       });
       b.appendChild(btn);
-    });
+    }
+
+    Array.prototype.forEach.call(blocks, mkBtn);
+
+    /* 有些块的内容是 JS 动态重写的（如 Prompt 模板随场景切换），
+       页面用 textContent = '…' 赋值会清空所有子节点、把按钮一起抹掉。
+       实测：切一次场景按钮就没了。所以盯住内容变化，掉了就补回来。
+       补按钮本身也会触发一次 childList，但 mkBtn 开头有存在性判断，不会循环。 */
+    if (window.MutationObserver) {
+      var mo = new MutationObserver(function (muts) {
+        for (var i = 0; i < muts.length; i++) mkBtn(muts[i].target);
+      });
+      Array.prototype.forEach.call(blocks, function (b) { mo.observe(b, { childList: true }); });
+    }
   }
+
 
 
   if (document.readyState === 'loading') {
