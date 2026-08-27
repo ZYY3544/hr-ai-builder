@@ -16,16 +16,16 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 145,
+   "lessons": 144,
    "copy": 40,
-   "adapt": 20,
+   "adapt": 19,
    "new": 96,
-   "ready": 149,
+   "ready": 148,
    "todo": 0,
-   "minutes": 577
+   "minutes": 572
   },
   "access": {
-   "free": 126,
+   "free": 125,
    "locked": 19,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -329,17 +329,6 @@ window.COURSE = {
      "title": "幻觉的四种应对",
      "desc": "幻觉不是 bug，是它的工作方式本身",
      "lessons": [
-      {
-       "file": "hallu-first-scene.html",
-       "action": "adapt",
-       "ksa": "K",
-       "title": "它会编：筛简历现场",
-       "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 5
-      },
       {
        "file": "hallu-fix-prompt.html",
        "action": "adapt",

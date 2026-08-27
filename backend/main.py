@@ -770,7 +770,7 @@ JOBS = [
 
 # 能力 → 对应练习课程（岗位库右栏「学这几节」用）
 TERM_LESSONS = {
- "hallucination":  ["hallu-first-scene.html","hallu-fix-eval.html","hr-recall-vs-judge.html","zero-3.html"],
+ "hallucination":  ["hallu-fix-prompt.html","hallu-fix-eval.html","hr-recall-vs-judge.html","zero-3.html"],
  "agent_vs_wf":    ["agent-what.html","agent-vs-workflow.html","agent-react.html","agent-stuck.html"],
  "hr_data":        ["hr-caliber-1.html","hr-caliber-2.html","context-overflow.html"],
  "compliance":     ["hr-compliance.html","ai-safety-redlines.html","harness-audit.html"],

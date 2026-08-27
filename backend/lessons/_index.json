@@ -230,17 +230,6 @@
   "topic": "生成 vs 检索：它为什么会编",
   "seo": "大模型的本质是补全，不是理解——伪造一段聊天记录就看懂了"
  },
- "hallu-first-scene.html": {
-  "title": "它会编：筛简历现场",
-  "free": true,
-  "ready": true,
-  "ksa": "K",
-  "min": 5,
-  "part": "第一篇章",
-  "part_title": "幻觉与边界：它靠不靠得住",
-  "topic": "幻觉的四种应对",
-  "seo": "AI 筛简历会编造候选人没写过的经历吗？——幻觉的第一现场"
- },
  "hallu-fix-prompt.html": {
   "title": "应对 1：把约束写进 Prompt",
   "free": true,

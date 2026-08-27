@@ -283,22 +283,22 @@ var MODES = [
     scenario:'外部 API 响应缓慢，重试堆积错误消息直到上下文溢出',
     decision:'<b>📌 设计决策：</b>工具超时设多久？5 秒太短可能误杀正常请求，60 秒太长用户等不了。建议：<b>读操作 10 秒、写操作 30 秒</b>，并设置最大重试 2 次，失败后返回友好提示，不要抛原始错误堆栈。',
     fail:[
-      {type:'msg-user',role:'用户',text:'查一下特斯拉最新的股价'},
-      {type:'msg-model',role:'模型',text:'调用 get_stock_price("TSLA")'},
-      {type:'msg-error',role:'等待 30 秒后…',text:'❌ 请求超时：股票 API 无响应（30s timeout）',shake:true},
-      {type:'msg-model',role:'模型重试 #1',text:'超时了？再试一次…\n调用 get_stock_price("TSLA")'},
-      {type:'msg-error',role:'又等 30 秒…',text:'❌ 请求超时：股票 API 无响应（30s timeout）',shake:true},
+      {type:'msg-user',role:'用户',text:'查一下张伟本月的社保缴纳记录'},
+      {type:'msg-model',role:'模型',text:'调用 hr_query_social_insurance("张伟", "2026-08")'},
+      {type:'msg-error',role:'等待 30 秒后…',text:'❌ 请求超时：社保系统接口无响应（30s timeout）',shake:true},
+      {type:'msg-model',role:'模型重试 #1',text:'超时了？再试一次…\n调用 hr_query_social_insurance("张伟", "2026-08")'},
+      {type:'msg-error',role:'又等 30 秒…',text:'❌ 请求超时：社保系统接口无响应（30s timeout）',shake:true},
       {type:'msg-model',role:'模型重试 #2',text:'再试一次…'},
-      {type:'msg-error',role:'再等 30 秒…',text:'❌ 请求超时：股票 API 无响应（30s timeout）',shake:true},
+      {type:'msg-error',role:'再等 30 秒…',text:'❌ 请求超时：社保系统接口无响应（30s timeout）',shake:true},
       {type:'msg-warning',role:'结果',text:'⚠️ 用户等了 90 秒，什么都没得到\n上下文被 3 条超时错误占满，浪费大量 Token\n而且模型可能还想继续重试…',pulse:true}
     ],
     fix:[
-      {type:'msg-user',role:'用户',text:'查一下特斯拉最新的股价'},
+      {type:'msg-user',role:'用户',text:'查一下张伟本月的社保缴纳记录'},
       {type:'msg-framework',role:'框架：超时 & 重试策略',text:'get_stock_price 配置：\ntimeout = 10 秒 ｜ maxRetries = 2\n失败后 fallback = 返回友好消息（不含原始错误栈）'},
-      {type:'msg-model',role:'模型',text:'调用 get_stock_price("TSLA")'},
+      {type:'msg-model',role:'模型',text:'调用 hr_query_social_insurance("张伟", "2026-08")'},
       {type:'msg-error',role:'10 秒后超时',text:'超时 → 自动重试 1 次 → 仍超时'},
-      {type:'msg-framework',role:'框架 fallback',text:'返回给模型的消息：\n"股票 API 暂时不可用，建议告知用户稍后再试\n或引导用户访问 finance.yahoo.com 自行查看"'},
-      {type:'msg-model',role:'模型回复用户',text:'抱歉，股票数据服务暂时响应较慢。\n您可以稍后再试，或访问 Yahoo Finance 查看。'},
+      {type:'msg-framework',role:'框架 fallback',text:'返回给模型的消息：\n"社保系统接口暂时不可用，建议告知用户稍后再试\n或引导用户到社保自助终端 / 12333 自行查询"'},
+      {type:'msg-model',role:'模型回复用户',text:'抱歉，社保系统这会儿响应较慢。\n你可以稍后再试，或直接在社保自助终端查最近三个月的缴纳记录。'},
       {type:'msg-ok',role:'结果',text:'✅ 20 秒内给出明确回复\n上下文只多了 1 条简洁 fallback 消息，不烧 Token'}
     ]
   }

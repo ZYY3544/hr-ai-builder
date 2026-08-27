@@ -11,7 +11,7 @@ fake = types.ModuleType('store')
 ROWS = [
     {"kind": "recap", "key": "sparky", "created_at": "2026-08-20T02:00:00+00:00", "value": {}},
     {"kind": "done", "key": "start-dunning-kruger.html", "created_at": "2026-08-22T03:00:00+00:00", "value": {"on": True}},
-    {"kind": "done", "key": "hallu-first-scene.html", "created_at": "2026-08-23T03:00:00+00:00", "value": {"on": True}},
+    {"kind": "done", "key": "hallu-fix-prompt.html", "created_at": "2026-08-23T03:00:00+00:00", "value": {"on": True}},
     {"kind": "done", "key": "不存在的节.html", "created_at": "2026-08-23T04:00:00+00:00", "value": {"on": True}},
     {"kind": "quiz", "key": "p-1", "created_at": "2026-08-24T03:00:00+00:00", "value": {"correct": 5, "n": 8}},
     {"kind": "done", "key": "start-how-to-learn.html", "created_at": "2026-08-18T03:00:00+00:00", "value": {"on": True}},  # 上次小结之前，应被排除
@@ -30,16 +30,16 @@ sys.modules['store'] = fake
 import sparky
 IDX = {
   "start-dunning-kruger.html": {"part": "第零篇章", "title": "我们在哪里？达克效应"},
-  "hallu-first-scene.html": {"part": "第一篇章", "title": "幻觉的第一现场"},
+  "hallu-fix-prompt.html": {"part": "第一篇章", "title": "把约束写进 Prompt"},
   "start-how-to-learn.html": {"part": "第零篇章", "title": "怎样学"},
 }
 out = sparky._recap_block("ms:test", IDX, "p-1 现存错题 3 道；p-zero 现存错题 1 道")
 print(out)
 print("=== 断言 ===")
-assert "达克效应" in out and "幻觉的第一现场" in out, "读过的节没进去"
+assert "达克效应" in out and "把约束写进 Prompt" in out, "读过的节没进去"
 assert "怎样学" not in out, "上次小结之前的记录没被排除"
 assert "第一篇章小测：累计答 8 题对 5 题" in out, "小测聚合不对"
-assert out.index("达克效应") < out.index("幻觉的第一现场"), "时间序不对(应旧→新)"
+assert out.index("达克效应") < out.index("把约束写进 Prompt"), "时间序不对(应旧→新)"
 assert "第一篇章 现存错题 3 道" in out, "错题章代码没转中文"
 assert "上次小结时间：2026-08-20" in out
 print("全部通过")
