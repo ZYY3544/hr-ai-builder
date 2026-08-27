@@ -1200,6 +1200,27 @@
    "level": "L0",
    "hash": "cc9ea7ca5394",
    "note": "四段防注入 System Prompt（.code-block，含「安全约束·最高优先级」）加复制按钮并补挂 lesson.js"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "prompt-attack.html",
+   "level": "L0",
+   "hash": "af449165ed42",
+   "note": "演示对话换成 HR 场景——客服订单物流问答改为员工政策问答助手+年假余额查询，注入攻击的机制与结论不变"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "ai-safety-redlines.html",
+   "level": "L0",
+   "hash": "9ebc00dcf43d",
+   "note": "四条底线的举例换成 HR 口径——敏感数据改为员工个人信息/薪酬/绩效/劳动关系材料，高危操作改为离职办理/薪酬发放/系统权限/对外发出；底线本身与结论不变"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "agent-react.html",
+   "level": "L0",
+   "hash": "740c2a6ad3df",
+   "note": "ReAct 演示任务换成 HR 场景——删 console.log 跑测试改为核对本月新人入职材料，8 步结构与失败自纠弧线完全保留，轮次/工具数/Token 口径不变"
   }
  ]
 }

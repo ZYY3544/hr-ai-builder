@@ -124,7 +124,7 @@
   .left-panel{position:static}
 }
 </style>
-<meta name="description" content="ReAct 循环详解：Agent 如何通过思考-行动-观察的迭代循环完成复杂任务。一个删除 console.log 的任务可能经历 6 轮循环。">
+<meta name="description" content="ReAct 循环详解：Agent 如何通过思考-行动-观察的迭代循环完成复杂任务。一次核对新人入职材料的任务可能经历十几轮循环。">
 <meta name="author" content="meansights learning">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
@@ -165,7 +165,7 @@
     <div class="left-panel">
       <div>
         <div class="sec-label" style="margin-top:0">用户指令</div>
-        <div class="user-req">帮我把项目中所有的 console.log 删掉，然后跑一下测试确保没问题</div>
+        <div class="user-req">帮我把这个月入职的新人材料核一遍，缺件的整理成清单</div>
       </div>
 
       <div class="loop-vis">
@@ -262,76 +262,76 @@
 var STEPS = [
   {
     iter: 1, tools: 1, tokens: 1200,
-    hint: '1/8 · 第 1 轮：先搜索项目中哪些文件包含 console.log',
+    hint: '1/8 · 第 1 轮：先查清这个月有哪些新人要核',
     activeNode: 'thought',
     decision: '<b>📌 设计决策：</b>Agent 的运行方式是循环，一问一答只是其中一轮。一个任务可能需要 5-15 轮思考-行动-观察。这一步，模型没有急着动手，而是先调研。',
     items: [
-      { phase:'thought', text:'用户要删除所有 console.log，我先搜索项目中有哪些文件包含 console.log' },
-      { phase:'action', fn:'search_files', params:[['pattern','console.log'],['scope','项目全局']] },
-      { phase:'observation', status:'info', text:'找到 12 个文件包含 console.log，共 47 处' }
+      { phase:'thought', text:'用户要核对本月新人的入职材料，我先查出这个月入职的都有谁' },
+      { phase:'action', fn:'query_roster', params:[['month','2026-08'],['status','本月新入职']] },
+      { phase:'observation', status:'info', text:'找到 12 名新人，按入职六件套算共需核对 47 份材料' }
     ]
   },
   {
     iter: 2, tools: 2, tokens: 2800,
-    hint: '2/8 · 第 2 轮：开始逐个文件编辑，删除 console.log',
+    hint: '2/8 · 第 2 轮：开始逐个核对材料',
     activeNode: 'action',
-    decision: '<b>📌 设计决策：</b>每轮循环都消耗 Token。模型会把上一轮的观察结果作为下一轮思考的输入。12 个文件 × 每个 ~200 Token ≈ 这个任务光编辑就要 2400 Token。',
+    decision: '<b>📌 设计决策：</b>每轮循环都消耗 Token。模型会把上一轮的观察结果作为下一轮思考的输入。12 个人 × 每人 ~200 Token ≈ 这个任务光核对就要 2400 Token。',
     items: [
-      { phase:'thought', text:'找到了 12 个文件，我逐个编辑删除。先处理 src/api.ts' },
-      { phase:'action', fn:'edit_file', params:[['file','src/api.ts'],['remove_lines','15, 28, 45']] },
-      { phase:'observation', status:'ok', text:'src/api.ts 已修改，删除了 3 处 console.log' }
+      { phase:'thought', text:'拿到 12 个人的名单，我逐个核对。先看张伟' },
+      { phase:'action', fn:'check_documents', params:[['employee','张伟'],['checklist','入职六件套']] },
+      { phase:'observation', status:'ok', text:'张伟：6 份材料到齐' }
     ]
   },
   {
     iter: 3, tools: 3, tokens: 4100,
-    hint: '3/8 · 第 3 轮：继续处理下一个文件',
+    hint: '3/8 · 第 3 轮：继续核对下一个人',
     activeNode: 'action',
     decision: null,
     items: [
-      { phase:'thought', text:'继续处理 src/utils.ts' },
-      { phase:'action', fn:'edit_file', params:[['file','src/utils.ts'],['remove_lines','8, 22, 67, 89']] },
-      { phase:'observation', status:'ok', text:'src/utils.ts 已修改，删除了 4 处 console.log' }
+      { phase:'thought', text:'继续核对李娜' },
+      { phase:'action', fn:'check_documents', params:[['employee','李娜'],['checklist','入职六件套']] },
+      { phase:'observation', status:'ok', text:'李娜：缺 1 份——上家单位的离职证明未提交' }
     ]
   },
   {
     iter: null, tools: 12, tokens: 18600,
-    hint: '4/8 · 第 4-11 轮被快进：重复处理剩余 10 个文件',
+    hint: '4/8 · 第 4-11 轮被快进：重复核对剩余 10 个人',
     activeNode: 'action',
-    decision: '<b>📌 设计决策：</b>这里省略了第 4-11 轮，每轮结构完全相同：思考 → edit_file → 确认。实际产品中，这些循环都在后台静默执行。50 轮上限 × 每轮约 1000 Token = 一个任务最多可能花 5 万 Token。',
+    decision: '<b>📌 设计决策：</b>这里省略了第 4-11 轮，每轮结构完全相同：思考 → check_documents → 记录结果。实际产品中，这些循环都在后台静默执行。50 轮上限 × 每轮约 1000 Token = 一个任务最多可能花 5 万 Token。',
     fastForward: true,
-    ffText: '⏩ 重复处理剩余 10 个文件（第 4-11 轮）… 共删除 47 处 console.log'
+    ffText: '⏩ 重复核对剩余 10 个人（第 4-11 轮）… 共核对 47 份材料'
   },
   {
     iter: 12, tools: 13, tokens: 20200,
-    hint: '5/8 · 第 12 轮：文件都处理完了，用户还要求跑测试',
+    hint: '5/8 · 第 12 轮：人都核完了，用户还要一份缺件清单',
     activeNode: 'thought',
     decision: null,
     items: [
-      { phase:'thought', text:'所有 12 个文件处理完毕。用户还要求跑测试确保没问题，我来执行 npm test' },
-      { phase:'action', fn:'run_command', params:[['cmd','npm test']] },
-      { phase:'observation', status:'fail', text:'测试结果：2 个测试失败！\nsrc/api.test.ts 第 34 行和第 78 行的断言依赖了 console.log 的输出' }
+      { phase:'thought', text:'12 个人核对完毕。用户还要求整理成缺件清单，我先跑一遍一致性校验再出表' },
+      { phase:'action', fn:'run_validation', params:[['scope','本月新人材料台账']] },
+      { phase:'observation', status:'fail', text:'校验未通过：2 条记录状态自相矛盾！\n王磊、赵敏的学历认证仍是「待核验」，却在第 3、第 7 轮被记成了「已到齐」' }
     ]
   },
   {
     iter: 13, tools: 14, tokens: 22500,
-    hint: '6/8 · 第 13 轮：发现测试失败 → 自动修复（自我纠错！）',
+    hint: '6/8 · 第 13 轮：发现校验失败 → 自动修正（自我纠错！）',
     activeNode: 'thought',
-    decision: '<b>📌 设计决策：</b>当 Agent 发现测试失败时自动去修复。这种「自我纠错」能力是 ReAct 循环最强大的地方。不需要人类介入，它自己发现问题、分析原因、修复代码。',
+    decision: '<b>📌 设计决策：</b>当 Agent 发现校验失败时自动去修正。这种「自我纠错」能力是 ReAct 循环最强大的地方。不需要人介入，它自己发现问题、分析原因、改掉错误记录。',
     items: [
-      { phase:'thought', text:'测试失败了！2 个测试用例依赖了 console.log 输出做断言。我需要修复这些测试，把断言逻辑改为不依赖 console 输出' },
-      { phase:'action', fn:'edit_file', params:[['file','src/api.test.ts'],['fix','修改 2 处断言逻辑']] },
-      { phase:'observation', status:'ok', text:'src/api.test.ts 已修改，2 处断言已重写' }
+      { phase:'thought', text:'校验失败了！「待核验」不等于「已到齐」，是我前面把状态判宽了。这 2 条要改回缺件，并注明卡在第三方认证' },
+      { phase:'action', fn:'update_record', params:[['employees','王磊、赵敏'],['fix','学历认证状态改为「缺件·待第三方出结果」']] },
+      { phase:'observation', status:'ok', text:'2 条记录已修正' }
     ]
   },
   {
     iter: 14, tools: 15, tokens: 24800,
-    hint: '7/8 · 第 14 轮：修复后重新跑测试 → 全部通过',
+    hint: '7/8 · 第 14 轮：修正后重新校验 → 全部通过',
     activeNode: 'observation',
     decision: null,
     items: [
-      { phase:'thought', text:'测试文件已修复，再跑一次 npm test 验证是否全部通过' },
-      { phase:'action', fn:'run_command', params:[['cmd','npm test']] },
-      { phase:'observation', status:'ok', text:'✅ 全部 48 个测试通过！' }
+      { phase:'thought', text:'记录已修正，再跑一次校验确认台账没有其它矛盾' },
+      { phase:'action', fn:'run_validation', params:[['scope','本月新人材料台账']] },
+      { phase:'observation', status:'ok', text:'✅ 47 份材料状态全部一致，无自相矛盾记录' }
     ]
   },
   {
@@ -339,7 +339,7 @@ var STEPS = [
     hint: '8/8 · 循环结束：模型返回最终回答（不含 tool_calls）',
     activeNode: null,
     decision: '<b>📌 设计决策：</b>循环何时结束？当模型返回的消息只有 text 没有 tool_calls 时，循环自动终止。14 轮循环、15 次工具调用、消耗约 2.5 万 Token，这是一个中等复杂度任务的真实开销。',
-    finalAnswer: '已完成！删除了 12 个文件中的 47 处 console.log，修复了 2 个受影响的测试用例，全部 48 个测试通过 ✅'
+    finalAnswer: '已完成！核对了 12 名新人的 47 份材料，5 人缺件（清单已生成），并修正了 2 条被我自己判宽的学历认证记录 ✅'
   }
 ];
 

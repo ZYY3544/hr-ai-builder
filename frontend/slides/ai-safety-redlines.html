@@ -142,7 +142,7 @@
     <div class="card c-data active" onclick="showDetail(0)">
       <div class="card-badge">一级红线</div>
       <div class="card-title">敏感数据不出墙</div>
-      <div class="card-hint">客户数据、内部文件不输入外部 AI</div>
+      <div class="card-hint">员工信息、薪酬数据不输入外部 AI</div>
     </div>
     <div class="card c-key" onclick="showDetail(1)">
       <div class="card-badge">一级红线</div>
@@ -195,12 +195,12 @@ const DETAILS = [
   {
     icon:'🔒', iconBg:'rgba(220,38,38,.1)', color:'#991b1b', accent:'var(--red)',
     title:'敏感数据不出墙', sub:'一级红线 · 数据泄露零容忍',
-    desc:'客户个人信息、内部业务文件、财务数据等敏感信息，<strong>不得输入未经审批的外部 AI 工具</strong>。即使服务商承诺「不保存」，数据传输过程本身已构成泄露。',
+    desc:'员工个人信息、薪酬与绩效数据、劳动关系材料等敏感信息，<strong>不得输入未经审批的外部 AI 工具</strong>。即使服务商承诺「不保存」，数据传输过程本身已构成泄露。',
     examples:[
-      {text:'<strong>客户信息</strong> — 姓名、手机号、身份证、交易记录', color:'#dc2626'},
-      {text:'<strong>商业秘密</strong> — 产品规划、定价策略、合同条款', color:'#dc2626'},
-      {text:'<strong>财务数据</strong> — 营收、利润、未公开报表', color:'#dc2626'},
-      {text:'<strong>内部文件</strong> — 组织架构、薪酬体系、会议纪要', color:'#dc2626'},
+      {text:'<strong>员工个人信息</strong> — 姓名、手机号、身份证号、家庭住址、银行卡', color:'#dc2626'},
+      {text:'<strong>薪酬数据</strong> — 个人工资、职级带宽、调薪与奖金名单', color:'#dc2626'},
+      {text:'<strong>绩效与评价</strong> — 绩效结果、360 评语、晋升评审记录', color:'#dc2626'},
+      {text:'<strong>劳动关系材料</strong> — 劳动合同、背调报告、离职原因、仲裁材料', color:'#dc2626'},
     ],
     strategy:{bg:'rgba(220,38,38,.06)',border:'rgba(220,38,38,.2)',color:'#991b1b',
       text:'<strong>正确做法：</strong>使用企业内部部署的 AI 平台处理敏感数据；外部 AI 只能输入公开信息和已脱敏数据。记住<strong>「默认脱敏」</strong>原则：不确定能不能输入？那就脱敏后再输入。'},
@@ -223,12 +223,12 @@ const DETAILS = [
   {
     icon:'🛑', iconBg:'rgba(37,99,235,.1)', color:'#1e40af', accent:'var(--blue)',
     title:'高危操作必确认', sub:'一级红线 · Human-in-the-loop',
-    desc:'AI（尤其是 Agent）<strong>不得在无人确认下执行不可逆操作</strong>：数据库写入/删除、资金划转、系统权限变更。一旦 AI 判断失误，后果不可逆。',
+    desc:'AI（尤其是 Agent）<strong>不得在无人确认下执行不可逆操作</strong>：离职办理、薪酬发放、系统权限开通。一旦 AI 判断失误，后果不可逆。',
     examples:[
-      {text:'<strong>生产数据库</strong> — 写入、修改、删除操作', color:'#2563eb'},
-      {text:'<strong>资金操作</strong> — 转账、退款、付款审批', color:'#2563eb'},
-      {text:'<strong>权限变更</strong> — 账号开通、角色提权、权限回收', color:'#2563eb'},
-      {text:'<strong>对外发布</strong> — 公告、通知、合同签发', color:'#2563eb'},
+      {text:'<strong>人员状态变更</strong> — 离职办理、合同终止、社保停缴', color:'#2563eb'},
+      {text:'<strong>薪酬发放</strong> — 调薪生效、奖金发放、个税申报', color:'#2563eb'},
+      {text:'<strong>系统权限</strong> — HR 系统开户、花名册导出权限', color:'#2563eb'},
+      {text:'<strong>对外发出</strong> — offer 发放、辞退通知、全员公告', color:'#2563eb'},
     ],
     strategy:{bg:'rgba(37,99,235,.06)',border:'rgba(37,99,235,.2)',color:'#1e40af',
       text:'<strong>正确做法：</strong>所有高危操作强制插入<strong>人工确认环节</strong>。Agent 执行步数设上限，超限触发人工确认。系统必须具备一键终止（kill switch）能力。'},
