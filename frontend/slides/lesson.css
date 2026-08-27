@@ -207,7 +207,7 @@ pre.tpl{position:relative;background:#F6F8FA;border:1px solid #E2E8F0;border-rad
 .rule ol b{color:#fff}
 
 /* 终端命令 */
-.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:20px 76px 16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:20px 76px 16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;overflow-x:auto;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
 .cmd::before{content:'终端里敲这个';position:absolute;top:-9px;left:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
 
 /* 卡住了 */
@@ -229,3 +229,22 @@ pre.tpl{position:relative;background:#F6F8FA;border:1px solid #E2E8F0;border-rad
   .l-card { padding: 15px 16px; }
   .fab-wrap .btn-next { width: 100%; max-width: 440px; padding: 14px 0; }
 }
+
+/* ── 求助/服务入口（只放在最可能卡住的地方，不全站铺）──
+   新类名，95 个课件的内联 <style> 里没有它的历史定义，不存在覆盖冲突。 */
+.helpbox{
+  background:linear-gradient(135deg,rgba(0,102,255,.05),rgba(0,102,255,.02));
+  border:1.5px solid rgba(0,102,255,.22);
+  border-radius:var(--radius);
+  padding:20px 22px; margin:30px 0 8px;
+  display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;
+}
+.helpbox .hb-main{flex:1 1 320px; min-width:0}
+.helpbox .t{font-weight:700;color:var(--text);font-size:15px;display:block;margin-bottom:8px}
+.helpbox ul{margin:0 0 10px;padding-left:18px;font-size:14px;line-height:1.9}
+.helpbox li{margin:2px 0}
+.helpbox .hb-contact{font-size:13px;color:var(--text-sub);line-height:1.8}
+.helpbox .hb-qr{flex:0 0 96px;text-align:center}
+.helpbox .hb-qr img{width:96px;height:96px;border-radius:8px;display:block}
+.helpbox .hb-qr span{font-size:11px;color:var(--text-sub);display:block;margin-top:5px}
+@media(max-width:560px){.helpbox{gap:14px}.helpbox .hb-qr{flex:0 0 100%}.helpbox .hb-qr img{margin:0 auto}}
