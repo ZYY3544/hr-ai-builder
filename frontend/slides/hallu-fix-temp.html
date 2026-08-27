@@ -239,7 +239,7 @@ input[type=range]::-webkit-slider-thumb {
 <article class="lesson wide">
   <header class="lesson-header">
     <div class="kicker">第一篇章 · 幻觉的四种应对</div>
-    <h1>应对 3：Temperature &amp; Top-P</h1>
+    <h1>应对 3：它为什么每次都不一样</h1>
     <p class="subtitle">HR 视角：同一个问题为什么每次答得不一样，什么场景该调、什么场景不该碰。手段 03 / 04 · 预防。</p>
   </header>
 
@@ -249,28 +249,28 @@ input[type=range]::-webkit-slider-thumb {
           <div class="scene-card active" onclick="selectScene(0)">
             <div class="scene-icon" style="background:rgba(229,62,62,0.08);">⚖️</div>
             <div class="scene-info">
-              <div class="scene-name">法律 / 合规 / 客服</div>
+              <div class="scene-name">制度问答 / 薪酬计算</div>
               <div class="scene-params">推荐：<b>T=0.1  Top-P=0.8</b></div>
             </div>
           </div>
           <div class="scene-card" onclick="selectScene(1)">
             <div class="scene-icon" style="background:rgba(0,102,255,0.08);">📊</div>
             <div class="scene-info">
-              <div class="scene-name">报告撰写 / 摘要总结</div>
+              <div class="scene-name">人力报告 / 面试纪要</div>
               <div class="scene-params">推荐：<b>T=0.3  Top-P=0.9</b></div>
             </div>
           </div>
           <div class="scene-card" onclick="selectScene(2)">
             <div class="scene-icon" style="background:rgba(22,163,106,0.08);">💬</div>
             <div class="scene-info">
-              <div class="scene-name">通用对话 / 解答咨询</div>
+              <div class="scene-name">员工咨询 / 日常答疑</div>
               <div class="scene-params">推荐：<b>T=0.7  Top-P=0.95</b></div>
             </div>
           </div>
           <div class="scene-card" onclick="selectScene(3)">
             <div class="scene-icon" style="background:rgba(124,58,237,0.08);">✍️</div>
             <div class="scene-info">
-              <div class="scene-name">创意写作 / 头脑风暴</div>
+              <div class="scene-name">JD 初稿 / 招聘文案</div>
               <div class="scene-params">推荐：<b>T=1.2  Top-P=1.0</b></div>
             </div>
           </div>
@@ -425,7 +425,7 @@ const SCENES = [
 // 每个场景有多档输出，按 T 值选择对应档
 const SCENE_OUTPUTS = [
   {
-    name: '法律 / 合规 / 客服',
+    name: '制度问答 / 薪酬计算',
     prompt: '试用期最长可以签多久？',
     tiers: [
       { maxT: 0.3, risk: 'low',  label: 'T ≤ 0.3 · 精准稳定',
@@ -439,45 +439,45 @@ const SCENE_OUTPUTS = [
     ]
   },
   {
-    name: '报告撰写 / 摘要总结',
-    prompt: '请总结本季度业绩亮点',
+    name: '人力报告 / 面试纪要',
+    prompt: '请总结本季度人力情况',
     tiers: [
-      { maxT: 0.3, risk: 'low',  label: 'T ≤ 0.3 · 结构清晰',
-        text: '本季度核心指标达成率 <b>98.2%</b>，用户留存率环比提升 <b>12%</b>，获客成本上升 <b>18%</b>，建议加大自然流量投入。' },
+      { maxT: 0.3, risk: 'low',  label: 'T ≤ 0.3 · 精准稳定',
+        text: '本季度在编 <b>1,240</b> 人，主动离职率 <b>8.2%</b>，招聘完成率 <b>91%</b>，人力成本占比 <b>22.4%</b>，技术序列存在补员缺口。' },
       { maxT: 0.7, risk: 'low',  label: 'T 0.3–0.7 · 表达稍多',
-        text: '整体来看本季度运营稳健，<b>用户留存表现亮眼</b>，增长 12%。需关注获客成本上行趋势，建议着力优化自然流量渠道以降低边际成本。' },
+        text: '整体看本季度人力盘子稳定，<b>离职率控制在合理区间</b>，招聘完成率 91%。需重点关注技术序列的补员进度，建议前置启动下季度招聘。' },
       { maxT: 1.2, risk: 'med',  label: 'T 0.7–1.2 · 数据不稳',
-        text: '本季度增长态势良好，留存提升明显，<span class="hl-red">DAU 突破 500 万</span>，<span class="hl-red">营收同比增长 35%</span>，整体超出市场预期，值得重点关注…' },
+        text: '本季度人力状况良好，离职明显收敛，<span class="hl-red">校招留存率达 92%</span>，<span class="hl-red">人均效能同比提升 18%</span>，整体优于行业水平…' },
       { maxT: 2.0, risk: 'high', label: 'T > 1.2 · 编造数据',
-        text: '<span class="hl-red">本季度营收 8.7 亿</span>，同比大涨 <span class="hl-red">67%</span>，<span class="hl-red">净利润率达 23%</span>，创历史新高！用户规模突破<span class="hl-red"> 2000 万</span>…' },
+        text: '<span class="hl-red">本季度主动离职率仅 3.1%</span>，同比<span class="hl-red">下降 61%</span>，<span class="hl-red">员工敬业度达 89 分</span>创历史新高，<span class="hl-red">人才密度跃居行业前 5%</span>…' },
     ]
   },
   {
-    name: '通用对话 / 解答咨询',
-    prompt: '这个功能从哪个版本开始支持？',
+    name: '员工咨询 / 日常答疑',
+    prompt: '产假和陪产假一共能休多少天？',
     tiers: [
       { maxT: 0.3, risk: 'low',  label: 'T ≤ 0.3 · 保守回答',
-        text: '我需要确认一下具体版本信息，目前无法确定该功能的上线版本，建议查阅官方发布日志或联系技术支持。' },
+        text: '这个要看你所在城市的规定和公司执行口径，我不能给你确切天数，建议查《员工手册》假期章节或直接问 HRBP。' },
       { maxT: 0.7, risk: 'low',  label: 'T 0.3–0.7 · 正常对话',
-        text: '这个功能应该是在<b>最近几个版本</b>中加入的，您可以在设置里查看版本号，然后对比官方更新日志确认。' },
+        text: '产假通常由国家基础产假加地方奖励假构成，<b>各地不一样</b>。你可以在员工手册的假期章节里查到公司对应的执行口径。' },
       { maxT: 1.2, risk: 'med',  label: 'T 0.7–1.2 · 含糊推断',
-        text: '这个功能<span class="hl-red">大概</span>是在 v2.1 就已经支持了，不过具体细节可能需要再核实一下，我<span class="hl-red">印象里</span>是这样…' },
-      { maxT: 2.0, risk: 'high', label: 'T > 1.2 · 幻觉版本号',
-        text: '从 <span class="hl-red">v1.4.2</span> 开始就已经支持了！你只需要在<span class="hl-red">「高级设置 > 实验功能」</span>里开启就好，这个功能当时还上了<span class="hl-red">官方博客头条</span>呢。' },
+        text: '产假<span class="hl-red">大概</span>是 158 天左右，陪产假<span class="hl-red">印象里</span>是 15 天，不过具体还得再核实一下…' },
+      { maxT: 2.0, risk: 'high', label: 'T > 1.2 · 幻觉法条',
+        text: '产假一共 <span class="hl-red">180 天</span>，陪产假 <span class="hl-red">30 天</span>，另外还能申请 <span class="hl-red">5000 元育儿假补贴</span>，写在<span class="hl-red">《企业职工生育保障条例》第 22 条</span>里。' },
     ]
   },
   {
-    name: '创意写作 / 头脑风暴',
-    prompt: '写一个关于月光宝盒的句子',
+    name: 'JD 初稿 / 招聘文案',
+    prompt: '给「HR 数字化产品经理」写一句招聘文案',
     tiers: [
       { maxT: 0.3, risk: 'low',  label: 'T ≤ 0.3 · 平稳保守',
-        text: '月光宝盒是一件神奇的法器，可以穿越时空，带人回到过去。' },
+        text: '我们正在招聘 HR 数字化产品经理，负责人力系统的产品规划与落地。' },
       { maxT: 0.7, risk: 'low',  label: 'T 0.3–0.7 · 有些文采',
-        text: '月光宝盒碎了。碎成了七块，每块流入了不同人的梦里，带着各自不愿醒来的从前。' },
+        text: '如果你既干过人力资源的活，又能把它拆成产品需求——这个岗位在等你。' },
       { maxT: 1.2, risk: 'low',  label: 'T 0.7–1.2 · 创意涌现',
-        text: '月光宝盒藏在时间的褶皱里，每打开一次，就会有一段被遗忘的记忆悄悄溜走，你永远不知道失去的是哪一天。' },
-      { maxT: 2.0, risk: 'high', label: 'T > 1.2 · 跑偏幻觉',
-        text: '月光宝盒和<span class="hl-red">紫薇格格</span>在<span class="hl-red">天宫的麦当劳</span>相遇，宝玉点了一杯<span class="hl-red">至尊宝奶茶</span>，贾母刷抖音发现了<span class="hl-red">哈利波特</span>…' },
+        text: '我们要找的人，能听懂 HRBP 抱怨里的真问题，也能把它写成工程师看得懂的需求文档。' },
+      { maxT: 2.0, risk: 'high', label: 'T > 1.2 · 跑偏 + 编福利',
+        text: '加入我们，<span class="hl-red">与 AI 共舞</span>，在<span class="hl-red">组织的星辰大海</span>里成为<span class="hl-red">重新定义人效的造梦师</span>！我们提供<span class="hl-red">无限期年假</span>与<span class="hl-red">全球任意地点办公</span>…' },
     ]
   }
 ];

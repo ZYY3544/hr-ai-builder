@@ -268,7 +268,7 @@
           <b>幻觉率 ≠ 0</b>：所有 LLM 都有幻觉，你的目标是把它控制在<b>业务可接受的阈值内</b>，追求消灭并不现实。
         </div>
         <div class="insight-item">
-          <b>高风险 = 人工兜底</b>：医疗、法律、金融场景，AI 只做初稿，<b>最终确认必须有人签字</b>。
+          <b>高风险 = 人工兜底</b>：裁员名单、绩效结果、offer 决策、背调结论，AI 只做初稿，<b>最终确认必须有人签字</b>。
         </div>
         <div class="insight-item">
           <b>指标要写进验收标准</b>：「它编造的比例低于 3%」要像「三天内出结果」一样，是可以被检查的承诺，不是感觉。
@@ -319,28 +319,28 @@ const PHASES = [
 
 const REVIEW_CASES = [
   {
-    scene: '金融客服 · 理财建议',
+    scene: '劳动关系 · 解除咨询',
     riskLevel: 'risk-high',
     riskLabel: '高风险',
-    q: '我有50万，想买一个年化8%的低风险产品，有推荐吗？',
-    a: '我们有一款<span class="hl-red">固定年化8.5%的低风险理财产品</span>，<span class="hl-red">100%保本保息</span>，起购金额5万元…',
-    resultText: { approve: '已通过发送（风险：此类表述可能违反监管规定）', reject: '已拒绝，转人工处理 ✓', edit: '已编辑：移除「保本保息」等不合规表述' }
+    q: '员工试用期表现不达标，我们可以直接辞退吗？要给补偿吗？',
+    a: '试用期内公司<span class="hl-red">可以随时解除劳动合同，无需理由也无需支付补偿</span>，只要提前 3 天通知即可…',
+    resultText: { approve: '已通过发送（风险：这个答案会直接导致违法解除）', reject: '已拒绝，转人工处理 ✓', edit: '已编辑：补上「须证明不符合录用条件」并附法条出处' }
   },
   {
-    scene: '医疗咨询 · 用药建议',
+    scene: '薪酬社保 · 政策咨询',
     riskLevel: 'risk-high',
     riskLabel: '高风险',
-    q: '我最近血糖高，可以自己加大二甲双胍剂量吗？',
-    a: '血糖高时可以适当<span class="hl-red">自行增加二甲双胍剂量至每日3g</span>，同时注意多喝水…',
-    resultText: { approve: '已通过发送（风险：剂量建议需医生指导）', reject: '已拒绝，强制转接医生 ✓', edit: '已编辑：移除具体剂量，添加「请咨询医生」提示' }
+    q: '我们想给员工按最低基数交社保，员工签了自愿放弃承诺书，可以吗？',
+    a: '只要员工<span class="hl-red">书面自愿放弃</span>，公司按最低基数缴纳<span class="hl-red">是合规的</span>，双方签字即可生效…',
+    resultText: { approve: '已通过发送（风险：承诺书无效，公司仍需补缴并承担赔偿）', reject: '已拒绝，强制转法务/社保专员 ✓', edit: '已编辑：改为「该承诺书不具法律效力」并提示补缴风险' }
   },
   {
-    scene: '产品支持 · 功能咨询',
+    scene: '员工自助 · 流程咨询',
     riskLevel: 'risk-low',
     riskLabel: '低风险',
-    q: '如何导出数据到 Excel？',
-    a: '<span class="hl-green">点击右上角「导出」按钮，选择「Excel格式」，即可下载。支持自定义时间范围和字段筛选。</span>',
-    resultText: { approve: '已通过直接发送 ✓', reject: '已拒绝并重新生成', edit: '已编辑并补充截图链接' }
+    q: '年假怎么申请？在哪个系统里提？',
+    a: '<span class="hl-green">飞书审批 → 假期申请 → 选择「年假」，填写起止日期后提交直属主管审批。剩余天数在「我的假期」里可以查。</span>',
+    resultText: { approve: '已通过直接发送 ✓', reject: '已拒绝并重新生成', edit: '已编辑并补充系统入口截图' }
   }
 ];
 
@@ -353,8 +353,8 @@ const METRICS = [
 
 const FEEDBACK_STEPS = [
   { icon: '🔴', title: 'Bad Case 发现', desc: '审核员标记了一条「编造利率」的错误回答，打上 bad-case 标签', tag: '来源：人工审核' },
-  { icon: '📋', title: '归因分析', desc: '分析根因：Prompt 中未限制「不得引用具体利率数字」，模型自行补全', tag: '根因：Prompt 缺约束' },
-  { icon: '🔧', title: 'Prompt 迭代', desc: '更新 System Prompt，添加约束：禁止提及具体利率，改为「请咨询理财顾问」', tag: '修复：Prompt 工程' },
+  { icon: '📋', title: '归因分析', desc: '分析根因：Prompt 中未限制「不得就解除合同的合法性下结论」，模型自行补全', tag: '根因：Prompt 缺约束' },
+  { icon: '🔧', title: 'Prompt 迭代', desc: '更新 System Prompt，添加约束：涉及解除、补偿、社保合规一律不下结论，改为「请转 HRBP / 法务确认」', tag: '修复：Prompt 工程' },
   { icon: '✅', title: '回归验证', desc: '将该 bad case 加入测试集，重新评测，验证修复有效、无新增问题', tag: '验证：回归测试' },
 ];
 

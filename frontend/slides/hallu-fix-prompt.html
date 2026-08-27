@@ -216,8 +216,8 @@
 <article class="lesson wide">
   <header class="lesson-header">
     <div class="kicker">第一篇章 · 幻觉的四种应对</div>
-    <h1>Prompt 工程：用指令约束幻觉</h1>
-    <p class="subtitle">HR 视角：把约束写进 System Prompt，是成本最低的一道闸——不需要任何技术投入。</p>
+    <h1>应对 1：把约束写进 Prompt</h1>
+    <p class="subtitle"><b>Prompt 工程</b>——把约束写进 System Prompt，是成本最低的一道闸，不需要任何技术投入。</p>
     <div class="badge" style="margin-top:12px;">手段 01 / 04 · 预防</div>
   </header>
 
@@ -227,14 +227,14 @@
         <div class="section-label">选择业务场景</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div class="scene-card active" onclick="selectScene(0)">
-            <div class="scene-tag">场景 A · 智能客服</div>
-            <div class="scene-name">电商 / 金融客服机器人</div>
-            <div class="scene-desc">用户问产品细节、退款政策，模型极易编造不存在的规则。</div>
+            <div class="scene-tag">场景 A · 制度问答</div>
+            <div class="scene-name">员工政策咨询助手</div>
+            <div class="scene-desc">员工问年假、社保、报销，模型极易编造不存在的规定。</div>
           </div>
           <div class="scene-card" onclick="selectScene(1)">
-            <div class="scene-tag">场景 B · 内容创作</div>
-            <div class="scene-name">AI 写作助手 / 公文生成</div>
-            <div class="scene-desc">生成报告时模型可能捏造数据、引用不存在的法规文件。</div>
+            <div class="scene-tag">场景 B · 人力报告</div>
+            <div class="scene-name">月报 / 汇报材料生成</div>
+            <div class="scene-desc">写人力分析时模型可能捏造离职率、引用不存在的行业报告。</div>
           </div>
           <div class="scene-card" onclick="selectScene(2)">
             <div class="scene-tag">场景 C · 知识问答</div>
@@ -289,7 +289,7 @@
           <button onclick="showStrat(this,'no_context')" class="strat-tab active-s" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:var(--text-main);color:white;">无上下文</button>
           <button onclick="showStrat(this,'with_doc')" class="strat-tab" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--text-sub);">附上文档</button>
           <button onclick="showStrat(this,'force_unknown')" class="strat-tab" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--text-sub);">强制说不知道</button>
-          <span style="font-size:12px;color:var(--text-sub);margin-left:8px;">以「量子纠缠2025年商业应用」为例</span>
+          <span style="font-size:12px;color:var(--text-sub);margin-left:8px;">以「我们公司 2026 年调薪比例」为例</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="font-size:12px;color:var(--text-sub);">发送给模型的内容：</div>
@@ -369,61 +369,61 @@
 <script>
 const SCENES = [
   {
-    name: '智能客服对话对比',
+    name: '员工政策咨询对话对比',
     bad: [
-      { type: 'user', text: '你们的七天无理由退款是从什么时候开始算的？' },
-      { type: 'ai', bad: true, text: '从您<span class="hl-red">确认收货之日起7天内</span>均可申请无理由退款，<span class="hl-red">包括定制商品和食品</span>，只需保持原包装即可。' },
+      { type: 'user', text: '我今年年假还剩 5 天没休完，能折成钱吗？' },
+      { type: 'ai', bad: true, text: '未休年假可以折算工资，按<span class="hl-red">日工资的 300%</span> 支付，一般<span class="hl-red">随 12 月工资发放</span>。也可以选择<span class="hl-red">结转到下一年度使用</span>，通常保留一年有效。' },
     ],
     good: [
-      { type: 'system', text: '你是客服助手。只能回答知识库中有明确记录的问题。不确定的内容必须说「我需要帮您查询一下，请稍等」，禁止自行推断或补充政策细节。' },
-      { type: 'user', text: '你们的七天无理由退款是从什么时候开始算的？' },
-      { type: 'ai', bad: false, text: '<span class="hl-green">我需要帮您查询一下，请稍等。</span>根据我们的退款政策，七天无理由从签收日期起算。但定制商品和食品等特殊品类是否适用，需要我帮您核实具体订单，您方便提供订单号吗？' },
+      { type: 'system', text: '你是员工政策咨询助手。只能回答公司制度文件中有明确记录的问题。制度没写的内容必须回复「这个我需要帮你查一下」，禁止用「一般」「通常」「按规定」等说法替公司做规定。涉及钱和假期的结论，一律引导到 HRBP 确认。' },
+      { type: 'user', text: '我今年年假还剩 5 天没休完，能折成钱吗？' },
+      { type: 'ai', bad: false, text: '<span class="hl-green">这个我需要帮你查一下。</span>法定年假未休确实有折算规定，但<b>折算比例、是否允许结转、什么时候发</b>，各家公司的制度写法不一样，我不能替公司定。建议你直接问 HRBP，或查《员工手册》假期管理章节——涉及钱的事，我不给你一个可能是错的数字。' },
     ],
-    verdictBad: '✗ 模型编造了「定制商品也可退」，实际上不行，可能引发客诉纠纷。',
-    verdictGood: '✓ 回答了已知部分，主动承认未知部分，引导到安全路径。',
-    pmTip: '在需求文档中，<b>System Prompt 是业务规则，不是技术细节</b>——该由懂业务的人来定。你需要明确写出：哪些话题可以回答、哪些必须转人工、遇到不确定时的兜底话术。',
-    prompt: `# 智能客服 System Prompt 模板
+    verdictBad: '✗ 「300%」「随 12 月工资发放」「可结转一年」三个都是编的。员工照这个预期等到年底，发现全不是这么回事——最后是 HR 背锅。',
+    verdictGood: '✓ 承认不知道，说清为什么不能替公司定，并引导到能给准话的人。',
+    pmTip: 'HR 政策问答的风险不在「答错一道题」，在<b>员工会照着答案安排自己的钱和假期</b>。System Prompt 里最该焊死的一条是：<b>制度没写的，一个字都不许推断</b>——「一般来说」四个字就是幻觉的入口。',
+    prompt: `# 员工政策咨询 System Prompt 模板
 
-你是 [公司名] 的智能客服助手。
+你是 [公司名] 的员工政策咨询助手。
 
 ## 核心约束
-- 只回答知识库中有明确记录的问题
-- 涉及价格、政策、库存等数字，必须从知识库获取，禁止自行推断
-- 不确定时，统一回复：「这个问题我需要帮您查询一下，请稍等」
-- 严禁编造不存在的优惠活动、退款规则、产品参数
+- 只回答公司制度文件中有明确记录的问题
+- 涉及天数、比例、金额、时间点，必须来自制度原文，禁止推断
+- 制度没写的，统一回复：「这个我需要帮你查一下」
+- 严禁使用「一般来说」「通常」「按国家规定」替公司做规定
+
+## 必须转人工的场景
+- 年假折算、加班费、离职补偿等涉及金额的结论
+- 个人的特殊情形（产假接年假、跨地区社保、劳动合同解除）
+- 员工情绪激动或已提出争议时，不解释，直接转 HRBP
 
 ## 兜底话术
-当无法确认时：
-「感谢您的耐心等待，这个问题我帮您转接专属客服确认，
- 预计 [X] 分钟内回复，是否方便留下联系方式？」
-
-## 拒绝回答的场景
-- 竞争对手产品比较
-- 超出本公司产品范围的法律/医疗建议
-- 用户情绪激动时，不做解释，直接转人工`
+「这个我需要帮你查一下。涉及 [假期/薪酬] 的具体规定，
+ 建议直接问 HRBP，或查《员工手册》[章节]——
+ 我不想给你一个可能是错的数字。」`
   },
   {
-    name: 'AI 写作助手对话对比',
+    name: '人力月报撰写对话对比',
     bad: [
-      { type: 'user', text: '帮我写一段关于公司2024年营收增长的摘要，引用一些行业数据支撑。' },
-      { type: 'ai', bad: true, text: '2024年公司营收实现同比增长<span class="hl-red">32.5%</span>，远超行业平均水平。根据<span class="hl-red">艾瑞咨询2024年Q3报告</span>，该细分市场整体增速为18%，公司市占率提升至<span class="hl-red">14.7%</span>…' },
+      { type: 'user', text: '帮我写一段今年离职率的分析摘要，引用一些行业数据支撑。' },
+      { type: 'ai', bad: true, text: '2026 年公司整体离职率为 <span class="hl-red">18.7%</span>，低于行业平均水平。根据<span class="hl-red">智联招聘《2026 中国人力资本趋势报告》</span>，互联网行业平均离职率为 <span class="hl-red">23.4%</span>，其中主动离职占比 <span class="hl-red">61%</span>…' },
     ],
     good: [
-      { type: 'system', text: '你是写作助手。生成内容时，如包含具体数字、报告名称、机构名，必须标注「[需核实]」。不要虚构数据，宁可留空白让用户填写。' },
-      { type: 'user', text: '帮我写一段关于公司2024年营收增长的摘要，引用一些行业数据支撑。' },
-      { type: 'ai', bad: false, text: '2024年公司营收实现同比增长<span class="hl-green">[填入实际数据]%</span>，根据<span class="hl-green">[来源：请提供报告名称] [需核实]</span>，行业整体增速约为 [X]%…<span class="note">⚠ 我没有您公司的真实数据，已标注需要核实的位置，请填入准确数字后再发布。</span>' },
+      { type: 'system', text: '你是人力报告写作助手。生成内容时，如包含具体数字、报告名称、机构名，必须标注「[需核实]」。不要虚构数据，宁可留空白让用户填写。' },
+      { type: 'user', text: '帮我写一段今年离职率的分析摘要，引用一些行业数据支撑。' },
+      { type: 'ai', bad: false, text: '2026 年公司整体离职率为 <span class="hl-green">[填入实际数据]%</span>，与行业水平相比 [高于/低于]。根据<span class="hl-green">[来源：请提供报告名称] [需核实]</span>，同行业平均离职率约为 [X]%…<span class="note">⚠ 我没有你们的真实离职数据，也没有可引用的行业报告，已标注需要核实的位置，请填入后再发。</span>' },
     ],
-    verdictBad: '✗ 模型捏造了具体数字和报告来源，发出去会造成信息失实，严重时引发法律风险。',
-    verdictGood: '✓ 生成结构框架，主动标注缺口，避免了虚假数据流出。',
-    pmTip: '写作场景的核心风险是<b>数字幻觉</b>。你需要在 Prompt 中明确：遇到需要数据时，模型应留空白并标注「需核实」，禁止自行编造。这是<b>不可退让的底线</b>，需要写入 PRD。',
-    prompt: `# AI 写作助手 System Prompt 模板
+    verdictBad: '✗ 公司离职率、报告名称、行业均值、主动离职占比——四个数字全是编的。这份摘要一旦进了汇报材料，你会在会上被问「这个 23.4% 哪来的」。',
+    verdictGood: '✓ 只搭结构、主动留空，把「我没有数据」这件事说在前面，不让虚假数字流进汇报材料。',
+    pmTip: '人力报告的核心风险是<b>数字幻觉</b>——而且它比别的场景更危险，因为汇报材料<b>没人会去核对来源</b>，编的数字会一路传到管理层。Prompt 里必须写死：遇到数据留空标注「需核实」，禁止自行估算一个看起来合理的数。',
+    prompt: `# 人力报告写作 System Prompt 模板
 
-你是专业写作助手，帮用户生成高质量文案。
+你是人力分析报告的写作助手。
 
 ## 数据安全约束
-- 所有具体数字（百分比、金额、排名）如非用户提供，必须标注 [需核实]
-- 所有报告名称、机构名如非用户提供，必须标注 [来源待确认]
-- 禁止虚构调研数据、媒体报道、专家言论
+- 所有具体数字（离职率、人数、比例、金额）如非我提供，必须标注 [需核实]
+- 所有报告名称、机构名、调研来源如非我提供，必须标注 [来源待确认]
+- 禁止虚构行业均值、榜单排名、咨询公司观点
 
 ## 处理方式
 遇到需要数据的地方：
@@ -433,7 +433,7 @@ const SCENES = [
 
 ## 输出格式
 重要声明放在回复末尾：
-「本文由 AI 辅助生成，标注 [需核实] 处请用真实数据替换后再发布。」`
+「本文由 AI 辅助生成，标注 [需核实] 处请用真实数据替换后再上报。」`
   },
   {
     name: '企业知识库问答对比',
@@ -494,27 +494,28 @@ function setView(v) {
 
 const STRATS = {
   no_context:{
-    prompt:`User: 请告诉我量子纠缠技术在 2025 年的最新商业应用进展。`,
-    output:`截至 2025 年第二季度，IBM 与波士顿量子公司已成功将量子纠缠应用于金融风险建模，交易速度提升 <span style="background:rgba(229,62,62,0.15);color:#dc2626;padding:0 4px;border-radius:3px;font-weight:600">340%</span>；中国科技大学宣布实现 <span style="background:rgba(229,62,62,0.15);color:#dc2626;padding:0 4px;border-radius:3px;font-weight:600">1024 量子比特纠缠</span>…<br><br><span style="font-size:12px;color:#dc2626;font-weight:600">⚠ 以上内容为模型编造，数字和公司进展均无法核实</span>`,
+    prompt:`User: 我们公司 2026 年的调薪比例是多少？`,
+    output:`2026 年公司整体调薪幅度为 <span style="background:rgba(229,62,62,0.15);color:#dc2626;padding:0 4px;border-radius:3px;font-weight:600">6.5%</span>，其中绩效 A 级员工可达 <span style="background:rgba(229,62,62,0.15);color:#dc2626;padding:0 4px;border-radius:3px;font-weight:600">12%</span>，调薪窗口在<span style="background:rgba(229,62,62,0.15);color:#dc2626;padding:0 4px;border-radius:3px;font-weight:600">每年 4 月</span>随考核结果一并发放…<br><br><span style="font-size:12px;color:#dc2626;font-weight:600">⚠ 以上内容为模型编造，比例、档位、时间点全部无法核实</span>`,
     cls: 'bad'
   },
   with_doc:{
-    prompt:`System: 你是专业分析师。只根据用户提供的文件内容作答，不得引用文件外的信息。
+    prompt:`System: 你是 HR 政策助手。只根据用户提供的文件内容作答，不得引用文件外的信息。
 
-[已附加文件：quantum_report_2025.pdf · 23 页]
+[已附加文件：2026 年度调薪方案.pdf · 8 页]
 【文件节选】
-「2025 年量子通信商业部署主要集中在安全密钥分发领域，
-IBM、IonQ 已有小规模试点，预计 2027 年进入规模化商用。」
+「2026 年度调薪总包为上年度薪酬总额的 4%，
+ 分配向技术序列与关键岗位倾斜，具体幅度由部门在总包内自定，
+ 调薪生效日为 7 月 1 日。」
 
-User: 请告诉我量子纠缠技术在 2025 年的最新商业应用进展。`,
-    output:`根据您提供的报告，2025 年量子纠缠技术的商业应用主要集中在<span style="color:#16a34a;font-weight:600">安全密钥分发</span>领域，IBM 和 IonQ 已有小规模试点项目。报告预测规模化商用将在 2027 年实现。<br><br><span style="font-size:12px;color:#16a34a;font-weight:600">✅ 信息来源于用户提供文件，准确可溯源</span>`,
+User: 我们公司 2026 年的调薪比例是多少？`,
+    output:`根据你提供的方案，2026 年调薪<span style="color:#16a34a;font-weight:600">总包为上年度薪酬总额的 4%</span>，向技术序列与关键岗位倾斜，<span style="color:#16a34a;font-weight:600">具体幅度由部门在总包内自定</span>，生效日为 7 月 1 日。<br><br>方案里没有写「个人能涨多少」，那取决于你所在部门的分配。<br><br><span style="font-size:12px;color:#16a34a;font-weight:600">✅ 信息来源于所附文件，每一句都可回溯</span>`,
     cls: 'good'
   },
   force_unknown:{
-    prompt:`System: 你是一个严谨的助手。如果你不确定某个信息，必须直接说「我不知道」，不得猜测或编造任何数据。
+    prompt:`System: 你是一个严谨的 HR 助手。如果你不确定某个信息，必须直接说「我不知道」，不得猜测或编造任何数据。
 
-User: 请告诉我量子纠缠技术在 2025 年的最新商业应用进展。`,
-    output:`我没有关于 2025 年量子纠缠技术商业应用的可靠信息：我的训练数据有截止日期，且这一领域的最新进展超出了我的知识范围。<br><br>建议查阅 Nature、IEEE Spectrum 或相关企业（IBM、Google Quantum AI）的最新发布公告。<br><br><span style="font-size:12px;color:#16a34a;font-weight:600">✅ 拒绝幻觉，给出替代建议</span>`,
+User: 我们公司 2026 年的调薪比例是多少？`,
+    output:`我不知道你们公司 2026 年的调薪比例——<b>这是各家公司自定的内部政策</b>，不在我的知识范围里，任何我给出的数字都会是编的。<br><br>建议直接查公司年度调薪方案，或问 HRBP / 薪酬组。<br><br><span style="font-size:12px;color:#16a34a;font-weight:600">✅ 拒绝幻觉，给出替代路径</span>`,
     cls: 'good'
   }
 };

@@ -295,7 +295,7 @@
 <article class="lesson wide">
   <header class="lesson-header">
     <div class="kicker">第一篇章 · 幻觉的四种应对</div>
-    <h1>RAG 检索增强生成：让模型「开卷答题」</h1>
+    <h1>应对 2：让它只答制度里有的</h1>
     <p class="subtitle">HR 视角：什么场景必须上 RAG，什么场景直接贴文档就够了。</p>
     <div class="badge">手段 02 / 04 · 预防</div>
   </header>
@@ -307,18 +307,18 @@
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div class="scene-card active" onclick="selectScene(0)">
             <div class="scene-tag">场景 A · 法律 / 合规</div>
-            <div class="scene-name">合同审查 / 法规查询助手</div>
-            <div class="scene-desc">法规频繁更新，模型训练数据有截止日期，极易引用已废除的旧条文。</div>
+            <div class="scene-name">劳动法 / 地方社保政策助手</div>
+            <div class="scene-desc">社保基数、公积金比例每年调，各地口径还不一样；模型训练数据有截止日期，极易引用已废除的旧标准。</div>
           </div>
           <div class="scene-card" onclick="selectScene(1)">
-            <div class="scene-tag">场景 B · 医疗健康</div>
-            <div class="scene-name">药品说明 / 用药建议助手</div>
-            <div class="scene-desc">用药方案高度个性化，模型的通用知识无法反映患者具体情况与医院规范。</div>
+            <div class="scene-tag">场景 B · 薪酬福利</div>
+            <div class="scene-name">薪酬政策 / 福利细则助手</div>
+            <div class="scene-desc">每家公司的职级带宽、补贴口径、计算方式都不一样，模型的通用知识对不上你们的制度原文。</div>
           </div>
           <div class="scene-card" onclick="selectScene(2)">
-            <div class="scene-tag">场景 C · 产品文档</div>
-            <div class="scene-name">SaaS 产品技术支持机器人</div>
-            <div class="scene-desc">产品迭代快，版本号、功能路径频繁变化，模型只记得训练时的旧版本。</div>
+            <div class="scene-tag">场景 C · 制度手册</div>
+            <div class="scene-name">员工手册 / 流程问答机器人</div>
+            <div class="scene-desc">制度每年修订，审批流、报销标准、考勤规则频繁变化，模型只记得训练时的旧版本。</div>
           </div>
         </div>
       </div>
@@ -335,7 +335,7 @@
         </div>
         <div class="decision-row">
           <div class="decision-icon">✅</div>
-          <div class="decision-text"><b>答错代价高</b>：法律、医疗、金融场景，错一句可能引发事故</div>
+          <div class="decision-text"><b>答错代价高</b>：薪酬、社保、劳动关系场景，错一句可能引发劳动争议</div>
         </div>
         <div class="decision-row">
           <div class="decision-icon">⚠️</div>
@@ -491,282 +491,109 @@ const SCENES = [
   },
   {
     bad: [
-      { type: 'user', text: '我有高血压，可以服用布洛芬止痛吗？' },
+      { type: 'user', text: '我下个月离职，去年的年终奖还发吗？' },
       { type: 'ai', bad: true, htmlParts: [
-        { text: '高血压患者' },
-        { text: '可以短期服用布洛芬', cls: 'hl-red' },
-        { text: '，每次200-400mg，每日不超过3次。建议饭后服用，一般' },
-        { text: '不影响血压控制', cls: 'hl-red' },
-        { text: '…' },
+        { text: '一般来说，' },
+        { text: '离职员工不享受年终奖', cls: 'hl-red' },
+        { text: '。不过多数公司会' },
+        { text: '按在职月份折算发放', cls: 'hl-red' },
+        { text: '，建议你和 HR 沟通争取一下…' },
       ]},
     ],
     good: [
-      { type: 'retrieval', text: '已检索：布洛芬说明书·禁忌症 + 《高血压患者用药指南》· 相似度 0.91' },
-      { type: 'user', text: '我有高血压，可以服用布洛芬止痛吗？' },
+      { type: 'retrieval', text: '已检索：《薪酬管理办法 2026》§5.2 + 年终奖发放细则 · 相似度 0.93' },
+      { type: 'user', text: '我下个月离职，去年的年终奖还发吗？' },
       { type: 'ai', bad: false, htmlParts: [
-        { text: '根据用药指南：布洛芬属于 NSAIDs 类药物，' },
-        { text: '高血压患者需谨慎使用', cls: 'hl-green' },
-        { text: '，可能升高血压、影响降压药效果。', tag: 'source-tag', tagText: '用药指南' },
-        { text: '\n\n建议：' },
-        { text: '请在医生或药师的指导下用药', cls: 'hl-green' },
-        { text: '，我无法替代专业医疗建议。' },
+        { text: '按公司《薪酬管理办法》§5.2：' },
+        { text: '发放日前离职的，当年度年终奖不予发放', cls: 'hl-green' },
+        { text: '。', tag: 'source-tag', tagText: '薪酬办法 §5.2' },
+        { text: '\n\n但有一条例外：' },
+        { text: '因公司原因解除劳动合同的，按在职月份折算', cls: 'hl-green' },
+        { text: '。你属于哪种情形直接决定结论，建议找 HRBP 核实。' },
       ]},
     ],
-    verdictBad: '✗ 模型给出了危险的错误建议：NSAIDs 对高血压患者有禁忌，可能加重病情甚至引发事故。',
-    verdictGood: '✓ 检索到真实指南，给出准确警示，并明确引导到专业医疗渠道。',
+    verdictBad: '✗ 「一般来说」「多数公司」全是编的——每家公司的年终奖规则都不一样，这个答案可能让员工白等一笔钱，也可能引发劳动争议。',
+    verdictGood: '✓ 引用本公司制度原文，主动点出例外条款，并把最终判断交回给能核实情形的人。',
   },
   {
     bad: [
-      { type: 'user', text: '怎么在你们产品里设置多因素认证 MFA？' },
+      { type: 'user', text: '差旅费怎么报销？在哪儿提交？' },
       { type: 'ai', bad: true, htmlParts: [
-        { text: '设置 MFA 请进入「设置」→「' },
-        { text: '账户安全', cls: 'hl-red' },
+        { text: '进入 OA 系统「' },
+        { text: '费用中心', cls: 'hl-red' },
         { text: '」→「' },
-        { text: '双重验证', cls: 'hl-red' },
-        { text: '」，点击「启用」后扫描二维码…' },
+        { text: '差旅报销', cls: 'hl-red' },
+        { text: '」，上传发票后提交给直属主管审批即可…' },
       ]},
     ],
     good: [
-      { type: 'retrieval', text: '已检索：产品文档 v3.2「安全配置」章节 · 相似度 0.96' },
-      { type: 'user', text: '怎么在你们产品里设置多因素认证 MFA？' },
+      { type: 'retrieval', text: '已检索：《员工手册 v4.2》§4.3 + 制度变更公告 v4.0 · 相似度 0.95' },
+      { type: 'user', text: '差旅费怎么报销？在哪儿提交？' },
       { type: 'ai', bad: false, htmlParts: [
-        { text: '根据最新文档（v3.2）：\n进入「工作台」→「组织管理」→「' },
-        { text: '安全策略', cls: 'hl-green' },
-        { text: '」→「MFA 设置」，选择认证方式后点击保存。', tag: 'source-tag', tagText: '文档 v3.2 §4.3' },
-        { text: '\n\n如您使用的是旧版本，路径可能不同，请告知版本号。' },
+        { text: '按最新手册（v4.2）：走「飞书审批」→「' },
+        { text: '财务中心', cls: 'hl-green' },
+        { text: '」→「差旅报销单」，需同时附行程单、发票、出差申请单编号。', tag: 'source-tag', tagText: '员工手册 v4.2 §4.3' },
+        { text: '\n\n注意：' },
+        { text: 'v4.0 起 OA「费用中心」入口已下线', cls: 'hl-green' },
+        { text: '，从那儿提交不会进流程。' },
       ]},
     ],
-    verdictBad: '✗ 模型记的是旧版本路径（已在 v3.0 改版），用户按提示根本找不到入口，产生大量客诉。',
-    verdictGood: '✓ 检索到当前文档版本，给出精确路径，并主动提示版本差异。',
-  }
-];
-
-let currentScene = 0;
-let currentTab = 'compare';
-let animTimers = [];
-
-function clearTimers() {
-  animTimers.forEach(t => clearTimeout(t));
-  animTimers = [];
-}
-
-function delay(fn, ms) {
-  const t = setTimeout(fn, ms);
-  animTimers.push(t);
-  return t;
-}
-
-function selectScene(i) {
-  currentScene = i;
-  document.querySelectorAll('.scene-card').forEach((c, j) => c.classList.toggle('active', j === i));
-  if (currentTab === 'compare') playAnimation();
-  else if (currentTab === 'flow') ragReset();  // 流程图的文档和问题都跟着场景走，换了就得从头演
-}
-
-function setTab(t) {
-  currentTab = t;
-  const tabs = ['compare', 'flow', 'why'];
-  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', tabs[i] === t));
-  document.getElementById('viewCompare').style.display = t === 'compare' ? 'flex' : 'none';
-  document.getElementById('viewFlow').style.display = t === 'flow' ? 'flex' : 'none';
-  const whyEl = document.getElementById('viewWhy');
-  whyEl.style.display = t === 'why' ? 'flex' : 'none';
-  document.getElementById('replayBtn').style.display = t === 'compare' ? 'inline-block' : 'none';
-  if (t === 'compare') playAnimation();
-  // 在别的 tab 里换过场景，回到流程图时内容已经过时，重来一遍
-  if (t === 'flow' && ragScene !== currentScene) ragReset();
-}
-
-// 把 htmlParts 展平为纯文本 tokens（含标记）
-function flattenParts(parts) {
-  const tokens = [];
-  parts.forEach(p => {
-    if (p.tag === 'source-tag') {
-      tokens.push({ html: `<span class="source-tag">${p.tagText}</span>` });
-    } else if (p.cls) {
-      // 带颜色的词，整段作为一个 token
-      tokens.push({ html: `<span class="${p.cls}">${p.text}</span>`, isSpecial: true });
-    } else {
-      // 普通文本，逐字拆分
-      const chars = [...p.text];
-      chars.forEach(c => tokens.push({ html: c === '\n' ? '<br>' : c }));
-    }
-  });
-  return tokens;
-}
-
-// 逐 token 打字
-function typeTokens(el, tokens, charDelay, onDone) {
-  el.innerHTML = '';
-  const cursor = document.createElement('span');
-  cursor.className = 'bubble-typing';
-  el.appendChild(cursor);
-
-  let i = 0;
-  function step() {
-    if (i >= tokens.length) {
-      el.removeChild(cursor);
-      if (onDone) onDone();
-      return;
-    }
-    const tok = tokens[i++];
-    const span = document.createElement('span');
-    span.innerHTML = tok.html;
-    el.insertBefore(span, cursor);
-    el.parentElement.scrollTop = el.parentElement.scrollHeight;
-    delay(step, tok.isSpecial ? charDelay * 3 : charDelay);
-  }
-  step();
-}
-
-function playAnimation() {
-  clearTimers();
-  const s = SCENES[currentScene];
-
-  // 清空
-  const boxBad = document.getElementById('boxBad');
-  const boxGood = document.getElementById('boxGood');
-  boxBad.innerHTML = '';
-  boxGood.innerHTML = '';
-  const vBad = document.getElementById('verdictBad');
-  const vGood = document.getElementById('verdictGood');
-  vBad.textContent = '';
-  vGood.textContent = '';
-  vBad.classList.remove('show');
-  vGood.classList.remove('show');
-
-  // === 左侧：无 RAG ===
-  // 用户消息
-  const uBad = document.createElement('div');
-  uBad.className = 'bubble-user';
-  uBad.textContent = s.bad[0].text;
-  boxBad.appendChild(uBad);
-  delay(() => uBad.classList.add('show'), 100);
-
-  // AI 气泡
-  const aiBad = document.createElement('div');
-  aiBad.className = 'bubble-ai show';
-  boxBad.appendChild(aiBad);
-  const badTokens = flattenParts(s.bad[1].htmlParts);
-
-  delay(() => typeTokens(aiBad, badTokens, 28, () => {
-    vBad.textContent = s.verdictBad;
-    delay(() => vBad.classList.add('show'), 100);
-  }), 700);
-
-  // === 右侧：有 RAG ===
-  const goodMsgs = s.good;
-  // 检索消息先出现
-  const retEl = document.createElement('div');
-  retEl.className = 'bubble-retrieval';
-  retEl.textContent = '🔍 ' + goodMsgs[0].text;
-  boxGood.appendChild(retEl);
-  delay(() => retEl.classList.add('show'), 400);
-
-  // 用户消息
-  const uGood = document.createElement('div');
-  uGood.className = 'bubble-user';
-  uGood.textContent = goodMsgs[1].text;
-  boxGood.appendChild(uGood);
-  delay(() => uGood.classList.add('show'), 900);
-
-  // AI 气泡（在左侧打字开始后稍微延迟）
-  const aiGood = document.createElement('div');
-  aiGood.className = 'bubble-ai show';
-  boxGood.appendChild(aiGood);
-  const goodTokens = flattenParts(goodMsgs[2].htmlParts);
-
-  delay(() => typeTokens(aiGood, goodTokens, 22, () => {
-    vGood.textContent = s.verdictGood;
-    delay(() => vGood.classList.add('show'), 100);
-  }), 1200);
-}
-
-// ── RAG 7步交互动画（含知识库构建阶段）──
-/* 流程图 7 步用到的知识库素材，一个场景一份。三个场景走的是同一套流程，
-   变的只是文档、问题和检索结果——所以 RAG_STEPS 只留模板，内容从这里取。
-   下标与 SCENES / .scene-card 一一对应。 */
-const SCENE_KB = [
-  { // A · 法律 / 合规
-    label: '场景 A · 合同审查 / 法规查询助手',
-    docName: '《劳动合同法》全文及司法解释（2024 版）',
-    docPages: 186,
-    chunkTotal: 4210,
-    rawText: '第二章 劳动合同的订立<br>§19 试用期期限…§19 三个月以上不满一年的…§19 一年以上不满三年的…§19 三年以上固定期限和无固定期限的…§19 同一用人单位与同一劳动者只能约定一次试用期…',
-    chunks: [
-      { tok: 180, text: '§19 三个月以上不满一年的，试用期不得超过一个月…' },
-      { tok: 150, text: '§19 一年以上不满三年的，试用期不得超过二个月…' },
-      { tok: 200, text: '§19 三年以上固定期限和无固定期限的，不得超过六个月…' },
-    ],
-    question: '劳动合同法里，试用期最长能签几个月？',
-    hits: [
-      { score: '0.94', src: '劳动合同法 §19', quote: '「三年以上固定期限和无固定期限的，试用期不得超过六个月…」' },
-      { score: '0.82', src: '司法解释（三）第 4 条', quote: '「违法约定的试用期已经履行的，用人单位应支付赔偿金…」' },
-      { score: '0.75', src: 'HR 合规手册 p.32', quote: '「同一用人单位与同一劳动者只能约定一次试用期…」' },
-    ],
-    semanticNote: '「新员工能考察多久」和「试用期期限」的向量也会很接近。',
-    sysRole: '你是企业法务助手',
-    answerLines: [
-      '合同期 3 个月至 1 年 → 试用期<b>不超过 1 个月</b>',
-      '合同期 1 年至 3 年 → 试用期<b>不超过 2 个月</b>',
-      '3 年以上或无固定期限 → 试用期<b>不超过 6 个月</b>',
-      '同一单位与同一劳动者<b>只能约定一次</b>试用期',
-    ],
-    finalAnswer: '试用期上限按合同期分三档：3 个月至 1 年<b>不超过 1 个月</b>，1 至 3 年<b>不超过 2 个月</b>，3 年以上或无固定期限<b>不超过 6 个月</b>。同一单位与同一劳动者只能约定一次试用期。',
+    verdictBad: '✗ 说的是改版前的旧路径。员工照着做会卡在一个已经下线的入口上，等两周才发现没进流程。',
+    verdictGood: '✓ 引用当前版本的手册原文，并主动提示旧入口已失效——制度改了，答案也跟着改。',
   },
-  { // B · 医疗健康
-    label: '场景 B · 药品说明 / 用药建议助手',
-    docName: '布洛芬说明书 +《高血压患者用药指南》',
-    docPages: 64,
-    chunkTotal: 1930,
-    rawText: '布洛芬说明书 · 禁忌与注意事项<br>【禁忌】对本品过敏者禁用…【注意事项】NSAIDs 可引起水钠潴留、升高血压…【药物相互作用】可减弱 ACEI/ARB 类降压药疗效…',
+  { // B · 薪酬福利
+    label: '场景 B · 薪酬政策 / 福利细则助手',
+    docName: '《薪酬管理办法 2026》+《年终奖发放细则》',
+    docPages: 58,
+    chunkTotal: 1730,
+    rawText: '第五章 年终奖<br>§5.1 发放对象与条件…§5.2 离职情形的处理…§5.3 计算基数与折算方式…§5.4 特殊情形与申诉…',
     chunks: [
-      { tok: 180, text: '【注意事项】NSAIDs 可引起水钠潴留，升高血压…' },
-      { tok: 150, text: '【药物相互作用】可减弱 ACEI/ARB 类降压药疗效…' },
-      { tok: 200, text: '《高血压患者用药指南》§5.2 慎用 NSAIDs，须在医师指导下…' },
+      { tok: 180, text: '§5.2 发放日前离职的，当年度年终奖不予发放…' },
+      { tok: 150, text: '§5.2 例外：因公司原因解除劳动合同的，按在职月份折算…' },
+      { tok: 200, text: '§5.3 计算基数为上年度 12 月基本工资，不含补贴与提成…' },
     ],
-    question: '我有高血压，可以服用布洛芬止痛吗？',
+    question: '我下个月离职，去年的年终奖还发吗？',
     hits: [
-      { score: '0.91', src: '布洛芬说明书 · 注意事项', quote: '「NSAIDs 可引起水钠潴留，升高血压…」' },
-      { score: '0.84', src: '高血压用药指南 §5.2', quote: '「高血压患者慎用 NSAIDs，须在医师指导下使用…」' },
-      { score: '0.72', src: '药物相互作用表 p.9', quote: '「可减弱 ACEI/ARB 类降压药疗效…」' },
+      { score: '0.93', src: '薪酬管理办法 §5.2', quote: '「发放日前离职的，当年度年终奖不予发放…」' },
+      { score: '0.86', src: '年终奖细则 §5.2 例外条款', quote: '「因公司原因解除劳动合同的，按在职月份折算…」' },
+      { score: '0.71', src: '计算基数说明 p.12', quote: '「基数为上年度 12 月基本工资，不含补贴与提成…」' },
     ],
-    semanticNote: '「吃止痛药会不会影响血压」和「NSAIDs 禁忌」的向量也会很接近。',
-    sysRole: '你是用药咨询助手',
+    semanticNote: '「离职了年终奖怎么算」和「发放条件」的向量也会很接近。',
+    sysRole: '你是薪酬政策问答助手',
     answerLines: [
-      '布洛芬属 NSAIDs，可引起水钠潴留、<b>升高血压</b>',
-      '可能<b>减弱 ACEI/ARB 类降压药</b>的疗效',
-      '高血压患者须<b>慎用</b>，不建议自行服用',
-      '请在<b>医生或药师指导下</b>用药',
+      '按本公司规定，<b>发放日前离职</b>的当年度年终奖不予发放',
+      '但有<b>例外</b>：因公司原因解除合同的，按在职月份折算',
+      '计算基数是<b>上年度 12 月基本工资</b>，不含补贴与提成',
+      '你属于哪种离职情形，请<b>找 HRBP 核实</b>后再确认',
     ],
-    finalAnswer: '布洛芬属于 NSAIDs，可能<b>升高血压</b>并减弱降压药效果，高血压患者需<b>谨慎使用</b>。请在医生或药师的指导下用药，我无法替代专业医疗建议。',
+    finalAnswer: '按《薪酬管理办法》§5.2，<b>发放日前离职的当年度年终奖不予发放</b>；但因公司原因解除劳动合同的属于例外，按在职月份折算。你具体属于哪种情形会直接影响结论，<b>建议找 HRBP 核实</b>——这一条涉及金额，我不替你下结论。',
   },
-  { // C · SaaS 产品文档
-    label: '场景 C · SaaS 产品技术支持机器人',
-    docName: '产品帮助文档 v3.2（安全配置章节）',
-    docPages: 42,
-    chunkTotal: 2847,
-    rawText: '第四章 安全配置<br>§4.1 登录策略…§4.2 单点登录 SSO…§4.3 多因素认证 MFA…§4.4 版本变更说明…',
+  { // C · 制度手册
+    label: '场景 C · 员工手册 / 流程问答机器人',
+    docName: '《员工手册 v4.2》（报销与审批章节）',
+    docPages: 46,
+    chunkTotal: 2610,
+    rawText: '第四章 费用与审批<br>§4.1 报销总则…§4.2 差旅标准…§4.3 差旅报销提交路径…§4.4 版本变更说明…',
     chunks: [
-      { tok: 180, text: '§4.3 MFA 路径：工作台 → 组织管理 → 安全策略 → MFA 设置…' },
-      { tok: 150, text: '§4.3 支持的认证方式：短信验证码、TOTP 动态口令、硬件密钥…' },
-      { tok: 200, text: '§4.4 v3.0 起「账户安全」并入「安全策略」，旧路径失效…' },
+      { tok: 180, text: '§4.3 差旅报销路径：飞书审批 → 财务中心 → 差旅报销单…' },
+      { tok: 150, text: '§4.3 需附:行程单、发票、出差申请单编号，三者缺一不受理…' },
+      { tok: 200, text: '§4.4 v4.0 起报销从 OA「费用中心」迁至飞书审批，旧入口已下线…' },
     ],
-    question: '怎么在你们产品里设置多因素认证 MFA？',
+    question: '差旅费怎么报销？在哪儿提交？',
     hits: [
-      { score: '0.96', src: '产品文档 v3.2 §4.3', quote: '「工作台 → 组织管理 → 安全策略 → MFA 设置…」' },
-      { score: '0.85', src: '版本变更日志 v3.0', quote: '「「账户安全」并入「安全策略」，旧路径失效…」' },
-      { score: '0.74', src: '管理员手册 p.18', quote: '「仅组织管理员可修改 MFA 策略…」' },
+      { score: '0.95', src: '员工手册 v4.2 §4.3', quote: '「飞书审批 → 财务中心 → 差旅报销单…」' },
+      { score: '0.87', src: '制度变更公告 v4.0', quote: '「报销自 OA『费用中心』迁至飞书审批，旧入口已下线…」' },
+      { score: '0.73', src: '财务问答 p.21', quote: '「行程单、发票、出差申请单编号三者缺一不受理…」' },
     ],
-    semanticNote: '「怎么开二次验证」和「MFA 设置」的向量也会很接近。',
-    sysRole: '你是产品技术支持助手',
+    semanticNote: '「出差的钱怎么报」和「差旅报销路径」的向量也会很接近。',
+    sysRole: '你是员工手册问答助手',
     answerLines: [
-      '进入「工作台」→「组织管理」→「<b>安全策略</b>」→「MFA 设置」',
-      '支持<b>短信验证码、TOTP 动态口令、硬件密钥</b>',
-      '仅<b>组织管理员</b>可修改 MFA 策略',
-      'v3.0 起旧的「账户安全」路径<b>已失效</b>',
+      '路径：<b>飞书审批 → 财务中心 → 差旅报销单</b>',
+      '必须同时附上<b>行程单、发票、出差申请单编号</b>',
+      '三者<b>缺一不受理</b>，会被财务直接退回',
+      'v4.0 起 OA「费用中心」入口<b>已下线</b>，别再从那儿提',
     ],
-    finalAnswer: '在 v3.2 中进入「工作台」→「组织管理」→「<b>安全策略</b>」→「MFA 设置」，选择认证方式后保存。注意 v3.0 起「账户安全」已并入「安全策略」，旧路径不再可用。',
+    finalAnswer: '按《员工手册 v4.2》§4.3，走<b>飞书审批 → 财务中心 → 差旅报销单</b>，需同时附行程单、发票和出差申请单编号，<b>三者缺一不受理</b>。注意 v4.0 起旧的 OA「费用中心」入口已下线，从那儿提交不会进流程。',
   },
 ];
 
