@@ -1172,6 +1172,34 @@
    "level": "L0",
    "hash": "500375020d85",
    "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hr-cite-not-summarize.html",
+   "level": "L0",
+   "hash": "1598c1898297",
+   "note": "那条「可以直接抄走的约束」原来用 .l-mono（只是字体样式、不可复制）,改成 .say——课件自己承诺了「能直接抄走」却抄不了"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hr-elicitation-3.html",
+   "level": "L0",
+   "hash": "106bd7be06c1",
+   "note": "「一个可以直接改的骨架」里的招聘初筛 System Prompt 从 .l-mono 改 .say"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "prompt-system.html",
+   "level": "L0",
+   "hash": "ca07cfe86648",
+   "note": "六个角色的 System Prompt 展示框（.code-panel）加复制按钮并补挂 lesson.js"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "prompt-defense.html",
+   "level": "L0",
+   "hash": "cc9ea7ca5394",
+   "note": "四段防注入 System Prompt（.code-block，含「安全约束·最高优先级」）加复制按钮并补挂 lesson.js"
   }
  ]
 }

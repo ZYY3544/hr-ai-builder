@@ -44,15 +44,18 @@
      .say  = prompt / 话术素材（浅色代码块）
      .cmd  = 终端命令（深色，自带「终端里敲这个」标签）
      pre.tpl = 明确标为「模板」的配置/表格骨架
+     .code-panel / .code-block = 课件里展示的完整 System Prompt（深色）
      文本在【点击时】现取——而不是初始化时——因为有些块的内容是 JS 动态注入的
      （例如 Prompt 模板会随场景切换重写），初始化时抓等于永远抄到第一份或空。 */
   function initSayCopy() {
-    var blocks = document.querySelectorAll('.say, .cmd, pre.tpl');
+    var blocks = document.querySelectorAll('.say, .cmd, pre.tpl, .code-panel, .code-block');
 
     function mkBtn(b) {
       if (b.querySelector('.say-copy')) return;          /* 已有就别重复插 */
       var btn = document.createElement('button');
-      btn.className = 'say-copy' + (b.classList.contains('cmd') ? ' on-dark' : '');
+      var dark = b.classList.contains('cmd') || b.classList.contains('code-panel')
+                 || b.classList.contains('code-block');
+      btn.className = 'say-copy' + (dark ? ' on-dark' : '');
       btn.type = 'button'; btn.textContent = '复制';
       btn.addEventListener('click', function () {
         /* 克隆去掉按钮自身再取文本，否则会把「复制」两个字也抄进去 */

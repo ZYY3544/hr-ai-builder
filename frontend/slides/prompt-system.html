@@ -27,7 +27,7 @@
 .role-chip.active { background: var(--purple); border-color: var(--purple); color: white; }
 
 /* ── System Prompt 代码面板 ── */
-.code-panel {
+.code-panel {position:relative;padding-right:74px;
   background: #1e1b2e; border-radius: var(--radius);
   padding: 16px 18px; font-size: 13px;
   font-family: "SF Mono", "Fira Code", Menlo, monospace;
@@ -298,6 +298,7 @@ function setFmt(btn, f) {
 setRole(document.querySelector('.role-chip.active'), 'writer');
 </script>
 <script src="i18n.js?v=20260808"></script>
+<script src="lesson.js"></script>
 <!--seo:begin--><!--seo:end-->
 <script src="../track.js"></script>
 </body>
