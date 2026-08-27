@@ -352,7 +352,6 @@
           <div class="tab-group">
             <button class="tab-btn active" onclick="setTab('compare')">对比视图</button>
             <button class="tab-btn" onclick="setTab('flow')">RAG 流程图</button>
-            <button class="tab-btn" onclick="setTab('why')">为什么有效</button>
           </div>
         </div>
       </div>
@@ -398,7 +397,12 @@
       </div>
 
       <!-- Why it works view -->
-      <div id="viewWhy" style="display:none;background:var(--card);border-radius:14px;padding:28px 32px;flex-direction:column;gap:22px;border:1px solid rgba(0,0,0,0.06);">
+      
+    </div>
+  </div>
+
+  <div class="sec-label">为什么这招有效</div>
+<div id="viewWhy" style="display:flex;background:var(--card);border-radius:14px;padding:28px 32px;flex-direction:column;gap:22px;border:1px solid rgba(0,0,0,0.06);">
         <div class="why-flex-row">
           <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
             <div style="font-size:12px;font-weight:800;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;">无 RAG：闭卷考试</div>
@@ -456,8 +460,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 </article>
 
 <script>
@@ -567,12 +569,10 @@ function selectScene(i) {
 
 function setTab(t) {
   currentTab = t;
-  const tabs = ['compare', 'flow', 'why'];
+  const tabs = ['compare', 'flow'];
   document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', tabs[i] === t));
   document.getElementById('viewCompare').style.display = t === 'compare' ? 'flex' : 'none';
   document.getElementById('viewFlow').style.display = t === 'flow' ? 'flex' : 'none';
-  const whyEl = document.getElementById('viewWhy');
-  whyEl.style.display = t === 'why' ? 'flex' : 'none';
   document.getElementById('replayBtn').style.display = t === 'compare' ? 'inline-block' : 'none';
   if (t === 'compare') playAnimation();
   // 在别的 tab 里换过场景，回到流程图时内容已经过时，重来一遍

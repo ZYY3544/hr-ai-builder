@@ -257,8 +257,6 @@
         <div class="toggle-group">
           <button class="toggle-btn active" onclick="setView('compare')">对比视图</button>
           <button class="toggle-btn" onclick="setView('prompt')">Prompt 模板</button>
-          <button class="toggle-btn" onclick="setView('why')">为什么有效</button>
-          <button class="toggle-btn" onclick="setView('strat')">三种策略</button>
         </div>
       </div>
 
@@ -283,23 +281,15 @@
       </div>
 
       <!-- Strategy demo view (from 3-3) -->
-      <div id="viewStrat" style="display:none;flex-direction:column;gap:12px;">
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <button onclick="showStrat(this,'no_context')" class="strat-tab active-s" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:var(--text-main);color:white;">无上下文</button>
-          <button onclick="showStrat(this,'with_doc')" class="strat-tab" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--text-sub);">附上文档</button>
-          <button onclick="showStrat(this,'force_unknown')" class="strat-tab" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--text-sub);">强制说不知道</button>
-          <span style="font-size:12px;color:var(--text-sub);margin-left:8px;">以「我们公司 2026 年调薪比例」为例</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="font-size:12px;color:var(--text-sub);">发送给模型的内容：</div>
-          <div id="stratPromptBox" style="background:#1c1c1e;border-radius:10px;padding:14px 18px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.8;color:#9ca3af;white-space:pre-wrap;"></div>
-          <div style="font-size:12px;color:var(--text-sub);">模型回复：</div>
-          <div id="stratOutputBox" style="background:white;border-radius:10px;padding:14px 18px;font-size:14px;line-height:1.8;border:1.5px solid rgba(0,0,0,0.08);"></div>
-        </div>
-      </div>
+      
 
       <!-- Why it works view -->
-      <div id="viewWhy" style="display:none;background:var(--card);border-radius:14px;padding:24px 28px;flex-direction:column;gap:16px;border:1px solid rgba(0,0,0,0.06);">
+      
+    </div>
+  </div>
+
+  <div class="sec-label">为什么这招有效</div>
+<div id="viewWhy" style="display:flex;background:var(--card);border-radius:14px;padding:24px 28px;flex-direction:column;gap:16px;border:1px solid rgba(0,0,0,0.06);">
         <div class="why-flex-row">
           <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
             <div style="font-size:12px;font-weight:800;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;">没有 System Prompt</div>
@@ -361,8 +351,23 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+
+  <div class="sec-label">三种策略：从最弱到最强</div>
+  <p style="color:var(--text-sub);margin:0 0 14px">同一个问题，三种给法，效果差得很远。点下面三个标签切换看。</p>
+<div id="viewStrat" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button onclick="showStrat(this,'no_context')" class="strat-tab active-s" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:var(--text-main);color:white;">无上下文</button>
+          <button onclick="showStrat(this,'with_doc')" class="strat-tab" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--text-sub);">附上文档</button>
+          <button onclick="showStrat(this,'force_unknown')" class="strat-tab" style="padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--text-sub);">强制说不知道</button>
+          <span style="font-size:12px;color:var(--text-sub);margin-left:8px;">以「我们公司 2026 年调薪比例」为例</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:12px;color:var(--text-sub);">发送给模型的内容：</div>
+          <div id="stratPromptBox" style="background:#1c1c1e;border-radius:10px;padding:14px 18px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.8;color:#9ca3af;white-space:pre-wrap;"></div>
+          <div style="font-size:12px;color:var(--text-sub);">模型回复：</div>
+          <div id="stratOutputBox" style="background:white;border-radius:10px;padding:14px 18px;font-size:14px;line-height:1.8;border:1.5px solid rgba(0,0,0,0.08);"></div>
+        </div>
+      </div>
 </article>
 
 <script>
@@ -480,15 +485,10 @@ function selectScene(idx) {
 
 function setView(v) {
   currentView = v;
-  const views = ['compare', 'prompt', 'why', 'strat'];
+  const views = ['compare', 'prompt'];
   document.querySelectorAll('.toggle-btn').forEach((b, i) => b.classList.toggle('active', views[i] === v));
   document.getElementById('viewCompare').style.display = v === 'compare' ? 'flex' : 'none';
   document.getElementById('viewPrompt').style.display = v === 'prompt' ? 'block' : 'none';
-  const whyEl = document.getElementById('viewWhy');
-  whyEl.style.display = v === 'why' ? 'flex' : 'none';
-  const stratEl = document.getElementById('viewStrat');
-  stratEl.style.display = v === 'strat' ? 'flex' : 'none';
-  if (v === 'strat') showStrat(document.querySelector('.strat-tab.active-s'), 'no_context');
 }
 
 const STRATS = {
@@ -580,6 +580,7 @@ function makeBubble(m) {
 }
 
 renderScene();
+showStrat(document.querySelector('.strat-tab'), 'no_context');
 </script>
 <script src="i18n.js?v=20260808"></script>
 <script src="lesson.js"></script>

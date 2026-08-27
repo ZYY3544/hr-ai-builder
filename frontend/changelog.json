@@ -1221,6 +1221,34 @@
    "level": "L0",
    "hash": "740c2a6ad3df",
    "note": "ReAct 演示任务换成 HR 场景——删 console.log 跑测试改为核对本月新人入职材料，8 步结构与失败自纠弧线完全保留，轮次/工具数/Token 口径不变"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hallu-fix-prompt.html",
+   "level": "L0",
+   "hash": "5822f4c4b079",
+   "note": "「为什么有效」「三种策略」从右侧 tab 条移到页面底部通栏小节——这两块不随左侧场景变化，挂在联动 tab 上是错的承诺；且机制讲解藏在一次点击后面，默认视图的人看不到。tab 条收敛为对比视图/Prompt 模板两个真联动视图；三种策略改为加载时初始化"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hallu-fix-rag.html",
+   "level": "L0",
+   "hash": "7017a56c17b7",
+   "note": "同上，「为什么有效」移到页尾通栏小节；tab 条保留对比视图/RAG 流程图两个真联动视图"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hallu-fix-temp.html",
+   "level": "L0",
+   "hash": "c934c100ba8e",
+   "note": "同上，「为什么有效」移到页尾；移除后只剩单个按钮，整条 tab 条与 setTab 一并删除"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hallu-fix-eval.html",
+   "level": "L0",
+   "hash": "3ddd59a8edfa",
+   "note": "同上，「为什么有效」移到页尾；移除后只剩单个按钮，tab 条与 setTab 一并删除；顺带删除从未被引用的 WHY_HTML 重复死代码（5.5k 字符，与实际渲染的那份内容重复，改一处漏一处的隐患）"
   }
  ]
 }

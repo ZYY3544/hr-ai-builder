@@ -300,10 +300,6 @@ input[type=range]::-webkit-slider-thumb {
   <section class="paywall-locked">
       <div class="right-top">
         <h3 id="rightTitle">参数调节 × 输出质量</h3>
-        <div class="tab-group">
-          <button class="tab-btn active" onclick="setTab('demo')">交互演示</button>
-          <button class="tab-btn" onclick="setTab('why')">为什么有效</button>
-        </div>
       </div>
 
       <!-- Tab: Demo -->
@@ -327,7 +323,11 @@ input[type=range]::-webkit-slider-thumb {
       </div>
 
       <!-- Tab: Why -->
-      <div id="tabWhy" style="display:none;">
+      
+  </section>
+
+  <div class="sec-label">为什么这招有效</div>
+<div id="tabWhy" style="display:block;">
         <div class="why-view">
           <div class="why-top-row">
             <div class="why-card">
@@ -410,7 +410,6 @@ input[type=range]::-webkit-slider-thumb {
           </div>
         </div>
       </div>
-  </section>
 </article>
 
 <script>
@@ -483,7 +482,6 @@ const SCENE_OUTPUTS = [
 ];
 
 let currentScene = 0;
-let currentTab = 'demo';
 
 function selectScene(i) {
   currentScene = i;
@@ -494,12 +492,6 @@ function selectScene(i) {
   onParamChange();
 }
 
-function setTab(t) {
-  currentTab = t;
-  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', (i === 0) === (t === 'demo')));
-  document.getElementById('tabDemo').style.display = t === 'demo' ? 'flex' : 'none';
-  document.getElementById('tabWhy').style.display = t === 'why' ? 'block' : 'none';
-}
 
 function onParamChange() {
   const t = document.getElementById('tempSlider').value / 100;

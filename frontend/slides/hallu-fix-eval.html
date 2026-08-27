@@ -296,6 +296,49 @@
   <div class="l-callout">这三条会在后面反复出现：第一篇章本章后面讲召回与判定的闸、第二篇章讲怎么写进 prompt、第七篇章讲怎么变成系统的固定环节。<b>但从今天起你就可以用第三条</b>——在任何一个 prompt 末尾加一句「不确定就说不确定，不要猜」，成本为零。</div>
 
   <div class="try"><span class="t">今天就试</span>开始攒那 20 个问题。<b>不用一次攒完</b>，以后每次你问它一个工作上的真问题，就顺手记下来。一个月就够了。</div>
+
+  <div class="sec-label">为什么这招有效</div>
+    <div id="viewWhy" style="display:flex;background:var(--card);border-radius:14px;padding:24px 26px;flex-direction:column;gap:20px;border:1.5px solid var(--border);">
+      <div class="why-compare">
+        <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+          <div style="font-size:12px;font-weight:800;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;">无人工拦截</div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">试用期</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">最长</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:var(--danger);border:1px dashed rgba(229,62,62,0.3);">20天</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:var(--danger);border:1px dashed rgba(229,62,62,0.3);">…继续编</span>
+          </div>
+          <div style="font-size:14px;color:var(--text-sub);line-height:1.8;">错了但不知道：模型以错误 Token 为基础继续推，误差不断累积</div>
+        </div>
+        <div class="why-compare-divider"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+          <div style="font-size:12px;font-weight:800;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;">有评测 + 人工拦截</div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">试用期</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">最长</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:var(--danger);border:1px dashed rgba(229,62,62,0.3);">20天</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(22,163,106,0.1);color:var(--success);border:1px solid rgba(22,163,106,0.2);">⏸ 拦截</span>
+            <span style="color:var(--text-sub);font-size:16px;">→</span>
+            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(22,163,106,0.1);color:var(--success);border:1px solid rgba(22,163,106,0.2);">✓ 纠正</span>
+          </div>
+          <div style="font-size:14px;color:var(--text-sub);line-height:1.8;">外部纠错层在输出端架设审查网，弥补模型单向生成的根本缺陷</div>
+        </div>
+      </div>
+      <div style="background:rgba(217,119,6,0.05);border:1px solid rgba(217,119,6,0.15);border-radius:12px;padding:20px 24px;">
+        <div style="font-size:16px;color:var(--text-main);line-height:1.9;">
+          模型<b>没有自我检查机制</b>：推出一个错误 Token 后，它会以这个错误为基础继续往下推，误差累积。
+          评测 + 人工审核是<span style="color:var(--amber);font-weight:700;">在模型输出端架一个外部纠错层</span>，
+          弥补了「Token 推 Token 单向不回头」的根本缺陷。
+          <b>前三个手段改变概率，这一手段拦截结果。</b>
+        </div>
+      </div>
+    </div>
 </article>
 
 <script>
@@ -359,92 +402,14 @@ const FEEDBACK_STEPS = [
 ];
 
 let currentPhase = 0;
-let currentTab = 'demo';
 
 function selectPhase(i) {
   currentPhase = i;
-  currentTab = 'demo';
   document.querySelectorAll('.phase-card').forEach((c, j) => c.classList.toggle('active', j === i));
   renderPhase();
 }
 
-const WHY_HTML = `
-  <div style="display:none;" id="viewWhy" style="flex:1;min-height:0;">
-    <div style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:28px 32px;height:100%;display:flex;flex-direction:column;gap:20px;overflow-y:auto;">
-      <div style="display:flex;gap:16px;flex:1;min-height:0;">
-        <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
-          <div style="font-size:12px;font-weight:800;color:#6b7280;letter-spacing:0.5px;text-transform:uppercase;">无人工拦截</div>
-          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:#1d4ed8;border:1px solid rgba(0,102,255,0.2);">试用期</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:#1d4ed8;border:1px solid rgba(0,102,255,0.2);">最长</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:#dc2626;border:1px dashed rgba(229,62,62,0.35);">20天</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:#dc2626;border:1px dashed rgba(229,62,62,0.35);">…继续编</span>
-          </div>
-          <div style="font-size:14px;color:#6b7280;line-height:1.7;">错了但不知道：模型以错误 Token 为<br>基础继续推，误差不断累积</div>
-        </div>
-        <div style="width:1px;background:rgba(0,0,0,0.07);flex-shrink:0;"></div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
-          <div style="font-size:12px;font-weight:800;color:#6b7280;letter-spacing:0.5px;text-transform:uppercase;">有评测 + 人工拦截</div>
-          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:#1d4ed8;border:1px solid rgba(0,102,255,0.2);">试用期</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:#1d4ed8;border:1px solid rgba(0,102,255,0.2);">最长</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:#dc2626;border:1px dashed rgba(229,62,62,0.35);">20天</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(22,163,106,0.08);color:#15803d;border:1px solid rgba(22,163,106,0.3);">⏸ 拦截</span>
-            <span style="color:#9ca3af;font-size:16px;">→</span>
-            <span style="padding:6px 12px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(22,163,106,0.08);color:#15803d;border:1px solid rgba(22,163,106,0.3);">✓ 纠正</span>
-          </div>
-          <div style="font-size:14px;color:#6b7280;line-height:1.7;">外部纠错层在输出端架设审查网，<br>弥补模型单向生成的根本缺陷</div>
-        </div>
-      </div>
-      <div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:18px 22px;flex-shrink:0;">
-        <div style="font-size:16px;color:#374151;line-height:1.9;">
-          模型<b style="color:#111827;">没有自我检查机制</b>：推出一个错误 Token 后，它会以这个错误为基础继续往下推，误差累积。
-          评测 + 人工审核是<span style="color:#d97706;font-weight:700;">在模型输出端架一个外部纠错层</span>，
-          弥补了「Token 推 Token 单向不回头」的根本缺陷。
-          <b style="color:#111827;">前三个手段改变概率，这一手段拦截结果。</b>
-        </div>
-      </div>
-      <div style="background:rgba(229,62,62,0.04);border:1px solid rgba(229,62,62,0.15);border-radius:12px;padding:16px 22px;flex-shrink:0;">
-        <div style="font-size:13px;font-weight:800;color:#dc2626;margin-bottom:10px;letter-spacing:0.3px;">⚠ 局限性：评测 + 人工审核不是终点</div>
-        <div style="display:flex;gap:20px;">
-          <div style="flex:1;">
-            <div style="font-size:14px;color:#111827;font-weight:700;margin-bottom:4px;">人工成本不可线性扩展</div>
-            <div style="font-size:13px;color:#6b7280;line-height:1.7;">
-              用户量增长后，每条输出都依赖人工审核的模式难以持续，<span style="color:#dc2626;font-weight:600;">HITL 是冷启动阶段的兜底策略，不是规模化阶段的长期方案</span>
-            </div>
-          </div>
-          <div style="width:1px;background:rgba(229,62,62,0.12);flex-shrink:0;"></div>
-          <div style="flex:1;">
-            <div style="font-size:14px;color:#111827;font-weight:700;margin-bottom:4px;">评测指标有滞后盲区</div>
-            <div style="font-size:13px;color:#6b7280;line-height:1.7;">
-              评测集覆盖的是已知风险点，模型在<span style="color:#dc2626;font-weight:600;">评测集之外的长尾问题上仍可能大量幻觉</span>，评测通过 ≠ 全面可靠
-            </div>
-          </div>
-          <div style="width:1px;background:rgba(229,62,62,0.12);flex-shrink:0;"></div>
-          <div style="flex:1;">
-            <div style="font-size:14px;color:#111827;font-weight:700;margin-bottom:4px;">应对策略</div>
-            <div style="font-size:13px;color:#6b7280;line-height:1.7;">
-              HITL 积累的审核数据应转化为<span style="color:#2563eb;font-weight:600;">评测集持续扩充</span>与<span style="color:#15803d;font-weight:600;">模型微调训练</span>，让人工成本随时间递减，避免线性增长
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
 
-function setTab(t) {
-  currentTab = t;
-  const tabs = ['demo', 'why'];
-  document.querySelectorAll('.right-tab-btn').forEach((b, i) => b.classList.toggle('active', tabs[i] === t));
-  document.getElementById('viewDemo').style.display = t === 'demo' ? 'flex' : 'none';
-  document.getElementById('viewWhy').style.display = t === 'why' ? 'flex' : 'none';
-}
 
 function renderPhase() {
   const p = PHASES[currentPhase];
@@ -453,10 +418,6 @@ function renderPhase() {
   const tabHeader = `
     <div class="right-top" style="flex-shrink:0;">
       <div><h3>${p.title}</h3><div class="subtitle">${p.subtitle}</div></div>
-      <div style="display:flex;gap:5px;">
-        <button class="right-tab-btn tab-btn ${currentTab === 'demo' ? 'active' : ''}" onclick="setTab('demo')">演示</button>
-        <button class="right-tab-btn tab-btn ${currentTab === 'why' ? 'active' : ''}" onclick="setTab('why')">为什么有效</button>
-      </div>
     </div>`;
 
   let demoContent = '';
@@ -565,52 +526,7 @@ function renderPhase() {
     <div id="viewDemo" style="display:flex;flex-direction:column;gap:12px;">
       ${demoContent}
     </div>
-    <div id="viewWhy" style="display:none;background:var(--card);border-radius:14px;padding:24px 26px;flex-direction:column;gap:20px;border:1.5px solid var(--border);">
-      <div class="why-compare">
-        <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
-          <div style="font-size:12px;font-weight:800;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;">无人工拦截</div>
-          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">试用期</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">最长</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:var(--danger);border:1px dashed rgba(229,62,62,0.3);">20天</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:var(--danger);border:1px dashed rgba(229,62,62,0.3);">…继续编</span>
-          </div>
-          <div style="font-size:14px;color:var(--text-sub);line-height:1.8;">错了但不知道：模型以错误 Token 为基础继续推，误差不断累积</div>
-        </div>
-        <div class="why-compare-divider"></div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
-          <div style="font-size:12px;font-weight:800;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;">有评测 + 人工拦截</div>
-          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">试用期</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(0,102,255,0.08);color:var(--accent);border:1px solid rgba(0,102,255,0.15);">最长</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(229,62,62,0.08);color:var(--danger);border:1px dashed rgba(229,62,62,0.3);">20天</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(22,163,106,0.1);color:var(--success);border:1px solid rgba(22,163,106,0.2);">⏸ 拦截</span>
-            <span style="color:var(--text-sub);font-size:16px;">→</span>
-            <span style="padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;background:rgba(22,163,106,0.1);color:var(--success);border:1px solid rgba(22,163,106,0.2);">✓ 纠正</span>
-          </div>
-          <div style="font-size:14px;color:var(--text-sub);line-height:1.8;">外部纠错层在输出端架设审查网，弥补模型单向生成的根本缺陷</div>
-        </div>
-      </div>
-      <div style="background:rgba(217,119,6,0.05);border:1px solid rgba(217,119,6,0.15);border-radius:12px;padding:20px 24px;">
-        <div style="font-size:16px;color:var(--text-main);line-height:1.9;">
-          模型<b>没有自我检查机制</b>：推出一个错误 Token 后，它会以这个错误为基础继续往下推，误差累积。
-          评测 + 人工审核是<span style="color:var(--amber);font-weight:700;">在模型输出端架一个外部纠错层</span>，
-          弥补了「Token 推 Token 单向不回头」的根本缺陷。
-          <b>前三个手段改变概率，这一手段拦截结果。</b>
-        </div>
-      </div>
-    </div>`;
-
-  if (currentTab === 'why') {
-    document.getElementById('viewDemo').style.display = 'none';
-    document.getElementById('viewWhy').style.display = 'flex';
-  }
+`;
 }
 
 function doAction(idx, action) {
