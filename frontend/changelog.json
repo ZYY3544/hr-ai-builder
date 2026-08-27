@@ -752,6 +752,426 @@
    "level": "L0",
    "hash": "195aa299f09d",
    "note": "🔴修复我自己弄坏的页面:上次 HR 化时用 s.find(\"];\") 定边界,把 selectScene/setTab/playAnimation 等 11 个函数连同 RAG_STEPS 一起删了(173行),线上表现为按钮点不动、对话框空白;回滚重做,改用花括号配对+按数组顶层元素索引替换,并加函数计数守卫"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "hallu-fix-prompt.html",
+   "level": "L0",
+   "hash": "34c630c8973b",
+   "note": "可直接抄走的模板/命令块统一加复制按钮（.say/.cmd/pre.tpl 同一套组件）"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "vibe-rules.html",
+   "level": "L0",
+   "hash": "b0f9baa13ce9",
+   "note": "可直接抄走的模板/命令块统一加复制按钮（.say/.cmd/pre.tpl 同一套组件）"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "vibe-docs.html",
+   "level": "L0",
+   "hash": "4e52986ed684",
+   "note": "可直接抄走的模板/命令块统一加复制按钮（.say/.cmd/pre.tpl 同一套组件）"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "vibe-safety.html",
+   "level": "L0",
+   "hash": "ceb2e4640deb",
+   "note": "可直接抄走的模板/命令块统一加复制按钮（.say/.cmd/pre.tpl 同一套组件）"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-claude-md.html",
+   "level": "L0",
+   "hash": "5eb6cf3b87b3",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-data-path.html",
+   "level": "L0",
+   "hash": "d23f9c6c4e43",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-first-agent.html",
+   "level": "L0",
+   "hash": "2214cee4aff6",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-first-talk.html",
+   "level": "L0",
+   "hash": "e730b2516d38",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-install-guide.html",
+   "level": "L0",
+   "hash": "46e873cfb05e",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-install.html",
+   "level": "L0",
+   "hash": "ac668d2897ef",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-permissions.html",
+   "level": "L0",
+   "hash": "2b53dca6b81c",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-project-layout.html",
+   "level": "L0",
+   "hash": "4018beaf3b4b",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-tools.html",
+   "level": "L0",
+   "hash": "a8f2eb418d71",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "cc-why-terminal.html",
+   "level": "L0",
+   "hash": "2959cf8b14ec",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-audit.html",
+   "level": "L0",
+   "hash": "e847f44a5adf",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-closing.html",
+   "level": "L0",
+   "hash": "5bc1c3af9173",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-eval-loop.html",
+   "level": "L0",
+   "hash": "f54dc03e80cb",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-loop.html",
+   "level": "L0",
+   "hash": "fce274df71fb",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-memory.html",
+   "level": "L0",
+   "hash": "d5a170ee9621",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-subagent.html",
+   "level": "L0",
+   "hash": "f39fd612ca00",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-tradeoff.html",
+   "level": "L0",
+   "hash": "5dc92507b898",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-what.html",
+   "level": "L0",
+   "hash": "29dd6bfcf15e",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "harness-why-unstable.html",
+   "level": "L0",
+   "hash": "86a692619f32",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-deploy.html",
+   "level": "L0",
+   "hash": "07ae97e7da4d",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-eval.html",
+   "level": "L0",
+   "hash": "f6f68f0a9fbf",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-rag.html",
+   "level": "L0",
+   "hash": "909a613a6e93",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-table.html",
+   "level": "L0",
+   "hash": "d922862af21a",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-tools.html",
+   "level": "L0",
+   "hash": "eb08b56a13ef",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-training.html",
+   "level": "L0",
+   "hash": "453487a4a94a",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "jargon-why.html",
+   "level": "L0",
+   "hash": "778797d59c6d",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "prompt-hr-cases.html",
+   "level": "L0",
+   "hash": "a63ab3f68009",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "prompt-skeleton.html",
+   "level": "L0",
+   "hash": "e520a1bac7a5",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-ai-discount.html",
+   "level": "L0",
+   "hash": "2f6039289704",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-aversion.html",
+   "level": "L0",
+   "hash": "5301a142cd8d",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-captive.html",
+   "level": "L0",
+   "hash": "6d45d8d9fd08",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-checklist.html",
+   "level": "L0",
+   "hash": "390dc2722d84",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-defense.html",
+   "level": "L0",
+   "hash": "54e1fb252561",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-error-comms.html",
+   "level": "L0",
+   "hash": "d7dee51529b3",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-feedback.html",
+   "level": "L0",
+   "hash": "cd1a31bb5c72",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-honeymoon.html",
+   "level": "L0",
+   "hash": "c817b54a9971",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-labor.html",
+   "level": "L0",
+   "hash": "c50981bb7e6a",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-mental-model.html",
+   "level": "L0",
+   "hash": "8443a1b1b561",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-offload.html",
+   "level": "L0",
+   "hash": "96ede32ead48",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-peak-end.html",
+   "level": "L0",
+   "hash": "173424215610",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-perceived.html",
+   "level": "L0",
+   "hash": "4917c3abf8f8",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-trust-calib.html",
+   "level": "L0",
+   "hash": "fe78610d5764",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "psy-waiting.html",
+   "level": "L0",
+   "hash": "dca5dd25e490",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-ai-flavor.html",
+   "level": "L0",
+   "hash": "42624c128000",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-bottleneck.html",
+   "level": "L0",
+   "hash": "9dde8bcb90eb",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-chart-quality.html",
+   "level": "L0",
+   "hash": "db790eb4764a",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-chart-type.html",
+   "level": "L0",
+   "hash": "8684c935f998",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-checklist.html",
+   "level": "L0",
+   "hash": "cc5e0a0d1082",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-consistency.html",
+   "level": "L0",
+   "hash": "7e492ab61874",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-hierarchy.html",
+   "level": "L0",
+   "hash": "e356c5b253c0",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-hr-outputs.html",
+   "level": "L0",
+   "hash": "81e11ecd130a",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-reference.html",
+   "level": "L0",
+   "hash": "da9f00c13010",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-restraint.html",
+   "level": "L0",
+   "hash": "f4bcbd7e169a",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-spec.html",
+   "level": "L0",
+   "hash": "cda3f21e0210",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-vocab.html",
+   "level": "L0",
+   "hash": "5f8b5ff936f0",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "taste-whitespace.html",
+   "level": "L0",
+   "hash": "500375020d85",
+   "note": "删内联 .cmd 定义，收归 lesson.css 唯一真相源；.cmd 右侧留位给复制按钮，「终端里敲这个」标签移到左上"
   }
  ]
 }

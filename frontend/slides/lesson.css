@@ -186,6 +186,14 @@ code {
 .say-copy{position:absolute;top:8px;right:8px;font-size:11px;font-weight:600;padding:4px 10px;border:1px solid #E2E8F0;border-radius:7px;background:#fff;color:#64748B;cursor:pointer;font-family:-apple-system,"PingFang SC",sans-serif;transition:.13s;white-space:nowrap}
 .say-copy:hover{color:#00795F;border-color:rgba(0,168,138,.45)}
 .say-copy.ok{color:#00795F;border-color:rgba(0,168,138,.45);background:#F0FDF9}
+/* 深色块（.cmd 终端命令）上的复制按钮：浅色描边版在深底上看不见 */
+.say-copy.on-dark{background:rgba(255,255,255,.08);border-color:rgba(147,197,253,.35);color:#93C5FD}
+.say-copy.on-dark:hover{background:rgba(147,197,253,.16);border-color:rgba(147,197,253,.6);color:#DBEAFE}
+.say-copy.on-dark.ok{background:rgba(56,189,248,.2);border-color:#38BDF8;color:#E0F2FE}
+/* 明确标为模板的 pre 块：与 .say 同款浅色代码块 */
+pre.tpl{position:relative;background:#F6F8FA;border:1px solid #E2E8F0;border-radius:var(--radius);
+  padding:18px 70px 18px 20px;margin:14px 0;font-size:13px;line-height:1.9;white-space:pre-wrap;
+  font-family:"SF Mono","Fira Code",Menlo,monospace;color:#1F2937;overflow-x:auto}
 
 /* 今天就试 */
 .try{background:rgba(101,163,13,.07);border:1.5px solid rgba(101,163,13,.3);border-radius:var(--radius);padding:16px 20px;margin:26px 0 8px;font-size:14px;line-height:1.85}
@@ -199,8 +207,8 @@ code {
 .rule ol b{color:#fff}
 
 /* 终端命令 */
-.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
-.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;right:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
+.cmd{background:#0B1220;color:#93C5FD;border-radius:var(--radius);padding:20px 76px 16px 20px;margin:14px 0;font-size:13px;line-height:1.95;white-space:pre-wrap;font-family:"SF Mono","Fira Code",Menlo,monospace;position:relative;border:1px solid rgba(147,197,253,.18)}
+.cmd::before{content:'终端里敲这个';position:absolute;top:-9px;left:14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#0B1220;background:#38BDF8;padding:2px 9px;border-radius:5px;font-family:-apple-system,"PingFang SC",sans-serif}
 
 /* 卡住了 */
 .stuck{background:rgba(217,119,6,.07);border:1.5px solid rgba(217,119,6,.28);border-radius:var(--radius);padding:15px 18px;margin:14px 0;font-size:13.5px;line-height:1.85}
