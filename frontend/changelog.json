@@ -723,6 +723,28 @@
    "level": "L0",
    "hash": "947dba388b04",
    "note": "开头补过渡句:四节是通用手段+例子换场景+筛简历的专门解法在《召回vs判定》(原在被删那节结尾);另 Agent 无关)"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "1-2-hallucination.html",
+   "level": "L0",
+   "hash": "9cac1a8b69a7",
+   "note": "旧 URL 跳转壳改指:原指向已删的 hallu-first-scene → 改指应对1"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "agent-stuck.html",
+   "level": "L1",
+   "hash": "0d1aa50d5ed2",
+   "note": "API 超时级联的例子从「查特斯拉股价 get_stock_price(TSLA)」换成「查张伟社保缴纳记录 hr_query_social_insurance」,fallback 文案同步（Yahoo Finance → 社保自助终端/12333）",
+   "why": "旧例子是炒股场景,HR 读者要先做一次跨领域翻译才能用上;换成社保查询后,超时重试撑爆上下文这个机制落在读者真会遇到的系统上"
+  },
+  {
+   "date": "2026-08-27",
+   "file": "tasks.html",
+   "level": "L0",
+   "hash": "n/a",
+   "note": "面试官任务的配套课去掉指向已删《它会编：筛简历现场》的链接;紧邻的《召回 vs 判定》覆盖同一主题"
   }
  ]
 }
