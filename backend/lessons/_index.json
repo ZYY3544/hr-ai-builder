@@ -891,26 +891,15 @@
   "seo": "HR 学 AI 为什么要用 Claude Code？和拖拽平台的区别在哪"
  },
  "cc-install.html": {
-  "title": "三十分钟装好",
+  "title": "三十分钟装好：视频 + 13 步",
   "free": true,
   "ready": true,
   "ksa": "S",
-  "min": 3,
+  "min": 15,
   "part": "第六篇章",
   "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "先把工具装上：终端与 Claude Code",
-  "seo": "Claude Code 怎么安装？零基础从终端开始的完整步骤"
- },
- "cc-install-guide.html": {
-  "title": "安装完全手册 · 13 步",
-  "free": true,
-  "ready": true,
-  "ksa": "S",
-  "min": 12,
-  "part": "第六篇章",
-  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
-  "topic": "先把工具装上：终端与 Claude Code",
-  "seo": "Claude Code 安装完全手册：13 步从 Cursor 到 GLM（Windows / Mac）"
+  "seo": "Claude Code 怎么安装？视频加 13 步文字版，接国产模型全程不用海外账号"
  },
  "cc-first-talk.html": {
   "title": "第一次对话：它能看见什么",

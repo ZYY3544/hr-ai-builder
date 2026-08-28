@@ -16,7 +16,7 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 137,
+   "lessons": 136,
    "copy": 40,
    "adapt": 19,
    "new": 96,
@@ -25,7 +25,7 @@ window.COURSE = {
    "minutes": 544
   },
   "access": {
-   "free": 121,
+   "free": 120,
    "locked": 16,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
@@ -1190,23 +1190,12 @@ window.COURSE = {
        "file": "cc-install.html",
        "action": "new",
        "ksa": "S",
-       "title": "三十分钟装好",
-       "seo": "Claude Code 怎么安装？零基础从终端开始的完整步骤",
+       "title": "三十分钟装好：视频 + 13 步",
+       "seo": "Claude Code 怎么安装？视频加 13 步文字版，接国产模型全程不用海外账号",
        "desc": "这是这门课最高的一道坎，也是唯一一道。跨过去之后全是下坡。这一节写得比其他任何一节都啰嗦，因为卡在这里的人最多。",
        "free": true,
        "ready": true,
-       "min": 3
-      },
-      {
-       "file": "cc-install-guide.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "安装完全手册 · 13 步",
-       "seo": "Claude Code 安装完全手册：13 步从 Cursor 到 GLM（Windows / Mac）",
-       "desc": "上一节是思路，这一节是手册。Windows 和 Mac 分开写，每一步都告诉你「看到什么算成功」，最后附一张报错对照表。卡住了先查这张表。",
-       "free": true,
-       "ready": true,
-       "min": 12
+       "min": 15
       },
       {
        "file": "cc-first-talk.html",
