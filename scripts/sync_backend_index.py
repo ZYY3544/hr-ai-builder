@@ -57,6 +57,16 @@ def build_index(co):
                     'topic': t['title'],
                     'seo': l.get('seo', ''),
                 }
+    # 目录外但仍在站上的页（配套实战任务读）——Sparky 要答得出、指得到，
+    # 所以照样进索引与正文，只是 part 标成实战任务，不属于任何篇章。
+    ex = co.get('extraPages') or {}
+    for e in ex.get('pages', []):
+        idx[e['file']] = {
+            'title': e['title'], 'free': True, 'ready': True, 'ksa': '',
+            'min': 0, 'part': ex.get('section', '实战任务'),
+            'part_title': ex.get('section', '实战任务'), 'topic': ex.get('section', ''),
+            'seo': '',
+        }
     return idx
 
 

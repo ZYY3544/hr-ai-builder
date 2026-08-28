@@ -16,17 +16,17 @@ window.COURSE = {
   },
   "stats": {
    "parts": 11,
-   "lessons": 144,
+   "lessons": 137,
    "copy": 40,
    "adapt": 19,
    "new": 96,
    "ready": 148,
    "todo": 0,
-   "minutes": 572
+   "minutes": 544
   },
   "access": {
-   "free": 125,
-   "locked": 19,
+   "free": 121,
+   "locked": 16,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
    "method": "Google Flexible Sampling —— 正文始终在 HTML 里可被索引，客户端遮挡 + JSON-LD 声明 isAccessibleForFree"
@@ -164,7 +164,6 @@ window.COURSE = {
      "title": "HR 三千问",
      "desc": "一页一问，把最常见的疑惑一次说清",
      "lessons": [
-      
       {
        "file": "zero-q-prompt-engineering.html",
        "action": "copy",
@@ -1168,8 +1167,8 @@ window.COURSE = {
   {
    "id": "p-6",
    "num": "第六篇章",
-   "title": "用 Claude Code 做出你的第一个作品",
-   "desc": "从这一章起，你不再是使用者，是造东西的人。工具是终端里的 Claude Code——工程师真正在用的那个，不是拖拽平台。产出是一个能跑起来、能拿去面试、能给同事用的东西。",
+   "title": "认识 Claude Code：装上它，让它按你的规矩干活",
+   "desc": "工具是终端里的 Claude Code——工程师真正在用的那个，不是拖拽平台。这一章只做三件事：装上、把你的口径和权限配好、跑通一个真活。至于用它做出一件完整作品，这里不讲——去「实战任务」里真做一个。",
    "freeWhole": true,
    "color": "#15803D",
    "topics": [
@@ -1311,95 +1310,6 @@ window.COURSE = {
       }
      ],
      "min": 9
-    },
-    {
-     "title": "选对活：先把部门的活盘一遍",
-     "lessons": [
-      {
-       "file": "hr-inventory-1.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "把一个部门的活拆成任务清单",
-       "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 4
-      },
-      {
-       "file": "hr-inventory-2.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "每条标：它能干 / 干不了 / 干了得有人兜",
-       "seo": "AI 场景盘点怎么打标？三类任务的判断标准",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 4
-      },
-      {
-       "file": "hr-inventory-3.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "算账：省多少、风险多大、第一刀切哪",
-       "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里",
-       "desc": "简历初筛为什么是好的第一刀",
-       "free": false,
-       "ready": true,
-       "min": 3
-      }
-     ],
-     "min": 11
-    },
-    {
-     "title": "做出你的作品：从选题到讲清楚",
-     "lessons": [
-      {
-       "file": "hr-project-pick.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "选题：什么样的第一个作品站得住",
-       "seo": "HR 做 AI 作品选什么题？六个能站住的选题",
-       "desc": "简历初筛是第一选题",
-       "free": true,
-       "ready": true,
-       "min": 4
-      },
-      {
-       "file": "hr-project-data.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "数据：真数据碰不得，合成数据怎么造得像",
-       "seo": "做 HR AI 作品没有数据怎么办？合成数据怎么造得像真的",
-       "desc": "",
-       "free": true,
-       "ready": true,
-       "min": 5
-      },
-      {
-       "file": "hr-project-build.html",
-       "action": "new",
-       "ksa": "S",
-       "title": "一周做出能点的原型：从想法到 demo",
-       "seo": "一周内把一个 HR 场景做成能演示的原型",
-       "desc": "",
-       "free": false,
-       "ready": true,
-       "min": 4
-      },
-      {
-       "file": "hr-project-tell.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "作品怎么讲：别人在追问什么",
-       "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题",
-       "desc": "",
-       "free": false,
-       "ready": true,
-       "min": 4
-      }
-     ],
-     "min": 17
     }
    ],
    "min": 69
@@ -2057,5 +1967,39 @@ window.COURSE = {
    ],
    "min": 6
   }
- ]
+ ],
+ "extraPages": {
+  "_doc": "站上仍在、但不进课程目录的页面。配套「实战任务」阅读，从 tasks.html 链接。site_check 认它们为合法的 TERM_LESSONS 目标与非孤儿页；sync_backend_index 会把它们喂给 Sparky，所以 Sparky 仍答得出、指得到。不计入 meta.stats。",
+  "section": "实战任务 · 配套方法论",
+  "pages": [
+   {
+    "file": "hr-inventory-1.html",
+    "title": "把一个部门的活拆成任务清单"
+   },
+   {
+    "file": "hr-inventory-2.html",
+    "title": "每条标：它能干 / 干不了 / 干了得有人兜"
+   },
+   {
+    "file": "hr-inventory-3.html",
+    "title": "算账：省多少、风险多大、第一刀切哪"
+   },
+   {
+    "file": "hr-project-pick.html",
+    "title": "选题：什么样的第一个作品站得住"
+   },
+   {
+    "file": "hr-project-data.html",
+    "title": "数据：真数据碰不得，合成数据怎么造得像"
+   },
+   {
+    "file": "hr-project-build.html",
+    "title": "一周做出能点的原型：从想法到 demo"
+   },
+   {
+    "file": "hr-project-tell.html",
+    "title": "作品怎么讲：别人在追问什么"
+   }
+  ]
+ }
 };

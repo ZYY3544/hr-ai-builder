@@ -886,7 +886,7 @@
   "ksa": "K",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "先把工具装上：终端与 Claude Code",
   "seo": "HR 学 AI 为什么要用 Claude Code？和拖拽平台的区别在哪"
  },
@@ -897,7 +897,7 @@
   "ksa": "S",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "先把工具装上：终端与 Claude Code",
   "seo": "Claude Code 怎么安装？零基础从终端开始的完整步骤"
  },
@@ -908,7 +908,7 @@
   "ksa": "S",
   "min": 12,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "先把工具装上：终端与 Claude Code",
   "seo": "Claude Code 安装完全手册：13 步从 Cursor 到 GLM（Windows / Mac）"
  },
@@ -919,7 +919,7 @@
   "ksa": "S",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "先把工具装上：终端与 Claude Code",
   "seo": "Claude Code 第一次怎么用？理解它和网页版聊天的根本区别"
  },
@@ -930,7 +930,7 @@
   "ksa": "A",
   "min": 5,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "先把工具装上：终端与 Claude Code",
   "seo": "Claude Code 本地运行时数据会外传吗？HR 用它处理员工数据的合规路径"
  },
@@ -941,7 +941,7 @@
   "ksa": "A",
   "min": 4,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "让它认识你的活：CLAUDE.md 与项目结构",
   "seo": "老 HR「看一眼就知道这人行不行」，那一眼到底在看什么？"
  },
@@ -952,7 +952,7 @@
   "ksa": "S",
   "min": 4,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "让它认识你的活：CLAUDE.md 与项目结构",
   "seo": "CLAUDE.md 是什么？怎么让 AI 每次都记住你的规则和口径"
  },
@@ -963,7 +963,7 @@
   "ksa": "S",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "让它认识你的活：CLAUDE.md 与项目结构",
   "seo": "AI agent 的项目结构怎么组织？HR 工作区的目录设计"
  },
@@ -974,7 +974,7 @@
   "ksa": "K",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "给它手和眼睛：工具、权限与第一个真活",
   "seo": "AI agent 的工具是什么？Claude Code 有哪些能力边界"
  },
@@ -985,7 +985,7 @@
   "ksa": "A",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "给它手和眼睛：工具、权限与第一个真活",
   "seo": "让 AI 操作 HR 数据怎么设权限？三道闸与留痕"
  },
@@ -996,86 +996,9 @@
   "ksa": "S",
   "min": 3,
   "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
+  "part_title": "认识 Claude Code：装上它，让它按你的规矩干活",
   "topic": "给它手和眼睛：工具、权限与第一个真活",
   "seo": "用 Claude Code 做第一个 HR agent：从零到跑通一个真活"
- },
- "hr-inventory-1.html": {
-  "title": "把一个部门的活拆成任务清单",
-  "free": true,
-  "ready": true,
-  "ksa": "A",
-  "min": 4,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "选对活：先把部门的活盘一遍",
-  "seo": "怎么盘点一个部门有哪些活能交给 AI？先拆任务清单"
- },
- "hr-inventory-2.html": {
-  "title": "每条标：它能干 / 干不了 / 干了得有人兜",
-  "free": true,
-  "ready": true,
-  "ksa": "A",
-  "min": 4,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "选对活：先把部门的活盘一遍",
-  "seo": "AI 场景盘点怎么打标？三类任务的判断标准"
- },
- "hr-inventory-3.html": {
-  "title": "算账：省多少、风险多大、第一刀切哪",
-  "free": false,
-  "ready": true,
-  "ksa": "A",
-  "min": 3,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "选对活：先把部门的活盘一遍",
-  "seo": "AI 场景的 ROI 怎么算？第一刀该切哪里"
- },
- "hr-project-pick.html": {
-  "title": "选题：什么样的第一个作品站得住",
-  "free": true,
-  "ready": true,
-  "ksa": "A",
-  "min": 4,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "做出你的作品：从选题到讲清楚",
-  "seo": "HR 做 AI 作品选什么题？六个能站住的选题"
- },
- "hr-project-data.html": {
-  "title": "数据：真数据碰不得，合成数据怎么造得像",
-  "free": true,
-  "ready": true,
-  "ksa": "S",
-  "min": 5,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "做出你的作品：从选题到讲清楚",
-  "seo": "做 HR AI 作品没有数据怎么办？合成数据怎么造得像真的"
- },
- "hr-project-build.html": {
-  "title": "一周做出能点的原型：从想法到 demo",
-  "free": false,
-  "ready": true,
-  "ksa": "S",
-  "min": 4,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "做出你的作品：从选题到讲清楚",
-  "seo": "一周内把一个 HR 场景做成能演示的原型"
- },
- "hr-project-tell.html": {
-  "title": "作品怎么讲：别人在追问什么",
-  "free": false,
-  "ready": true,
-  "ksa": "A",
-  "min": 4,
-  "part": "第六篇章",
-  "part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": "做出你的作品：从选题到讲清楚",
-  "seo": "AI 作品怎么讲才有说服力？别人真正会追问的问题"
  },
  "harness-what.html": {
   "title": "Harness 是什么",
@@ -1582,5 +1505,82 @@
   "part_title": "第二条出路：一人公司",
   "topic": "一人公司 OPC",
   "seo": "HR 一人公司怎么起步？服务谁、第一单从哪来、收钱前要办的三件事"
+ },
+ "hr-inventory-1.html": {
+  "title": "把一个部门的活拆成任务清单",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
+ },
+ "hr-inventory-2.html": {
+  "title": "每条标：它能干 / 干不了 / 干了得有人兜",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
+ },
+ "hr-inventory-3.html": {
+  "title": "算账：省多少、风险多大、第一刀切哪",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
+ },
+ "hr-project-pick.html": {
+  "title": "选题：什么样的第一个作品站得住",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
+ },
+ "hr-project-data.html": {
+  "title": "数据：真数据碰不得，合成数据怎么造得像",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
+ },
+ "hr-project-build.html": {
+  "title": "一周做出能点的原型：从想法到 demo",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
+ },
+ "hr-project-tell.html": {
+  "title": "作品怎么讲：别人在追问什么",
+  "free": true,
+  "ready": true,
+  "ksa": "",
+  "min": 0,
+  "part": "实战任务 · 配套方法论",
+  "part_title": "实战任务 · 配套方法论",
+  "topic": "实战任务 · 配套方法论",
+  "seo": ""
  }
 }

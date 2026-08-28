@@ -86,12 +86,17 @@ def check(fe=FE, sl=SL):
                 lessons.append((l, p, t))
                 declared.append(l['file'])
 
+    # 站上仍在、但不进课程目录的页（course-data.extraPages）：
+    # 它们从 tasks.html 链出去，Sparky 也仍认得，所以既不是孤儿页，
+    # 也是 TERM_LESSONS 的合法目标；但不计入 meta.stats（那是课程口径）。
+    extra_pages = {e['file'] for e in (CO.get('extraPages') or {}).get('pages', [])}
+
     # ── 1. 三方对账：声明 ↔ 磁盘 ↔ 站内链接 ──────────────────
     on_disk = {f for f in os.listdir(sl) if f.endswith('.html')}
     dset = set(declared)
     for f in sorted(dset - on_disk):
         FAIL('对账', f'course-data 声明了但 slides/ 里没有: {f}')
-    orphan = on_disk - dset
+    orphan = on_disk - dset - extra_pages
     for f in sorted(orphan):
         WARN('对账', f'slides/ 里有但没进目录（孤儿页）: {f}')
 
@@ -201,7 +206,7 @@ def check(fe=FE, sl=SL):
             for m in re.finditer(r'"(\w+)":\s*\[(.*?)\]', blk, re.S):
                 term_ids.add(m.group(1))
                 for f in re.findall(r'"([\w\-]+\.html)"', m.group(2)):
-                    if f not in dset:
+                    if f not in dset and f not in extra_pages:
                         FAIL('后端映射', f'TERM_LESSONS[{m.group(1)}] 指向不在目录里的节: {f}')
             # 每个 TERMS 词条都该有课程映射，否则分诊指不出路
             for m in re.finditer(r'\{"id":\s*"(\w+)"', bs[:i]):
@@ -220,7 +225,7 @@ def check(fe=FE, sl=SL):
         bi = json.loads(open(bidx, encoding='utf-8').read())
         for f in sorted(dset - set(bi)):
             FAIL('后端索引', f'course-data 有但 _index.json 缺: {f}（跑 scripts/sync_backend_index.py）')
-        for f in sorted(set(bi) - dset):
+        for f in sorted(set(bi) - dset - extra_pages):
             FAIL('后端索引', f'_index.json 有但目录里已不存在: {f}（跑 scripts/sync_backend_index.py）')
         for l, p, t in lessons:
             v = bi.get(l['file'])
@@ -237,7 +242,7 @@ def check(fe=FE, sl=SL):
             continue
         data = json.loads(open(path, encoding='utf-8').read())
         miss = sorted(dset - set(data))
-        extra = sorted(set(data) - dset)
+        extra = sorted(set(data) - dset - extra_pages)
         if miss:
             FAIL('后端知识层', f'{len(miss)} 节没有{label}: {miss[:4]}（跑 scripts/sync_backend_index.py）')
         if extra:
