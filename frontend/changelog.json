@@ -1468,6 +1468,55 @@
    "level": "L0",
    "hash": "deleted",
    "note": "整节下线，正文并入《三十分钟装好：视频 + 13 步》。learn.html 的 OLD2NEW 已加映射，老链接自动跳新节"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "ai-tips-context.html",
+   "level": "L0",
+   "hash": "a7c36547ad16",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "ai-tips-scenarios.html",
+   "level": "L0",
+   "hash": "3c218166e9c3",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "cc-install-guide.html",
+   "level": "L0",
+   "hash": "348be05cf576",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "hallu-first-scene.html",
+   "level": "L0",
+   "hash": "b3472dccec4c",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "zero-6.html",
+   "level": "L0",
+   "hash": "3c218166e9c3",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "zero-final.html",
+   "level": "L0",
+   "hash": "411f7a8270ec",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-28",
+   "file": "zero-q-prompt.html",
+   "level": "L0",
+   "hash": "a7c36547ad16",
+   "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
   }
  ]
 }
