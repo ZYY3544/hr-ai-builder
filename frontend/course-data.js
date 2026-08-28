@@ -1168,7 +1168,7 @@ window.COURSE = {
   {
    "id": "p-6",
    "num": "第六篇章",
-   "title": "用 Claude Code 搭出你的第一个 agent",
+   "title": "用 Claude Code 做出你的第一个作品",
    "desc": "从这一章起，你不再是使用者，是造东西的人。工具是终端里的 Claude Code——工程师真正在用的那个，不是拖拽平台。产出是一个能跑起来、能拿去面试、能给同事用的东西。",
    "freeWhole": true,
    "color": "#15803D",
