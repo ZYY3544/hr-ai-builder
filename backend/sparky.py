@@ -535,7 +535,7 @@ def _extras(terms: list, jobs: list, term_lessons: dict) -> str:
 
 # ---------------------------------------------------------------- 请求协议
 class ChatCtx(BaseModel):
-    page: Optional[str] = None          # index/learn/quiz/jobs/tasks/review/coach/growth/about
+    page: Optional[str] = None          # index/learn/jobs/tasks/review/coach/growth/about
     mode: Optional[str] = None          # / 指令模式：coach/review/opc/quizA，无指令时为空
     quiz_ids: Optional[list] = None     # quizA 专用：本轮对话抽中的 A 题 id（服务端校验后注入题面）
     quiz_qid: Optional[str] = None      # quizK 专用：当前这道 K/S 题的 id
