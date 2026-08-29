@@ -182,6 +182,23 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 #quizpane .hq-o:disabled{cursor:default}
 #quizpane .hq-exp{font-size:12.5px;line-height:1.8;color:#475569;background:#F8FAFC;
   border-left:3px solid #00A88A;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 4px}
+/* 题目报错：题库一定会有错题，唯一能发现的人是刚做完这道题的人。
+   原来挂在总测评页上，那页下线后随题目搬到这儿——通道不能跟着页面一起没。 */
+#quizpane .hq-rp{margin:9px 0 0;font-size:11.5px;color:#CBD5E1}
+#quizpane .hq-rp b{font-weight:500;color:#94A3B8;cursor:pointer;border-bottom:1px dotted #CBD5E1}
+#quizpane .hq-rp b:hover{color:#00795F;border-bottom-color:#00A88A}
+#quizpane .hq-rpbox{margin:10px 0 2px}
+#quizpane .hq-rpbox textarea{width:100%;box-sizing:border-box;font:inherit;font-size:12.5px;
+  line-height:1.7;padding:8px 11px;border:1.5px solid #E2E8F0;border-radius:9px;
+  color:#334155;background:#fff;resize:vertical;min-height:62px}
+#quizpane .hq-rpbox textarea:focus{outline:none;border-color:#00A88A}
+#quizpane .hq-rprow{display:flex;align-items:center;gap:8px;margin-top:7px}
+#quizpane .hq-rpb{font:inherit;font-size:12px;font-weight:600;padding:5px 13px;border-radius:7px;
+  border:1.5px solid #E2E8F0;background:#fff;color:#475569;cursor:pointer}
+#quizpane .hq-rpb.go{border-color:transparent;background:#00A88A;color:#fff}
+#quizpane .hq-rpb:disabled{opacity:.45;cursor:default}
+#quizpane .hq-rpmsg{font-size:11.5px;color:#DC2626}
+#quizpane .hq-rpok{margin:9px 0 0;font-size:12px;color:#00795F}
 #quizpane .hq-go{font:inherit;font-size:12.5px;font-weight:600;padding:7px 16px;margin-top:10px;
   border:none;border-radius:8px;background:linear-gradient(135deg,#00A88A,#0891B2);color:#fff;cursor:pointer}
 #quizpane .hq-go:disabled{opacity:.45;cursor:default}
@@ -697,6 +714,39 @@ async function renderQuizView(ch, onlyIds, fresh){
         else if(ev.t==='err'){ bub.textContent=ev.msg; } } }
     return reply; };
 
+  /* 题目报错：题库一定会有错题，而唯一能发现的人是刚做完这道题的人。
+     没有这个入口，错题就永远在那里。挂在解析下面，不打断答题节奏。 */
+  const mkReport=(bubble,qid)=>{
+    const wrap=document.createElement('div');
+    bubble.appendChild(wrap);
+    const link=()=>{ wrap.className='hq-rp'; wrap.innerHTML='<b>这道题有问题？</b>';
+      wrap.querySelector('b').onclick=openBox; };
+    const openBox=()=>{
+      wrap.className='hq-rpbox';
+      wrap.innerHTML='<textarea placeholder="哪里有问题？比如：选项 B 和 C 意思重复、答案应该是 A、题干有歧义…"></textarea>'
+        +'<div class="hq-rprow"><button class="hq-rpb go">提交</button>'
+        +'<button class="hq-rpb">取消</button><span class="hq-rpmsg"></span></div>';
+      const ta2=wrap.querySelector('textarea'), msg=wrap.querySelector('.hq-rpmsg');
+      const send=wrap.querySelector('.hq-rpb.go'), cancel=wrap.querySelectorAll('.hq-rpb')[1];
+      ta2.focus(); scroll();
+      cancel.onclick=link;
+      send.onclick=async()=>{
+        const v=ta2.value.trim();
+        if(v.length<4){ msg.textContent='说具体一点吧'; return; }
+        msg.textContent=''; send.disabled=true;
+        try{
+          const r=await fetch(QAPI+'/api/quiz/report',{method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({question_id:qid,reason:v})});
+          if(!r.ok) throw 0;
+          wrap.className='hq-rpok';
+          wrap.textContent='✓ 已收到，我们会核对这道题。谢谢你帮忙纠错。';
+          if(window.habTrack) habTrack('quiz_report',{extra:{qid:qid}});
+        }catch(e){ msg.textContent='提交失败，稍后再试'; send.disabled=false; }
+        scroll(); };
+    };
+    link(); };
+
   /* ── 每道 K/S 题 ─────────────────────────────────────────────
      真对话和「问卷套皮」的分水岭：你的回答有没有被听见。
      所以：答错(登录时)不直接念解析——Sparky 针对你选的那个错项反问一句，
@@ -736,7 +786,7 @@ async function renderQuizView(ch, onlyIds, fresh){
       const head = firstCorrect ? okLine()
         : (tries>1&&d.correct ? '✓ 这回对了——第一下踩的坑记住，它才是这道题的价值。'
         : badLine());
-      await bot(head+' '+(d.exp||''));
+      mkReport(await bot(head+' '+(d.exp||'')), q.id);
       if(window.habTrack) habTrack('quiz',{extra:{chapter:ch,qid:q.id,correct:!!firstCorrect,extra:!!extra}});
       if(!firstCorrect){ wrongList.push({ksa:d.ksa||q.ksa||'K'}); wrongTags.push(q.tag||''); }
       markWrong(ch,{id:q.id,ksa:d.ksa||q.ksa||'K'},!firstCorrect);
@@ -956,7 +1006,9 @@ $('#frame').addEventListener('load',()=>{ try{
   });
 }catch(e){} });
 document.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT') return;
+  /* 必须连 TEXTAREA 一起排除：小测和 Sparky 的输入框都是 textarea，
+     漏了它，用户打字时按左右方向键会直接跳走当前节、把答题过程冲掉。 */
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable) return;
   if(e.key==='ArrowLeft') window.goPrev&&window.goPrev();
   if(e.key==='ArrowRight') window.goNext&&window.goNext();
 });

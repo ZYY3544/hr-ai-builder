@@ -68,7 +68,7 @@ frontend/
   index.html         首页
   course-data.js     课程单一真相源（含每节的 action 与 KSA 标注）
   slides/            课件（66 节沿用/改写自 learn-ai + 16 节原创待写）
-  demo.html          岗位拆解 / 作品选题库 / 能力测评原型
+  tasks.html         实战任务（作品选题 + 配套方法论）
 backend/
   main.py            内容与测评 API
   wechat.py          微信登录（开放平台 OAuth + 小程序扫码双轨）

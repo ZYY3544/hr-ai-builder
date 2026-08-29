@@ -41,7 +41,7 @@
   var page = /\/slides\//.test(path) ? path.split('/').pop() : (path.split('/').pop() || 'index.html');
   var kind = /\/slides\//.test(path) ? 'lesson'
            : /learn\.html/.test(path) ? 'reader'
-           : /demo\.html/.test(path) ? 'demo' : 'page';
+           : 'page';
   var inFrame = window.top !== window.self;
 
   var t0 = Date.now(), visible = document.visibilityState !== 'hidden', accum = 0, sent = false;
