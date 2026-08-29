@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <title>meansights learning · 读懂 AI 的底层逻辑，做 AI Native 组织的先驱者</title>
-<meta name="description" content="面向 HR 的 AI 系统课程：从大模型底层逻辑到组织落地。课程、真实岗位库与能力测评，全部免费开放。">
+<meta name="description" content="面向 HR 的 AI 系统课程：从大模型底层逻辑到组织落地。课程、实战任务与真实岗位库，全部免费开放。">
 <style>
 :root{
   /* 蓝 → 紫 → 绿 · 飞书系鲜亮渐变 */
@@ -337,7 +337,7 @@ b.setAttribute('href','javascript:void(0)');
 <!-- ========== HERO ========== -->
 <section class="hero">
   <div class="wrap">
-    <div class="pill"><span class="dot"></span>课程 · 岗位库 · 能力测评 <b>永久免费开放</b></div>
+    <div class="pill"><span class="dot"></span>课程 · 实战任务 · 岗位库 <b>永久免费开放</b></div>
 
     <h1>读懂 AI 的底层逻辑，<br><span class="g">做 AI Native 组织的先驱者</span></h1>
 
@@ -531,7 +531,7 @@ b.setAttribute('href','javascript:void(0)');
   <div class="wrap">
     <div class="box">
       <h4>关于免费与开源</h4>
-      课程内容、真实岗位库与测评题库，<b>全部永久免费开放</b>。<br>
+      课程内容、实战任务与真实岗位库，<b>全部永久免费开放</b>。<br>
       本站依 <b>AGPL-3.0</b> 开源，源码见 <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener" style="color:var(--pri)">GitHub</a>。<b>任何衍生版本必须同样开源，不得用于闭源商业产品。</b><br>
       如果你在任何付费课程或课包里看到本站内容，说明你为免费的东西付了钱——请向对方申请退款。
     </div>
@@ -542,7 +542,7 @@ b.setAttribute('href','javascript:void(0)');
   <div class="modal">
     <button class="x" id="loginClose">×</button>
     <h3>微信登录</h3>
-    <div class="sub" id="loginSub">扫码后即可解锁全部课程内容与测评记录</div>
+    <div class="sub" id="loginSub">扫码后即可解锁全部课程内容与学习进度</div>
     <div id="loginBody"></div>
     <div class="tip">我们只获取你的微信昵称与头像，不会读取其他任何信息。</div>
   </div>
@@ -718,14 +718,14 @@ async function openLogin(e){
 (function(){
   const h=location.hash||'';
   if(h==='#login'){ history.replaceState(null,'',location.pathname); setTimeout(()=>openLogin(),80); }
-  /* 强制登录闸：未登录点课程/测评入口 → 弹登录并记下目的地。
+  /* 强制登录闸：未登录点岗位库入口 → 弹登录并记下目的地。
      课件静态页(slides/)直访不拦——那是 SEO 和 AI 引擎的进站口。 */
   document.addEventListener('click',e=>{
     if(localStorage.getItem(TK)) return;
     const a=e.target.closest('a'); if(!a) return;
     const href=a.getAttribute('href')||'';
-    // learn 不拦——阅读器自己按章放行前两章（先尝后登）；测评和岗位库仍登录专属
-    if(/^(quiz|jobs)\.html/.test(href)){
+    // learn 不拦——阅读器自己按章放行前两章（先尝后登）；岗位库仍登录专属
+    if(/^jobs\.html/.test(href)){
       e.preventDefault();
       try{ sessionStorage.setItem('hab_next',href); }catch(err){}
       openLogin();

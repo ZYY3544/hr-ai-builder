@@ -40,7 +40,6 @@
   var path = location.pathname.replace(/\/+$/, '') || '/';
   var page = /\/slides\//.test(path) ? path.split('/').pop() : (path.split('/').pop() || 'index.html');
   var kind = /\/slides\//.test(path) ? 'lesson'
-           : /quiz\.html/.test(path) ? 'quiz'
            : /learn\.html/.test(path) ? 'reader'
            : /demo\.html/.test(path) ? 'demo' : 'page';
   var inFrame = window.top !== window.self;

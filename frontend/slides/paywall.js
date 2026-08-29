@@ -62,7 +62,7 @@
           '<b>完全免费，不花一分钱</b>。</div>' +
         '<div class="xa-gate-why">' +
           '<div><b>为什么要登录</b></div>' +
-          '<div>· 同步你的学习进度与测评记录，换设备接着学</div>' +
+          '<div>· 同步你的学习进度与小测成绩，换设备接着学</div>' +
           '<div>· 防止课程内容被批量抓走后包装成付费课程贩卖</div>' +
         '</div>' +
         '<a class="xa-gate-b" href="' + (inFrame ? '../index.html' : '../index.html') + '#login" target="_top">去登录</a>' +

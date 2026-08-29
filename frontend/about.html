@@ -322,7 +322,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
   <div class="wrap">
     <div class="eyebrow">Free &amp; Open</div>
     <h2>免费与开源</h2>
-    <p class="desc">课程内容、真实岗位库、能力测评题库，<b>全部永久免费开放</b>。本站依 <b>AGPL-3.0</b> 开源，源码在 <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener" style="color:var(--pri)">GitHub</a>，衍生自洛小山的 xueai.app。<b>任何衍生版本必须同样开源，不得用于闭源商业产品。</b></p>
+    <p class="desc">课程内容、实战任务、真实岗位库，<b>全部永久免费开放</b>。本站依 <b>AGPL-3.0</b> 开源，源码在 <a href="https://github.com/ZYY3544/hr-ai-builder" target="_blank" rel="noopener" style="color:var(--pri)">GitHub</a>，衍生自洛小山的 xueai.app。<b>任何衍生版本必须同样开源，不得用于闭源商业产品。</b></p>
     <p class="desc">如果你在任何付费课程或课包里看到本站内容，说明你为免费的东西付了钱——<b>请向对方申请退款</b>。</p>
   </div>
 </section>
@@ -356,7 +356,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
   <div class="modal">
     <button class="x" id="loginClose">×</button>
     <h3>微信登录</h3>
-    <div class="sub" id="loginSub">扫码后即可解锁全部课程内容与测评记录</div>
+    <div class="sub" id="loginSub">扫码后即可解锁全部课程内容与学习进度</div>
     <div id="loginBody"></div>
     <div class="tip">我们只获取你的微信昵称与头像，不会读取其他任何信息。</div>
   </div>
@@ -370,7 +370,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 (function(){
   var m=document.getElementById('loginMask'), b=document.getElementById('loginBtn'),
       x=document.getElementById('loginClose');
-  /* 本页的 loginMask 只有骨架、没有取二维码的代码,点开是死路——统一跳首页登录(learn/jobs/review/coach/quiz 同款) */
+  /* 本页的 loginMask 只有骨架、没有取二维码的代码,点开是死路——统一跳首页登录(learn/jobs/review/coach 同款) */
   if(b) b.onclick=function(e){e.preventDefault(); location.href='index.html#login';};
   if(x) x.onclick=function(){m.classList.remove('on');};
   if(m) m.onclick=function(e){if(e.target===m) m.classList.remove('on');};

@@ -176,7 +176,7 @@ def check(fe=FE, sl=SL):
             FAIL('路径', f"{P['id']} total_read 声明 {P.get('total_read')}，实际 {mins}")
 
     # ── 5. id 体检：$('#x') 引用的 id 必须在主脚本之前存在 ────
-    for page in ('index.html', 'learn.html', 'quiz.html', 'jobs.html'):
+    for page in ('index.html', 'learn.html', 'jobs.html'):
         fp = os.path.join(fe, page)
         if not os.path.exists(fp):
             continue
