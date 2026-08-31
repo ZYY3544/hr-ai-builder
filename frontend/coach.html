@@ -163,8 +163,11 @@ section{scroll-margin-top:72px}
 .scene .who{display:inline-block;font-size:21px;font-weight:650;letter-spacing:-.02em;
   background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px}
 .scene .t{margin-top:2px}
-.scene .li{position:relative;padding-left:16px;margin-top:12px}
-.scene .li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
+.scene .li{position:relative;padding-left:18px;margin-top:14px;font-size:14.5px;line-height:2;color:var(--body);font-weight:450}
+.scene .li b{font-weight:700;color:var(--ink)}
+.scene .li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
+.hl{font-weight:650;color:var(--ink);text-decoration:underline;text-decoration-style:wavy;
+  text-decoration-color:#F59E0B;text-decoration-thickness:2px;text-underline-offset:5px}
 /* 信任三卡 */
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
 @media(max-width:920px){.trust{grid-template-columns:1fr}}
@@ -252,20 +255,20 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     <div class="scenes">
       <div class="sc scene">
         <div class="who">应届毕业生</div>
-        <div class="t">想拿到第一份 HR offer，但不知道从哪下手</div>
+        <div class="t">想拿到第一份高薪 AI offer，但不知道从哪儿下手</div>
         <div class="d">
-          <div class="li"><b>不是传统的改简历、押面经</b>——传统辅导教你怎么「像个 HR」，我们教你成为大厂正在找的那种 <b>AI Native 组织需要的 HR AI Builder</b>。</div>
-          <div class="li"><b>教你做出真东西</b>——能跑、能用、能部署的 agent，写出自己的 skills。面试桌上现场演示，不是 PPT 里的「项目经历」。</div>
-          <div class="li"><b>帮你看懂大厂的用人逻辑</b>——这批岗位为什么出现、要什么样的人，从底层逻辑搞明白；简历和面试照着这个来写、来练。</div>
+          <div class="li"><b>不是传统的改简历、押面经</b>——传统辅导教你把简历改得更像样，我们教你成为 <span class="hl">AI Native 组织正在找的人</span>。</div>
+          <div class="li"><b>教你做出真东西</b>——<span class="hl">能跑、能用、能部署的 agent</span>，写出自己的 skills。面试桌上现场演示，不是 PPT 里的「项目经历」。</div>
+          <div class="li"><b>帮你看懂大厂的用人逻辑</b>——这批新岗位为什么出现、要什么样的人，<span class="hl">从底层逻辑搞明白</span>；简历和面试照着这个来写、来练。</div>
         </div>
       </div>
       <div class="sc scene">
         <div class="who">职场人士</div>
-        <div class="t">AI 来了，焦虑是真的——能做的事也是真的</div>
+        <div class="t">AI 来了，却对自己的职业发展陷入焦虑和迷茫</div>
         <div class="d">
-          <div class="li"><b>教练式全程跟踪</b>——不管换不换工作：帮你梳理职业规划，补齐 AI 认知与能力素质。</div>
-          <div class="li"><b>手把手教你做出自己的 skills 和 agent</b>——用 AI 的思维方式重新理解业务和 HR 流程。</div>
-          <div class="li"><b>真想换工作？</b>免费推荐互联网大厂的在招机会，简历改写、作品指导、面试辅导，一路跟到 offer。</div>
+          <div class="li"><b>教练式全程跟踪</b>——不管换不换工作：帮你<span class="hl">梳理职业规划</span>，补齐 AI 认知与能力素质。</div>
+          <div class="li"><b>手把手教你做出自己的 skills 和 agent</b>——<span class="hl">用 AI 的思维方式重新理解业务和 HR 流程</span>。</div>
+          <div class="li"><b>真想换工作？</b><span class="hl">免费推荐互联网大厂的在招机会</span>，简历改写、作品指导、面试辅导，一路跟到 offer。</div>
         </div>
       </div>
     </div>
