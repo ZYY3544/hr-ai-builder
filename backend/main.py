@@ -797,10 +797,69 @@ from pathlib import Path as __Path
 _QUIZ = __json.loads((__Path(__file__).parent / "quiz_bank.json").read_text("utf-8"))
 
 
+# ── 登录留痕 + 新用户推送 ─────────────────────────────────────────
+# 每次签发 token 都写一行 hab_login（谁、何时、哪条轨道登录的）——没有这张表，
+# "光登录没学习"的用户在库里查无此人。首次见到的 openid 触发站主推送：
+# Server酱(SERVERCHAN_KEY) 或 SMTP 邮件(SMTP_HOST/USER/PASS/NOTIFY_TO)，
+# 都没配就只入表不推送。推送在守护线程里跑，绝不拖慢登录链路。
+import threading as _threading
+import store as _store_login
+
+
+def _notify_owner(title: str, body: str) -> None:
+    sc = (os.getenv("SERVERCHAN_KEY") or "").strip()
+    if sc:
+        try:
+            _rq.post(f"https://sctapi.ftqq.com/{sc}.send",
+                     data={"title": title[:32], "desp": body[:800]}, timeout=10)
+            print(f"[NOTIFY] serverchan 已推送: {title}", flush=True)
+        except Exception as e:
+            print(f"[NOTIFY] serverchan 失败: {e}", flush=True)
+    host = (os.getenv("SMTP_HOST") or "").strip()
+    if host:
+        try:
+            import smtplib
+            from email.mime.text import MIMEText
+            from email.header import Header
+            user_ = os.getenv("SMTP_USER", ""); pwd = os.getenv("SMTP_PASS", "")
+            to = os.getenv("NOTIFY_TO", user_)
+            msg = MIMEText(body, "plain", "utf-8")
+            msg["Subject"] = Header(title, "utf-8")
+            msg["From"] = user_; msg["To"] = to
+            with smtplib.SMTP_SSL(host, int(os.getenv("SMTP_PORT", "465")), timeout=15) as sm:
+                sm.login(user_, pwd)
+                sm.sendmail(user_, [to], msg.as_string())
+            print(f"[NOTIFY] 邮件已发 {to}: {title}", flush=True)
+        except Exception as e:
+            print(f"[NOTIFY] 邮件失败: {e}", flush=True)
+
+
+def _log_login(openid: str, nickname: str, source: str) -> None:
+    """签发 token 后调用。任何异常都吞掉——登录主链路不能被留痕拖死。"""
+    def _work():
+        try:
+            first = not _store_login.store.find("hab_login", {"openid": openid}, limit=1)
+        except Exception:
+            first = False                      # 查不了就当非首次，宁可漏推不误推
+        try:
+            _store_login.store.add("hab_login", {
+                "created_at": _store_login.now_iso(),
+                "openid": (openid or "")[:80], "nickname": (nickname or "")[:64],
+                "source": (source or "")[:24]})
+        except Exception as e:
+            print(f"[LOGIN-LOG] 写入失败: {e}", flush=True)
+        if first and not (openid or "").startswith(("agenttest-", "e2e-", "probe")):
+            _notify_owner("学习站新用户登录",
+                          f"昵称：{nickname or '（空）'}\nopenid：{openid}\n轨道：{source}\n"
+                          f"时间：{_store_login.now_iso()}")
+    _threading.Thread(target=_work, daemon=True).start()
+
+
 # ---------------------------------------------------------------- routes
 @app.get("/api/health")
 def health():
-    return {"ok": True, "service": "hr-ai-builder-api", "version": app.version}
+    return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
+            "features": ["login_log"]}
 
 
 @app.get("/api/terms")
@@ -993,6 +1052,7 @@ def wx_bind(body: WxBind):
     nickname = (body.nickname or "").strip()[:64] or f"微信用户{openid[-4:]}"
     avatar = (body.avatar or "").strip()[:512]
     token = auth.issue(openid, nickname, avatar, source="miniprogram")
+    _log_login(openid, nickname, "miniprogram")
     user = {"nickname": nickname, "avatar": avatar}
     if not wx.set_scene_authed(body.scene, token, user):
         raise HTTPException(410, "scene_expired")
@@ -1015,6 +1075,7 @@ def wx_oauth_callback(code: str = "", state: str = ""):
     nickname = (info.get("nickname") or "").strip()[:64] or f"微信用户{openid[-4:]}"
     avatar = (info.get("headimgurl") or "").strip()[:512]
     jwt_token = auth.issue(openid, nickname, avatar, source="oauth")
+    _log_login(openid, nickname, "oauth")
 
     # 会话仍在（同浏览器轮询中）→ 挂上去让轮询拿到；同时也直接把 token 带回前端。
     if state:
@@ -1062,6 +1123,7 @@ def _sso_poll(ms_scene: str):
             "avatar": (u.get("avatar_url") or "")[:512]}
     token = auth.issue(openid=f"ms:{u['id']}", nickname=user["nickname"],
                        avatar=user["avatar"], source="ms-sso")
+    _log_login(f"ms:{u['id']}", user["nickname"], "ms-sso")
     print(f"[SSO] 登录成功 ms_user={u['id']}", flush=True)
     return {"status": "authed", "token": token, "user": user}
 

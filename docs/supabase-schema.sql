@@ -59,3 +59,17 @@ create index if not exists hab_progress_user_idx on hab_progress (openid, create
 alter table hab_progress enable row level security;
 drop policy if exists hab_progress_insert on hab_progress;
 create policy hab_progress_insert on hab_progress for insert to anon, authenticated with check (true);
+
+-- 登录留痕：每次签发 token 一行（2026-08-31 增；没有它"光登录没学习"的人查无此人）
+create table if not exists hab_login (
+  id          bigserial primary key,
+  created_at  timestamptz not null default now(),
+  openid      text not null,
+  nickname    text default '',
+  source      text default ''          -- miniprogram | oauth | ms-sso
+);
+create index if not exists hab_login_openid_idx on hab_login (openid, created_at desc);
+alter table hab_login enable row level security;
+drop policy if exists hab_login_insert on hab_login;
+create policy hab_login_insert on hab_login for insert to anon, authenticated with check (true);
+-- 首次判定要读：service_role 不受 RLS 限制，后端用 service key 读没问题；anon 读仍被拒。
