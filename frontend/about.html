@@ -227,6 +227,9 @@ a.cc:hover{border-color:rgba(0,168,138,.4);box-shadow:0 12px 28px -18px rgba(0,1
 .pc .d{font-size:13px;color:var(--muted);line-height:2;margin-top:8px}
 .pc .d b{color:var(--ink);font-weight:500}
 .pc .d a{color:var(--pri-d);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips span{font-size:12.5px;font-weight:600;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;padding:5px 12px}
 .qrbox{width:212px;height:212px;margin:22px auto 0;border:1px solid var(--line);border-radius:14px;
   display:grid;place-items:center;overflow:hidden;background:var(--bg);position:relative}
 .qrbox img{width:100%;height:100%;object-fit:contain}
@@ -313,25 +316,22 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     <h2>我们提供什么</h2>
     <div class="prodgrid">
       <div class="pc">
-        <span class="ptagx">企业</span>
-        <div class="t">咨询级 HR Agent 平台</div>
-        <div class="d">岗位价值评估、职级体系设计、薪酬诊断与薪酬架构、组织诊断——顾问的方法论编进引擎，
-          <b>每一个判断可追问、每一处引用可核对</b>。<a href="https://meansights.com" target="_blank" rel="noopener">meansights.com →</a></div>
+        <span class="ptagx">Agent 产品</span>
+        <div class="t">专业咨询级 HR Agent</div>
+        <div class="d">覆盖组织与人才管理的核心场景，每个场景一个开箱即用的 Agent：</div>
+        <div class="chips">
+          <span>岗位价值评估</span><span>职级体系设计</span><span>薪酬诊断</span>
+          <span>薪酬架构设计</span><span>组织诊断</span><span>人才盘点</span><span>长期激励</span>
+        </div>
+        <div class="d">顾问的方法论编进引擎——<b>每一个判断可追问、每一处引用可核对</b>。
+          <a href="https://meansights.com" target="_blank" rel="noopener">meansights.com →</a></div>
       </div>
       <div class="pc">
-        <span class="ptagx">企业</span>
-        <div class="t">定制课程与咨询</div>
-        <div class="d">想让组织真正把 AI 用起来：<b>定制培训、专项咨询、把这套方法接进你们现有的 HR 流程</b>——从认知到落地，一段一段陪着走。</div>
-      </div>
-      <div class="pc">
-        <span class="ptagx">个人 · 免费</span>
-        <div class="t">HR AI 学习站</div>
-        <div class="d">面向 HR 的 AI 系统课程、真实在招岗位库、实战任务，<b>永久免费开放</b>——你现在就在这里。<a href="learn.html">进入课程 →</a></div>
-      </div>
-      <div class="pc">
-        <span class="ptagx">个人 · 一对一</span>
-        <div class="t">职业辅导与作品评审</div>
-        <div class="d">应届想入行、在职想转型：教练式一对一辅导，<b>先约 15 分钟免费沟通</b>；做出来的作品也可以交给我们对照课程口径逐处评审。<a href="coach.html">了解职业辅导 →</a></div>
+        <span class="ptagx">咨询服务</span>
+        <div class="t">定制化设计 · 产品化 · 部署</div>
+        <div class="d">根据你的组织需要定制：把<b>你们自己的职级口径、薪酬体系与管理制度</b>编进专属 Agent，
+          从方案设计、产品化到落地部署，一段一段交付；<b>支持与现有 HR 系统按需对接</b>。</div>
+        <div class="d">从「用上 AI」到「组织真的被 AI 重塑」，中间那段路，<b>我们陪着走完</b>。</div>
       </div>
     </div>
   </div>
