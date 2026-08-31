@@ -15,18 +15,18 @@ window.COURSE = {
    "license": "AGPL-3.0"
   },
   "stats": {
-   "parts": 11,
-   "lessons": 136,
-   "copy": 40,
-   "adapt": 19,
-   "new": 96,
-   "ready": 148,
+   "parts": 10,
+   "lessons": 135,
+   "copy": 33,
+   "adapt": 16,
+   "new": 86,
+   "ready": 147,
    "todo": 0,
-   "minutes": 544
+   "minutes": 538
   },
   "access": {
    "free": 120,
-   "locked": 16,
+   "locked": 15,
    "rule": "第零篇章全章免费；其余篇章每个主题前 2 节免费。免费≠收费墙——全部内容永久免费，登录只用于同步进度与防止内容被批量贩卖。",
    "gate": "off",
    "method": "Google Flexible Sampling —— 正文始终在 HTML 里可被索引，客户端遮挡 + JSON-LD 声明 isAccessibleForFree"
@@ -1926,35 +1926,6 @@ window.COURSE = {
     }
    ],
    "min": 39
-  },
-  {
-   "id": "p-opc",
-   "num": "课后甜点",
-   "title": "第二条出路：一人公司",
-   "desc": "学完这门课的人不只有「去岗位」一条路。你手上能跑的 agent 本身就是产品——这一节讲怎么把它变成一人生意：服务谁、第一单从哪来、收钱前要办的三件事。",
-   "freeWhole": false,
-   "color": "#7C3AED",
-   "topics": [
-    {
-     "title": "一人公司 OPC",
-     "desc": "去岗位之外的第二条路",
-     "lessons": [
-      {
-       "file": "opc-second-path.html",
-       "action": "new",
-       "ksa": "A",
-       "title": "把你的 agent 变成一人公司",
-       "seo": "HR 一人公司怎么起步？服务谁、第一单从哪来、收钱前要办的三件事",
-       "desc": "你手上能跑的 agent 就是产品：三类首单客户、按次定价、最小合规清单。",
-       "free": false,
-       "ready": true,
-       "min": 6
-      }
-     ],
-     "min": 6
-    }
-   ],
-   "min": 6
   }
  ],
  "extraPages": {

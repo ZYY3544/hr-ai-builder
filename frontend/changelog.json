@@ -1517,6 +1517,13 @@
    "level": "L0",
    "hash": "a7c36547ad16",
    "note": "改为跳板页。发现 Render 静态站不会清掉 git 里已删的文件——这 7 个下线课件一直在线上服务旧内容、还被搜索引擎索引。跳板页 noindex + canonical 指向接替它的那一节，并自动跳转。映射取自 learn.html 的 OLD2NEW"
+  },
+  {
+   "date": "2026-08-31",
+   "file": "opc-second-path.html",
+   "level": "L0",
+   "hash": "efff3e25c9e9",
+   "note": "「课后甜点 · 一人公司」整章下线（用户拍板）——课件转跳板页指向课程页；/一人公司 陪练指令保留"
   }
  ]
 }
