@@ -154,6 +154,20 @@ section{scroll-margin-top:72px}
 .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
   padding:14px 18px;font-size:12.5px;line-height:2;color:var(--ink);margin-top:22px}
 .rules b{font-weight:600}
+/* 服务：主卡 + 四小卡 */
+.svcrow{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;margin-top:38px;align-items:stretch}
+@media(max-width:920px){.svcrow{grid-template-columns:1fr}}
+.schero{border-color:rgba(0,168,138,.45);box-shadow:0 14px 40px -22px rgba(0,168,138,.4);padding:28px 30px}
+.schero .t{font-size:19px;padding-right:0}
+.schero .d{font-size:13px;margin-top:12px;line-height:2.05}
+.badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--pri-d);
+  background:var(--pri-s);border:1px solid rgba(0,168,138,.25);border-radius:20px;padding:3px 11px;margin-bottom:12px}
+.scgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.scgrid{grid-template-columns:1fr}}
+/* 信任三卡 */
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+@media(max-width:920px){.trust{grid-template-columns:1fr}}
+
 /* 顶部联系行：手机号与邮箱走图片，纯文本会被爬虫收走 */
 .telimg{height:20px;width:auto;vertical-align:-5px;margin:0 2px}
 .mailimg{height:19px;width:auto;vertical-align:-5px;margin:0 2px}
@@ -202,61 +216,82 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
   </div>
 </section>
 
-<!-- ========== 为什么是现在 ========== -->
+<!-- ========== ① 必然的转型之路 ========== -->
 <section class="band alt">
   <div class="wrap">
     <div class="eyebrow">Why Now</div>
-    <h2>AI+HR 复合型人才的缺口，是真的</h2>
-    <p class="desc">不是我们造的焦虑——下面三个数字都写在<b>岗位库里逐字核对过的 JD 原文</b>里，点进去自己看。
-      对在职的人，这是转型窗口；对刚毕业的人，「不限专业和经验」就是入场券。</p>
+    <h2>HR AI Builder 是必然的转型之路，<br>先行者得到奖励</h2>
+    <p class="desc">下面每个数字都来自<b>岗位库里逐字核对过的 JD 原文</b>（指纹校验），点进去自己看。</p>
     <div class="facts">
       <a class="fct" href="jobs.html">
-        <div class="n">7.6%</div>
-        <div class="d">字节 225 个 HR 在招岗位里，真要求 AI 能力的只有 17 个。<b>比例这么低，恰恰说明这事才刚开始</b>——现在入场，你和先行者之间没有代差。</div>
-        <span class="go">去岗位库核对 →</span>
-      </a>
-      <a class="fct" href="jobs.html">
-        <div class="n">「不限专业和经验」</div>
-        <div class="d">字节 30-50k 的人才系统专家 JD 原话。敢这么写只有一个解释：<b>市场上找不到有经验的人</b>。中关村科金干脆把岗位叫「AI 应用先锋」。</div>
+        <div class="n">25 家大厂</div>
+        <div class="d">字节、百度、京东、美团、快手、小米、网易、蚂蚁、理想、小鹏、联想……岗位库 38 家公司里，<b>一线互联网与科技公司占 25 家、54 条在招岗位</b>。这不是某一家的实验，是整个市场在同时下注。</div>
         <span class="go">去岗位库核对 →</span>
       </a>
       <a class="fct" href="jobs.html">
         <div class="n">100-120k<small>·月</small></div>
-        <div class="d">泰康「智能体架构（人力系统方向）」的真实薪资。网易 50-80k、理想 40-70k、金山 70-100k——<b>数字都在岗位库里，能看到 JD 原文</b>。</div>
+        <div class="d">泰康「智能体架构（人力系统方向）」的真实薪资，库里的天花板。而门槛呢——<b>写明年限的岗位里，中位数只要求 3 年，超过一半在 3 年以内</b>。给得高、要得浅，这个组合只在风口早期出现。</div>
+        <span class="go">去岗位库核对 →</span>
+      </a>
+      <a class="fct" href="jobs.html">
+        <div class="n">7.6%</div>
+        <div class="d">字节 225 个 HR 在招岗位里，真要求 AI 能力的只有 17 个；30-50k 的人才系统专家 JD 甚至写着<b>「不限专业和经验」</b>——市场上找不到有经验的人。比例这么低说明这事才刚开始：<b>现在入场，你和先行者之间没有代差——你就是先行者</b>。</div>
         <span class="go">去岗位库核对 →</span>
       </a>
     </div>
-    <div class="factnote">岗位库覆盖 33 家公司 · 64 条在招岗位 · 每条 JD 逐字可核（指纹校验）</div>
+    <div class="factnote">岗位库覆盖 38 家公司 · 64 条在招岗位 · 每条 JD 逐字可核（指纹校验）</div>
   </div>
 </section>
 
-<!-- ========== 五项服务 ========== -->
+<!-- ========== ② 我们可以帮你什么 ========== -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">What We Do</div>
+    <h2>我们可以帮你什么</h2>
+    <p class="desc">五项服务，全部一对一，单点或组合。你可能只需要其中一两项——<b>免费沟通里我们会直说先做哪个，帮不上也会直说</b>。</p>
+    <div class="svcrow">
+      <div class="sc schero">
+        <span class="badge">多数人从这一步开始</span>
+        <div class="t">能力水位评估</div>
+        <div class="d">对照你的目标岗位，把 JD 的要求拆成一项项，<b>逐项标出你现在的位置和差距</b>——不是拿模板套你。
+          差距分两种：几周能补上的，和要用作品去证明的，<b>补法完全不同</b>。评估做完，你会拿到一张
+          「差什么、怎么补、按什么顺序」的清单——<b>后面四项服务要不要做、先做哪个，都从这张清单来</b>。</div>
+      </div>
+      <div class="scgrid">
+        <div class="sc"><div class="no">02</div><div class="t">定制学习方案</div><div class="d">倒推要补的课、要做的作品，<b>排成可执行的周计划</b>。</div></div>
+        <div class="sc"><div class="no">03</div><div class="t">做出真作品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——<b>面试桌上分量完全不同</b>。</div></div>
+        <div class="sc"><div class="no">04</div><div class="t">简历改写</div><div class="d">把经历翻译成这类岗位<b>读得懂的能力语言</b>，追问的答案提前埋好。</div></div>
+        <div class="sc"><div class="no">05</div><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界——<b>岗位库里就是原文</b>。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ③ 你可以充分信任我们 ========== -->
 <section class="band alt">
   <div class="wrap">
-    <div class="eyebrow">Who &amp; What</div>
-    <h2>凭什么是我们</h2>
-    <div class="whoin">
+    <div class="eyebrow">Why Trust Us</div>
+    <h2>你可以充分信任我们</h2>
+    <p class="desc">三样东西放在这里：<b>带你的人、他做出来的东西、和我们给自己立的规矩</b>。</p>
+    <div class="trust">
       <div class="wc">
-        <div class="k">辅导人 · 张艺</div>
-        <div class="v"><b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>——职级、薪酬、组织设计的方法论正是从这类公司出来的；
-          跨境电商龙头与互联网大厂组织管理专家经历；现在白天做的就是<b>大厂的 AI Native 组织变革</b>。
-          你要去的那类岗位每天干的活，就是他手上正在干的活。</div>
+        <div class="k">带你的人，走过这条路</div>
+        <div class="v">辅导人 <b>张艺</b>——meansights Consulting 创始人，<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，
+          职级、薪酬、组织设计的方法论正是从这类公司出来的；跨境电商龙头与互联网大厂组织管理专家经历；
+          现在白天做的就是<b>大厂的 AI Native 组织变革</b>——你要去的那类岗位每天干的活，是他手上正在干的活。</div>
       </div>
       <div class="wc">
         <div class="k">作品就在你眼前</div>
-        <div class="v">判断一个人能不能带你做出作品，最直接的办法是看他自己的作品。这个站——<b>135 节课、
-          评估引擎、64 条逐字核对的在招岗位库</b>——就是用这套方法做出来的东西，<b>你现在就在里面</b>。
-          课程、任务、评审、辅导，用的是同一套标准。</div>
+        <div class="v">判断一个人能不能带你做出作品，最直接的办法是看他自己的作品。这个站——<b>135 节课、评估引擎、
+          64 条逐字核对的在招岗位库</b>——就是用这套方法做出来的东西，<b>你现在就在里面</b>。
+          课程、任务、评审、辅导，用的是同一套标准，不另起炉灶。</div>
       </div>
-    </div>
-    <h2 style="margin-top:64px">五项服务，单点或组合</h2>
-    <p class="desc">每一项都是一对一。你可能只需要其中一两项——<b>免费沟通里我们会直说先做哪个，帮不上也会直说</b>。</p>
-    <div class="svc">
-      <div class="sc"><div class="no">01</div><div class="t">能力水位评估</div><div class="d">对照真实岗位的 K/S/A 要求，逐项标出你现在的位置和差距，不是拿模板套你。<b>差在 K 还是差在 A，补法完全不同。</b></div></div>
-      <div class="sc"><div class="no">02</div><div class="t">定制学习方案</div><div class="d">选定一个目标岗位，倒推你要补的课、要做的作品、要准备的证据，<b>排成可执行的周计划</b>。</div></div>
-      <div class="sc"><div class="no">03</div><div class="t">做出真能用的产品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——<b>面试桌上，这两者的分量完全不同</b>。</div></div>
-      <div class="sc"><div class="no">04</div><div class="t">简历改写</div><div class="d">把你的经历翻译成这类岗位读得懂的能力语言——「有人真的在用吗」这种追问，<b>简历里就要埋好答案</b>。</div></div>
-      <div class="sc"><div class="no">05</div><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界。<b>我们的岗位库里就是这些岗位的原文</b>。</div></div>
+      <div class="wc">
+        <div class="k">三条规矩，先立好</div>
+        <div class="v"><b>不聊清楚不报价</b>——先免费聊 15 分钟，值不值得做、先做哪项，聊完直说；<br>
+          <b>不代投简历、不承诺「包 offer」</b>——我们把你推到岗位要求的水位上，offer 靠你自己拿；<br>
+          <b>帮不上就直说</b>——免费沟通里如果判断帮不上你，不会为了成单硬接。</div>
+      </div>
     </div>
   </div>
 </section>
