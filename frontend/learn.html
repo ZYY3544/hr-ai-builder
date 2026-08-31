@@ -62,7 +62,6 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 /* 主题：比篇章浅一档（--body 而非 --ink），展开或命中当前节时才升到墨色 */
 .tp-h{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:7px;cursor:pointer;
   font-size:12.5px;font-weight:500;color:var(--body);transition:color .12s}
-.tp-h:hover{background:#fff;color:var(--ink)}
 .tp.open>.tp-h{color:var(--ink);font-weight:600}
 .tp-h .ar{color:var(--faint);font-size:10px;transition:.15s;flex:0 0 auto}
 .tp.open .tp-h .ar{transform:rotate(90deg)}
@@ -77,8 +76,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .ls:hover{background:#fff;color:var(--body)}
 .ls.on{background:var(--pri-s);color:var(--pri);font-weight:500}
 .ls.off{color:var(--faint);cursor:default}
-.ls.off:hover{background:none}
-.dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);flex:0 0 auto;margin-top:3px}
+.ls.dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);flex:0 0 auto;margin-top:3px}
 .ls.on .dot{border-color:var(--pri)}
 .ls.done .dot{background:var(--green);border-color:var(--green)}
 .ls.done{color:var(--body)}          /* 读过的略深一点，跟没读的拉开 */
