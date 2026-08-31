@@ -16,7 +16,7 @@
 {"@context":"https://schema.org","@type":"Service","name":"HR 职业辅导（AI 方向 · 一对一）",
  "serviceType":"职业辅导","areaServed":"CN",
  "provider":{"@type":"Organization","name":"meansights learning","url":"https://learning.meansights.com/"},
- "description":"面向想转型 AI 方向的在职 HR 与想入行的应届生：能力水位评估、定制学习方案、做出真作品、简历改写、面试辅导，单点或组合，先约 15 分钟免费沟通。",
+ "description":"按处境提供：在校生/应届——简历改写、面试辅导、做出真作品，成为 HR AI Builder；在职 HR——教练式全程跟踪、职业规划梳理、手把手做 skills 与 agent，成为 HR AI 超级个体；换工作可免费推荐大厂在招机会。先约 15 分钟免费沟通。",
  "offers":{"@type":"Offer","price":"0","priceCurrency":"CNY","description":"15 分钟免费沟通，聊清楚再报价"}}
 </script>
 <script type="application/ld+json">
@@ -154,16 +154,16 @@ section{scroll-margin-top:72px}
 .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
   padding:14px 18px;font-size:12.5px;line-height:2;color:var(--ink);margin-top:22px}
 .rules b{font-weight:600}
-/* 服务：主卡 + 四小卡 */
-.svcrow{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;margin-top:38px;align-items:stretch}
-@media(max-width:920px){.svcrow{grid-template-columns:1fr}}
-.schero{border-color:rgba(0,168,138,.45);box-shadow:0 14px 40px -22px rgba(0,168,138,.4);padding:28px 30px}
-.schero .t{font-size:19px;padding-right:0}
-.schero .d{font-size:13px;margin-top:12px;line-height:2.05}
+/* 场景两卡 */
+.scenes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px;align-items:stretch}
+@media(max-width:920px){.scenes{grid-template-columns:1fr}}
+.scene{border-color:rgba(0,168,138,.4);box-shadow:0 14px 40px -22px rgba(0,168,138,.35);padding:28px 30px}
+.scene .t{font-size:17.5px;line-height:1.5;padding-right:0}
+.scene .d{font-size:13px;margin-top:12px;line-height:2.05}
+.become{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted)}
+.become b{color:var(--pri-d);font-weight:600}
 .badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--pri-d);
   background:var(--pri-s);border:1px solid rgba(0,168,138,.25);border-radius:20px;padding:3px 11px;margin-bottom:12px}
-.scgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.scgrid{grid-template-columns:1fr}}
 /* 信任三卡 */
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
 @media(max-width:920px){.trust{grid-template-columns:1fr}}
@@ -229,8 +229,8 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
         <span class="go">去岗位库核对 →</span>
       </a>
       <a class="fct" href="jobs.html">
-        <div class="n">100-120k<small>·月</small></div>
-        <div class="d">泰康「智能体架构（人力系统方向）」的真实薪资，库里的天花板。而门槛呢——<b>写明年限的岗位里，中位数只要求 3 年，超过一半在 3 年以内</b>。给得高、要得浅，这个组合只在风口早期出现。</div>
+        <div class="n">9k → 120k<small>·月</small></div>
+        <div class="d">从 9-20k 的基层 SSC 到 100-120k 的智能体架构，<b>AI 要求铺满了整条薪资带</b>——不是高薪岗的点缀，是每一档的标配。而门槛：<b>写明年限的岗位中位数只要 3 年，过半在 3 年以内</b>。天花板很高，门票不贵。</div>
         <span class="go">去岗位库核对 →</span>
       </a>
       <a class="fct" href="jobs.html">
@@ -248,20 +248,25 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
   <div class="wrap">
     <div class="eyebrow">What We Do</div>
     <h2>我们可以帮你什么</h2>
-    <p class="desc">五项服务，全部一对一，单点或组合。你可能只需要其中一两项——<b>免费沟通里我们会直说先做哪个，帮不上也会直说</b>。</p>
-    <div class="svcrow">
-      <div class="sc schero">
-        <span class="badge">多数人从这一步开始</span>
-        <div class="t">能力水位评估</div>
-        <div class="d">对照你的目标岗位，把 JD 的要求拆成一项项，<b>逐项标出你现在的位置和差距</b>——不是拿模板套你。
-          差距分两种：几周能补上的，和要用作品去证明的，<b>补法完全不同</b>。评估做完，你会拿到一张
-          「差什么、怎么补、按什么顺序」的清单——<b>后面四项服务要不要做、先做哪个，都从这张清单来</b>。</div>
+    <p class="desc">不按服务列菜单，按你的处境来。<b>每条路都从一次能力水位评估开始</b>（附带，不单独算你一项）。</p>
+    <div class="scenes">
+      <div class="sc scene">
+        <span class="badge">在校生 · 应届</span>
+        <div class="t">想拿到第一份 HR offer，但不知道从哪下手</div>
+        <div class="d">校园经历怎么写、面试问什么、拿什么证明自己——这些我们一样一样帮你解决：
+          <b>改写简历</b>（把校园经历翻译成岗位读得懂的能力语言）、<b>辅导面试</b>（按真实 JD 模拟追问）、
+          <b>教你做出真作品</b>（能拿上面试桌的那种，不是课程作业）。
+          短时间内，把你训练成 AI Native 组织正在找的那种人。</div>
+        <div class="become">→ 你会成为：<b>HR AI Builder</b></div>
       </div>
-      <div class="scgrid">
-        <div class="sc"><div class="no">02</div><div class="t">定制学习方案</div><div class="d">倒推要补的课、要做的作品，<b>排成可执行的周计划</b>。</div></div>
-        <div class="sc"><div class="no">03</div><div class="t">做出真作品</div><div class="d">陪你把作品从「能演示」推到「有人在用」——<b>面试桌上分量完全不同</b>。</div></div>
-        <div class="sc"><div class="no">04</div><div class="t">简历改写</div><div class="d">把经历翻译成这类岗位<b>读得懂的能力语言</b>，追问的答案提前埋好。</div></div>
-        <div class="sc"><div class="no">05</div><div class="t">面试辅导</div><div class="d">按真实 JD 模拟追问：讲作品、讲判断、讲边界——<b>岗位库里就是原文</b>。</div></div>
+      <div class="sc scene">
+        <span class="badge">在职 HR</span>
+        <div class="t">AI 来了，焦虑是真的——能做的事也是真的</div>
+        <div class="d">不管换不换工作，你都感觉到了：AI 对 HR 是挑战，但不知道从哪儿下手。我们以<b>教练式全程跟踪</b>：
+          帮你梳理职业规划、补齐 AI 认知与能力素质，<b>手把手教你做出自己的 skills 和 agent</b>，
+          用 AI 的思维方式重新理解业务和 HR 流程。<br>
+          真想换工作？<b>免费推荐互联网大厂的在招机会</b>，简历改写、作品指导、面试辅导，一路跟到 offer。</div>
+        <div class="become">→ 你会成为：<b>HR AI 超级个体</b></div>
       </div>
     </div>
   </div>
