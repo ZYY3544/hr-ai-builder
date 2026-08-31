@@ -216,6 +216,8 @@ a.cc:hover{border-color:rgba(0,168,138,.4);box-shadow:0 12px 28px -18px rgba(0,1
 .modal .x:hover{color:var(--ink)}
 .modal h3{font-size:18px;letter-spacing:-.02em}
 .modal .sub{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.7}
+/* 本页为纯文字页：正文版心收窄居中，右侧不再大片留白 */
+.hero .wrap,.band .wrap{max-width:940px}
 .ph3{margin-top:32px;font-size:17px;font-weight:600;color:var(--ink);padding-left:14px;position:relative}
 .ph3::before{content:'';position:absolute;left:0;top:6px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
 .qrbox{width:212px;height:212px;margin:22px auto 0;border:1px solid var(--line);border-radius:14px;
@@ -301,18 +303,21 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 <section class="band">
   <div class="wrap">
     <div class="eyebrow">Products &amp; Services</div>
-    <h2>我们提供什么</h2>
+    <h2>我们提供什么服务</h2>
     <h3 class="ph3">标准化 —— 开箱即用的咨询级 HR Agent</h3>
-    <p class="desc">基于 meansights 平台，我们把职级评估、薪酬设计、组织诊断这些经典咨询场景，做成了<b>开箱即用的 HR Agent</b>——
-      岗位价值评估、职级体系设计、薪酬诊断、薪酬架构设计、组织诊断、人才盘点、长期激励，每个场景一个。
-      技术上是<b>多 Agent 协同编排 + 确定性计算引擎</b>的分工：档位与口径的判断交给大模型，分数、校验与合法性交给引擎，
-      每一个结论都带着<b>可追问的推理链与可核对的引用</b>；内置联网研究执行器，市场数据与标杆实践随取随用。</p>
-    <p class="desc">不用预约演示——打开 <a href="https://meansights.com" target="_blank" rel="noopener" style="color:var(--pri-d);font-weight:600">meansights.com</a>，
-      传一份 JD，几分钟就能看到一次<b>咨询级评估</b>长什么样。</p>
+    <p class="desc">meansights 平台以<b>「判断与计算分离」</b>为核心架构：大模型承担语义判断——档位定位、口径解读、形状识别；
+      确定性引擎承担计算与合规——分数合成、多层合法性校验、跨岗一致性约束。<b>模型不算数，引擎不判断</b>，各守其界。</p>
+    <p class="desc">其上是<b>意图路由与多 Agent 协同编排</b>：评估、诊断、设计等专项 Agent 并行工作、交叉复核，
+      关键结论经<b>对抗式双评估</b>对账后方可交付；内置研究执行器按出处分级引入市场数据与标杆实践，
+      全链路留痕——<b>每一个判断可追问，每一处引用可核对，每一次评估可复现</b>。</p>
+    <p class="desc">基于这套架构，岗位价值评估、职级体系设计、薪酬诊断、薪酬架构设计、组织诊断、人才盘点、长期激励等场景均已产品化，
+      开箱即用。不必预约演示——打开 <a href="https://meansights.com" target="_blank" rel="noopener" style="color:var(--pri-d);font-weight:600">meansights.com</a>，
+      上传一份 JD，数分钟内即可获得一次<b>可追问、可核对的咨询级评估</b>。</p>
     <h3 class="ph3">定制化 —— 企业专属 Agent 的设计、产品化与部署</h3>
-    <p class="desc">标准化产品之外，我们为企业提供<b>定制化 Agent 服务</b>：把你们自己的职级口径、薪酬体系、管理制度与业务流程
-      编进专属 Agent——从知识工程、方案共创、产品化到上线部署，一段一段交付；支持以 <b>API / MCP 等形态</b>与现有 HR 系统对接。
-      你们的制度是什么样，Agent 就是什么样——<b>定制的不是界面，是判断力</b>。</p>
+    <p class="desc">在标准化产品之外，我们面向企业提供<b>专属 Agent 的定制交付</b>：以贵司的职级架构、薪酬体系、管理制度与业务流程为蓝本，
+      经<b>知识工程</b>将制度语言转译为机器可执行的判断规则，沿「诊断 — 共创 — 编码 — 验证 — 部署」的路径分阶段交付；
+      支持私有化部署，并可通过 <b>API / MCP 接口</b>与既有 HR 信息系统集成。</p>
+    <p class="desc">交付的终点不是一套界面，而是<b>一个持续对齐贵司口径的组织判断力系统</b>。</p>
   </div>
 </section>
 
