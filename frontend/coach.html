@@ -168,9 +168,29 @@ section{scroll-margin-top:72px}
 .scene .li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
 .hl{font-weight:650;color:var(--ink);text-decoration:underline;text-decoration-style:wavy;
   text-decoration-color:#F59E0B;text-decoration-thickness:2px;text-underline-offset:5px}
-/* 信任三卡 */
-.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
-@media(max-width:920px){.trust{grid-template-columns:1fr}}
+/* 信任区：照片 + 履历单卡 */
+.profile{margin:38px auto 0;background:#fff;border:1px solid rgba(0,168,138,.4);
+  border-radius:var(--r-x);padding:34px 40px;box-shadow:0 14px 40px -22px rgba(0,168,138,.3)}
+@media(max-width:640px){.profile{padding:26px 22px}}
+.pwrap{display:grid;grid-template-columns:250px 1fr;gap:34px;align-items:start}
+@media(max-width:760px){.pwrap{grid-template-columns:1fr}.pphoto{max-width:220px}}
+.pphoto{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:var(--bg)}
+.pphoto img{width:100%;height:100%;object-fit:cover;display:block}
+.pphoto .mono{display:none;position:absolute;inset:0;place-items:center;
+  font-size:36px;font-weight:650;letter-spacing:.14em;color:#fff;background:var(--grad-r)}
+.pphoto.noimg img{display:none}
+.pphoto.noimg .mono{display:grid}
+.phead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pname{font-size:26px;font-weight:650;letter-spacing:-.02em;color:var(--ink)}
+.prole{font-size:12.5px;font-weight:600;color:var(--pri-d);background:var(--pri-s);
+  border:1px solid rgba(0,168,138,.25);border-radius:20px;padding:3px 12px}
+.ptag{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.9}
+.pgrp{margin-top:20px;font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--pri-d)}
+.profile .li{position:relative;padding-left:18px;margin-top:11px;font-size:14px;line-height:2;color:var(--body);font-weight:450}
+.profile .li b{font-weight:700;color:var(--ink)}
+.profile .li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
+.pfoot{margin-top:24px;padding-top:18px;border-top:1px dashed var(--line);font-size:13.5px;line-height:2;color:var(--body)}
+.pfoot b{color:var(--ink);font-weight:700}
 
 /* 顶部联系行：手机号与邮箱走图片，纯文本会被爬虫收走 */
 .telimg{height:20px;width:auto;vertical-align:-5px;margin:0 2px}
@@ -279,29 +299,22 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
   <div class="wrap">
     <div class="eyebrow">Why Trust Us</div>
     <h2>你可以充分信任我们</h2>
-    <p class="desc">三样东西放在这里：<b>带你的人、他做出来的东西、和我们给自己立的规矩</b>。</p>
-    <div class="trust">
-      <div class="wc">
-        <div class="k">既当过考官，也在考场里</div>
-        <div class="v">辅导人 <b>张艺</b>——meansights 创始人，<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>；
-          现在白天做的就是<b>大厂的 AI Native 组织变革</b>——这批岗位要什么样的人，是他以用人方视角每天在处理的问题。
-          <b>没有销售、没有转手</b>：从 15 分钟免费沟通到最后一次面试辅导，全程都是他本人。
-          <a href="about.html" style="color:var(--pri-d);font-weight:600">了解 meansights →</a></div>
+    <div class="profile">
+      <div class="pwrap">
+        <div class="pphoto"><img src="brand/profile-photo.jpg" alt="张艺" onerror="this.parentNode.classList.add('noimg')"><div class="mono">张艺</div></div>
+        <div class="pbody">
+          <div class="phead"><span class="pname">张艺</span><span class="prole">meansights 创始人 · 辅导人</span></div>
+          <div class="ptag">既写得出方法论，也落得了地——这条路上的每一段，他都亲自走过。</div>
+          <div class="pgrp">理论 · 方法论出身</div>
+          <div class="li"><b>7 年国际顶尖人力资源与组织管理咨询公司</b>——职级评估、薪酬设计、组织诊断，今天被装进课程里讲的「方法论」，是他当年一个项目一个项目交付出来的。</div>
+          <div class="pgrp">实操 · 一线操盘</div>
+          <div class="li"><b>跨境电商龙头企业、互联网大厂组织管理专家</b>——方法论落进真实组织时会碰到什么，他在甲方那把椅子上坐过。</div>
+          <div class="li"><b>现操盘大厂 AI Native 组织变革</b>——这批 AI+HR 岗位为什么出现、要什么样的人，是他以用人方视角<b>每天在处理的问题</b>。</div>
+          <div class="li"><b>一个人 + AI，做出了你正在用的这个站</b>——135 节课、评估引擎、逐字核对的在招岗位库。「能跑、能用、能部署」，<b>他自己先做到了</b>。</div>
+        </div>
       </div>
-      <div class="wc">
-        <div class="k">作品就在你眼前</div>
-        <div class="v">判断一个人能不能带你做出东西，最直接的办法是看他自己做出来的东西。这个站——<b>135 节课、评估引擎、
-          逐字核对的在招岗位库、右下角的 Sparky</b>——是<b>一个人 + AI</b> 做出来的。
-          你要学的「做出能跑、能用、能部署的东西」，<b>样品你正在用</b>。</div>
-      </div>
-      <div class="wc">
-        <div class="k">规矩写在前面</div>
-        <div class="v"><b>不聊清楚不报价</b>——先免费聊 15 分钟，值不值得做、先做哪项，聊完直说；<br>
-          <b>不代投简历、不承诺「包 offer」</b>——我们把你推到岗位要求的水位上，offer 靠你自己拿；<br>
-          <b>帮不上就直说</b>——不会为了成单硬接。<br>
-          还有一条摆在明面上：课程、岗位库、实战任务<b>全部永久免费</b>——能免费给的都免费了，
-          收费的只有「陪你走」这一段。</div>
-      </div>
+      <div class="pfoot"><b>没有销售、没有转手</b>——从 15 分钟免费沟通到最后一次面试辅导，坐在你对面的都是他本人。
+        <a href="about.html" style="color:var(--pri-d);font-weight:600">了解 meansights →</a></div>
     </div>
   </div>
 </section>
