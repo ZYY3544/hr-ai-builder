@@ -494,12 +494,12 @@ b.setAttribute('href','javascript:void(0)');
         <div class="ic">💬</div>
         <div class="n">加我微信</div>
         <div class="qrslot"><img src="brand/wx-qr.png" alt="微信二维码"></div>
-        <div class="d">扫码添加，或搜手机号<br><img class="telimg" src="brand/tel.png" alt="手机号"><br><b>微信同号</b></div>
+        <div class="d">扫码添加，或搜手机号<br><a id="telLI" href="#" style="color:var(--ink);font-weight:600;font-size:15px;letter-spacing:.03em"><span id="telTI"></span></a><br><b>微信同号</b></div>
       </div>
       <div class="cc">
         <div class="ic">✉️</div>
         <div class="n">发邮件</div>
-        <div class="qrslot mail"><a id="mailto" href="#"><img src="brand/mail.png" alt="邮箱地址"></a></div>
+        <div class="qrslot mail"><a id="mailto" href="#" style="color:var(--ink);font-weight:600;font-size:15px"><span id="mailTI"></span></a></div>
         <div class="d">不方便加微信的话，<br><b>把你的情况写清楚发过来</b>。</div>
       </div>
       <div class="cc">
@@ -753,9 +753,11 @@ loadMe();
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>
 <script>
-/* 邮箱 mailto 运行时拼装：完整地址不出现在 HTML 源码里，爬邮箱的脚本抓不到，
-   人点一下照样唤起邮件客户端。显示用的是图片(brand/mail.png)，同理。 */
-(function(){var a=document.getElementById('mailto');if(!a)return;
+/* 联系方式运行时拼装：号码与邮箱不写进 HTML 源码（防爬），字体与正文一致；
+   点手机号可拨号、点邮箱唤起邮件客户端。 */
+(function(){var m='zynju2014hr'+'@'+'163.com',t=['182','6006','8715'].join('');
+var a=document.getElementById('mailto');if(a){a.setAttribute('href','mailto:'+m);var x=document.getElementById('mailTI');if(x)x.textContent=m;}
+var l=document.getElementById('telLI');if(l){l.setAttribute('href','tel:+86'+t);var y=document.getElementById('telTI');if(y)y.textContent=t;}})();
   var u=['zynju','2014hr'].join(''),d=['163','com'].join('.');
   a.href='mailto:'+u+'@'+d;a.title='给我发邮件';})();
 </script>
