@@ -189,10 +189,10 @@ section{scroll-margin-top:72px}
 .profile .li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
 
 
-/* 顶部联系行：手机号与邮箱走图片，纯文本会被爬虫收走 */
-.telimg{height:20px;width:auto;vertical-align:-5px;margin:0 2px}
-.mailimg{height:19px;width:auto;vertical-align:-5px;margin:0 2px}
+/* 顶部联系行：号码与邮箱由脚本运行时拼装，不进 HTML 源码（防爬），字体与正文一致 */
 .contactline{margin-top:10px}
+.contactline b{color:var(--ink);font-weight:600;letter-spacing:.02em}
+.contactline a:hover b{color:var(--pri-d)}
 
 .foot{padding:54px 0 76px;font-size:12px;color:var(--faint);text-align:center}
 .foot a{color:var(--pri-d)}
@@ -232,7 +232,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
       <a class="btn pri lg" href="jobs.html">先看 64 个真实岗位 →</a>
     </div>
     <div class="statline">辅导人：<b>张艺</b> · meansights Consulting 创始人 · 7 年国际顶尖人力资源与组织管理咨询 · 大厂 AI Native 组织变革实践者</div>
-    <div class="statline contactline">微信 / 电话（同号）<img class="telimg" src="brand/tel.png" alt="手机号">　·　邮箱 <a id="mailto" href="#"><img class="mailimg" src="brand/mail.png" alt="邮箱地址"></a></div>
+    <div class="statline contactline">微信 / 电话（同号）<a id="telL" href="#"><b id="telT"></b></a>　·　邮箱 <a id="mailto" href="#"><b id="mailT"></b></a></div>
   </div>
 </section>
 
@@ -316,8 +316,12 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 <script>
 const API=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com');
 const $=s=>document.querySelector(s);
-/* 邮箱地址运行时组装，避免纯文本被爬虫收走 */
-(function(){var a=document.getElementById('mailto');if(a)a.setAttribute('href','mailto:'+'zynju2014hr'+'@'+'163.com');})();
+/* 联系方式运行时组装，避免纯文本被爬虫收走 */
+(function(){
+  var m='zynju2014hr'+'@'+'163.com', t=['182','6006','8715'].join('');
+  var a=document.getElementById('mailto'); if(a){a.setAttribute('href','mailto:'+m); var mt=document.getElementById('mailT'); if(mt) mt.textContent=m;}
+  var l=document.getElementById('telL'); if(l){l.setAttribute('href','tel:+86'+t); var tt=document.getElementById('telT'); if(tt) tt.textContent=t;}
+})();
 
 /* 登录态后台校验（只在 401/403 才清身份；5xx/断网保留缓存） */
 (async function(){
