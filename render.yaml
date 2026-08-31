@@ -28,6 +28,7 @@ services:
       - key: DEEPSEEK_API_KEY      # Sparky 的模型 key
         sync: false
       - key: ADMIN_CODE            # 看 /api/sparky/insights 的口令；不填=端点直接 404
+        sync: false
       - key: SERVERCHAN_KEY        # 新用户登录推送(Server酱 SendKey)；不填=只入表不推送
         sync: false
       - key: SMTP_HOST             # 或走邮件推送：smtp.163.com + 授权码；不填=不发
@@ -37,7 +38,6 @@ services:
       - key: SMTP_PASS
         sync: false
       - key: NOTIFY_TO
-        sync: false
         sync: false
       # 持久层：两个都填上才切到 Supabase，否则退回内存（重启即丢）。建表 SQL 见 docs/supabase-schema.sql
       - key: SUPABASE_URL
