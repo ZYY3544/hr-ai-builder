@@ -2,6 +2,11 @@
 <html lang="zh-CN">
 <head>
 <script>if(location.hostname==='hr-ai-builder-web.onrender.com'){var _m='';try{var _t=localStorage.getItem('hab_token');if(_t){_m='#mig='+encodeURIComponent(JSON.stringify({t:_t,u:localStorage.getItem('hab_user')||'',d:localStorage.getItem('hab_done')||'',b:localStorage.getItem('hab_quiz_best')||'',w:localStorage.getItem('hab_wrong')||'',h:location.hash||''}));}}catch(e){}location.replace('https://learning.meansights.com'+location.pathname+location.search+(_m||location.hash));}else if(location.hash.indexOf('#mig=')===0){try{var _p=JSON.parse(decodeURIComponent(location.hash.slice(5)));if(_p&&_p.t&&!localStorage.getItem('hab_token')){localStorage.setItem('hab_token',_p.t);if(_p.u)localStorage.setItem('hab_user',_p.u);if(_p.d)localStorage.setItem('hab_done',_p.d);if(_p.b)localStorage.setItem('hab_quiz_best',_p.b);if(_p.w)localStorage.setItem('hab_wrong',_p.w);}history.replaceState(null,'',location.pathname+location.search+((_p&&_p.h)||''));}catch(e){}}</script>
+<script>/* OWNER-GATE：本页暂只对站主开放，其他人（含未登录）回首页。客户端闸，护 UX 不护机密 */
+(function(){try{var t=localStorage.getItem('hab_token');if(!t){location.replace('index.html');return;}
+var s=t.split('.')[1];s+='='.repeat((4-s.length%4)%4);
+var p=JSON.parse(atob(s.replace(/-/g,'+').replace(/_/g,'/')));
+if(p.sub!=='ms:usr_TIJ0tESqdu1UaA')location.replace('index.html');}catch(e){location.replace('index.html');}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -383,5 +388,17 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 })();
 </script>
 <div style="text-align:center;font-size:11.5px;color:#94A3B8;padding:0 20px 26px;line-height:1.8">© 2026 铭曦咨询 · meansights<span id="icpRow"></span></div>
+<script>/* OWNER-NAV：站主登录时把暂藏的两个 tab 动态放回导航 */
+(function(){try{var t=localStorage.getItem('hab_token');if(!t)return;
+var s=t.split('.')[1];s+='='.repeat((4-s.length%4)%4);
+var p=JSON.parse(atob(s.replace(/-/g,'+').replace(/_/g,'/')));
+if(p.sub!=='ms:usr_TIJ0tESqdu1UaA')return;
+var g=document.querySelector('.glinks');if(!g||g.querySelector('a[href="coach.html"]'))return;
+var c=document.createElement('a');c.href='coach.html';c.textContent='职业辅导';
+if(/coach/.test(location.pathname))c.className='cur';
+g.querySelector('a[href="jobs.html"]').insertAdjacentElement('afterend',c);
+var a=document.createElement('a');a.href='about.html';a.textContent='关于 meansights';
+if(/about/.test(location.pathname))a.className='cur';
+g.querySelector('a[href="tasks.html"]').insertAdjacentElement('afterend',a);}catch(e){}})();</script>
 </body>
 </html>
