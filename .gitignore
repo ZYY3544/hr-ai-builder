@@ -7,3 +7,4 @@ node_modules/
 .env
 frontend/_archive/
 frontend/data/task-monthly/_pkg/
+.gstack/
