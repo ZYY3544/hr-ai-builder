@@ -83,11 +83,46 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);
   -webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);}
 .hero::after{content:'';position:absolute;inset:0;z-index:-1;
-  background-image:linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
-  background-size:52px 52px;
-  mask-image:radial-gradient(680px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 88%);
-  -webkit-mask-image:radial-gradient(680px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 88%);}
+  /* 事件层+网格同画布:2 个 teal 点亮格(数据表选中单元格)+5 个交点十字(坐标定位点),
+     全部 calc(50%±52 的倍数) 锚定视口中心,与居中铺开的网格天然对齐;渐隐罩统一压淡边缘 */
+  background-image:
+    linear-gradient(rgba(0,168,138,.16),rgba(0,168,138,.16)),
+    linear-gradient(rgba(0,168,138,.13),rgba(0,168,138,.13)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
+    linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
+  background-size:52px 52px,52px 52px,
+    9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,
+    52px 52px,52px 52px;
+  background-position:
+    calc(50% - 468px) 156px, calc(50% + 468px) 260px,
+    calc(50% - 546px) 104px, calc(50% - 546px) 100px,
+    calc(50% + 598px) 104px, calc(50% + 598px) 100px,
+    calc(50% - 442px) 312px, calc(50% - 442px) 308px,
+    calc(50% + 546px) 208px, calc(50% + 546px) 204px,
+    calc(50% - 338px) 364px, calc(50% - 338px) 360px,
+    calc(50% + 390px) 364px, calc(50% + 390px) 360px,
+    50% 0, 50% 0;
+  background-repeat:no-repeat,no-repeat,
+    no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,
+    repeat,repeat;
+  mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);
+  -webkit-mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);}
+@media(max-width:860px){ /* 手机上标记会撞正文,退回纯网格 */
+  .hero::after{background-image:linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
+    background-size:52px 52px;background-position:50% 0;background-repeat:repeat}}
 @keyframes hue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
   background:#fff;border:1px solid var(--line);border-radius:30px;
