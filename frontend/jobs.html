@@ -183,9 +183,9 @@ mark.kw.demo{cursor:default;font-size:11px}
     <div class="glinks">
       <a href="learn.html">课程内容</a>
       <a href="jobs.html" class="cur">岗位机会</a>
-      <!-- NAV-HIDDEN <a href="coach.html">职业辅导</a> -->
+      <a href="coach.html">职业辅导</a>
       <a href="tasks.html">实战任务</a>
-      <!-- NAV-HIDDEN <a href="about.html">关于 meansights</a> -->
+      <a href="about.html">关于 meansights</a>
     </div>
     <div class="gright"><a class="uava" href="index.html#login" id="loginBtn" title="登录"><span class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span></a></div>
 </div></div>
@@ -349,17 +349,5 @@ window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>
 
-<script>/* OWNER-NAV：站主登录时把暂藏的两个 tab 动态放回导航 */
-(function(){try{var t=localStorage.getItem('hab_token');if(!t)return;
-var s=t.split('.')[1];s+='='.repeat((4-s.length%4)%4);
-var p=JSON.parse(atob(s.replace(/-/g,'+').replace(/_/g,'/')));
-if(p.sub!=='ms:usr_TIJ0tESqdu1UaA')return;
-var g=document.querySelector('.glinks');if(!g||g.querySelector('a[href="coach.html"]'))return;
-var c=document.createElement('a');c.href='coach.html';c.textContent='职业辅导';
-if(/coach/.test(location.pathname))c.className='cur';
-g.querySelector('a[href="jobs.html"]').insertAdjacentElement('afterend',c);
-var a=document.createElement('a');a.href='about.html';a.textContent='关于 meansights';
-if(/about/.test(location.pathname))a.className='cur';
-g.querySelector('a[href="tasks.html"]').insertAdjacentElement('afterend',a);}catch(e){}})();</script>
 </body>
 </html>
