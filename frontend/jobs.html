@@ -211,11 +211,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 </div>
 
 <script>
-/* 强制登录：岗位库是花时间整理的资产,只对登录用户开放（免费,微信扫码一步） */
-if(!localStorage.getItem('hab_token')){
-  try{ sessionStorage.setItem('hab_next','jobs.html'+location.hash); }catch(e){}
-  location.replace('index.html#login');
-}
+/* 岗位库不登录可看（2026-09-04 起）：登录只用于同步进度，不再拦浏览 */
 const API=(location.hostname==='localhost'||location.protocol==='file:')
   ? 'http://localhost:8001' : 'https://hr-ai-builder-api.onrender.com';
 const $=s=>document.querySelector(s);
