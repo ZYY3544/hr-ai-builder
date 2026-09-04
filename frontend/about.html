@@ -60,7 +60,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 @media(max-width:640px){.wrap{padding:0 20px}}
 
 /* ---------- HERO ---------- */
-.hero{position:relative;text-align:center;padding:100px 0 92px;overflow:hidden}
+.hero{position:relative;text-align:center;padding:78px 0 72px;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
   radial-gradient(1400px 130% at 50% -18%, rgba(0,168,138,.16), transparent 72%);
   /* 底部渐隐罩:光晕在区块底边前必归零,矮 hero 不再被截出硬边 */
@@ -82,11 +82,11 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   box-shadow:0 0 0 3px rgba(0,198,162,.2)}
 .pill b{font-weight:600}
 
-.hero h1{font-size:clamp(38px,6.6vw,72px);line-height:1.16;letter-spacing:-.042em;
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.16;letter-spacing:-.042em;
   max-width:15em;margin:0 auto;font-weight:650}
 .hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
   -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.hero .lede{font-size:17px;line-height:2;color:var(--muted);max-width:44em;margin:26px auto 0}
+.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:42em;margin:24px auto 0;text-wrap:balance}
 .hero .lede b{color:var(--ink);font-weight:500}
 .hero .lede .hl{font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
@@ -290,9 +290,10 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 </script>
 
 
-<section class="hero" style="padding:78px 0 40px">
+<section class="hero">
   <div class="wrap">
-    <h1 style="font-size:clamp(32px,4.6vw,52px)">关于 <span class="g">meansights</span></h1>
+    <h1>关于 <span class="g">meansights</span></h1>
+    <p class="lede">用 AI，让每一家企业都<b>用得起专业咨询级的 HR 服务</b>。</p>
   </div>
 </section>
 
