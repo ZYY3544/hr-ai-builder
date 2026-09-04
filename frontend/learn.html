@@ -67,7 +67,6 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display
 .tp-h .ar{color:var(--faint);font-size:10px;transition:.15s;flex:0 0 auto}
 .tp.open .tp-h .ar{transform:rotate(90deg)}
 .tp-h .nm{flex:1;line-height:1.45}
-.tp-h .ct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;flex:0 0 auto}
 .tp-l{display:none;padding:1px 0 4px 15px}
 .tp.open .tp-l{display:block}
 /* 节：最浅的一档（--muted），当前节才用主色 */
@@ -349,7 +348,7 @@ function renderTree(filter){
       const rdy=t.lessons.filter(l=>l.ready);
       const open = kw || t.lessons.some(l=>l.file===f);
       ptHtml+=`<div class="tp ${open?'open':''}">
-        <div class="tp-h"><span class="ar">▸</span><span class="nm">${t.title}</span><span class="ct">${rdy.length} 节</span></div>
+        <div class="tp-h"><span class="ar">▸</span><span class="nm">${t.title}</span></div>
         <div class="tp-l">${ls.map(l=>{
           if(!l.ready) return `<div class="ls off"><span class="dot"></span><span>${l.title} · 待写</span></div>`;
           const lock=(typeof loggedIn==='function'&&!loggedIn()&&!FREE_PARTS.includes(p.num))?'<span class="lk">🔒</span>':'';
