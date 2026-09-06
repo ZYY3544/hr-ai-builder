@@ -54,54 +54,40 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 @media(max-width:860px){.nav .links{display:none}}
 @media(max-width:640px){.wrap{padding:0 20px}}
 
-/* ---------- HERO ---------- */
-.hero{position:relative;text-align:center;padding:78px 0 72px;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
-  radial-gradient(1400px 130% at 50% -18%, rgba(0,168,138,.16), transparent 72%);
-  /* 底部渐隐罩:光晕在区块底边前必归零,矮 hero 不再被截出硬边 */
-  mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);
-  -webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);}
-.hero::after{content:'';position:absolute;inset:0;z-index:-1;
-  /* 事件层+网格同画布:2 个 teal 点亮格(数据表选中单元格)+5 个交点十字(坐标定位点),
-     全部 calc(50%±52 的倍数) 锚定视口中心,与居中铺开的网格天然对齐;渐隐罩统一压淡边缘 */
-  background-image:
-    linear-gradient(rgba(0,168,138,.16),rgba(0,168,138,.16)),
-    linear-gradient(rgba(0,168,138,.13),rgba(0,168,138,.13)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.55),rgba(15,23,42,.55)),
-    linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
-  background-size:52px 52px,52px 52px,
-    9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,9px 1px,1px 9px,
-    52px 52px,52px 52px;
-  background-position:
-    calc(50% - 468px) 156px, calc(50% + 468px) 260px,
-    calc(50% - 546px) 104px, calc(50% - 546px) 100px,
-    calc(50% + 598px) 104px, calc(50% + 598px) 100px,
-    calc(50% - 442px) 312px, calc(50% - 442px) 308px,
-    calc(50% + 546px) 208px, calc(50% + 546px) 204px,
-    calc(50% - 338px) 364px, calc(50% - 338px) 360px,
-    calc(50% + 390px) 364px, calc(50% + 390px) 360px,
-    50% 0, 50% 0;
-  background-repeat:no-repeat,no-repeat,
-    no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,
-    repeat,repeat;
-  mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);
-  -webkit-mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);}
-@media(max-width:860px){ /* 手机上标记会撞正文,退回纯网格 */
-  .hero::after{background-image:linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
-    background-size:52px 52px;background-position:50% 0;background-repeat:repeat}}
+/* ---------- HERO：深色曦光 × 左右结构（2026-09-06 定稿；coach / tasks 两页同款，首页保持浅色） ----------
+   底 = logo 的 Graphite；右下升起的放射线是品牌「曦光」母题；左边说话，右边放这一页自己的对象。 */
+.hero{position:relative;padding:72px 0 66px;overflow:hidden;background:#0B1220;color:#F4F7F9;text-align:left}
+.hero::before{content:'';position:absolute;inset:-20% -10% -40% 30%;z-index:0;pointer-events:none;
+  background:repeating-conic-gradient(from 212deg at 100% 100%,rgba(35,194,163,.15) 0deg 1.2deg,transparent 1.2deg 7deg);
+  mask-image:radial-gradient(60% 90% at 100% 100%,#000 20%,transparent 75%);
+  -webkit-mask-image:radial-gradient(60% 90% at 100% 100%,#000 20%,transparent 75%)}
+.hero::after{content:'';position:absolute;right:-8%;bottom:-55%;width:58%;height:120%;z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(35,194,163,.26),transparent 70%)}
+.hero .horizon{position:absolute;left:0;right:0;bottom:0;height:1px;z-index:1;
+  background:linear-gradient(90deg,transparent,rgba(35,194,163,.7) 40%,rgba(35,194,163,.7) 60%,transparent)}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:56px;align-items:center}
+.hero .hleft{display:flex;flex-direction:column;align-items:flex-start;gap:18px;min-width:0}
+.hero .kicker{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#23C2A3}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.12;letter-spacing:-.042em;margin:0;font-weight:650;text-wrap:balance;color:#F4F7F9}
+.hero h1 .g{background:linear-gradient(100deg,#7DB4FF 0%,#2CC9B0 50%,#BFF3E6 100%);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero .lede{font-size:16px;line-height:2;color:#AEB9C8;max-width:34em;margin:0;text-wrap:balance}
+.hero .lede b{color:#F4F7F9;font-weight:500}
+.cta{display:flex;gap:12px;justify-content:flex-start;margin-top:8px;flex-wrap:wrap}
+/* 右侧对象：半透明面板，一行一条 */
+.hero .slab{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:6px 26px;min-width:0;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.hero .srow{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;padding:18px 0;
+  border-top:1px solid rgba(255,255,255,.08);color:inherit;text-decoration:none;transition:.15s}
+.hero .srow:first-child{border-top:0}
+a.srow:hover span{color:#F4F7F9}
+.hero .srow b{font-size:34px;font-weight:700;letter-spacing:-.03em;color:#F4F7F9;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.1}
+.hero .srow b i{font-style:normal;font-size:14px;font-weight:600;color:#8A97AB;margin-left:3px;letter-spacing:0}
+.hero .srow span{font-size:13px;color:#AEB9C8;line-height:1.65;transition:.15s}
+.hero .srow span em{font-style:normal;display:block;font-size:11.5px;color:#6B7893;margin-top:2px;letter-spacing:.02em}
+.hero .sfoot{font-size:11px;color:#6B7893;padding:10px 0 12px;letter-spacing:.04em}
+@media(max-width:960px){.hero{padding:52px 0 48px}.hero .wrap{grid-template-columns:1fr;gap:34px}.hero::before{inset:-20% -30% -40% 0}}
+@media(max-width:640px){.hero .slab{padding:2px 18px}.hero .srow{padding:14px 0}.hero .srow b{font-size:28px}}
 @keyframes hue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
@@ -112,13 +98,6 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   box-shadow:0 0 0 3px rgba(0,198,162,.2)}
 .pill b{font-weight:600}
 
-.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.16;letter-spacing:-.042em;
-  max-width:15em;margin:0 auto;font-weight:650}
-.hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
-  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:42em;margin:24px auto 0;text-wrap:balance}
-.hero .lede b{color:var(--ink);font-weight:500}
-.hero .lede .hl{font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 
 .statline{margin-top:26px;font-size:12.5px;color:var(--muted);letter-spacing:.01em}
@@ -374,10 +353,22 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 
 <section class="hero">
   <div class="wrap">
-    <h1>实战任务</h1>
-    <p class="lede">每个任务的原型都是<b>真实交付过的活</b>，材料全是程序生成的假数据——放心贴给任何 AI 工具。
-    先看下面的玩法，再挑一个开做。</p>
+    <div class="hleft">
+      <div class="kicker">实战任务 · 三个真活</div>
+      <h1>实战任务</h1>
+      <p class="lede">每个任务的原型都是<b>真实交付过的活</b>，材料全是程序生成的假数据——放心贴给任何 AI 工具。先看下面的玩法，再挑一个开做。</p>
+      <div class="cta">
+        <a class="btn pri lg" href="#howto">先看怎么玩 →</a>
+      </div>
+    </div>
+    <div class="slab">
+      <a class="srow" href="#t01" data-t="t01"><b>01</b><span>人力月报：从一句模糊的需求到一张能对数的报表<em>数据活 · ★★★★ · 完整战役</em></span></a>
+      <a class="srow" href="#t02" data-t="t02"><b>02</b><span>把静态问卷改造成会追问的调研 agent<em>设计活 · ★★</em></span></a>
+      <a class="srow" href="#t03" data-t="t03"><b>03</b><span>面试官 prep：让 AI 帮你备一场面试<em>造物活 · ★★★</em></span></a>
+      <div class="sfoot">点任一项直接跳到任务</div>
+    </div>
   </div>
+  <div class="horizon"></div>
 </section>
 
 <section class="band" style="padding:44px 0 52px" id="howto">
@@ -495,6 +486,15 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     try{ history.replaceState(null,'','#'+b.getAttribute('data-t')); }catch(e){}
   };});
   if(/^#t0[123]$/.test(location.hash)) showT(location.hash.slice(1));
+  /* 标题区右侧任务列表：点一项 = 切到对应 tab 并滚过去（复用 .ttab 自己的 onclick，不另写一份切换逻辑） */
+  document.querySelectorAll('.hero a[data-t]').forEach(function(a){
+    a.addEventListener('click', function(ev){
+      ev.preventDefault();
+      var b=document.querySelector('.ttab[data-t="'+a.getAttribute('data-t')+'"]'); if(b) b.click();
+      var t=document.getElementById('ttabs'); if(!t) return;
+      window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-84, behavior:'smooth'});
+    });
+  });
 
   /* 任务材料下载埋点：漏斗从「打开任务页」到「下载了哪个包」之间,原来是黑的。
      登录用户同时记一笔战役进度(已领任务包),Sparky 学习小结靠它感知 */
