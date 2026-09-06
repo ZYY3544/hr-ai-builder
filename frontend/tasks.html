@@ -304,6 +304,12 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 .pstep .pd b{color:var(--ink);font-weight:500}
 .pstep:not(:last-child)::after{content:'';position:absolute;top:18px;left:calc(50% + 25px);right:calc(-50% + 25px);
   height:2px;background:repeating-linear-gradient(90deg,var(--pri) 0 6px,transparent 6px 11px);opacity:.5}
+/* 手机：四步改 2×2，不再横向溢出（之前 min-width:640 在 390 宽只露出前两步） */
+@media(max-width:640px){
+  .path{padding:26px 16px;overflow:visible}
+  .path-line{min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:28px 6px}
+  .pstep:nth-child(2)::after{display:none}
+}
 .after{margin-top:16px;border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
   padding:14px 18px;font-size:13px;line-height:2;color:var(--ink)}
 .after b{font-weight:600}

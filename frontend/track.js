@@ -110,4 +110,72 @@
       location.reload();
     };
   }, true);
+  /* ── 手机端站内导航（2026-09-06）──
+     ≤960px 时各页顶栏的 .glinks 直接 display:none，之前没有任何替代入口：
+     手机（也就是微信里点开的绝大多数人）到不了岗位机会 / 实战任务 / 职业辅导 / 关于。
+     这里全站统一注入一个菜单按钮 + 顶栏下方的下拉面板；链接是从各页自己的 .glinks
+     克隆出来的，所以 tab 增删、当前页高亮(.cur) 都只需改各页那一份，不会漂移。
+     z-index 放在账户菜单(9999)之下、页面内容之上。 */
+  function mountMobileNav() {
+    var links = document.querySelector('.glinks');
+    var right = document.querySelector('.gright');
+    if (!links || !right || document.getElementById('hab-mnav-btn')) return;
+    var hdr = right.closest ? (right.closest('header') || right.closest('.top')) : null;
+
+    var css = document.createElement('style');
+    css.textContent =
+      '#hab-mnav-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;border:0;' +
+        'background:none;border-radius:9px;color:var(--muted,#64748B);cursor:pointer;padding:0;margin-right:2px;-webkit-tap-highlight-color:transparent}' +
+      '#hab-mnav-btn svg{width:22px;height:22px;display:block}' +
+      '#hab-mnav-btn.open{color:var(--ink,#0F172A);background:#F1F5F9}' +
+      '#hab-mnav{display:none;position:fixed;left:0;right:0;z-index:9990;background:#fff;' +
+        'border-bottom:1px solid var(--line,#E2E8F0);box-shadow:0 18px 40px -12px rgba(15,23,42,.18);padding:4px 0 8px}' +
+      '#hab-mnav.open{display:block}' +
+      '#hab-mnav a{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;font-size:15px;' +
+        'font-weight:600;color:var(--ink,#0F172A);text-decoration:none;border-top:1px solid #F1F5F9}' +
+      '#hab-mnav a:first-child{border-top:0}' +
+      '#hab-mnav a.cur{color:var(--pri,#00A88A)}' +
+      '#hab-mnav a.cur::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--pri,#00A88A)}' +
+      '#hab-mnav-mask{display:none;position:fixed;left:0;right:0;bottom:0;z-index:9989;background:rgba(15,23,42,.22)}' +
+      '#hab-mnav-mask.open{display:block}' +
+      '@media(max-width:960px){#hab-mnav-btn{display:inline-flex}.gright{margin-left:auto}}';
+    document.head.appendChild(css);
+
+    var ICON_MENU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>';
+    var ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+    var btn = document.createElement('button');
+    btn.id = 'hab-mnav-btn'; btn.type = 'button';
+    btn.setAttribute('aria-label', '站内导航'); btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = ICON_MENU;
+    right.insertBefore(btn, right.firstChild);
+
+    var panel = document.createElement('nav');
+    panel.id = 'hab-mnav'; panel.setAttribute('aria-label', '站内导航');
+    var as = links.querySelectorAll('a');
+    for (var i = 0; i < as.length; i++) {
+      var a = document.createElement('a');
+      a.href = as[i].getAttribute('href'); a.textContent = as[i].textContent.trim();
+      if (as[i].classList.contains('cur')) a.className = 'cur';
+      panel.appendChild(a);
+    }
+    var mask = document.createElement('div'); mask.id = 'hab-mnav-mask';
+    document.body.appendChild(mask); document.body.appendChild(panel);
+
+    function place() {
+      var top = hdr ? Math.max(0, Math.round(hdr.getBoundingClientRect().bottom)) : 60;
+      panel.style.top = top + 'px'; mask.style.top = top + 'px';
+    }
+    function setOpen(on) {
+      place();
+      panel.classList.toggle('open', on); mask.classList.toggle('open', on); btn.classList.toggle('open', on);
+      btn.innerHTML = on ? ICON_X : ICON_MENU; btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setOpen(!panel.classList.contains('open')); });
+    mask.addEventListener('click', function () { setOpen(false); });
+    window.addEventListener('resize', function () { if (panel.classList.contains('open')) setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel.classList.contains('open')) setOpen(false); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountMobileNav);
+  else mountMobileNav();
 })();
