@@ -204,6 +204,16 @@ section{scroll-margin-top:72px}
   padding:14px 18px;font-size:12.5px;line-height:2;color:var(--ink);margin-top:22px}
 .rules b{font-weight:600}
 /* 场景两卡 */
+/* ② 我们可以帮你什么（2026-09-06 重排）：两行「处境 → 三个动作」，不加框——与标题区、履历段同一套左右节奏 */
+.ways{margin-top:48px;display:flex;flex-direction:column;gap:64px}
+.way{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start}
+.wwho .wmark{width:28px;height:3px;border-radius:2px;background:var(--grad-r);margin-bottom:16px}
+.wwho h3{font-size:26px;font-weight:650;letter-spacing:-.02em;color:var(--ink);line-height:1.2;margin:0}
+.wwho p{font-size:15px;color:var(--muted);line-height:1.8;margin:10px 0 0;max-width:20em;text-wrap:balance}
+.moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 28px;padding-top:4px}
+.mv b{display:block;font-size:15px;font-weight:650;color:var(--ink);line-height:1.55;margin-bottom:8px;text-wrap:balance}
+.mv>span{display:block;font-size:13.5px;color:var(--body);line-height:1.9}
+@media(max-width:920px){.way{grid-template-columns:1fr;gap:22px}.moves{grid-template-columns:1fr;gap:22px}.ways{gap:48px}}
 .scenes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px;align-items:stretch}
 @media(max-width:920px){.scenes{grid-template-columns:1fr}}
 .scene{border-color:rgba(0,168,138,.4);box-shadow:0 14px 40px -22px rgba(0,168,138,.35);padding:28px 30px}
@@ -293,26 +303,33 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     <div class="eyebrow">What We Do</div>
     <h2>我们可以帮你什么</h2>
     <p class="desc">不管你是应届毕业生，还是已经工作了几年的职场人士，我们都欢迎你来聊聊。</p>
-    <div class="scenes">
-      <div class="sc scene">
-        <div class="who">应届毕业生</div>
-        <div class="t">想拿到第一份高薪 AI offer，但不知道从哪儿下手</div>
-        <div class="d">
-          <div class="li"><b>不是传统的改简历、押面经</b>——传统辅导教你把简历改得更像样，我们教你成为 <span class="hl">AI Native 组织正在找的人</span>。</div>
-          <div class="li"><b>教你做出真东西</b>——<span class="hl">能跑、能用、能部署的 agent</span>，写出自己的 skills。面试桌上现场演示，不是 PPT 里的「项目经历」。</div>
-          <div class="li"><b>帮你看懂大厂的用人逻辑</b>——这批新岗位为什么出现、要什么样的人，<span class="hl">从底层逻辑搞明白</span>；简历和面试照着这个来写、来练。</div>
+    <div class="ways">
+      <article class="way">
+        <div class="wwho">
+          <div class="wmark"></div>
+          <h3>应届毕业生</h3>
+          <p>想拿到第一份高薪 AI offer，但不知道从哪儿下手</p>
         </div>
-      </div>
-      <div class="sc scene">
-        <div class="who">职场人士</div>
-        <div class="t">AI 来了，却对自己的职业发展陷入焦虑和迷茫</div>
-        <div class="d">
-          <div class="li"><b>教练式全程跟踪</b>——不管换不换工作：帮你<span class="hl">梳理职业规划</span>，补齐 AI 认知与能力素质。</div>
-          <div class="li"><b>手把手教你做出自己的 skills 和 agent</b>——<span class="hl">用 AI 的思维方式重新理解业务和 HR 流程</span>。</div>
-          <div class="li"><b>真想换工作？</b><span class="hl">免费推荐互联网大厂的在招机会</span>，简历改写、作品指导、面试辅导，一路跟到 offer。</div>
+        <div class="moves">
+          <div class="mv"><b>不是传统的改简历、押面经</b><span>传统辅导教你把简历改得更像样，我们教你成为 <span class="hl">AI Native 组织正在找的人</span>。</span></div>
+          <div class="mv"><b>教你做出真东西</b><span><span class="hl">能跑、能用、能部署的 agent</span>，写出自己的 skills。面试桌上现场演示，不是 PPT 里的「项目经历」。</span></div>
+          <div class="mv"><b>帮你看懂大厂的用人逻辑</b><span>这批新岗位为什么出现、要什么样的人，<span class="hl">从底层逻辑搞明白</span>；简历和面试照着这个来写、来练。</span></div>
         </div>
-      </div>
+      </article>
+      <article class="way">
+        <div class="wwho">
+          <div class="wmark"></div>
+          <h3>职场人士</h3>
+          <p>AI 来了，却对自己的职业发展陷入焦虑和迷茫</p>
+        </div>
+        <div class="moves">
+          <div class="mv"><b>教练式全程跟踪</b><span>不管换不换工作：帮你<span class="hl">梳理职业规划</span>，补齐 AI 认知与能力素质。</span></div>
+          <div class="mv"><b>手把手教你做出自己的 skills 和 agent</b><span><span class="hl">用 AI 的思维方式重新理解业务和 HR 流程</span>。</span></div>
+          <div class="mv"><b>真想换工作？</b><span><span class="hl">免费推荐互联网大厂的在招机会</span>，简历改写、作品指导、面试辅导，一路跟到 offer。</span></div>
+        </div>
+      </article>
     </div>
+  </div>
   </section>
 
 <!-- ========== ③ 你可以充分信任我们 ========== -->
