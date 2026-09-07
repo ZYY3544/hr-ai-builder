@@ -75,11 +75,10 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 @media(max-width:1080px){.glinks{gap:2px}.glinks a{font-size:12.5px;padding:6px 6px;letter-spacing:0}}
 @media(max-width:960px){.glinks{display:none}}
 
-/* ---------- HERO：浅色 × 左右结构（2026-09-06 定稿；coach / tasks 两页同款）----------
-   背景纹理与其余页面完全一样（光晕 + 网格事件层）；左边说话，右边放这一页自己的对象——不加框、不加线，只靠留白。 */
-.hero{position:relative;text-align:left;padding:78px 0 72px;overflow:hidden} /* 不设底色：网格与光晕伪元素在 z-index 负层，设了底色会把它们盖掉 */
+/* ---------- HERO ---------- */
+.hero{position:relative;text-align:center;padding:78px 0 72px;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
-  radial-gradient(1200px 130% at 80% -18%, rgba(0,168,138,.16), transparent 72%);
+  radial-gradient(1400px 130% at 50% -18%, rgba(0,168,138,.16), transparent 72%);
   /* 底部渐隐罩:光晕在区块底边前必归零,矮 hero 不再被截出硬边 */
   mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);
   -webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);}
@@ -118,32 +117,12 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   background-repeat:no-repeat,no-repeat,
     no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,
     repeat,repeat;
-  mask-image:radial-gradient(820px 80% at 82% 42%,#000 0%,rgba(0,0,0,.6) 45%,rgba(0,0,0,.15) 72%,transparent 95%);
-  -webkit-mask-image:radial-gradient(820px 80% at 82% 42%,#000 0%,rgba(0,0,0,.6) 45%,rgba(0,0,0,.15) 72%,transparent 95%);}
+  mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);
+  -webkit-mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);}
 @media(max-width:860px){ /* 手机上标记会撞正文,退回纯网格 */
   .hero::after{background-image:linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
     linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
     background-size:52px 52px;background-position:50% 0;background-repeat:repeat}}
-.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:center}
-.hero .hleft{display:flex;flex-direction:column;align-items:flex-start;gap:18px;min-width:0}
-.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.12;letter-spacing:-.042em;margin:0;font-weight:650;text-wrap:balance}
-.hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
-  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:34em;margin:0;text-wrap:balance}
-.hero .lede b{color:var(--ink);font-weight:500}
-.cta{display:flex;gap:12px;justify-content:flex-start;margin-top:8px;flex-wrap:wrap}
-/* 右侧对象：证据的分量——一列小号数字 + 一句说明，整块是一个 grid 让数字列对齐，无框无线 */
-.hero .slab{display:grid;grid-template-columns:auto 1fr;gap:14px 14px;align-items:baseline;min-width:0;padding:4px 0}
-.hero .shead{grid-column:1/-1;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.hero .srow{display:contents;color:inherit;text-decoration:none}
-.hero .srow b{font-size:22px;font-weight:650;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.2;transition:.15s}
-.hero .srow b i{font-style:normal;font-size:12.5px;font-weight:500;color:var(--muted);margin-left:2px;letter-spacing:0}
-.hero .srow span{font-size:13.5px;color:var(--muted);line-height:1.6;transition:.15s}
-.hero .srow span em{font-style:normal;display:block;font-size:11.5px;color:var(--faint,#94A3B8);margin-top:1px;letter-spacing:.02em}
-a.srow:hover span{color:var(--ink)}
-a.srow:hover b{color:var(--pri)}
-@media(max-width:960px){.hero{padding:52px 0 48px}.hero .wrap{grid-template-columns:1fr;gap:36px}}
-@media(max-width:640px){.hero .slab{gap:12px 12px}.hero .srow b{font-size:20px}}
 @keyframes hue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
   background:#fff;border:1px solid var(--line);border-radius:30px;
@@ -152,6 +131,13 @@ a.srow:hover b{color:var(--pri)}
 .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);
   box-shadow:0 0 0 3px rgba(0,198,162,.2)}
 .pill b{font-weight:600;color:var(--ink)}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.16;letter-spacing:-.042em;
+  max-width:16em;margin:0 auto;font-weight:650}
+.hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:42em;margin:24px auto 0;text-wrap:balance}
+.hero .lede b{color:var(--ink);font-weight:500}
+.cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
 .btn{font:inherit;font-size:12.5px;font-weight:500;padding:6.5px 14px;border-radius:var(--r-s);border:1px solid var(--line);
   color:var(--body);background:#fff;cursor:pointer;transition:.18s;display:inline-block;white-space:nowrap}
 .btn:hover{border-color:var(--pri);color:var(--pri)}
@@ -165,7 +151,7 @@ a.srow:hover b{color:var(--pri)}
 /* ---------- bands ---------- */
 section{scroll-margin-top:72px}
 .band{padding:78px 0}
-/* 2026-09-06 用户拍板：本页段落间不画分割线 */
+.band+.band,.band+.final{border-top:1px solid var(--line)}
 .band.alt{background:linear-gradient(180deg,#fff 0,var(--bg) 96px,var(--bg) calc(100% - 96px),#fff 100%)}
 .band h2{font-size:clamp(26px,3.2vw,36px);letter-spacing:-.03em;margin-top:14px;line-height:1.25}
 .band .desc{font-size:15px;color:var(--muted);max-width:46em;margin-top:16px;line-height:2}
@@ -204,16 +190,6 @@ section{scroll-margin-top:72px}
   padding:14px 18px;font-size:12.5px;line-height:2;color:var(--ink);margin-top:22px}
 .rules b{font-weight:600}
 /* 场景两卡 */
-/* ② 我们可以帮你什么（2026-09-06 重排）：两行「处境 → 三个动作」，不加框——与标题区、履历段同一套左右节奏 */
-.ways{margin-top:48px;display:flex;flex-direction:column;gap:64px}
-.way{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start}
-.wwho .wmark{width:28px;height:3px;border-radius:2px;background:var(--grad-r);margin-bottom:16px}
-.wwho h3{font-size:26px;font-weight:650;letter-spacing:-.02em;color:var(--ink);line-height:1.2;margin:0}
-.wwho p{font-size:15px;color:var(--muted);line-height:1.8;margin:10px 0 0;max-width:20em;text-wrap:balance}
-.moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 28px;padding-top:4px}
-.mv b{display:block;font-size:15px;font-weight:650;color:var(--ink);line-height:1.55;margin-bottom:8px;text-wrap:balance}
-.mv>span{display:block;font-size:13.5px;color:var(--body);line-height:1.9}
-@media(max-width:920px){.way{grid-template-columns:1fr;gap:22px}.moves{grid-template-columns:1fr;gap:22px}.ways{gap:48px}}
 .scenes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px;align-items:stretch}
 @media(max-width:920px){.scenes{grid-template-columns:1fr}}
 .scene{border-color:rgba(0,168,138,.4);box-shadow:0 14px 40px -22px rgba(0,168,138,.35);padding:28px 30px}
@@ -280,19 +256,34 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 <!-- ========== HERO ========== -->
 <section class="hero">
   <div class="wrap">
-    <div class="hleft">
-      <div class="eyebrow">职业辅导 · 一对一</div>
-      <h1>成为 <span class="g">HR AI Builder</span></h1>
-      <p class="lede">大厂在抢的不是「会用 AI 的 HR」，是<b>能亲手做出 agent 的 HR AI Builder</b>。在职想转型、应届想入行——一对一辅导，<b>把你变成那个被抢的人</b>。</p>
-      <div class="cta">
-        <a class="btn pri lg" href="jobs.html">先看岗位机会 →</a>
-      </div>
+    <h1>成为 <span class="g">HR AI Builder</span></h1>
+    <p class="lede">大厂在抢的不是「会用 AI 的 HR」，是<b>能亲手做出 agent 的 HR AI Builder</b>。<br>
+      在职想转型、应届想入行——一对一辅导，<b>把你变成那个被抢的人</b>。</p>
+    <div class="cta">
+      <a class="btn pri lg" href="jobs.html">先看岗位机会 →</a>
     </div>
-    <div class="slab">
-      <div class="shead">站内岗位库 · 三个数字</div>
-      <div class="srow"><b>25<i>家</i></b><span>一线大厂在招 HR AI 岗位，共 54 条在招</span></div>
-      <div class="srow"><b>30-60k<i>/月</i></b><span>主流薪资带，经验要求多为 3-5 年</span></div>
-      <div class="srow"><b>7.6%</b><span>字节 225 个 HR 岗位里，真要求 AI 能力的只有 17 个</span></div>
+  </div>
+</section>
+
+<!-- ========== ① 必然的转型之路 ========== -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow">Why Now</div>
+    <h2>HR AI Builder 是必然的转型之路，<br>先行者得到奖励</h2>
+    <p class="desc">三个数字，看懂现在的市场。</p>
+    <div class="facts">
+      <div class="fct">
+        <div class="n">25 家大厂</div>
+        <div class="d">字节、百度、京东、美团、快手、小米、网易、蚂蚁、理想、小鹏、联想……岗位库 38 家公司里，<b>一线互联网与科技公司占 25 家、54 条在招岗位</b>。这不是某一家的实验，是整个市场在同时下注。</div>
+      </div>
+      <div class="fct">
+        <div class="n">30-60k<small>·月</small></div>
+        <div class="d">这批岗位的主流薪资带，经验要求大多 <b>3-5 年</b>——库里写明年限的岗位，中位数正是 3 年。往上能探到 100-120k 的智能体架构，往下连基层 SSC 都在要 AI 能力：<b>天花板很高，门票不贵。</b></div>
+      </div>
+      <div class="fct">
+        <div class="n">7.6%</div>
+        <div class="d">字节 225 个 HR 在招岗位里，真要求 AI 能力的只有 17 个；30-50k 的人才系统专家 JD 甚至写着<b>「不限专业和经验」</b>——市场上找不到有经验的人。比例这么低说明这事才刚开始：<b>现在入场，你和先行者之间没有代差——你就是先行者</b>。</div>
+      </div>
     </div>
   </div>
 </section>
@@ -303,33 +294,26 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     <div class="eyebrow">What We Do</div>
     <h2>我们可以帮你什么</h2>
     <p class="desc">不管你是应届毕业生，还是已经工作了几年的职场人士，我们都欢迎你来聊聊。</p>
-    <div class="ways">
-      <article class="way">
-        <div class="wwho">
-          <div class="wmark"></div>
-          <h3>应届毕业生</h3>
-          <p>想拿到第一份高薪 AI offer，但不知道从哪儿下手</p>
+    <div class="scenes">
+      <div class="sc scene">
+        <div class="who">应届毕业生</div>
+        <div class="t">想拿到第一份高薪 AI offer，但不知道从哪儿下手</div>
+        <div class="d">
+          <div class="li"><b>不是传统的改简历、押面经</b>——传统辅导教你把简历改得更像样，我们教你成为 <span class="hl">AI Native 组织正在找的人</span>。</div>
+          <div class="li"><b>教你做出真东西</b>——<span class="hl">能跑、能用、能部署的 agent</span>，写出自己的 skills。面试桌上现场演示，不是 PPT 里的「项目经历」。</div>
+          <div class="li"><b>帮你看懂大厂的用人逻辑</b>——这批新岗位为什么出现、要什么样的人，<span class="hl">从底层逻辑搞明白</span>；简历和面试照着这个来写、来练。</div>
         </div>
-        <div class="moves">
-          <div class="mv"><b>不是传统的改简历、押面经</b><span>传统辅导教你把简历改得更像样，我们教你成为 <span class="hl">AI Native 组织正在找的人</span>。</span></div>
-          <div class="mv"><b>教你做出真东西</b><span><span class="hl">能跑、能用、能部署的 agent</span>，写出自己的 skills。面试桌上现场演示，不是 PPT 里的「项目经历」。</span></div>
-          <div class="mv"><b>帮你看懂大厂的用人逻辑</b><span>这批新岗位为什么出现、要什么样的人，<span class="hl">从底层逻辑搞明白</span>；简历和面试照着这个来写、来练。</span></div>
+      </div>
+      <div class="sc scene">
+        <div class="who">职场人士</div>
+        <div class="t">AI 来了，却对自己的职业发展陷入焦虑和迷茫</div>
+        <div class="d">
+          <div class="li"><b>教练式全程跟踪</b>——不管换不换工作：帮你<span class="hl">梳理职业规划</span>，补齐 AI 认知与能力素质。</div>
+          <div class="li"><b>手把手教你做出自己的 skills 和 agent</b>——<span class="hl">用 AI 的思维方式重新理解业务和 HR 流程</span>。</div>
+          <div class="li"><b>真想换工作？</b><span class="hl">免费推荐互联网大厂的在招机会</span>，简历改写、作品指导、面试辅导，一路跟到 offer。</div>
         </div>
-      </article>
-      <article class="way">
-        <div class="wwho">
-          <div class="wmark"></div>
-          <h3>职场人士</h3>
-          <p>AI 来了，却对自己的职业发展陷入焦虑和迷茫</p>
-        </div>
-        <div class="moves">
-          <div class="mv"><b>教练式全程跟踪</b><span>不管换不换工作：帮你<span class="hl">梳理职业规划</span>，补齐 AI 认知与能力素质。</span></div>
-          <div class="mv"><b>手把手教你做出自己的 skills 和 agent</b><span><span class="hl">用 AI 的思维方式重新理解业务和 HR 流程</span>。</span></div>
-          <div class="mv"><b>真想换工作？</b><span><span class="hl">免费推荐互联网大厂的在招机会</span>，简历改写、作品指导、面试辅导，一路跟到 offer。</span></div>
-        </div>
-      </article>
+      </div>
     </div>
-  </div>
   </section>
 
 <!-- ========== ③ 你可以充分信任我们 ========== -->

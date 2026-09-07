@@ -54,11 +54,10 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
 @media(max-width:860px){.nav .links{display:none}}
 @media(max-width:640px){.wrap{padding:0 20px}}
 
-/* ---------- HERO：浅色 × 左右结构（2026-09-06 定稿；coach / tasks 两页同款）----------
-   背景纹理与其余页面完全一样（光晕 + 网格事件层）；左边说话，右边放这一页自己的对象——不加框、不加线，只靠留白。 */
-.hero{position:relative;text-align:left;padding:78px 0 72px;overflow:hidden} /* 不设底色：网格与光晕伪元素在 z-index 负层，设了底色会把它们盖掉 */
+/* ---------- HERO ---------- */
+.hero{position:relative;text-align:center;padding:78px 0 72px;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;z-index:-2;background:
-  radial-gradient(1200px 130% at 80% -18%, rgba(0,168,138,.16), transparent 72%);
+  radial-gradient(1400px 130% at 50% -18%, rgba(0,168,138,.16), transparent 72%);
   /* 底部渐隐罩:光晕在区块底边前必归零,矮 hero 不再被截出硬边 */
   mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);
   -webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 98%);}
@@ -97,32 +96,12 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);
   background-repeat:no-repeat,no-repeat,
     no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,
     repeat,repeat;
-  mask-image:radial-gradient(820px 80% at 82% 42%,#000 0%,rgba(0,0,0,.6) 45%,rgba(0,0,0,.15) 72%,transparent 95%);
-  -webkit-mask-image:radial-gradient(820px 80% at 82% 42%,#000 0%,rgba(0,0,0,.6) 45%,rgba(0,0,0,.15) 72%,transparent 95%);}
+  mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);
+  -webkit-mask-image:radial-gradient(880px 75% at 50% 34%,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.18) 68%,transparent 92%);}
 @media(max-width:860px){ /* 手机上标记会撞正文,退回纯网格 */
   .hero::after{background-image:linear-gradient(rgba(15,23,42,.085) 1px,transparent 1px),
     linear-gradient(90deg,rgba(15,23,42,.085) 1px,transparent 1px);
     background-size:52px 52px;background-position:50% 0;background-repeat:repeat}}
-.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:center}
-.hero .hleft{display:flex;flex-direction:column;align-items:flex-start;gap:18px;min-width:0}
-.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.12;letter-spacing:-.042em;margin:0;font-weight:650;text-wrap:balance}
-.hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
-  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:34em;margin:0;text-wrap:balance}
-.hero .lede b{color:var(--ink);font-weight:500}
-.cta{display:flex;gap:12px;justify-content:flex-start;margin-top:8px;flex-wrap:wrap}
-/* 右侧对象：证据的分量——一列小号数字 + 一句说明，整块是一个 grid 让数字列对齐，无框无线 */
-.hero .slab{display:grid;grid-template-columns:auto 1fr;gap:14px 14px;align-items:baseline;min-width:0;padding:4px 0}
-.hero .shead{grid-column:1/-1;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.hero .srow{display:contents;color:inherit;text-decoration:none}
-.hero .srow b{font-size:22px;font-weight:650;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.2;transition:.15s}
-.hero .srow b i{font-style:normal;font-size:12.5px;font-weight:500;color:var(--muted);margin-left:2px;letter-spacing:0}
-.hero .srow span{font-size:13.5px;color:var(--muted);line-height:1.6;transition:.15s}
-.hero .srow span em{font-style:normal;display:block;font-size:11.5px;color:var(--faint,#94A3B8);margin-top:1px;letter-spacing:.02em}
-a.srow:hover span{color:var(--ink)}
-a.srow:hover b{color:var(--pri)}
-@media(max-width:960px){.hero{padding:52px 0 48px}.hero .wrap{grid-template-columns:1fr;gap:36px}}
-@media(max-width:640px){.hero .slab{gap:12px 12px}.hero .srow b{font-size:20px}}
 @keyframes hue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
@@ -133,6 +112,13 @@ a.srow:hover b{color:var(--pri)}
   box-shadow:0 0 0 3px rgba(0,198,162,.2)}
 .pill b{font-weight:600}
 
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.16;letter-spacing:-.042em;
+  max-width:15em;margin:0 auto;font-weight:650}
+.hero h1 .g{background:var(--grad);background-size:200% 100%;animation:hue 9s ease-in-out infinite;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero .lede{font-size:16px;line-height:2;color:var(--muted);max-width:42em;margin:24px auto 0;text-wrap:balance}
+.hero .lede b{color:var(--ink);font-weight:500}
+.hero .lede .hl{font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 
 .statline{margin-top:26px;font-size:12.5px;color:var(--muted);letter-spacing:.01em}
@@ -388,20 +374,9 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 
 <section class="hero">
   <div class="wrap">
-    <div class="hleft">
-      <div class="eyebrow">实战任务 · 三个真活</div>
-      <h1>实战任务</h1>
-      <p class="lede">每个任务的原型都是<b>真实交付过的活</b>，材料全是程序生成的假数据——放心贴给任何 AI 工具。先看下面的玩法，再挑一个开做。</p>
-      <div class="cta">
-        <a class="btn pri lg" href="#howto">先看怎么玩 →</a>
-      </div>
-    </div>
-    <div class="slab">
-      <div class="shead">三个任务 · 点了直接跳</div>
-      <a class="srow" href="#t01" data-t="t01"><b>01</b><span>人力月报：从一句模糊的需求到一张能对数的报表<em>数据活 · ★★★★ · 完整战役</em></span></a>
-      <a class="srow" href="#t02" data-t="t02"><b>02</b><span>把静态问卷改造成会追问的调研 agent<em>设计活 · ★★</em></span></a>
-      <a class="srow" href="#t03" data-t="t03"><b>03</b><span>面试官 prep：让 AI 帮你备一场面试<em>造物活 · ★★★</em></span></a>
-    </div>
+    <h1>实战任务</h1>
+    <p class="lede">每个任务的原型都是<b>真实交付过的活</b>，材料全是程序生成的假数据——放心贴给任何 AI 工具。
+    先看下面的玩法，再挑一个开做。</p>
   </div>
 </section>
 
@@ -520,15 +495,6 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     try{ history.replaceState(null,'','#'+b.getAttribute('data-t')); }catch(e){}
   };});
   if(/^#t0[123]$/.test(location.hash)) showT(location.hash.slice(1));
-  /* 标题区右侧任务列表：点一项 = 切到对应 tab 并滚过去（复用 .ttab 自己的 onclick，不另写一份切换逻辑） */
-  document.querySelectorAll('.hero a[data-t]').forEach(function(a){
-    a.addEventListener('click', function(ev){
-      ev.preventDefault();
-      var b=document.querySelector('.ttab[data-t="'+a.getAttribute('data-t')+'"]'); if(b) b.click();
-      var t=document.getElementById('ttabs'); if(!t) return;
-      window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-84, behavior:'smooth'});
-    });
-  });
 
   /* 任务材料下载埋点：漏斗从「打开任务页」到「下载了哪个包」之间,原来是黑的。
      登录用户同时记一笔战役进度(已领任务包),Sparky 学习小结靠它感知 */
