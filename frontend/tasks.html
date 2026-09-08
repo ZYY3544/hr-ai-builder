@@ -312,6 +312,9 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 
 
 /* ---------- 作品评审段（原 review.html 样式，加 .rv 前缀收口） ---------- */
+.rv .accept{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.rv .accept .al{font-size:11.5px;font-weight:600;letter-spacing:.1em;color:var(--pri-d);margin-right:4px}
+.rv .accept .ac{font-size:13px;font-weight:500;color:var(--ink);background:var(--pri-s);border:1px solid rgba(0,168,138,.3);border-radius:99px;padding:5px 13px}
 .rv .blk{padding:30px 0 0}
 .rv .blk h3{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px}
 .rv .hint{font-size:12.5px;color:var(--faint);margin-bottom:20px}
@@ -498,15 +501,21 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 <section class="band rv" style="padding:44px 0 60px" id="review">
   <div class="wrap">
     <div class="eyebrow">Review</div>
-    <h2>做完了？交上来，我们认真看</h2>
-    <p class="desc">你在自己电脑上做任务时，AI 教练一直在旁边。但「做出来了」和「做对了」是两回事——交上来，我们用 <b>Fable 5（最高推理档）+ 自建评审 skills</b> 对照课程口径逐处审，3-5 个工作日给你结果。</p>
+    <h2>做出了东西？交上来，我们认真看</h2>
+    <p class="desc"><b>不限于上面三个任务</b>——你在工作里做的 agent、skills、脚本，或任何自己的 AI 产品和原型，都可以交上来。我们用<b>当前最强的推理模型（Fable 5 最高推理档）+ 自建评审 skills</b> 逐处审，再由 <b>HR 专家人工复核</b>，给你一份综合评估，3-5 个工作日出结果。</p>
+    <div class="accept">
+      <span class="al">都可以交</span>
+      <span class="ac">站内三个实战任务</span>
+      <span class="ac">你在工作中做出的 agent / skills / 自动化脚本</span>
+      <span class="ac">任何自己的 AI 产品、原型或设计方案</span>
+    </div>
 
     <div class="blk">
       <h3>整个循环长这样</h3>
       <div class="flow">
         <div class="flow-line">
           <div class="fstep"><div class="fn">1</div><div class="ft">学</div><div class="fd">读课程<br>过本章小测</div></div>
-          <div class="fstep"><div class="fn">2</div><div class="ft">做</div><div class="fd">领任务包<br>AI 教练陪你干</div></div>
+          <div class="fstep"><div class="fn">2</div><div class="ft">做</div><div class="fd">做站内任务<br>或做你自己的东西</div></div>
           <div class="fstep"><div class="fn">3</div><div class="ft">交</div><div class="fd">提交作品链接<br>+ 决策记录</div></div>
           <div class="fstep"><div class="fn">4</div><div class="ft">评</div><div class="fd">Fable 5 + skills<br>人工复核</div></div>
           <div class="fstep alt"><div class="fn">5</div><div class="ft">改</div><div class="fd">对照报告自己改<br>改完的才是你的</div></div>
@@ -518,7 +527,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 
     <div class="blk">
       <h3>两档，按你要的深度选</h3>
-      <div class="hint">首次提交免费（限评估报告档）——需要你真做过：领过任务包，并附上你的决策记录。也可以打开右下角的 Sparky 发 <b>/交作业</b>，对话里直接提交。</div>
+      <div class="hint">首次提交免费（限评估报告档）。交站内任务请附决策记录；交自己的作品请附一段说明：解决什么问题、怎么做的、最没把握的是哪一段。也可以打开右下角的 Sparky 发 <b>/交作业</b>，对话里直接提交。</div>
       <div class="tiers">
         <div class="tier">
           <div class="tn">评估报告</div>
@@ -551,7 +560,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     <div class="blk">
       <h3>规则，先说清楚</h3>
       <div class="rules">
-        <b>评什么</b>：口径理解是否扎实、该设闸的地方设了没有、Agent 和固定流程分得对不对、有没有验证自己做对了。评的是判断，不只是代码能不能跑。<br>
+        <b>评什么</b>：口径理解是否扎实、该设闸的地方设了没有、Agent 和固定流程分得对不对、有没有验证自己做对了。站内任务对照课程口径评；你自己的作品按同一套标准评，外加「这个东西在真实 HR 场景里站不站得住」。评的是判断，不只是代码能不能跑。<br>
         <b>怎么评</b>：Fable 5 最高推理档 + 我们自建的评审 skills（和课程同一套口径），出结果前人工复核。
         复核的人是 meansights Consulting 创始人——<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，
         跨境电商龙头与互联网大厂组织管理专家经历——评的不只是代码，是判断。<br>
@@ -568,10 +577,17 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
           <option value="report">评估报告 · ¥50（首次免费）</option>
           <option value="agent">评估报告 + 重构版 Agent · ¥300</option>
         </select>
+        <label>作品来源</label>
+        <select id="fSrc">
+          <option value="own">我自己的作品 / 产品 / 原型</option>
+          <option value="t01">站内任务 01 · 人力月报</option>
+          <option value="t02">站内任务 02 · 调研 agent</option>
+          <option value="t03">站内任务 03 · 面试官 prep</option>
+        </select>
         <label>作品链接（GitHub 仓库 / 网盘，确保我们能打开）</label>
         <input id="fLink" type="url" placeholder="https://github.com/你/你的作品">
         <label>说明（做的哪个任务、决策记录在哪、特别想让我们看哪一段）</label>
-        <textarea id="fNote" placeholder="例：做的是 01 人力月报战役，决策记录在 repo 的 DECISIONS.md，最没把握的是 YTD 重分类那段口径……"></textarea>
+        <textarea id="fNote" placeholder="例：这是我给公司做的入职问答 agent，仓库里 README 写了怎么跑，最想让你们看追问逻辑；或：做的是 01 人力月报，决策记录在 DECISIONS.md，最没把握的是 YTD 重分类那段口径……"></textarea>
         <button class="go" id="fGo">提交申请</button>
         <div class="ok" id="fOk">收到。我们会先人工确认这份提交，然后开始评审——3-5 个工作日内你会在微信/站内收到结果通知。首次免费档不用付款；付费档我们确认后会联系你完成付款再开始。</div>
       </div>
@@ -616,7 +632,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     try{
       var r=await fetch(API+'/api/review/apply',{method:'POST',
         headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},
-        body:JSON.stringify({kind:'review', tier:q('#fTier').value, link:link, note:q('#fNote').value.trim()})});
+        body:JSON.stringify({kind:'review', tier:q('#fTier').value, link:link, note:'【来源：'+q('#fSrc').options[q('#fSrc').selectedIndex].text+'】'+q('#fNote').value.trim()})});
       if(!r.ok) throw 0;
       okEl.style.display='block'; btn.textContent='已提交';
     }catch(e){ btn.disabled=false; okEl.style.display='block'; okEl.textContent='没提交上——网络或服务打盹了，过一分钟再点一次。'; }
