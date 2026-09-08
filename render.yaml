@@ -59,7 +59,7 @@ services:
     rootDir: frontend
     staticPublishPath: .
     # 安全头（2026-09-08 安全体检）。CSP 说明：页面里大量内联脚本/样式所以放开 unsafe-inline，
-    # 但脚本只允许本域加载、禁止被 iframe 嵌入、表单只能提交到本域；接口只放行本站后端与铭曦。
+    # 但脚本只允许本域加载、只允许本站自己 iframe 嵌入（learn.html 嵌课件）、表单只能提交到本域；接口只放行本站后端与铭曦。
     # 改 API 域名或接第三方脚本时记得同步这里，否则会被静默拦截（浏览器 console 有 CSP 报错）。
     headers:
       - path: /*
@@ -67,7 +67,7 @@ services:
         value: max-age=31536000; includeSubDomains
       - path: /*
         name: X-Frame-Options
-        value: DENY
+        value: SAMEORIGIN
       - path: /*
         name: X-Content-Type-Options
         value: nosniff
@@ -79,4 +79,4 @@ services:
         value: camera=(), microphone=(), geolocation=(), payment=()
       - path: /*
         name: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src 'self' https://hr-ai-builder-api.onrender.com https://*.meansights.com https://meansights-backend.onrender.com; frame-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src 'self' https://hr-ai-builder-api.onrender.com https://*.meansights.com https://meansights-backend.onrender.com; frame-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
