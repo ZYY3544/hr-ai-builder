@@ -140,6 +140,7 @@ async def notify(request: Request):
     body_bytes = await request.body()
     if not wxp.verify_notify(request.headers, body_bytes):
         return JSONResponse({"code": "FAIL", "message": "签名验证失败"}, status_code=401)
+    print("[pay] 回调验签通过", flush=True)
     try:
         body = json.loads(body_bytes or b"{}")
     except ValueError:
