@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<script>if(location.hostname==='hr-ai-builder-web.onrender.com'){var _m='';try{var _t=localStorage.getItem('hab_token');if(_t){_m='#mig='+encodeURIComponent(JSON.stringify({t:_t,u:localStorage.getItem('hab_user')||'',d:localStorage.getItem('hab_done')||'',b:localStorage.getItem('hab_quiz_best')||'',w:localStorage.getItem('hab_wrong')||'',h:location.hash||''}));}}catch(e){}location.replace('https://learning.meansights.com'+location.pathname+location.search+(_m||location.hash));}else if(location.hash.indexOf('#mig=')===0){try{var _p=JSON.parse(decodeURIComponent(location.hash.slice(5)));if(_p&&_p.t&&!localStorage.getItem('hab_token')){localStorage.setItem('hab_token',_p.t);if(_p.u)localStorage.setItem('hab_user',_p.u);if(_p.d)localStorage.setItem('hab_done',_p.d);if(_p.b)localStorage.setItem('hab_quiz_best',_p.b);if(_p.w)localStorage.setItem('hab_wrong',_p.w);}history.replaceState(null,'',location.pathname+location.search+((_p&&_p.h)||''));}catch(e){}}</script>
+<script>if(location.hostname==='hr-ai-builder-web.onrender.com'){location.replace('https://learning.meansights.com'+location.pathname+location.search+location.hash);}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -425,7 +425,7 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 (function(){try{var u=JSON.parse(localStorage.getItem('hab_user')||'null');
 if(u&&localStorage.getItem('hab_token')){var b=document.getElementById('loginBtn');
 b.className='uava';b.title=(u.nickname||'')+' · 账户';
-b.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+(function(el,u){el.textContent='';if(u.avatar){var im=document.createElement('img');im.alt='';im.src=String(u.avatar);el.appendChild(im);}else{var sp=document.createElement('span');sp.className='ph';sp.textContent=String(u.nickname||'我')[0];el.appendChild(sp);}})(b,u);
 b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 </script>
 
@@ -683,7 +683,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     var t=localStorage.getItem('hab_token'); if(!t) return;
     var lb=document.getElementById('loginBtn');
     var show=function(u){ lb.className='uava'; lb.title=(u.nickname||'')+' · 账户';
-      lb.innerHTML=u.avatar?'<img src="'+u.avatar+'" alt="">':'<span class="ph">'+(u.nickname||'我')[0]+'</span>';
+      (function(el,u){el.textContent='';if(u.avatar){var im=document.createElement('img');im.alt='';im.src=String(u.avatar);el.appendChild(im);}else{var sp=document.createElement('span');sp.className='ph';sp.textContent=String(u.nickname||'我')[0];el.appendChild(sp);}})(lb,u);
       lb.href='javascript:void(0)'; lb.onclick=null; };
     try{ var c=JSON.parse(localStorage.getItem('hab_user')||'null'); if(c) show(c); }catch(e){}  /* 同步先画缓存,不闪"登录" */
     try{

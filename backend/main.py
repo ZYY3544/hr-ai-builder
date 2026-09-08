@@ -37,7 +37,11 @@ async def _limit_body(request, call_next):
     cl = request.headers.get("content-length")
     if cl and cl.isdigit() and int(cl) > _MAX_BODY:
         return JSONResponse({"detail": "body too large"}, status_code=413)
-    return await call_next(request)
+    resp = await call_next(request)
+    resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+    resp.headers.setdefault("Referrer-Policy", "no-referrer")
+    resp.headers.setdefault("X-Frame-Options", "DENY")
+    return resp
 
 app.add_middleware(
     CORSMiddleware,
@@ -880,7 +884,7 @@ def _log_login(openid: str, nickname: str, source: str) -> None:
 @app.get("/api/health")
 def health():
     return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
-            "features": ["login_log", "sec1", "sec2"]}
+            "features": ["login_log", "sec1", "sec2", "sec3"]}
 
 
 @app.get("/api/terms")
