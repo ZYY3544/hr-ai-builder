@@ -355,6 +355,19 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 .rv .how p{margin:0;font-size:13.5px;line-height:1.9;color:var(--body)}
 .rv .how p b{color:var(--ink);font-weight:600}
 @media(max-width:860px){.rv .howgrid{grid-template-columns:1fr;gap:20px}}
+.modal.paym{text-align:center;max-width:380px}
+.pay-brand{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:#07C160;margin-bottom:6px}
+.pay-brand .wxdot{width:9px;height:9px;border-radius:50%;background:#07C160}
+.modal.paym h3{font-size:16px;margin:0}
+.pay-amt{font-size:34px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin:6px 0 12px;font-variant-numeric:tabular-nums}
+.pay-amt b{font-weight:700}
+.pay-qr{width:232px;height:232px;margin:0 auto;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}
+.pay-qr img{width:232px;height:232px;display:block}
+.pay-wait{font-size:13px;color:var(--muted)}
+.pay-st{margin-top:14px;font-size:14px;font-weight:600;color:var(--ink)}
+.pay-st.ok{color:var(--pri-d)}
+.pay-st.err{color:var(--danger,#DC2626);font-weight:500;line-height:1.7}
+.pay-tip{margin-top:6px;font-size:12px;color:var(--muted)}
 .rv .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
   padding:16px 20px;font-size:13px;line-height:2;color:var(--ink)}
 .rv .rules b{font-weight:600}
@@ -590,13 +603,6 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
           <option value="report">评估报告 · ¥50（首次免费）</option>
           <option value="agent">评估报告 + 重构版 Agent · ¥300</option>
         </select>
-        <label>作品来源</label>
-        <select id="fSrc">
-          <option value="own">我自己的作品 / 产品 / 原型</option>
-          <option value="t01">站内任务 01 · 人力月报</option>
-          <option value="t02">站内任务 02 · 调研 agent</option>
-          <option value="t03">站内任务 03 · 面试官 prep</option>
-        </select>
         <label>作品链接（GitHub 仓库 / 网盘，确保我们能打开）</label>
         <input id="fLink" type="url" placeholder="https://github.com/你/你的作品">
         <label>说明（做的哪个任务、决策记录在哪、特别想让我们看哪一段）</label>
@@ -610,6 +616,18 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 
 
 
+
+<div class="mask" id="payMask">
+  <div class="modal paym">
+    <button class="x" id="payClose">×</button>
+    <div class="pay-brand"><span class="wxdot"></span>微信支付</div>
+    <h3 id="payTitle">作品评审 · 评估报告</h3>
+    <div class="pay-amt">¥<b id="payYuan">50</b></div>
+    <div class="pay-qr" id="payQr"><div class="pay-wait">正在生成二维码…</div></div>
+    <div class="pay-st" id="payStatus">打开微信「扫一扫」付款</div>
+    <div class="pay-tip">二维码 <span id="payCd">15:00</span> 内有效 · 付款成功后申请自动提交</div>
+  </div>
+</div>
 
 <div class="mask" id="loginMask">
   <div class="modal">
@@ -638,16 +656,66 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     q('#fTier').value=b.getAttribute('data-tier');
     document.getElementById('apply').scrollIntoView({behavior:'smooth',block:'start'});
   };});
+  var payPoll=null, payCd=null, payNo='';
+  function closePay(){ var m=q('#payMask'); if(m) m.classList.remove('on'); if(payPoll){clearInterval(payPoll);payPoll=null;} if(payCd){clearInterval(payCd);payCd=null;} }
+  q('#payClose').onclick=closePay;
+  async function submitApply(order){
+    var body={kind:'review', tier:q('#fTier').value, link:q('#fLink').value.trim(), note:q('#fNote').value.trim(), order:order||''};
+    var r=await fetch(API+'/api/review/apply',{method:'POST',
+      headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},
+      body:JSON.stringify(body)});
+    var d={}; try{ d=await r.json(); }catch(e){}
+    return {status:r.status, data:d};
+  }
+  function showOk(paid){
+    var btn=q('#fGo'), okEl=q('#fOk');
+    okEl.style.display='block'; btn.textContent='已提交';
+    if(paid) okEl.textContent='已付款，申请已提交。我们会先人工确认这份提交，然后开始评审——3-5 个工作日内你会在微信/站内收到结果通知。';
+  }
+  async function openPay(tier, yuan){
+    var m=q('#payMask'); m.classList.add('on');
+    q('#payTitle').textContent='作品评审 · '+(tier==='agent'?'报告 + 重构版 Agent':'评估报告');
+    q('#payYuan').textContent=yuan; q('#payQr').innerHTML='<div class="pay-wait">正在生成二维码…</div>';
+    var st=q('#payStatus'); st.className='pay-st'; st.textContent='打开微信「扫一扫」付款';
+    var r, d={};
+    try{ r=await fetch(API+'/api/pay/order',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},body:JSON.stringify({kind:'review',tier:tier})}); d=await r.json(); }catch(e){ r=null; }
+    if(!r||!r.ok||!d.qr_svg){
+      q('#payQr').innerHTML='<div class="pay-wait">暂时无法生成二维码</div>';
+      st.className='pay-st err'; st.textContent=(d&&d.detail)||'支付通道暂不可用——把作品链接发到 zynju2014hr@163.com，我们人工处理。';
+      return;
+    }
+    payNo=d.out_trade_no;
+    var img=document.createElement('img'); img.alt='微信支付二维码'; img.src='data:image/svg+xml;utf8,'+encodeURIComponent(d.qr_svg);
+    q('#payQr').innerHTML=''; q('#payQr').appendChild(img);
+    var left=d.expire_s||900, cd=q('#payCd');
+    payCd=setInterval(function(){ left--; if(left<=0){ clearInterval(payCd); payCd=null; st.className='pay-st err'; st.textContent='二维码已过期，关闭后重新提交'; if(payPoll){clearInterval(payPoll);payPoll=null;} return; }
+      cd.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0'); },1000);
+    var n=0;
+    payPoll=setInterval(async function(){
+      n++;
+      try{
+        var rr=await fetch(API+'/api/pay/order/'+encodeURIComponent(payNo)+'?probe='+(n%3===0?1:0),{headers:{Authorization:'Bearer '+localStorage.getItem('hab_token')}});
+        var dd=await rr.json();
+        if(dd.status==='paid'){
+          clearInterval(payPoll); payPoll=null;
+          st.className='pay-st ok'; st.textContent='支付成功，正在提交申请…';
+          var res=await submitApply(payNo);
+          if(res.status===200){ st.textContent='支付成功，申请已提交'; setTimeout(closePay,1200); showOk(true); }
+          else { st.className='pay-st err'; st.textContent='已付款但提交失败，请把订单号 '+payNo+' 发到邮箱，我们人工补上'; }
+        } else if(dd.scanned){ st.textContent='已扫码，请在手机上确认付款'; }
+        else if(dd.status==='closed'){ clearInterval(payPoll); payPoll=null; st.className='pay-st err'; st.textContent='订单已关闭，关闭后重新提交'; }
+      }catch(e){}
+    },1500);
+  }
   q('#fGo').onclick=async function(){
     if(needLogin()) return;
     var link=q('#fLink').value.trim(); if(!link){ q('#fLink').focus(); return; }
     var btn=q('#fGo'), okEl=q('#fOk'); btn.disabled=true;
     try{
-      var r=await fetch(API+'/api/review/apply',{method:'POST',
-        headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},
-        body:JSON.stringify({kind:'review', tier:q('#fTier').value, link:link, note:'【来源：'+q('#fSrc').options[q('#fSrc').selectedIndex].text+'】'+q('#fNote').value.trim()})});
-      if(!r.ok) throw 0;
-      okEl.style.display='block'; btn.textContent='已提交';
+      var res=await submitApply('');
+      if(res.status===200){ showOk(false); return; }
+      if(res.status===402){ btn.disabled=false; openPay(res.data.tier, res.data.yuan); return; }
+      throw 0;
     }catch(e){ btn.disabled=false; okEl.style.display='block'; okEl.textContent='没提交上——网络或服务打盹了，过一分钟再点一次。'; }
   };
 })();

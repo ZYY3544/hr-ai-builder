@@ -52,6 +52,20 @@ services:
         sync: false
       - key: WX_APPSECRET
         sync: false
+      # 微信支付 v3（作品评审收费，2026-09-08）。凭证与 meansights 主站同一个商户号/AppID，
+      # 从主站 Render 服务逐项复制过来即可；只有 NOTIFY_URL 换成本服务的域名。
+      - key: WXPAY_MCHID
+        sync: false
+      - key: WXPAY_APPID
+        sync: false
+      - key: WXPAY_API_V3_KEY
+        sync: false
+      - key: WXPAY_CERT_SERIAL
+        sync: false
+      - key: WXPAY_PRIVATE_KEY
+        sync: false
+      - key: WXPAY_NOTIFY_URL
+        value: https://hr-ai-builder-api.onrender.com/api/pay/notify
 
   - type: web
     name: hr-ai-builder-web

@@ -40,6 +40,10 @@ class _Base:
         """按等值条件取行，新→旧。进度/成绩这类「按人查」的场景用。"""
         raise NotImplementedError
 
+    def update(self, table: str, eq: dict, patch: dict) -> int:
+        """按等值条件改行，返回改到的行数。订单 pending→paid 的幂等就押在「条件里带 status」上。"""
+        raise NotImplementedError
+
 
 class MemStore(_Base):
     """内存 + 尽力落盘。重启即丢——这是明确的降级，不是"看起来在工作"。
@@ -87,6 +91,20 @@ class MemStore(_Base):
         rows = [r for r in self.recent(table, _MEM_MAX)
                 if all(r.get(k) == v for k, v in eq.items())]
         return rows[:limit]
+
+    def update(self, table: str, eq: dict, patch: dict) -> int:
+        n = 0
+        for r in self._buf.get(table, []):
+            if all(r.get(k) == v for k, v in eq.items()):
+                r.update(patch); n += 1
+        if n and self._dir:          # 落盘副本整表重写（内存模式只在本地/降级时用，量小）
+            try:
+                with open(os.path.join(self._dir, f"{table}.jsonl"), "w", encoding="utf-8") as fh:
+                    for r in self._buf.get(table, []):
+                        fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+            except Exception:
+                pass
+        return n
 
 
 class SupabaseStore(_Base):
@@ -141,6 +159,19 @@ class SupabaseStore(_Base):
             print(f"[STORE] supabase find {table} 异常: {e}", flush=True)
         return self._fallback.find(table, eq, limit)
 
+    def update(self, table: str, eq: dict, patch: dict) -> int:
+        try:
+            params = {k: f"eq.{v}" for k, v in eq.items()}
+            r = _rq.patch(f"{_SB_URL}/rest/v1/{table}",
+                          headers={**self._h, "Prefer": "return=representation"},
+                          params=params, json=patch, timeout=8)
+            if r.status_code < 300:
+                return len(r.json() or [])
+            print(f"[STORE] supabase update {table} -> {r.status_code} {r.text[:160]}", flush=True)
+        except Exception as e:
+            print(f"[STORE] supabase update {table} 异常: {e}", flush=True)
+        return self._fallback.update(table, eq, patch)
+
 
 store: _Base = SupabaseStore() if (_SB_URL and _SB_KEY) else MemStore()
 print(f"[STORE] 持久层模式 = {store.mode}"
@@ -151,7 +182,8 @@ print(f"[STORE] 持久层模式 = {store.mode}"
 # ---------------------------------------------------------------- 业务封装
 FEEDBACK = "hab_feedback"      # 用户明说的：某节难 / 有建议
 SIGNAL = "hab_signal"          # 行为侧的匿名难度信号：卡住
-PROGRESS = "hab_progress"      # 登录用户的成长记录：学完/小测成绩/战役状态（append-only，曲线要历史）
+PROGRESS = "hab_progress"
+ORDER = "hab_order"            # 作品评审的微信支付订单（服务端唯一真相源：金额/状态/归属）      # 登录用户的成长记录：学完/小测成绩/战役状态（append-only，曲线要历史）
 
 
 def now_iso() -> str:

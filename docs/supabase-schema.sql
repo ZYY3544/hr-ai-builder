@@ -73,3 +73,25 @@ alter table hab_login enable row level security;
 drop policy if exists hab_login_insert on hab_login;
 create policy hab_login_insert on hab_login for insert to anon, authenticated with check (true);
 -- 首次判定要读：service_role 不受 RLS 限制，后端用 service key 读没问题；anon 读仍被拒。
+
+-- 作品评审支付订单（2026-09-08 增）。服务端用 service_role 读写；不给 anon 任何策略——
+-- 订单是钱，浏览器侧连插入都不该有。
+create table if not exists hab_order (
+  id              bigserial primary key,
+  created_at      timestamptz not null default now(),
+  out_trade_no    text  not null unique,   -- 商户订单号（HL + 时间 + 用户尾号 + 随机）
+  openid          text  not null,          -- JWT sub，归属校验
+  kind            text  not null default 'review',
+  tier            text  not null,          -- report=¥50 | agent=¥300
+  amount_fen      integer not null,        -- 应付金额（分），回调必须与之相等
+  status          text  not null default 'pending',   -- pending | paid
+  transaction_id  text,
+  paid_at         timestamptz,
+  code_url        text,
+  used            boolean not null default false,     -- 是否已用于一次提交
+  application     jsonb,
+  nick            text default ''
+);
+create index if not exists hab_order_user_idx on hab_order (openid, created_at desc);
+alter table hab_order enable row level security;
+

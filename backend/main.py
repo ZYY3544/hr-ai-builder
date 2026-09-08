@@ -20,6 +20,7 @@ import requests as _rq
 import wechat as wx
 import auth
 from ratelimit import client_ip, hit, admin_ok
+import pay as _pay
 
 # 接口文档默认不对外（公开的路由清单只会帮人找攻击面）；本地/自查要看时 EXPOSE_DOCS=1
 _DOCS = os.getenv("EXPOSE_DOCS") == "1"
@@ -884,7 +885,8 @@ def _log_login(openid: str, nickname: str, source: str) -> None:
 @app.get("/api/health")
 def health():
     return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
-            "features": ["login_log", "sec1", "sec2", "sec3"]}
+            "features": ["login_log", "sec1", "sec2", "sec3", "pay"],
+            "pay_enabled": _pay.wxp.is_configured()[0]}
 
 
 @app.get("/api/terms")
@@ -1225,6 +1227,7 @@ _LESSON_SKEL = _load_layer("_skeleton.json")
 _LESSON_TEXT = _load_layer("_text.json")
 
 import sparky as _sparky
+app.include_router(_pay.router)
 app.include_router(_sparky.make_router(TERMS, JOBS, TERM_LESSONS, _LESSON_IDX,
                                        _LESSON_SKEL, _LESSON_TEXT,
                                        QUIZ_ITEMS=_QUIZ["items"]))
@@ -1276,21 +1279,50 @@ class ServiceApply(BaseModel):
     tier: str = Field("", max_length=32)      # report=¥50 评估报告 | agent=¥300 报告+重构agent | coach 档暂不分
     link: str = Field("", max_length=500)     # 作品链接（仓库/网盘）
     note: str = Field("", max_length=3000)
+    order: str = Field("", max_length=40)     # 已支付的微信订单号；免费首次可为空
+
+
+def _has_used_free_review(openid: str) -> bool:
+    rows = _store.store.find(_store.FEEDBACK, {"visitor": openid[:40], "source": "service"}, 200)
+    return any(r.get("kind") == "review" for r in rows)
 
 
 @app.post("/api/review/apply")
 def review_apply(a: ServiceApply, request: Request, user: dict = Depends(auth.current_user)):
+    """作品评审申请。收费规则（服务端唯一真相源）：
+    评估报告档 ¥50，登录用户**首次免费**；报告+重构 Agent 档 ¥300。
+    需要付费而没带已付订单 → 402 让前端拉起微信扫码；订单必须本人、已付、档位一致、未用过。"""
     if hit("review", client_ip(request), 10, 3600):
         raise HTTPException(429, "提交太频繁，稍后再试。")
+    uid = user.get("openid") or ""
+    paid_no = ""
+    if a.kind == "review":
+        tier = a.tier if a.tier in ("report", "agent") else "report"
+        need_pay = not (tier == "report" and not _has_used_free_review(uid))
+        if need_pay:
+            row = _pay.order_paid_for(a.order, uid, "review", tier) if a.order else None
+            if not row:
+                yuan = _pay.TIERS[f"review:{tier}"]["yuan"]
+                return JSONResponse({"need_pay": True, "tier": tier, "yuan": yuan,
+                                     "pay_enabled": _pay.wxp.is_configured()[0]}, status_code=402)
+            paid_no = a.order
     payload = _json.dumps({"tier": a.tier[:16], "link": a.link[:300],
-                           "note": a.note[:800], "nick": user.get("nickname", "")},
+                           "note": a.note[:800], "nick": user.get("nickname", ""),
+                           "order": paid_no, "paid": bool(paid_no)},
                           ensure_ascii=False)
     _store.store.add(_store.FEEDBACK, {
         "created_at": _store.now_iso(), "lesson": "",
         "kind": a.kind, "note": payload[:2000],
-        "visitor": (user.get("openid") or "")[:40], "source": "service",
+        "visitor": uid[:40], "source": "service",
     })
-    return {"ok": True}
+    if paid_no:
+        _pay.mark_used(paid_no, {"link": a.link[:300], "note": a.note[:800]})
+    try:
+        _notify_owner("作品评审新申请" + ("（已付款）" if paid_no else "（首次免费）"),
+                      f"{user.get('nickname','')}\n档位：{a.tier}\n链接：{a.link[:300]}\n{a.note[:500]}")
+    except Exception:
+        pass
+    return {"ok": True, "paid": bool(paid_no)}
 
 
 @app.get("/api/progress")
