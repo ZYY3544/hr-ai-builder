@@ -28,7 +28,7 @@ router = APIRouter()
 # 档位（元）。首次免费的判定在 main.py 的 review_apply 里，这里只管收钱。
 TIERS = {
     "review:report": {"yuan": 50,  "desc": "meansights 作品评审 · 评估报告"},
-    "review:agent":  {"yuan": 300, "desc": "meansights 作品评审 · 报告 + 重构版 Agent"},
+    "review:agent":  {"yuan": 0.01, "desc": "meansights 作品评审 · 报告 + 重构版 Agent"},   # ⚠️ 临时联调价，验完必须改回 300
 }
 _EXPIRE_S = 15 * 60
 
@@ -78,7 +78,7 @@ def create_order(body: OrderIn, request: Request, user: dict = Depends(auth.curr
         raise HTTPException(400, "bad_tier")
     uid = user["openid"]
     no = wxp.gen_out_trade_no(uid)
-    amount_fen = tier["yuan"] * 100
+    amount_fen = int(round(tier["yuan"] * 100))
     # 先落 pending 单再去微信下单：回调可能比下单响应先到，库里没单会对不上账
     _store.store.add(_store.ORDER, {
         "out_trade_no": no, "created_at": _store.now_iso(), "openid": uid,
