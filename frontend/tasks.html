@@ -348,6 +348,13 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   border-radius:9px;border:1.5px solid rgba(0,168,138,.5);background:#fff;color:var(--pri-d);cursor:pointer}
 .rv .tier.hot .pick{background:var(--grad-r);border-color:transparent;color:#fff}
 .rv .tier .pick:hover{opacity:.92}
+.rv .freehl{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:var(--grad-r);border-radius:99px;padding:4px 12px;margin-right:6px;vertical-align:middle}
+.rv .freesub{display:inline-block;font-size:12px;font-weight:600;color:var(--pri-d);margin-right:10px;vertical-align:middle}
+.rv .howgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 32px;margin-top:6px}
+.rv .how .hk{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pri-d);margin-bottom:8px}
+.rv .how p{margin:0;font-size:13.5px;line-height:1.9;color:var(--body)}
+.rv .how p b{color:var(--ink);font-weight:600}
+@media(max-width:860px){.rv .howgrid{grid-template-columns:1fr;gap:20px}}
 .rv .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
   padding:16px 20px;font-size:13px;line-height:2;color:var(--ink)}
 .rv .rules b{font-weight:600}
@@ -501,7 +508,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 <section class="band rv" style="padding:44px 0 60px" id="review">
   <div class="wrap">
     <div class="eyebrow">Review</div>
-    <h2>做出了东西？交上来，我们认真看</h2>
+    <h2>想知道自己做的产品如何？我们来帮你评估看看</h2>
     <p class="desc"><b>不限于上面三个任务</b>——你在工作里做的 agent、skills、脚本，或任何自己的 AI 产品和原型，都可以交上来。我们用<b>当前最强的推理模型（Fable 5 最高推理档）+ 自建评审 skills</b> 逐处审，再由 <b>HR 专家人工复核</b>，给你一份综合评估，3-5 个工作日出结果。</p>
     <div class="accept">
       <span class="al">都可以交</span>
@@ -527,7 +534,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 
     <div class="blk">
       <h3>两档，按你要的深度选</h3>
-      <div class="hint">首次提交免费（限评估报告档）。交站内任务请附决策记录；交自己的作品请附一段说明：解决什么问题、怎么做的、最没把握的是哪一段。也可以打开右下角的 Sparky 发 <b>/交作业</b>，对话里直接提交。</div>
+      <div class="hint"><span class="freehl">首次提交免费</span><span class="freesub">限评估报告档</span> 交站内任务请附决策记录；交自己的作品请附一段说明：解决什么问题、怎么做的、最没把握的是哪一段。也可以打开右下角的 Sparky 发 <b>/交作业</b>，对话里直接提交。</div>
       <div class="tiers">
         <div class="tier">
           <div class="tn">评估报告</div>
@@ -558,14 +565,20 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     </div>
 
     <div class="blk">
-      <h3>规则，先说清楚</h3>
-      <div class="rules">
-        <b>评什么</b>：口径理解是否扎实、该设闸的地方设了没有、Agent 和固定流程分得对不对、有没有验证自己做对了。站内任务对照课程口径评；你自己的作品按同一套标准评，外加「这个东西在真实 HR 场景里站不站得住」。评的是判断，不只是代码能不能跑。<br>
-        <b>怎么评</b>：Fable 5 最高推理档 + 我们自建的评审 skills（和课程同一套口径），出结果前人工复核。
-        复核的人是 meansights Consulting 创始人——<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，
-        跨境电商龙头与互联网大厂组织管理专家经历——评的不只是代码，是判断。<br>
-        <b>多久</b>：3-5 个工作日。提交后会先人工确认收到。<br>
-        <b>不做什么</b>：不代写作业、不保证「包过」任何面试——报告里说的每一个问题都能在你的作品里指出具体位置，这是我们唯一承诺的事。
+      <h3>评什么、怎么评、多久时间</h3>
+      <div class="howgrid">
+        <div class="how">
+          <div class="hk">评什么</div>
+          <p>口径理解是否扎实、该设闸的地方设了没有、Agent 和固定流程分得对不对、有没有验证自己做对了。站内任务对照课程口径评；自己的作品按同一套标准评，外加「这个东西在真实 HR 场景里站不站得住」。评的是判断，不只是代码能不能跑。</p>
+        </div>
+        <div class="how">
+          <div class="hk">怎么评</div>
+          <p>Fable 5 最高推理档 + 自建评审 skills（和课程同一套口径），出结果前人工复核。复核的人是 meansights 创始人——<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，跨境电商龙头与互联网大厂组织管理专家经历——评的不只是代码，是判断。</p>
+        </div>
+        <div class="how">
+          <div class="hk">多久时间</div>
+          <p><b>3-5 个工作日</b>出结果。提交后会先人工确认收到，报告里说的每一个问题都能在你的作品里指出具体位置。</p>
+        </div>
       </div>
     </div>
 
