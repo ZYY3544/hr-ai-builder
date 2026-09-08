@@ -4,10 +4,11 @@ HR AI Builder — 内容与测评 API
 现阶段所有内容以 Python 常量形式内置，前端为静态站（利于 SEO），
 本服务提供：内容读取接口 + 测评判分接口，供前端渐进接入。
 """
-from fastapi import FastAPI, HTTPException, Depends, Response, Header
+from fastapi import FastAPI, HTTPException, Depends, Response, Header, Request
+from fastapi.responses import JSONResponse
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Literal, Optional
 from urllib.parse import quote
 import os
@@ -15,8 +16,25 @@ import os
 import requests as _rq
 import wechat as wx
 import auth
+from ratelimit import client_ip, hit, admin_ok
 
-app = FastAPI(title="HR AI Builder API", version="0.1.0")
+# 接口文档默认不对外（公开的路由清单只会帮人找攻击面）；本地/自查要看时 EXPOSE_DOCS=1
+_DOCS = os.getenv("EXPOSE_DOCS") == "1"
+app = FastAPI(title="HR AI Builder API", version="0.1.0",
+              docs_url="/docs" if _DOCS else None,
+              redoc_url="/redoc" if _DOCS else None,
+              openapi_url="/openapi.json" if _DOCS else None)
+
+# 请求体上限：本 API 没有上传接口，最大的正常请求是带 12 条历史的对话（几十 KB）。
+_MAX_BODY = int(os.getenv("MAX_BODY_BYTES", str(256 * 1024)))
+
+
+@app.middleware("http")
+async def _limit_body(request, call_next):
+    cl = request.headers.get("content-length")
+    if cl and cl.isdigit() and int(cl) > _MAX_BODY:
+        return JSONResponse({"detail": "body too large"}, status_code=413)
+    return await call_next(request)
 
 app.add_middleware(
     CORSMiddleware,
@@ -859,7 +877,15 @@ def _log_login(openid: str, nickname: str, source: str) -> None:
 @app.get("/api/health")
 def health():
     return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
-            "features": ["login_log"]}
+            "features": ["login_log", "sec1"]}
+
+
+@app.get("/api/_echo_ip")
+def _echo_ip(request: Request):
+    """临时：验证代理层怎么写 X-Forwarded-For（只回显请求者自己的头，不含任何他人数据）。验完即删。"""
+    h = request.headers
+    return {"ip": client_ip(request), "xff": h.get("x-forwarded-for"), "cf": h.get("cf-connecting-ip"),
+            "tci": h.get("true-client-ip"), "peer": request.client.host if request.client else None}
 
 
 @app.get("/api/terms")
@@ -1029,7 +1055,9 @@ def wx_qrcode(scene: str, env: str = "trial"):
     try:
         png = wx.get_qrcode(scene, env_version=("release" if env == "release" else "trial"))
     except Exception as e:
-        raise HTTPException(502, f"qrcode_failed: {str(e)[:200]}")
+        # 只进日志不回显：异常串里可能带着请求微信 token 的 URL（含 secret）
+        print(f"[WX] qrcode failed: {type(e).__name__}: {str(e)[:300]}", flush=True)
+        raise HTTPException(502, "qrcode_failed")
     return Response(png, media_type="image/png", headers={"Cache-Control": "no-store"})
 
 
@@ -1215,13 +1243,15 @@ def post_progress(p: ProgressIn, user: dict = Depends(auth.current_user)):
 #    人工在 insights 看板里读。第一单由人工确认后再跑——真实账单出来前不放量。
 class ServiceApply(BaseModel):
     kind: Literal["review", "coach"]
-    tier: str = ""            # report=¥50 评估报告 | agent=¥300 报告+重构agent | coach 档暂不分
-    link: str = ""            # 作品链接（仓库/网盘）
-    note: str = ""
+    tier: str = Field("", max_length=32)      # report=¥50 评估报告 | agent=¥300 报告+重构agent | coach 档暂不分
+    link: str = Field("", max_length=500)     # 作品链接（仓库/网盘）
+    note: str = Field("", max_length=3000)
 
 
 @app.post("/api/review/apply")
-def review_apply(a: ServiceApply, user: dict = Depends(auth.current_user)):
+def review_apply(a: ServiceApply, request: Request, user: dict = Depends(auth.current_user)):
+    if hit("review", client_ip(request), 10, 3600):
+        raise HTTPException(429, "提交太频繁，稍后再试。")
     payload = _json.dumps({"tier": a.tier[:16], "link": a.link[:300],
                            "note": a.note[:800], "nick": user.get("nickname", "")},
                           ensure_ascii=False)
@@ -1332,13 +1362,23 @@ def questions(ksa: Literal["K", "S", "A"] | None = None, chapter: Optional[str] 
 # 注：Render free 无持久磁盘，这里只写进服务日志（Render Logs 可查），
 #     不落库。等接了数据库再改成入表 —— 先有通道比先有存储重要。
 class QuizReport(BaseModel):
-    question_id: str
-    reason: str
-    contact: Optional[str] = None
+    question_id: str = Field(max_length=64)
+    reason: str = Field(max_length=2000)
+    contact: Optional[str] = Field(None, max_length=120)
+
+
+def _mask(v: Optional[str]) -> str:
+    """联系方式只留首尾，日志里不放明文手机号/邮箱。"""
+    v = (v or "").strip()
+    if not v:
+        return "-"
+    return v if len(v) <= 4 else f"{v[:3]}***{v[-2:]}"
 
 
 @app.post("/api/quiz/report")
-def report_question(body: QuizReport):
+def report_question(body: QuizReport, request: Request):
+    if hit("quiz_report", client_ip(request), 10, 3600):
+        raise HTTPException(429, "报错发得有点密，稍后再试。")
     by_id = {q["id"] for q in _QUIZ["items"]}
     if body.question_id not in by_id:
         raise HTTPException(400, "unknown question id")
@@ -1347,7 +1387,7 @@ def report_question(body: QuizReport):
         raise HTTPException(400, "reason too short")
     q = next(x for x in _QUIZ["items"] if x["id"] == body.question_id)
     print(f"[QUIZ-REPORT] id={body.question_id} ksa={q['ksa']} chapter={q['chapter']} "
-          f"contact={(body.contact or '-')[:60]} reason={detail[:500]}", flush=True)
+          f"contact={_mask(body.contact)} reason={detail[:500]}", flush=True)
     return {"ok": True, "note": "已收到，我们会核对这道题。谢谢你帮忙纠错。"}
 
 
@@ -1360,21 +1400,26 @@ _EVENTS = _deque(maxlen=3000)
 
 
 class TrackEvent(BaseModel):
-    visitor_id: str
-    session_id: str
-    event: str
-    page: str
-    kind: Optional[str] = None
+    visitor_id: str = Field(max_length=64)
+    session_id: str = Field(max_length=64)
+    event: str = Field(max_length=32)
+    page: str = Field(max_length=200)
+    kind: Optional[str] = Field(None, max_length=32)
     in_frame: Optional[bool] = None
-    ref: Optional[str] = None
+    ref: Optional[str] = Field(None, max_length=512)
     dwell_ms: Optional[int] = 0
-    ts: Optional[str] = None
+    ts: Optional[str] = Field(None, max_length=40)
     extra: Optional[dict] = None
 
 
 @app.post("/api/t")
-def track(e: TrackEvent):
+def track(e: TrackEvent, request: Request):
+    # 每个 IP 每分钟 120 条：一次正常浏览（含课件 iframe）也就十几条
+    if hit("track", client_ip(request), 120, 60):
+        return {"ok": False, "why": "rate"}
     rec = e.model_dump()
+    if rec.get("extra") is not None and len(_json.dumps(rec["extra"], ensure_ascii=False)) > 2000:
+        rec["extra"] = {"_dropped": "too large"}
     _EVENTS.append(rec)
     if e.event != "view" or not e.in_frame:      # iframe 的 view 太吵，只记离开
         print(f"[T] {e.event} {e.kind}/{e.page} v={e.visitor_id[:8]} s={e.session_id[:8]} "
@@ -1383,8 +1428,10 @@ def track(e: TrackEvent):
 
 
 @app.get("/api/t/stats")
-def track_stats():
-    """粗粒度自查（内存态，重启即清）。真正的分析等接了库再说。"""
+def track_stats(request: Request, code: str = ""):
+    """粗粒度自查（内存态，重启即清）。站主看的：ADMIN_CODE（X-Admin-Code 头或 code 参数），没配=404。"""
+    if not admin_ok(code, request):
+        raise HTTPException(404, "Not Found")
     from collections import Counter
     views = [x for x in _EVENTS if x["event"] == "view"]
     leaves = [x for x in _EVENTS if x["event"] == "leave" and (x.get("dwell_ms") or 0) > 0]
