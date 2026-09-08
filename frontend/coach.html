@@ -217,7 +217,9 @@ section{scroll-margin-top:72px}
 .phead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .pname{font-size:26px;font-weight:650;letter-spacing:-.02em;color:var(--ink)}
 .prole{font-size:14.5px;font-weight:500;color:var(--muted);letter-spacing:.01em}
-.profile .li{position:relative;padding-left:18px;margin-top:11px;font-size:14px;line-height:2;color:var(--body);font-weight:450}
+/* 文字列撑满照片高度：名字在顶、最后一条在底，中间等距分布（照片按 250px 宽的原始比例决定行高） */
+.pbody{display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-height:100%}
+.profile .li{position:relative;padding-left:18px;margin-top:0;font-size:14px;line-height:2;color:var(--body);font-weight:450}
 .profile .li b{font-weight:700;color:var(--ink)}
 .profile .li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:2px;background:var(--grad-r)}
 
