@@ -310,6 +310,64 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   padding:14px 18px;font-size:13px;line-height:2;color:var(--ink)}
 .after b{font-weight:600}
 
+
+/* ---------- 作品评审段（原 review.html 样式，加 .rv 前缀收口） ---------- */
+.rv .blk{padding:30px 0 0}
+.rv .blk h3{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px}
+.rv .hint{font-size:12.5px;color:var(--faint);margin-bottom:20px}
+.rv .flow{border:1px solid var(--line);border-radius:var(--r-l);background:#fff;padding:26px 22px 22px;overflow-x:auto}
+.rv .flow-line{display:flex;align-items:stretch;gap:0;min-width:640px}
+.rv .fstep{flex:1;position:relative;padding:0 8px;text-align:center}
+.rv .fstep .fn{width:34px;height:34px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;background:var(--grad-r);position:relative;z-index:1}
+.rv .fstep.alt .fn{background:#fff;color:var(--pri-d);border:2px solid var(--pri)}
+.rv .fstep .ft{font-size:13.5px;font-weight:600;color:var(--ink);margin-top:9px}
+.rv .fstep .fd{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.65}
+.rv .fstep:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 22px);right:calc(-50% + 22px);
+  height:2px;background:repeating-linear-gradient(90deg,var(--pri) 0 6px,transparent 6px 11px);opacity:.5}
+.rv .floop{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);
+  display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--muted);min-width:640px}
+.rv .floop .fl-a{color:var(--pri-d);font-weight:700;flex:0 0 auto}
+.rv .tiers{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rv .tier{border:1px solid var(--line);border-radius:var(--r-l);padding:22px 24px;background:#fff;position:relative}
+.rv .tier.hot{border-color:rgba(0,168,138,.5);box-shadow:0 10px 30px -18px rgba(0,168,138,.45)}
+.rv .tier .tn{font-size:14px;font-weight:600;color:var(--ink)}
+.rv .tier .tp{font-size:30px;font-weight:650;color:var(--ink);margin:8px 0 2px;letter-spacing:-.02em}
+.rv .tier .tp small{font-size:13px;font-weight:400;color:var(--faint);margin-left:4px}
+.rv .tier .free{display:inline-block;font-size:11px;font-weight:600;color:var(--pri-d);background:var(--pri-s);
+  border:1px solid rgba(0,168,138,.35);border-radius:99px;padding:2px 9px;margin:4px 0 10px}
+.rv .tier ul{list-style:none;margin:10px 0 0;padding:0}
+.rv .tier li{font-size:12.5px;line-height:1.8;color:var(--body);padding-left:18px;position:relative}
+.rv .tier li::before{content:'✓';position:absolute;left:0;color:var(--pri);font-weight:700}
+.rv .tier li.no::before{content:'—';color:var(--faint)}
+.rv .tier li.no{color:var(--faint)}
+.rv .tier .pick{margin-top:16px;width:100%;font:inherit;font-size:13px;font-weight:600;padding:10px 0;
+  border-radius:9px;border:1.5px solid rgba(0,168,138,.5);background:#fff;color:var(--pri-d);cursor:pointer}
+.rv .tier.hot .pick{background:var(--grad-r);border-color:transparent;color:#fff}
+.rv .tier .pick:hover{opacity:.92}
+.rv .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
+  padding:16px 20px;font-size:13px;line-height:2;color:var(--ink)}
+.rv .rules b{font-weight:600}
+.rv .smallnote{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.8}
+.rv .form{border:1px solid var(--line);border-radius:var(--r-l);padding:24px;background:#fff;max-width:640px}
+.rv .form label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin:14px 0 6px}
+.rv .form label:first-child{margin-top:0}
+.rv .form input,.rv .form textarea,.rv .form select{width:100%;font:inherit;font-size:13px;padding:9px 12px;
+  border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.rv .form textarea{min-height:84px;resize:vertical}
+.rv .form input:focus,.rv .form textarea:focus,.rv .form select:focus{outline:none;border-color:var(--pri)}
+.rv .form .go{margin-top:18px;font:inherit;font-size:13.5px;font-weight:600;padding:10px 26px;border:none;
+  border-radius:9px;background:var(--grad-r);color:#fff;cursor:pointer}
+.rv .form .go:disabled{opacity:.5;cursor:default}
+.rv .form .ok{margin-top:14px;font-size:13px;color:var(--pri-d);background:var(--pri-s);border-radius:8px;padding:10px 14px;display:none}
+@media(max-width:720px){.rv .tiers{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .rv .flow{padding:22px 16px;overflow:visible}
+  .rv .flow-line{min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:24px 6px}
+  .rv .fstep:nth-child(2)::after,.rv .fstep:nth-child(4)::after{display:none}
+  .rv .floop{min-width:0;flex-wrap:wrap}.rv .floop .fl-a[style]{margin-left:0!important}
+}
+
 /* ---------- 任务 tab 切换 ---------- */
 .ttabs{display:flex;gap:10px;margin-top:40px;flex-wrap:wrap}
 .ttab{font:inherit;font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:10px;cursor:pointer;
@@ -432,32 +490,96 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
         <div class="tsec"><b>配套课</b><span class="trefs"><a class="tref" href="learn.html#hr-elicitation-1.html"><i>先读</i>老法师那一眼在看什么</a><a class="tref" href="learn.html#hr-recall-vs-judge.html"><i>先读</i>召回 vs 判定</a><a class="tref" href="learn.html#prompt-hr-cases.html"><i>卡住看</i>HR 五个高频场景</a></span></div>
       </div></div>
     </div>
-    <div style="margin-top:34px;border:1.5px solid rgba(0,168,138,.4);border-radius:14px;padding:22px 26px;
-      background:linear-gradient(135deg,rgba(0,168,138,.05),rgba(8,145,178,.05));display:flex;gap:18px;align-items:center;flex-wrap:wrap">
-      <div style="flex:1;min-width:260px">
-        <div style="font-size:15px;font-weight:600;color:var(--ink)">做完了？交上来，我们认真看</div>
-        <div style="font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.8">
-          Fable 5 最高推理档 + 自建评审 skills，对照课程口径逐处审，3-5 个工作日出结果。
-          评估报告 ¥50（<b>登录用户首次免费</b>）；报告 + 在你作品基础上重构的可运行 Agent ¥300。</div>
+  </div>
+</section>
+
+
+<!-- ========== 作品评审（原 review.html 整页并入，2026-09-08） ========== -->
+<section class="band rv" style="padding:44px 0 60px" id="review">
+  <div class="wrap">
+    <div class="eyebrow">Review</div>
+    <h2>做完了？交上来，我们认真看</h2>
+    <p class="desc">你在自己电脑上做任务时，AI 教练一直在旁边。但「做出来了」和「做对了」是两回事——交上来，我们用 <b>Fable 5（最高推理档）+ 自建评审 skills</b> 对照课程口径逐处审，3-5 个工作日给你结果。</p>
+
+    <div class="blk">
+      <h3>整个循环长这样</h3>
+      <div class="flow">
+        <div class="flow-line">
+          <div class="fstep"><div class="fn">1</div><div class="ft">学</div><div class="fd">读课程<br>过本章小测</div></div>
+          <div class="fstep"><div class="fn">2</div><div class="ft">做</div><div class="fd">领任务包<br>AI 教练陪你干</div></div>
+          <div class="fstep"><div class="fn">3</div><div class="ft">交</div><div class="fd">提交作品链接<br>+ 决策记录</div></div>
+          <div class="fstep"><div class="fn">4</div><div class="ft">评</div><div class="fd">Fable 5 + skills<br>人工复核</div></div>
+          <div class="fstep alt"><div class="fn">5</div><div class="ft">改</div><div class="fd">对照报告自己改<br>改完的才是你的</div></div>
+        </div>
+        <div class="floop"><span class="fl-a">↺ 回到第 2 步</span><span>带着评审指出的问题再做一轮——错题练对了才划掉，作品也一样。</span>
+          <span class="fl-a" style="margin-left:auto">→ 走得更远</span><span>能力评估 · 学习方案 · 简历 · 面试，见「职业辅导」。</span></div>
       </div>
-      <a href="review.html" style="flex:0 0 auto;font-size:13px;font-weight:600;color:#fff;padding:10px 22px;
-        border-radius:9px;background:linear-gradient(135deg,#00A88A,#0891B2)">看评审规则，去交作业 →</a>
+    </div>
+
+    <div class="blk">
+      <h3>两档，按你要的深度选</h3>
+      <div class="hint">首次提交免费（限评估报告档）——需要你真做过：领过任务包，并附上你的决策记录。也可以打开右下角的 Sparky 发 <b>/交作业</b>，对话里直接提交。</div>
+      <div class="tiers">
+        <div class="tier">
+          <div class="tn">评估报告</div>
+          <div class="tp">¥50<small>/ 次</small></div>
+          <span class="free">登录用户首次免费</span>
+          <ul>
+            <li>逐处评审：口径判断、防幻觉闸、流程拆分、评估设计，对照课程标准打分</li>
+            <li>指出问题清单——每一处都标注在你的代码/文档的具体位置，可核对</li>
+            <li>关键改法的示范片段：不止说哪儿错了，给你「该怎么写」的对照</li>
+            <li class="no">不含整套重构代码</li>
+          </ul>
+          <button class="pick" data-tier="report">选这档提交</button>
+        </div>
+        <div class="tier hot">
+          <div class="tn">评估报告 + 重构版 Agent</div>
+          <div class="tp">¥300<small>/ 次</small></div>
+          <span class="free" style="visibility:hidden">占位</span>
+          <ul>
+            <li>包含左边那份完整评估报告</li>
+            <li>在<b>你的作品基础上</b>重构的可运行版本——不是模板，是你的思路的更好写法</li>
+            <li>逐处改动说明：每一处为什么这么改，对着看就是一堂课</li>
+            <li>一次往返答疑：拿到后有疑问，可以追问一轮</li>
+          </ul>
+          <button class="pick" data-tier="agent">选这档提交</button>
+        </div>
+      </div>
+      <div class="smallnote">为什么报告档不给整套代码：整套给你，你学不到；五处对照给你，你自己改完才是你的。要现成能跑的，选右边那档。</div>
+    </div>
+
+    <div class="blk">
+      <h3>规则，先说清楚</h3>
+      <div class="rules">
+        <b>评什么</b>：口径理解是否扎实、该设闸的地方设了没有、Agent 和固定流程分得对不对、有没有验证自己做对了。评的是判断，不只是代码能不能跑。<br>
+        <b>怎么评</b>：Fable 5 最高推理档 + 我们自建的评审 skills（和课程同一套口径），出结果前人工复核。
+        复核的人是 meansights Consulting 创始人——<b>7 年国际顶尖人力资源与组织管理咨询公司经验</b>，
+        跨境电商龙头与互联网大厂组织管理专家经历——评的不只是代码，是判断。<br>
+        <b>多久</b>：3-5 个工作日。提交后会先人工确认收到。<br>
+        <b>不做什么</b>：不代写作业、不保证「包过」任何面试——报告里说的每一个问题都能在你的作品里指出具体位置，这是我们唯一承诺的事。
+      </div>
+    </div>
+
+    <div class="blk" id="apply">
+      <h3>提交</h3>
+      <div class="form" id="applyForm">
+        <label>选档</label>
+        <select id="fTier">
+          <option value="report">评估报告 · ¥50（首次免费）</option>
+          <option value="agent">评估报告 + 重构版 Agent · ¥300</option>
+        </select>
+        <label>作品链接（GitHub 仓库 / 网盘，确保我们能打开）</label>
+        <input id="fLink" type="url" placeholder="https://github.com/你/你的作品">
+        <label>说明（做的哪个任务、决策记录在哪、特别想让我们看哪一段）</label>
+        <textarea id="fNote" placeholder="例：做的是 01 人力月报战役，决策记录在 repo 的 DECISIONS.md，最没把握的是 YTD 重分类那段口径……"></textarea>
+        <button class="go" id="fGo">提交申请</button>
+        <div class="ok" id="fOk">收到。我们会先人工确认这份提交，然后开始评审——3-5 个工作日内你会在微信/站内收到结果通知。首次免费档不用付款；付费档我们确认后会联系你完成付款再开始。</div>
+      </div>
     </div>
   </div>
 </section>
 
 
-<section class="band" style="padding:44px 0 52px" id="prep">
-  <div class="wrap">
-    <div class="eyebrow">Before You Start</div>
-    <h2>开做之前，可以先读这几篇</h2>
-    <p style="color:var(--muted);max-width:760px;margin:8px 0 22px">
-      这些不在课程目录里——<b>怎么挑活、怎么造数据、怎么把它做成拿得出手的东西</b>，
-      读一遍不如做一遍，所以它们放在这儿，配着任务读。
-    </p>
-    <div style="display:flex;gap:34px;flex-wrap:wrap"><div style="flex:1 1 340px;min-width:0"><div style="font-weight:700;margin-bottom:6px">先把部门的活盘一遍</div><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.75"><li style="margin:7px 0"><a href="slides/hr-inventory-1.html" style="color:var(--ink);font-weight:600">把一个部门的活拆成任务清单</a><span style="color:var(--muted)"> —— 拆到「一句话说得清交付物」那一层，才看得出哪些能交给 AI</span></li><li style="margin:7px 0"><a href="slides/hr-inventory-2.html" style="color:var(--ink);font-weight:600">每条标：它能干 / 干不了 / 干了得有人兜</a><span style="color:var(--muted)"> —— 三分法，第三类最值钱——那是你要设闸的地方</span></li><li style="margin:7px 0"><a href="slides/hr-inventory-3.html" style="color:var(--ink);font-weight:600">算账：省多少、风险多大、第一刀切哪</a><span style="color:var(--muted)"> —— 别挑最难的，挑最烦的</span></li></ul></div><div style="flex:1 1 340px;min-width:0"><div style="font-weight:700;margin-bottom:6px">从选题到讲清楚</div><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.75"><li style="margin:7px 0"><a href="slides/hr-project-pick.html" style="color:var(--ink);font-weight:600">选题：什么样的第一个作品站得住</a><span style="color:var(--muted)"> —— 对错说得清、数据造得出、一周做得完</span></li><li style="margin:7px 0"><a href="slides/hr-project-data.html" style="color:var(--ink);font-weight:600">真数据碰不得，合成数据怎么造得像</a><span style="color:var(--muted)"> —— 造 50 条带三种脏的数据，比洗三天真数据管用</span></li><li style="margin:7px 0"><a href="slides/hr-project-build.html" style="color:var(--ink);font-weight:600">一周做出能点的原型</a><span style="color:var(--muted)"> —— 五天，每天一件交付物；Day 3 之前不碰界面</span></li><li style="margin:7px 0"><a href="slides/hr-project-tell.html" style="color:var(--ink);font-weight:600">作品怎么讲：别人在追问什么</a><span style="color:var(--muted)"> —— 说明文档正是别人判断你专不专业的地方</span></li></ul></div></div>
-  </div>
-</section>
 
 
 <div class="mask" id="loginMask">
@@ -471,6 +593,36 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 </div>
 
 <script src="course-data.js"></script>
+
+<script>
+/* 作品评审提交（原 review.html 脚本并入）：页面不登录可看，点「提交申请」时才要求登录 */
+(function(){
+  var API=(location.hostname==='localhost'?'http://localhost:8001':'https://hr-ai-builder-api.onrender.com');
+  var q=function(s){return document.querySelector(s)};
+  function needLogin(){
+    if(localStorage.getItem('hab_token')) return false;
+    try{ sessionStorage.setItem('hab_next','tasks.html#apply'); }catch(e){}
+    if(typeof window.openLogin==='function'){ window.openLogin(); } else { location.href='index.html#login'; }
+    return true;
+  }
+  document.querySelectorAll('.rv .tier .pick').forEach(function(b){ b.onclick=function(){
+    q('#fTier').value=b.getAttribute('data-tier');
+    document.getElementById('apply').scrollIntoView({behavior:'smooth',block:'start'});
+  };});
+  q('#fGo').onclick=async function(){
+    if(needLogin()) return;
+    var link=q('#fLink').value.trim(); if(!link){ q('#fLink').focus(); return; }
+    var btn=q('#fGo'), okEl=q('#fOk'); btn.disabled=true;
+    try{
+      var r=await fetch(API+'/api/review/apply',{method:'POST',
+        headers:{'Content-Type':'application/json',Authorization:'Bearer '+localStorage.getItem('hab_token')},
+        body:JSON.stringify({kind:'review', tier:q('#fTier').value, link:link, note:q('#fNote').value.trim()})});
+      if(!r.ok) throw 0;
+      okEl.style.display='block'; btn.textContent='已提交';
+    }catch(e){ btn.disabled=false; okEl.style.display='block'; okEl.textContent='没提交上——网络或服务打盹了，过一分钟再点一次。'; }
+  };
+})();
+</script>
 <script src="track.js"></script>
 <script src="sparky.js" defer></script>
 <script>
