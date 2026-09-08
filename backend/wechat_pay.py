@@ -183,6 +183,20 @@ def _aes_gcm_decrypt(associated_data: str | None, nonce: str | None, ciphertext:
         return None
 
 
+def _merchant_platform_pubkey():
+    """「微信支付公钥」模式（商户平台-API安全里申请的公钥，回调头 Wechatpay-Serial 以 PUB_KEY_ID_ 开头）。
+    2026-09-08 上线实测：本商户已切此模式，/v3/certificates 直接 404，旧的平台证书路径永远验不过。
+    公钥不是秘密，PEM 放 WXPAY_PUBLIC_KEY 环境变量（支持 \\n 转义单行）。"""
+    raw = _env('WXPAY_PUBLIC_KEY').replace('\\n', '\n')
+    if not raw:
+        return None
+    try:
+        return serialization.load_pem_public_key(raw.encode('utf-8'))
+    except Exception as e:
+        print(f'[wxpay] WXPAY_PUBLIC_KEY 不是合法 PEM: {type(e).__name__}', flush=True)
+        return None
+
+
 def verify_notify(headers, body_bytes: bytes) -> bool:
     """回调验签：用微信平台公钥验 TIMESTAMP\\nNONCE\\nBODY\\n 的签名。
     验不过一律当伪造丢弃——这是防"任何人 POST 一下就白拿额度"的唯一屏障。"""
@@ -200,13 +214,20 @@ def verify_notify(headers, body_bytes: bytes) -> bool:
             return False
     except ValueError:
         return False
-    certs = _load_platform_certs()
-    pub = certs.get(serial)
-    if pub is None:                      # 新证书轮换 → 强制刷一次再试
-        pub = _load_platform_certs(force=True).get(serial)
-    if pub is None:
-        print(f'[wxpay] 找不到平台证书 serial={serial}', flush=True)
-        return False
+    if serial.startswith('PUB_KEY_ID_'):
+        pub = _merchant_platform_pubkey()
+        if pub is None:
+            print('[wxpay] 商户平台是「微信支付公钥」模式，但 WXPAY_PUBLIC_KEY 没配——回调验不了签，'
+                  '到账只能靠主动查单兜底', flush=True)
+            return False
+    else:
+        certs = _load_platform_certs()
+        pub = certs.get(serial)
+        if pub is None:                      # 新证书轮换 → 强制刷一次再试
+            pub = _load_platform_certs(force=True).get(serial)
+        if pub is None:
+            print(f'[wxpay] 找不到平台证书 serial={serial}', flush=True)
+            return False
     message = f'{ts}\n{nonce}\n'.encode('utf-8') + body_bytes + b'\n'
     try:
         pub.verify(base64.b64decode(signature), message, padding.PKCS1v15(), hashes.SHA256())

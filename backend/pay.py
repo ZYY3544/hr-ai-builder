@@ -27,8 +27,8 @@ router = APIRouter()
 
 # 档位（元）。首次免费的判定在 main.py 的 review_apply 里，这里只管收钱。
 TIERS = {
-    "review:report": {"yuan": 50,  "desc": "meansights 作品评审 · 评估报告"},
-    "review:agent":  {"yuan": 300, "desc": "meansights 作品评审 · 报告 + 重构版 Agent"},
+    "review:report": {"yuan": 20,  "desc": "meansights 作品评审 · 评估报告"},
+    "review:agent":  {"yuan": 50, "desc": "meansights 作品评审 · 报告 + 重构版 Agent"},
 }
 _EXPIRE_S = 15 * 60
 

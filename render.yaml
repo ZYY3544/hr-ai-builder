@@ -66,6 +66,8 @@ services:
         sync: false
       - key: WXPAY_NOTIFY_URL
         value: https://hr-ai-builder-api.onrender.com/api/pay/notify
+      - key: WXPAY_PUBLIC_KEY       # 商户平台-API安全-「微信支付公钥」的 PEM（不是秘密）；不填=回调验不了签，靠查单兜底
+        sync: false
 
   - type: web
     name: hr-ai-builder-web
