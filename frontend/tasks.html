@@ -379,9 +379,9 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
   border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
 .rv .form textarea{min-height:84px;resize:vertical}
 .rv .form input:focus,.rv .form textarea:focus,.rv .form select:focus{outline:none;border-color:var(--pri)}
-.rv .form .go{margin-top:18px;font:inherit;font-size:13.5px;font-weight:600;padding:10px 26px;border:none;
+.rv .form .rvgo{margin-top:18px;font:inherit;font-size:13.5px;font-weight:600;padding:10px 26px;border:none;
   border-radius:9px;background:var(--grad-r);color:#fff;cursor:pointer}
-.rv .form .go:disabled{opacity:.5;cursor:default}
+.rv .form .rvgo:disabled{opacity:.5;cursor:default}
 .rv .form .ok{margin-top:14px;font-size:13px;color:var(--pri-d);background:var(--pri-s);border-radius:8px;padding:10px 14px;display:none}
 @media(max-width:720px){.rv .tiers{grid-template-columns:1fr}}
 @media(max-width:640px){
@@ -607,7 +607,7 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
         <input id="fLink" type="url" placeholder="https://github.com/你/你的作品">
         <label>说明（做的哪个任务、决策记录在哪、特别想让我们看哪一段）</label>
         <textarea id="fNote" placeholder="例：这是我给公司做的入职问答 agent，仓库里 README 写了怎么跑，最想让你们看追问逻辑；或：做的是 01 人力月报，决策记录在 DECISIONS.md，最没把握的是 YTD 重分类那段口径……"></textarea>
-        <button class="go" id="fGo">提交申请</button>
+        <button class="rvgo" id="fGo">提交申请</button>
         <div class="ok" id="fOk">收到。我们会先人工确认这份提交，然后开始评审——3-5 个工作日内你会在微信/站内收到结果通知。首次免费档不用付款；付费档我们确认后会联系你完成付款再开始。</div>
       </div>
     </div>
