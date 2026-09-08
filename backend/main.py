@@ -12,6 +12,9 @@ from pydantic import BaseModel, Field
 from typing import List, Literal, Optional
 from urllib.parse import quote
 import os
+import hmac as _hmac
+import secrets as _secrets
+import time as _time
 
 import requests as _rq
 import wechat as wx
@@ -877,15 +880,7 @@ def _log_login(openid: str, nickname: str, source: str) -> None:
 @app.get("/api/health")
 def health():
     return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
-            "features": ["login_log", "sec1"]}
-
-
-@app.get("/api/_echo_ip")
-def _echo_ip(request: Request):
-    """临时：验证代理层怎么写 X-Forwarded-For（只回显请求者自己的头，不含任何他人数据）。验完即删。"""
-    h = request.headers
-    return {"ip": client_ip(request), "xff": h.get("x-forwarded-for"), "cf": h.get("cf-connecting-ip"),
-            "tci": h.get("true-client-ip"), "peer": request.client.host if request.client else None}
+            "features": ["login_log", "sec1", "sec2"]}
 
 
 @app.get("/api/terms")
@@ -1020,12 +1015,36 @@ _MS_API = os.getenv("MS_SSO_BASE", "https://meansights-backend.onrender.com").rs
 _SSO_PREFIX = "ms:"          # scene 带此前缀 = 会话在铭曦侧，轮询走代理分支
 
 
+# 登录会话 → 浏览器 nonce（2026-09-08 安全体检）：轮询取 token 必须带对建会话时发下去的 nonce。
+# 堵的是「scene 泄漏就能取走 token」——二维码截图、带 state 的链接被转发都属于这种。
+# 说明白它不堵什么：攻击者自己建会话再诱导受害者去授权（登录 CSRF），nonce 在攻击者手里，
+# 那一类要靠把 token 只交给完成授权的那个浏览器（改登录流程 + 铭曦侧配合），另案处理。
+_NONCES: dict = {}
+_NONCE_TTL = 600
+
+
+def _issue_nonce(scene: str) -> str:
+    now = _time.time()
+    for k in [k for k, v in _NONCES.items() if now - v[1] > _NONCE_TTL]:
+        _NONCES.pop(k, None)
+    n = _secrets.token_urlsafe(16)
+    _NONCES[scene] = (n, now)
+    return n
+
+
+def _nonce_ok(scene: str, nonce: str) -> bool:
+    rec = _NONCES.get(scene)
+    if not rec or not nonce or _time.time() - rec[1] > _NONCE_TTL:
+        return False
+    return _hmac.compare_digest(nonce, rec[0])
+
+
 @app.post("/api/wx/login-session")
 def wx_login_session():
-    """建一个登录会话。自有轨道配置了走自有；没配则委托 meansights SSO。"""
+    """建一个登录会话。自有轨道配置了走自有；没配则委托 meansights SSO。返回的 nonce 只存在发起的浏览器里。"""
     if wx.is_any_configured():
         scene = wx.new_scene()
-        out = {"scene": scene, "mode": "miniprogram"}
+        out = {"scene": scene, "mode": "miniprogram", "nonce": _issue_nonce(scene)}
         if wx.web_is_configured():
             out["oauth_url"] = wx.web_authorize_url(wx.web_callback_url(), scene)
             out["mode"] = "oauth"
@@ -1037,8 +1056,9 @@ def wx_login_session():
         r = _rq.post(f"{_MS_API}/api/wx/oauth/url", timeout=25)
         if r.status_code == 200:
             d = r.json()
-            return {"scene": _SSO_PREFIX + d["scene"], "mode": "oauth",
-                    "oauth_url": d["url"]}
+            scene = _SSO_PREFIX + d["scene"]
+            return {"scene": scene, "mode": "oauth",
+                    "oauth_url": d["url"], "nonce": _issue_nonce(scene)}
         print(f"[SSO] 铭曦 oauth/url -> {r.status_code} {r.text[:120]}", flush=True)
     except Exception as e:
         print(f"[SSO] 铭曦不可达: {e}", flush=True)
@@ -1112,15 +1132,21 @@ def wx_oauth_callback(code: str = "", state: str = ""):
 
 
 @app.get("/api/wx/login-status")
-def wx_login_status(scene: str):
-    """网页轮询。authed 后返回 token，并让 scene 一次性失效。"""
+def wx_login_status(scene: str, nonce: str = ""):
+    """网页轮询。必须带建会话时发下的 nonce；authed 后返回 token，并让 scene 一次性失效。"""
+    if not _nonce_ok(scene, nonce):
+        return {"status": "expired"}          # 不区分「没有/不对/过期」，别给探测者信息
     if scene.startswith(_SSO_PREFIX):
-        return _sso_poll(scene[len(_SSO_PREFIX):])
+        out = _sso_poll(scene[len(_SSO_PREFIX):])
+        if out.get("status") == "authed":
+            _NONCES.pop(scene, None)
+        return out
     st = wx.get_scene(scene)
     if not st:
         return {"status": "expired"}
     if st.get("status") == "authed":
         wx.set_scene_authed(scene, "", None)   # 一次性：取走即作废
+        _NONCES.pop(scene, None)
         return {"status": "authed", "token": st["token"], "user": st.get("user")}
     return {"status": "pending"}
 

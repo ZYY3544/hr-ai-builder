@@ -711,7 +711,7 @@ async function openLogin(e){
 
   poll=setInterval(async()=>{
     try{
-      const r=await fetch(API+'/api/wx/login-status?scene='+encodeURIComponent(d.scene));
+      const r=await fetch(API+'/api/wx/login-status?scene='+encodeURIComponent(d.scene)+'&nonce='+encodeURIComponent(d.nonce||''));
       const s=await r.json();
       if(s.status==='authed'){ clearInterval(poll); poll=null;
         if(ssoWin){ try{ssoWin.close()}catch(e){} ssoWin=null; }

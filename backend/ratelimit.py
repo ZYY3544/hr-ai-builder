@@ -27,10 +27,20 @@ def client_ip(request: Request) -> str:
     if not ip:
         xff = (h.get("x-forwarded-for") or "").strip()
         if xff:
-            ip = xff.split(",")[-1].strip()
+            # 从末位往前找第一个公网地址：Render 内网代理会在最末追加 10.x，真实来源在它前面
+            for cand in reversed([x.strip() for x in xff.split(",") if x.strip()]):
+                if not _private(cand):
+                    ip = cand
+                    break
     if not ip:
         ip = request.client.host if request.client else "?"
     return ip[:64]
+
+
+def _private(ip: str) -> bool:
+    return (ip.startswith("10.") or ip.startswith("192.168.") or ip.startswith("127.")
+            or ip == "::1" or ip.startswith("fc") or ip.startswith("fd")
+            or any(ip.startswith(f"172.{n}.") for n in range(16, 32)))
 
 
 def hit(bucket: str, key: str, limit: int, window_s: int) -> bool:
