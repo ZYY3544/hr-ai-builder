@@ -886,7 +886,8 @@ def _log_login(openid: str, nickname: str, source: str) -> None:
 def health():
     return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
             "features": ["login_log", "sec1", "sec2", "sec3", "pay"],
-            "pay_enabled": _pay.wxp.is_configured()[0]}
+            "pay_enabled": _pay.wxp.is_configured()[0],
+            "pay_pubkey": bool((os.getenv("WXPAY_PUBLIC_KEY") or "").strip())}
 
 
 @app.get("/api/terms")
