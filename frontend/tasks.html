@@ -368,6 +368,18 @@ footer{padding:26px 0 44px;font-size:11.5px;color:var(--faint);line-height:1.9;t
 .pay-st.ok{color:var(--pri-d)}
 .pay-st.err{color:var(--danger,#DC2626);font-weight:500;line-height:1.7}
 .pay-tip{margin-top:6px;font-size:12px;color:var(--muted)}
+/* 支付成功态：二维码位置换成绿色对勾（微信绿），缩放弹入 */
+.pay-done{width:232px;height:232px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.pay-done .ck{width:88px;height:88px;border-radius:50%;background:#07C160;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 30px -10px rgba(7,193,96,.55);animation:payPop .45s cubic-bezier(.2,1.4,.4,1) both}
+.pay-done .ck svg{width:46px;height:46px;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:40;stroke-dashoffset:40;animation:payDraw .5s .25s ease-out forwards}
+.pay-done .t{font-size:16px;font-weight:700;color:var(--ink)}
+.pay-done .d{font-size:12.5px;color:var(--muted);line-height:1.7;text-align:center}
+@keyframes payPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes payDraw{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.pay-done .ck,.pay-done .ck svg{animation:none;stroke-dashoffset:0}}
+.pay-doneBtn{margin-top:4px;font:inherit;font-size:13.5px;font-weight:600;padding:9px 28px;border:none;border-radius:9px;background:var(--grad-r);color:#fff;cursor:pointer}
 .rv .rules{border-left:3px solid var(--pri);background:var(--pri-s);border-radius:0 10px 10px 0;
   padding:16px 20px;font-size:13px;line-height:2;color:var(--ink)}
 .rv .rules b{font-weight:600}
@@ -657,7 +669,8 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
     document.getElementById('apply').scrollIntoView({behavior:'smooth',block:'start'});
   };});
   var payPoll=null, payCd=null, payNo='';
-  function closePay(){ var m=q('#payMask'); if(m) m.classList.remove('on'); if(payPoll){clearInterval(payPoll);payPoll=null;} if(payCd){clearInterval(payCd);payCd=null;} }
+  function closePay(){ var m=q('#payMask'); if(m) m.classList.remove('on'); if(payPoll){clearInterval(payPoll);payPoll=null;} if(payCd){clearInterval(payCd);payCd=null;}
+    var tip=q('.pay-tip'); if(tip) tip.innerHTML='二维码 <span id="payCd">15:00</span> 内有效 · 付款成功后申请自动提交'; }
   q('#payClose').onclick=closePay;
   async function submitApply(order){
     var body={kind:'review', tier:q('#fTier').value, link:q('#fLink').value.trim(), note:q('#fNote').value.trim(), order:order||''};
@@ -697,10 +710,17 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
         var rr=await fetch(API+'/api/pay/order/'+encodeURIComponent(payNo)+'?probe='+(n%3===0?1:0),{headers:{Authorization:'Bearer '+localStorage.getItem('hab_token')}});
         var dd=await rr.json();
         if(dd.status==='paid'){
-          clearInterval(payPoll); payPoll=null;
+          clearInterval(payPoll); payPoll=null; if(payCd){clearInterval(payCd);payCd=null;}
           st.className='pay-st ok'; st.textContent='支付成功，正在提交申请…';
           var res=await submitApply(payNo);
-          if(res.status===200){ st.textContent='支付成功，申请已提交'; setTimeout(closePay,1200); showOk(true); }
+          if(res.status===200){
+            showOk(true);
+            q('#payQr').innerHTML='<div class="pay-done"><div class="ck"><svg viewBox="0 0 24 24"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></div><div class="t">支付成功</div><div class="d">申请已提交<br>3-5 个工作日内你会收到结果通知</div></div>';
+            st.className='pay-st'; st.textContent='';
+            q('.pay-tip').innerHTML='<button class="pay-doneBtn" id="payDone">完成</button>';
+            q('#payDone').onclick=closePay;
+            setTimeout(function(){ if(q('#payMask').classList.contains('on')) closePay(); }, 4000);
+          }
           else { st.className='pay-st err'; st.textContent='已付款但提交失败，请把订单号 '+payNo+' 发到邮箱，我们人工补上'; }
         } else if(dd.scanned){ st.textContent='已扫码，请在手机上确认付款'; }
         else if(dd.status==='closed'){ clearInterval(payPoll); payPoll=null; st.className='pay-st err'; st.textContent='订单已关闭，关闭后重新提交'; }
