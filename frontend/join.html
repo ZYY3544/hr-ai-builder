@@ -199,8 +199,34 @@ section{scroll-margin-top:72px}
 /* 信任区：照片 + 履历单卡 */
 .profile{margin:38px auto 0}
 .pwrap{display:grid;grid-template-columns:250px 1fr;gap:34px;align-items:stretch}
-.pwrap.solo{grid-template-columns:1fr}
-#join .desc+.desc{margin-top:14px}
+#who .split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center}
+@media(max-width:900px){#who .split{grid-template-columns:1fr;gap:28px}}
+#who .trio{display:flex;align-items:center;gap:14px;margin-top:28px;font-size:clamp(24px,2.8vw,34px);font-weight:700;letter-spacing:-.02em}
+#who .trio span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#who .trio i{font-style:normal;font-weight:400;color:var(--faint);font-size:.7em}
+.team{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.team{grid-template-columns:1fr}}
+.tm{background:#fff;border:1px solid var(--line);border-radius:var(--r-l);padding:22px 24px;box-shadow:0 1px 2px rgba(15,23,42,.03),0 8px 24px -12px rgba(15,23,42,.08);transition:.16s}
+.tm:hover{border-color:rgba(0,168,138,.4);box-shadow:0 14px 40px -22px rgba(0,168,138,.35)}
+.tm .k{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pri-d);background:var(--pri-s);border-radius:99px;padding:2px 9px}
+.tm .t{font-size:16px;font-weight:650;color:var(--ink);margin-top:12px;letter-spacing:-.01em}
+.tm .d{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.95}
+.joinbox{position:relative;border-radius:var(--r-x);padding:48px 52px;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box;border:1.5px solid transparent;overflow:hidden}
+.joinbox::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(51,112,255,.06),rgba(0,168,138,.07));pointer-events:none}
+.joinbox>*{position:relative}
+.joinbox .jg{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:48px;align-items:center}
+@media(max-width:900px){.joinbox{padding:32px 24px}.joinbox .jg{grid-template-columns:1fr;gap:26px}}
+.joinbox .desc+.desc{margin-top:12px}
+.jlabel{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.chips span{font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px}
+.jnote{font-size:13.5px;color:var(--muted);margin-top:16px;line-height:1.9}
+.jnote b{color:var(--ink);font-weight:500}
+.jcta{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
+.jcta span.btn{cursor:default}
+.jmail{font-size:13px;color:var(--muted);margin-top:12px}
+.jmail a{color:var(--ink);font-weight:600;text-decoration:none}
+.jmail a:hover{color:var(--pri)}
 @media(max-width:760px){.pwrap{grid-template-columns:1fr}.pphoto{max-width:220px}}
 .pphoto{position:relative;border-radius:14px;overflow:hidden;height:100%;background:var(--bg)}
 @media(max-width:760px){.pphoto{aspect-ratio:3/4;height:auto}}
@@ -312,20 +338,20 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
   </section>
 
 <!-- ========== ③ 我们是谁 ========== -->
-<section class="band alt">
+<section class="band alt" id="who">
   <div class="wrap">
-    <div class="eyebrow">Who We Are</div>
-    <h2>我们是谁</h2>
-    <p class="desc">一群从顶尖咨询公司和互联网大厂走出来的 HR，正在用 AI 重做 HR 的工作方式；辅导过多名 HR 职业经理人成功转身，理论与实操双管齐下。</p>
-    <div class="profile">
-      <div class="pwrap solo">
-        <div class="pbody">
-          <div class="li"><b>人力资源管理科班出身</b>——组织与人的问题，是我们十年一贯的主业。</div>
-          <div class="li"><b>国际顶尖人力资源与组织管理咨询公司经验</b>——主导过职级评估、薪酬体系设计、组织诊断等项目的方案设计与交付，服务多家行业头部企业。</div>
-          <div class="li"><b>跨境电商龙头与互联网大厂的组织管理实操</b>——完整的甲方视角，深知方法论落进真实组织的每一处摩擦。</div>
-          <div class="li"><b>一线 AI Native 组织变革经验</b>——掌握组织智能化演进路径与落地方法，深谙 AI 时代大厂对 HR 人才的用人标准与选拔逻辑。</div>
-          <div class="li"><b>Anthropic 官方 Claude Code 认证</b>——从提示词工程到 Agent 开发的完整实践能力，课程与辅导里讲的每一项 AI 技能，都来自一线的真实使用经验。</div>
-        </div>
+    <div class="split">
+      <div>
+        <div class="eyebrow">Who We Are</div>
+        <h2>我们是谁</h2>
+        <p class="desc">我们是一支从顶尖咨询公司和互联网大厂走出来的 HR 团队，人力资源管理科班出身，<b>组织与人的问题是我们十年一贯的主业</b>。现在，我们正在用 AI 重做 HR 的工作方式，也辅导过多名 HR 职业经理人成功转身。</p>
+        <div class="trio"><span>理论</span><i>×</i><span>实操</span><i>×</i><span>AI</span></div>
+      </div>
+      <div class="team">
+        <div class="tm"><span class="k">方法论</span><div class="t">咨询公司练出来的方法论</div><div class="d">团队核心成员来自国际顶尖人力资源与组织管理咨询公司，主导过职级评估、薪酬体系设计、组织诊断等项目的方案设计与交付，服务过多家行业头部企业。</div></div>
+        <div class="tm"><span class="k">实操</span><div class="t">甲方里踩出来的实操</div><div class="d">团队在跨境电商龙头与互联网大厂做过组织管理，带着完整的甲方视角，知道方法论落进真实组织时的每一处摩擦。</div></div>
+        <div class="tm"><span class="k">AI 变革</span><div class="t">一线 AI Native 变革的经验</div><div class="d">团队正在一线参与 AI Native 组织变革，掌握组织智能化的演进路径与落地方法，清楚 AI 时代大厂对 HR 人才的用人标准与选拔逻辑。</div></div>
+        <div class="tm"><span class="k">Builder</span><div class="t">亲手做 agent 的能力</div><div class="d">团队持有 Anthropic 官方 Claude Code 认证，从提示词工程到 Agent 开发都是真实用出来的经验。课程与辅导里讲的每一项 AI 技能，我们自己每天都在用。</div></div>
       </div>
     </div>
   </div>
@@ -334,12 +360,27 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
 <!-- ========== ④ 加入我们 ========== -->
 <section class="band" id="join">
   <div class="wrap">
-    <div class="eyebrow">Join Us</div>
-    <h2>加入我们，一起把 HR AI 做出来</h2>
-    <p class="desc">我们在做一个 <b>HR AI 的社群</b>。这里的人有一个共同点：不满足于「会用 AI」，想亲手把 AI 做进 HR 的工作里——做出能跑的 agent，写出自己的 skills，把一个真实的 HR 场景重新做一遍。</p>
-    <p class="desc">我们不在乎你过去是做什么的，更看重你现在怎么想：<b>不拘一格，敢于突破，敢于质疑，有自己的观点</b>。特别欢迎在校大学生同学——没有经验不是门槛，敢想敢做才是。</p>
-    <p class="desc">如果你也想在 HR AI 这条方向上<b>一起做更多探索、做出更多产品</b>——欢迎加入。把你是谁、想做什么写给我们：邮箱 <a id="mailtoJ" href="#" style="color:var(--ink);font-weight:600"><span id="mailTJ"></span></a>，或微信搜公众号「麦麦是只小雀猫」留言。</p>
-    <script>(function(){var m='zynju2014hr'+'@'+'163.com';var a=document.getElementById('mailtoJ');if(a){a.setAttribute('href','mailto:'+m);var t=document.getElementById('mailTJ');if(t)t.textContent=m;}})();</script>
+    <div class="joinbox">
+      <div class="jg">
+        <div>
+          <div class="eyebrow">Join Us</div>
+          <h2>加入我们，一起把 HR AI 做出来</h2>
+          <p class="desc">我们在做一个 <b>HR AI 的社群</b>。这里的人有一个共同点：不满足于「会用 AI」，想亲手把 AI 做进 HR 的工作里——做出能跑的 agent，写出自己的 skills，把一个真实的 HR 场景重新做一遍。</p>
+          <p class="desc">如果你也想在 HR AI 这条方向上<b>一起做更多探索、做出更多产品</b>——欢迎加入。把你是谁、想做什么写给我们。</p>
+        </div>
+        <div>
+          <div class="jlabel">我们找这样的人</div>
+          <div class="chips"><span>不拘一格</span><span>敢于突破</span><span>敢于质疑</span><span>有自己的观点</span></div>
+          <p class="jnote">我们不在乎你过去是做什么的，更看重你现在怎么想。<b>特别欢迎在校大学生同学</b>——没有经验不是门槛，敢想敢做才是。</p>
+          <div class="jcta">
+            <a class="btn pri lg" id="mailtoJ" href="#">写邮件给我们 →</a>
+            <span class="btn lg">公众号 · 麦麦是只小雀猫</span>
+          </div>
+          <div class="jmail">邮箱 <a id="mailtoJ2" href="#"><span id="mailTJ"></span></a></div>
+        </div>
+      </div>
+    </div>
+    <script>(function(){var m='zynju2014hr'+'@'+'163.com';['mailtoJ','mailtoJ2'].forEach(function(id){var a=document.getElementById(id);if(a)a.setAttribute('href','mailto:'+m);});var t=document.getElementById('mailTJ');if(t)t.textContent=m;})();</script>
   </div>
 </section>
 

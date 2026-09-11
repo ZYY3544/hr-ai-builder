@@ -284,12 +284,12 @@ a.cc .ic{width:38px;height:38px;border-radius:11px;background:var(--green-s);dis
 .cc .n{font-size:16px;font-weight:600;color:var(--ink)}
 .cc .d{font-size:13.5px;color:var(--muted);margin-top:9px;line-height:1.85}
 
-.final{position:relative;text-align:center;padding:80px 0 84px;overflow:hidden}
+.final{position:relative;text-align:left;padding:80px 0 84px;overflow:hidden}
 .final::before{content:'';position:absolute;inset:0;z-index:-1;
   background:radial-gradient(760px 340px at 50% 100%, rgba(51,112,255,.07), transparent 66%)}
 .final h2{font-size:clamp(28px,3.6vw,42px);letter-spacing:-.032em;line-height:1.25}
-.final p{font-size:16px;color:var(--muted);margin-top:16px;line-height:1.95}
-.final .btns{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.final p{font-size:16px;color:var(--muted);margin-top:16px;line-height:1.95;max-width:46em}
+.final .btns{display:flex;gap:12px;justify-content:flex-start;margin-top:34px;flex-wrap:wrap}
 
 .decl{background:#fff;padding:20px 0 44px}
 .decl .box{background:#fff;border:1px solid var(--line);
@@ -468,7 +468,8 @@ b.setAttribute('href','javascript:void(0)');
     <h2>联系我们</h2>
     <p class="desc">课程有疑问、想聊聊辅导、或者只是想认识一下——<b>都可以直接找我</b>。</p>
     <div class="clist">
-      <div class="ci"><span class="k">微信</span><span class="v" id="telTI"></span><span class="s">手机同号</span></div>
+      <div class="ci"><span class="k">微信</span><span class="v" id="wxTI"></span></div>
+      <div class="ci"><span class="k">手机</span><a class="v" id="telLI" href="#"><span id="telTI"></span></a></div>
       <div class="ci"><span class="k">邮箱</span><a class="v" id="mailto" href="#"><span id="mailTI"></span></a></div>
       <div class="ci"><span class="k">公众号</span><span class="v">麦麦是只小雀猫</span></div>
     </div>
@@ -694,6 +695,7 @@ loadMe();
    点手机号可拨号、点邮箱唤起邮件客户端。 */
 (function(){var m='zynju2014hr'+'@'+'163.com',t=['182','6006','8715'].join('');
 var a=document.getElementById('mailto');if(a){a.setAttribute('href','mailto:'+m);var x=document.getElementById('mailTI');if(x)x.textContent=m;}
+var w='zys'+'gdsx',q=document.getElementById('wxTI');if(q)q.textContent=w;
 var l=document.getElementById('telLI');if(l){l.setAttribute('href','tel:+86'+t);var y=document.getElementById('telTI');if(y)y.textContent=t;}})();
 </script>
 <div style="text-align:center;font-size:11.5px;color:#94A3B8;padding:0 20px 26px;line-height:1.8">© 2026 铭曦咨询 · meansights · <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">粤ICP备2026036797号-3</a></div>
