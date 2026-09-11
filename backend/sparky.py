@@ -29,6 +29,8 @@ from pydantic import BaseModel
 
 from store import add_feedback, add_signal, hard_lessons, is_test_row, store
 from ratelimit import client_ip, hit, admin_ok
+from notify import notify_owner
+import threading as _threading
 
 # ---------------------------------------------------------------- 配置
 _DS_BASE = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
@@ -214,13 +216,14 @@ def _site_map(jobs: list) -> str:
   换设备聊天记录不跟随。你在深夜 23:00–05:00 会睡着，鼠标碰一下就醒。
   对方问得太快会被限速——那不是坏了，歇几秒再问就好。
 - **反馈通道**：课程哪里写得不好、有建议，直接在对话里跟你说就行（你会记下来）；
-  想找站主本人，微信搜公众号「麦麦是只小雀猫」后台留言。
+  也可以点你对话框右上角的「反馈建议」按钮（灯泡图标），或输入 /反馈——写一句话直接发到站主后台，
+  站主微信会立刻收到推送。想找站主本人，微信搜公众号「麦麦是只小雀猫」后台留言。
 - **加入我们**（「Join Us!」页底部有详情）：我们在做一个 HR AI 的社群，欢迎一起在 HR AI 这条方向上做探索、做产品——有想法、心态开放、
   相信并愿意用 AI 做点事的人，特别欢迎在校大学生；不看过去做什么，看现在怎么想。
   **这不是招聘职位，是「一起做事」**，别把它说成有薪资的工作机会。
   对方表达想加入时：请 ta 说清自己是谁、想做什么，你按 FB 行（kind 写 site）记下来，
   并告诉 ta 可以把简历发到邮箱 zynju2014hr@163.com（公众号「麦麦是只小雀猫」留言也行）。
-- **/ 指令**：在你的对话框里输入 / 会弹出快捷指令——/就业辅导（对话里直接递申请）、
+- **/ 指令**：在你的对话框里输入 / 会弹出快捷指令——/反馈（给站主提建议，直达后台）、/就业辅导（对话里直接递申请）、
   /交作业（对话里提交作品评审）、/一人公司（想法陪练，登录专属、每天限量）、/退出（回普通对话）。
   没有别的隐藏指令。Join Us! 页底部的联系方式和实战任务页底部的评审表单仍然在，是你说不了话时的兜底通道。
 - **手机**：手机浏览器能正常用，不需要装任何东西。
@@ -576,6 +579,8 @@ class FeedbackBody(BaseModel):
     kind: str = "hard"
     note: str = ""
     visitor: Optional[str] = None
+    page: Optional[str] = None      # 按钮通道带上来的页面标识，只进推送不进库
+    source: Optional[str] = None    # "button"=面板里的反馈按钮；其余一律记 direct
 
 
 class SignalBody(BaseModel):
@@ -975,8 +980,20 @@ def make_router(TERMS, JOBS, TERM_LESSONS, LESSON_IDX,
         les = body.lesson or ""
         if les and les not in LESSON_IDX:
             les = ""
+        src = "button" if body.source == "button" else "direct"
         ok = add_feedback(les, body.kind if body.kind in _FB_KINDS else "hard",
-                          note, visitor=(body.visitor or "")[:64], source="direct")
+                          note, visitor=(body.visitor or "")[:64], source=src)
+        if ok and src == "button":
+            # 反馈进库不等于被看到：按钮通道直接推到站主微信/邮箱，守护线程跑，不拖接口
+            page = (body.page or "")[:80]
+            title_ = LESSON_IDX.get(les, {}).get("title", "")
+            where = (f"{page}" + (f" · {title_}" if title_ else "")) or "未知页面"
+            def _push():
+                try:
+                    notify_owner("学习站新反馈", f"{note}\n\n来自：{where}\nvisitor：{(body.visitor or '')[:40] or '-'}")
+                except Exception as e:
+                    print(f"[feedback] 推送失败: {e}", flush=True)
+            _threading.Thread(target=_push, daemon=True).start()
         return {"ok": bool(ok), "lesson": les,
                 "title": LESSON_IDX.get(les, {}).get("title", "")}
 

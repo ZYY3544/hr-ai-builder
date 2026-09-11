@@ -189,6 +189,15 @@
     '.spk-chips button{border:1px solid #E2E8F0;background:#fff;border-radius:18px;padding:6px 13px;',
     ' font-size:12.5px;color:#475569;cursor:pointer}',
     '.spk-chips button:hover{border-color:#00A88A;color:#00795F}',
+    '.spk-fbf{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:12px 14px;margin:6px 0;box-shadow:0 8px 24px -14px rgba(15,23,42,.18)}',
+    '.spk-fbf .t{font-size:13px;font-weight:700;color:#0F172A}',
+    '.spk-fbf .s{font-size:11.5px;color:#64748B;margin-top:2px;line-height:1.6}',
+    '.spk-fbf textarea{width:100%;box-sizing:border-box;margin-top:8px;border:1px solid #E2E8F0;border-radius:8px;padding:8px 10px;font:inherit;font-size:13px;line-height:1.6;resize:vertical;min-height:72px;outline:none}',
+    '.spk-fbf textarea:focus{border-color:#00A88A}',
+    '.spk-fbf .r{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}',
+    '.spk-fbf button{font:inherit;font-size:12.5px;padding:6px 14px;border-radius:8px;cursor:pointer;border:1px solid #E2E8F0;background:#fff;color:#475569}',
+    '.spk-fbf button.p{background:linear-gradient(135deg,#00A88A,#0891B2);border-color:transparent;color:#fff;font-weight:600}',
+    '.spk-fbf button[disabled]{opacity:.55;cursor:default}',
     '.spk-note{font-size:11.5px;color:#00795F;background:#E8FBF6;border-radius:8px;',
     ' padding:6px 10px;margin:0 0 12px;max-width:86%;line-height:1.6}',
     // 输入区不要分隔线、不要提示按钮：一个圆角输入框嵌在白底里，发送箭头收进框内右侧
@@ -273,6 +282,7 @@
   panel.innerHTML =
     '<div id="spk-head"><span id="spk-avatar" style="display:flex">' + catSVG(30, 'idle') + '</span>' +
     '<div class="t">Sparky</div>' +
+    '<button class="spk-ib" id="spk-fb" title="反馈建议"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.6 1 1.3 1 2.5h6c0-1.2.4-1.9 1-2.5A6 6 0 0 0 12 3z"/></svg></button>' +
     '<button class="spk-ib" id="spk-new" title="新对话"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>' +
     '<button class="spk-ib" id="spk-hi" title="对话记录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button>' +
     '<button id="spk-x">×</button></div>' +
@@ -740,8 +750,37 @@
     });
   }
 
-  /* 反馈没有专门的入口按钮了：主路径走对话（模型识别反馈并打 FB 标记），
-     直投端点 /api/sparky/feedback 仍在后端留着当兜底通道。 */
+  /* 反馈两条路：对话里说（模型识别并打 FB 标记）；或点头部灯泡 / 输入 /反馈，
+     弹一张小表单直投 /api/sparky/feedback（kind=suggest, source=button），后端同时推送站主。 */
+  var fbOpen = null;
+  function openFb() {
+    if (fbOpen && fbOpen.isConnected) { fbOpen.querySelector('textarea').focus(); scroll(); return; }
+    var f = document.createElement('div'); f.className = 'spk-fbf';
+    f.innerHTML = '<div class="t">给我们提个建议</div>' +
+      '<div class="s">课程哪里没讲清、功能哪里不顺手、想要什么——写一句就行，直接到站主手里。</div>' +
+      '<textarea placeholder="比如：第三篇章那个例子看不懂……"></textarea>' +
+      '<div class="r"><button type="button" class="c">取消</button><button type="button" class="p">发送</button></div>';
+    log.appendChild(f); fbOpen = f; scroll();
+    var tx = f.querySelector('textarea'), bp = f.querySelector('.p');
+    f.querySelector('.c').onclick = function () { f.remove(); fbOpen = null; };
+    bp.onclick = function () {
+      var v = tx.value.trim();
+      if (v.length < 2) { tx.focus(); return; }
+      bp.disabled = true; bp.textContent = '发送中…';
+      var c = ctx();
+      fetch(API + '/api/sparky/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind: 'suggest', note: v.slice(0, 2000), lesson: c.lesson || '',
+                               visitor: vid(), page: PAGE + (c.lesson ? '/' + c.lesson : ''), source: 'button' }) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (x) {
+        if (x.ok && x.d && x.d.ok) { f.remove(); fbOpen = null; note('收到，谢谢！站主已经看到通知了。'); }
+        else { bp.disabled = false; bp.textContent = '发送'; note((x.d && x.d.detail) || '没发出去，稍后再试。'); }
+      })
+      .catch(function () { bp.disabled = false; bp.textContent = '发送'; note('网络没通，稍后再试。'); });
+    };
+    setTimeout(function () { tx.focus(); }, 50);
+  }
+  panel.querySelector('#spk-fb').onclick = openFb;
   function note(t) {
     var d = document.createElement('div'); d.className = 'spk-note';
     d.textContent = t; log.appendChild(d); scroll();
@@ -760,6 +799,7 @@
   var chatMode = null;      // coach / review / opc；换页即清(模式块只影响当下这段对话)
   var appliedKinds = {};    // 已递交的申请类型：模型若重复吐 APPLY(确认轮又吐一次)，这里挡住不重复落库
   var CMDS = [
+    { c: '/反馈',     m: 'fb',     msg: null, d: '给站主提个建议，直达后台' },
     { c: '/就业辅导', m: 'coach',  msg: '我想申请就业辅导', d: '聊两句，我帮你递申请' },
     { c: '/交作业',   m: 'review', msg: '我想提交作品评审', d: '做完任务，交作品换报告' },
     { c: '/一人公司', m: 'opc',    msg: '我想聊聊我的一人公司想法', d: '想法陪练 · 要登录' },
@@ -782,6 +822,7 @@
   function pickCmd(x) {
     hideCmds(); ta.value = '';
     if (!x.m) { if (chatMode) { chatMode = null; note('已回到普通对话。'); } return; }
+    if (x.m === 'fb') { openFb(); return; }
     if (x.m === 'opc') {
       var t3 = null; try { t3 = localStorage.getItem('hab_token'); } catch (e) {}
       if (!t3) { note('「一人公司陪练」要登录后用——点右上角头像登录再来。'); return; }
