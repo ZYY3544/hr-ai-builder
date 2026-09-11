@@ -159,6 +159,16 @@
     '#spk-head .t{font-weight:700;color:#0F172A;font-size:15px;flex:1}',
     '.spk-ib{border:none;background:none;color:#94A3B8;cursor:pointer;padding:6px;border-radius:8px;display:flex}',
     '.spk-ib:hover{color:#0F172A;background:#F1F5F9}',
+    '.spk-ib.spk-glow{color:#00A88A;background:#E8FBF6;animation:spkGlow .9s ease-in-out}',
+    '@keyframes spkGlow{0%{box-shadow:0 0 0 0 rgba(0,168,138,.55)}100%{box-shadow:0 0 0 10px rgba(0,168,138,0)}}',
+    '@media(prefers-reduced-motion:reduce){.spk-ib.spk-glow{animation:none}}',
+    '#spk-legend{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;padding:7px 12px 7px 16px;border-bottom:1px solid #E2E8F0;background:#F8FAFC;font-size:11.5px;color:#64748B;line-height:1.5}',
+    '.spk-lg{display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border-radius:6px;transition:.2s;white-space:nowrap}',
+    '.spk-lg svg{width:13px;height:13px;flex:none}',
+    '.spk-lg.on{background:#E8FBF6;color:#00795F}',
+    '.spk-lg b{font-weight:600;color:inherit}',
+    '#spk-legend .x{margin-left:auto;border:none;background:none;color:#94A3B8;cursor:pointer;font-size:15px;line-height:1;padding:0 4px}',
+    '#spk-legend .x:hover{color:#0F172A}',
     '.spk-ib svg{width:17px;height:17px;display:block}',
     '#spk-histp{position:absolute;top:57px;left:0;right:0;bottom:0;background:#fff;z-index:5;',
     ' overflow-y:auto;padding:10px 12px;display:none}',
@@ -732,11 +742,15 @@
     var qs = done > 0
       ? ['我卡住了', '接下来读什么', '练习表对不上答案']
       : ['帮我挑从哪儿开始', '我每个月要做人力月报', '下个月要见 AI 供应商', '我想搭一个自己的 agent'];
-    var RECAP_Q = '这段时间的学习小结';
+    var RECAP_Q = '这段时间的学习小结', FB_Q = '提个建议';
     if (localStorage.getItem('hab_token')) qs.push(RECAP_Q);   // recap=成长地图的继任者,登录才有轨迹
+    qs.push(FB_Q);                                             // 反馈入口放在人眼睛本来就在的地方
     qs.forEach(function (q) {
       var b = document.createElement('button'); b.textContent = q;
-      b.onclick = function () { if (q === RECAP_Q) chatMode = 'recap'; ta.value = q; submit(); };
+      b.onclick = function () {
+        if (q === FB_Q) { openFb(); return; }
+        if (q === RECAP_Q) chatMode = 'recap'; ta.value = q; submit();
+      };
       chips.appendChild(b);
     });
     log.appendChild(chips); scroll();
@@ -871,7 +885,7 @@
     panel.classList.add('on'); ball.style.display = 'none';
     syncFbBar();
     if (!opened) {
-      opened = true; restore();
+      opened = true; restore(); maybeTour();
       fetch(API + '/api/sparky/health').then(function (r) { return r.json(); })
         .then(function (j) {
           enabled = !!j.enabled;
@@ -880,6 +894,33 @@
     }
     ta.focus();
     try { sessionStorage.setItem('spk_open', '1'); } catch (e) {}
+  }
+  /* 首次打开：头部三个图标依次亮一下，头部下方留一行图例，点 × 永久消失。
+     只做一次的原因：教程谁都会关，图例才是真正被用到的东西。 */
+  var I_FB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.6 1 1.3 1 2.5h6c0-1.2.4-1.9 1-2.5A6 6 0 0 0 12 3z"/></svg>',
+      I_NEW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+      I_HI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  function maybeTour() {
+    var st = null; try { st = localStorage.getItem('hab_spk_tour'); } catch (e) {}
+    if (st === 'done') return;
+    var lg = document.createElement('div'); lg.id = 'spk-legend';
+    lg.innerHTML = '<span class="spk-lg" data-for="spk-fb">' + I_FB + '<b>反馈建议</b></span>' +
+      '<span class="spk-lg" data-for="spk-new">' + I_NEW + '<b>新对话</b></span>' +
+      '<span class="spk-lg" data-for="spk-hi">' + I_HI + '<b>对话记录</b></span>' +
+      '<span class="spk-lg"><b>/</b> 快捷指令</span>' +
+      '<button class="x" title="知道了">×</button>';
+    var head = panel.querySelector('#spk-head'); head.parentNode.insertBefore(lg, head.nextSibling);
+    lg.querySelector('.x').onclick = function () { lg.remove(); try { localStorage.setItem('hab_spk_tour', 'done'); } catch (e) {} };
+    if (st === 'seen') return;                       // 图例留着，动画只在第一次
+    try { localStorage.setItem('hab_spk_tour', 'seen'); } catch (e) {}
+    var steps = ['spk-fb', 'spk-new', 'spk-hi'];
+    steps.forEach(function (id, i) {
+      setTimeout(function () {
+        var b = panel.querySelector('#' + id), l = lg.querySelector('[data-for="' + id + '"]');
+        if (b) b.classList.add('spk-glow'); if (l) l.classList.add('on');
+        setTimeout(function () { if (b) b.classList.remove('spk-glow'); if (l) l.classList.remove('on'); }, 900);
+      }, 500 + i * 1000);
+    });
   }
   ball.onclick = openPanel;
   panel.querySelector('#spk-x').onclick = function () {
