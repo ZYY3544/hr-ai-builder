@@ -222,11 +222,12 @@ section{scroll-margin-top:72px}
 .chips span{font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px}
 .jnote{font-size:13.5px;color:var(--muted);margin-top:16px;line-height:1.9}
 .jnote b{color:var(--ink);font-weight:500}
-.jcta{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
-.jcta span.btn{cursor:default}
-.jmail{font-size:13px;color:var(--muted);margin-top:12px}
-.jmail a{color:var(--ink);font-weight:600;text-decoration:none}
-.jmail a:hover{color:var(--pri)}
+.jl2{margin-top:24px}
+.jcontact{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:10px}
+.jcontact .ci{display:flex;align-items:baseline;gap:8px}
+.jcontact .k{font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--muted)}
+.jcontact .v{font-size:15px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.02em}
+.jcontact a.v:hover{color:var(--pri)}
 @media(max-width:760px){.pwrap{grid-template-columns:1fr}.pphoto{max-width:220px}}
 .pphoto{position:relative;border-radius:14px;overflow:hidden;height:100%;background:var(--bg)}
 @media(max-width:760px){.pphoto{aspect-ratio:3/4;height:auto}}
@@ -372,15 +373,20 @@ b.setAttribute('href','javascript:void(0)');}}catch(e){}})();
           <div class="jlabel">我们找这样的人</div>
           <div class="chips"><span>不拘一格</span><span>敢于突破</span><span>敢于质疑</span><span>有自己的观点</span></div>
           <p class="jnote">我们不在乎你过去是做什么的，更看重你现在怎么想。<b>特别欢迎在校大学生同学</b>——没有经验不是门槛，敢想敢做才是。</p>
-          <div class="jcta">
-            <a class="btn pri lg" id="mailtoJ" href="#">写邮件给我们 →</a>
-            <span class="btn lg">公众号 · 麦麦是只小雀猫</span>
+          <div class="jlabel jl2">联系我们</div>
+          <div class="jcontact">
+            <div class="ci"><span class="k">微信</span><span class="v" id="wxJ"></span></div>
+            <div class="ci"><span class="k">手机</span><a class="v" id="telJ" href="#"><span id="telJT"></span></a></div>
+            <div class="ci"><span class="k">邮箱</span><a class="v" id="mailtoJ" href="#"><span id="mailTJ"></span></a></div>
+            <div class="ci"><span class="k">公众号</span><span class="v">麦麦是只小雀猫</span></div>
           </div>
-          <div class="jmail">邮箱 <a id="mailtoJ2" href="#"><span id="mailTJ"></span></a></div>
         </div>
       </div>
     </div>
-    <script>(function(){var m='zynju2014hr'+'@'+'163.com';['mailtoJ','mailtoJ2'].forEach(function(id){var a=document.getElementById(id);if(a)a.setAttribute('href','mailto:'+m);});var t=document.getElementById('mailTJ');if(t)t.textContent=m;})();</script>
+    <script>(function(){var m='zynju2014hr'+'@'+'163.com',t=['182','6006','8715'].join(''),w='zys'+'gdsx';
+var a=document.getElementById('mailtoJ');if(a)a.setAttribute('href','mailto:'+m);var x=document.getElementById('mailTJ');if(x)x.textContent=m;
+var l=document.getElementById('telJ');if(l)l.setAttribute('href','tel:+86'+t);var y=document.getElementById('telJT');if(y)y.textContent=t;
+var q=document.getElementById('wxJ');if(q)q.textContent=w;})();</script>
   </div>
 </section>
 
