@@ -858,8 +858,15 @@ def _log_login(openid: str, nickname: str, source: str) -> None:
 # ---------------------------------------------------------------- routes
 @app.get("/api/health")
 def health():
+    # db 字段真查一次库：supabase-ok / supabase-down / memory。GitHub Actions 每 6 小时打一次，
+    # 既是监控探针也是保活（Supabase 免费档 7 天无活动会暂停整个项目，2026-09-20 中过一次）。
+    try:
+        _db = _store_login.store.ping()
+    except Exception:
+        _db = "down"
     return {"ok": True, "service": "hr-ai-builder-api", "version": app.version,
-            "features": ["login_log", "sec1", "sec2", "sec3", "pay", "fbbtn"],
+            "db": (_store_login.store.mode + "-" + _db) if _store_login.store.mode == "supabase" else _db,
+            "features": ["login_log", "sec1", "sec2", "sec3", "pay", "fbbtn", "dbping"],
             "pay_enabled": _pay.wxp.is_configured()[0],
             "pay_pubkey": bool((os.getenv("WXPAY_PUBLIC_KEY") or "").strip())}
 

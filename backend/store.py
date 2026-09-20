@@ -46,6 +46,9 @@ class _Base:
 
 
 class MemStore(_Base):
+    def ping(self) -> str:
+        return "memory"
+
     """内存 + 尽力落盘。重启即丢——这是明确的降级，不是"看起来在工作"。
 
     同时把每条记录打一行结构化 stdout，Render 的日志面板能搜到；
@@ -158,6 +161,16 @@ class SupabaseStore(_Base):
         except Exception as e:
             print(f"[STORE] supabase find {table} 异常: {e}", flush=True)
         return self._fallback.find(table, eq, limit)
+
+    def ping(self) -> str:
+        """真打一条查询到库上。两个用途：health 里看得见库是活是死；
+        定时 ping 制造活动，防止 Supabase 免费档因"7 天无活动"自动暂停（9-20 已经中过一次）。"""
+        try:
+            r = _rq.get(f"{_SB_URL}/rest/v1/{FEEDBACK}", headers={**self._h, "Prefer": ""},
+                        params={"select": "id", "limit": "1"}, timeout=5)
+            return "ok" if r.status_code < 300 else f"http{r.status_code}"
+        except Exception as e:
+            return "down"
 
     def update(self, table: str, eq: dict, patch: dict) -> int:
         try:

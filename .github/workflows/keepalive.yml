@@ -1,0 +1,20 @@
+name: keepalive
+# 每 6 小时打一次后端 health：health 里会真查一次 Supabase，
+# 制造数据库活动，防止免费档因 7 天无活动自动暂停整个项目（2026-09-20 发生过，登录/进度/反馈全掉进内存）。
+# 顺带把 Render 免费档的后端从休眠里叫醒一下。
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ping health (db probe)
+        run: |
+          for i in 1 2 3; do
+            out=$(curl -s --max-time 90 https://hr-ai-builder-api.onrender.com/api/health) && break
+            sleep 30
+          done
+          echo "$out"
+          echo "$out" | grep -q '"db":"supabase-ok"' || { echo "::error::db not ok"; exit 1; }
