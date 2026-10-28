@@ -4,7 +4,7 @@
 这类作用域错在线上只有真点一次才炸，而那一次会写掉用户的「上次小结」标记。
 含阴性对照：上次小结之前的记录必须被排除（断言 怎样学 not in out）。"""
 import sys, types
-sys.path.insert(0, '/Users/zy/Desktop/HR-AI-Builder/backend')
+sys.path.insert(0, '/Users/zy/Desktop/铭曦/HR-AI-Builder/backend')
 
 # stub store：不碰生产库
 fake = types.ModuleType('store')

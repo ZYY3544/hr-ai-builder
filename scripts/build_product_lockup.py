@@ -8,7 +8,7 @@
 字形、字重、字距都不是一家的，放大看很明显。这里让描述词也走 Geist、也转成轮廓，
 出来的整块跟主版严格同源，而且不依赖使用者机器上装没装字体。
 
-刻意不改 ~/Desktop/铭曦 logo/_源文件/build_logo.py：
+刻意不改 ~/Desktop/铭曦/铭曦 logo/_源文件/build_logo.py：
 那是公司品牌的权威源，它重跑时会清空 01–06 编号目录。产品专用的衍生件放在产品仓库里，
 公司资产和产品资产分开，谁也不会覆盖谁。
 
@@ -30,7 +30,7 @@ from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FONT_PATH = os.path.expanduser("~/Desktop/铭曦 logo/_源文件/Geist.ttf")
+FONT_PATH = os.path.expanduser("~/Desktop/铭曦/铭曦 logo/_源文件/Geist.ttf")
 OUT_DIR = os.path.join(ROOT, "frontend", "brand")
 
 # ── 品牌常量（与 build_logo.py 保持一致，改这里等于改品牌，别随手动）──
